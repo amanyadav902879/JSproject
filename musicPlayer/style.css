@@ -1,0 +1,400 @@
+/* =========================================================
+   freeCodeCamp Music Player — "Hi-Fi Deck" theme
+   A physical hardware unit: brushed metal chassis, amber LCD,
+   spinning vinyl album art, cream cassette-insert playlist.
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --chassis: #1c1b19;
+  --metal: #4b4d52;
+  --metal-light: #6a6d73;
+  --metal-dark: #2c2d30;
+  --cream: #ece7d8;
+  --cream-line: #d8d1bb;
+  --amber: #ffb200;
+  --amber-dim: #a06e00;
+  --lcd-bg: #241a0d;
+  --ink: #2a2620;
+
+  --font-mono: 'Roboto Mono', monospace;
+  --font-sans: 'Lato', sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  padding: 48px 16px;
+  background: #0d0d0e;
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.03) 0, transparent 45%),
+    radial-gradient(circle at 75% 75%, rgba(255, 178, 0, 0.04) 0, transparent 40%);
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-sans);
+}
+
+.container {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---- Shared chassis look, with faked corner screws ---- */
+
+.player,
+.playlist {
+  border-radius: 18px;
+  background: var(--metal);
+  background-image:
+    repeating-linear-gradient(
+      100deg,
+      rgba(255, 255, 255, 0.025) 0px,
+      rgba(255, 255, 255, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    radial-gradient(circle 3px at 14px 14px, #17171794 90%, transparent 91%),
+    radial-gradient(circle 3px at calc(100% - 14px) 14px, #17171794 90%, transparent 91%),
+    radial-gradient(circle 3px at 14px calc(100% - 14px), #17171794 90%, transparent 91%),
+    radial-gradient(circle 3px at calc(100% - 14px) calc(100% - 14px), #17171794 90%, transparent 91%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 -2px 0 rgba(0, 0, 0, 0.35) inset,
+    0 18px 34px rgba(0, 0, 0, 0.55);
+  padding: 18px;
+}
+
+/* ---- Bars: speaker-grille title strips ---- */
+
+.player-bar,
+.playlist-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.parallel-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.parallel-lines div {
+  height: 2px;
+  background: var(--amber-dim);
+  border-radius: 2px;
+}
+
+.fcc-title,
+.playlist-title {
+  margin: 0;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--amber);
+  text-shadow: 0 0 8px rgba(255, 178, 0, 0.55);
+}
+
+/* ---- Vinyl record album art ---- */
+
+#player-album-art {
+  width: 168px;
+  height: 168px;
+  margin: 4px auto 18px;
+  border-radius: 50%;
+  position: relative;
+  background: #0c0c0d;
+  box-shadow:
+    0 0 0 2px #050505,
+    0 0 0 5px #2a2a2c,
+    0 0 0 6px #050505,
+    0 10px 24px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 26px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 27px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 46px rgba(0, 0, 0, 0.35),
+    inset 0 0 0 47px rgba(255, 255, 255, 0.05);
+  animation: spin 16s linear infinite;
+}
+
+#player-album-art img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+#player-album-art::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--metal-dark);
+  border: 2px solid #0c0c0d;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---- LCD display ---- */
+
+.player-display {
+  background: var(--lcd-bg);
+  border-radius: 8px;
+  padding: 14px 16px;
+  box-shadow:
+    inset 0 2px 6px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px #000;
+  margin-bottom: 18px;
+}
+
+.player-display-song-artist {
+  text-align: center;
+  min-height: 44px;
+}
+
+#player-song-title {
+  margin: 0 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--amber);
+  text-shadow: 0 0 6px rgba(255, 178, 0, 0.6);
+}
+
+#player-song-artist {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--amber-dim);
+  letter-spacing: 0.04em;
+}
+
+/* ---- Buttons: tactile bezel controls ---- */
+
+.player-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.player-buttons button {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, var(--metal-light), var(--metal-dark));
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.25) inset,
+    0 -2px 3px rgba(0, 0, 0, 0.5) inset,
+    0 3px 6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.player-buttons button svg {
+  fill: var(--amber);
+  width: 40%;
+  height: 40%;
+}
+
+.player-buttons button:hover {
+  background: linear-gradient(180deg, #7a7d84, var(--metal-dark));
+}
+
+.player-buttons button:active {
+  transform: scale(0.92);
+  box-shadow:
+    0 -1px 0 rgba(255, 255, 255, 0.15) inset,
+    0 2px 4px rgba(0, 0, 0, 0.6) inset;
+}
+
+.player-buttons button:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+#play,
+#pause {
+  width: 54px;
+  height: 54px;
+}
+
+/* ---- Playlist: cream cassette-insert card ---- */
+
+.playlist {
+  background: var(--cream);
+  background-image:
+    radial-gradient(circle 3px at 14px 14px, #00000030 90%, transparent 91%),
+    radial-gradient(circle 3px at calc(100% - 14px) 14px, #00000030 90%, transparent 91%),
+    radial-gradient(circle 3px at 14px calc(100% - 14px), #00000030 90%, transparent 91%),
+    radial-gradient(circle 3px at calc(100% - 14px) calc(100% - 14px), #00000030 90%, transparent 91%);
+}
+
+.playlist .playlist-bar {
+  border-bottom-color: var(--cream-line);
+}
+
+.playlist .parallel-lines div {
+  background: var(--ink);
+  opacity: 0.35;
+}
+
+.playlist .playlist-title {
+  color: var(--ink);
+  text-shadow: none;
+}
+
+#playlist-songs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+#playlist-songs li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 6px;
+  border-bottom: 1px dashed var(--cream-line);
+  font-family: var(--font-mono);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+
+#playlist-songs li:last-child {
+  border-bottom: none;
+}
+
+#playlist-songs li:hover,
+#playlist-songs li:focus-within {
+  background: rgba(255, 178, 0, 0.18);
+}
+
+#playlist-songs li.active,
+#playlist-songs li.active-song {
+  background: rgba(255, 178, 0, 0.3);
+  box-shadow: inset 3px 0 0 var(--amber-dim);
+}
+
+#playlist-songs li p,
+#playlist-songs li span {
+  margin: 0;
+}
+
+.playlist-song-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.playlist-song-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-song-artist {
+  font-size: 0.72rem;
+  color: var(--amber-dim);
+}
+
+.playlist-song-duration-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.playlist-song-duration {
+  font-size: 0.78rem;
+  color: var(--ink);
+  opacity: 0.7;
+}
+
+.playlist-song-delete {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--ink);
+  opacity: 0.45;
+  transition: opacity 0.12s ease, background 0.12s ease;
+}
+
+.playlist-song-delete:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.playlist-song-delete svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+#playlist-songs::-webkit-scrollbar {
+  width: 6px;
+}
+
+#playlist-songs::-webkit-scrollbar-thumb {
+  background: var(--cream-line);
+  border-radius: 3px;
+}
+
+@media (max-width: 400px) {
+  .player,
+  .playlist {
+    padding: 14px;
+  }
+
+  #player-album-art {
+    width: 140px;
+    height: 140px;
+  }
+}
