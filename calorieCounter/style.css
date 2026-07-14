@@ -1,87 +1,348 @@
+/* =========================================================
+   Calorie Counter — "Daily Ledger" theme
+   A calorie budget, styled like a printed grocery receipt.
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
 :root {
-  --light-grey: #f5f6f7;
-  --dark-blue: #0a0a23;
-  --fcc-blue: #1b1b32;
-  --light-yellow: #fecc4c;
-  --dark-yellow: #feac32;
-  --light-pink: #ffadad;
-  --dark-red: #850000;
-  --light-green: #acd157;
+  --paper: #f7f1e4;
+  --paper-dark: #ece3cf;
+  --ink: #2b2620;
+  --ink-soft: #6b6154;
+  --rule: #cfc2a3;
+  --green: #2f5233;
+  --green-bg: #e3ecdf;
+  --rust: #b8452f;
+  --rust-bg: #f5e1da;
+  --mustard: #d9a62e;
+
+  --font-head: 'Roboto Slab', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
 body {
-  font-family: "Lato", Helvetica, Arial, sans-serif;
-  font-size: 18px;
-  background-color: var(--fcc-blue);
-  color: var(--light-grey);
+  margin: 0;
+  min-height: 100vh;
+  padding: 48px 16px;
+  background: var(--ink);
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.04) 0, transparent 40%),
+    radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.03) 0, transparent 45%);
+  font-family: var(--font-mono);
+  color: var(--ink);
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  width: 100%;
+  max-width: 480px;
 }
 
 h1 {
+  font-family: var(--font-head);
+  font-weight: 700;
   text-align: center;
+  color: var(--paper);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0 0 20px;
 }
+
+h1::before,
+h1::after {
+  content: '✦';
+  color: var(--mustard);
+  margin: 0 12px;
+  font-size: 0.8rem;
+  vertical-align: middle;
+}
+
+/* ---- The receipt itself ---- */
 
 .container {
-  width: 90%;
-  max-width: 680px;
+  background: var(--paper);
+  position: relative;
+  padding: 32px 28px 44px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.6) inset,
+    0 24px 48px rgba(0, 0, 0, 0.45);
 }
 
-h1,
-.container,
-.output {
-  margin: 20px auto;
+/* torn / perforated bottom edge */
+.container::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -14px;
+  height: 14px;
+  background:
+    linear-gradient(-45deg, var(--paper) 8px, transparent 0),
+    linear-gradient(45deg, var(--paper) 8px, transparent 0);
+  background-size: 16px 16px;
+  background-repeat: repeat-x;
 }
 
-label,
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* ---- Budget line: styled like a receipt total ---- */
+
+#calorie-counter > label[for='budget'] {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+#budget {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding: 10px 12px;
+  border: none;
+  border-bottom: 3px double var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+#budget:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: 4px;
+}
+
+#budget::placeholder {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+}
+
+/* ---- Fieldsets: receipt sections ---- */
+
+fieldset {
+  border: none;
+  border-top: 1px dashed var(--rule);
+  padding: 16px 0 0;
+  margin: 0;
+}
+
 legend {
-  font-weight: bold;
+  padding: 0 10px 0 0;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+}
+
+legend::before {
+  content: '— ';
+  color: var(--mustard);
 }
 
 .input-container {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 }
+
+.input-container label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  margin-bottom: -6px;
+}
+
+.input-container input[type='text'],
+.input-container input[type='number'] {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  padding: 8px 10px;
+  background: var(--paper-dark);
+  border: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.input-container input:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: 2px;
+}
+
+/* pair name + calorie inputs on one row past mobile width */
+@media (min-width: 420px) {
+  .input-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    column-gap: 10px;
+    row-gap: 4px;
+  }
+
+  .input-container input[type='number'] {
+    text-align: right;
+  }
+}
+
+/* ---- Controls row ---- */
+
+.controls {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  border-top: 1px dashed var(--rule);
+}
+
+.controls span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.controls label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+}
+
+#entry-dropdown {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 6px 8px;
+  border: 1px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* ---- Buttons: ink-stamp punches ---- */
 
 button {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 10px 16px;
+  border: 2px solid var(--ink);
+  background: var(--paper);
+  color: var(--ink);
   cursor: pointer;
-  text-decoration: none;
-  background-color: var(--light-yellow);
-  border: 2px solid var(--dark-yellow);
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease;
 }
 
-button,
-input,
-select {
-  min-height: 24px;
-  color: var(--dark-blue);
+button:hover {
+  background: var(--ink);
+  color: var(--paper);
 }
 
-fieldset,
-label,
-button,
-input,
-select {
-  margin-bottom: 10px;
+button:active {
+  transform: scale(0.96);
 }
+
+button:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: 3px;
+}
+
+#add-entry {
+  border-color: var(--mustard);
+  color: var(--green);
+}
+
+#add-entry:hover {
+  background: var(--mustard);
+  color: var(--ink);
+}
+
+form > div:last-of-type {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 4px;
+}
+
+form > div:last-of-type button[type='submit'] {
+  flex: 1;
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--paper);
+}
+
+form > div:last-of-type button[type='submit']:hover {
+  background: var(--paper);
+  color: var(--green);
+}
+
+#clear {
+  border-color: var(--rust);
+  color: var(--rust);
+}
+
+#clear:hover {
+  background: var(--rust);
+  color: var(--paper);
+}
+
+/* ---- Output: the stamped verdict ---- */
 
 .output {
-  border: 2px solid var(--light-grey);
-  padding: 10px;
+  margin: 28px auto 0;
+  max-width: 420px;
   text-align: center;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 18px 20px;
+  border: 3px double var(--rust);
+  color: var(--rust);
+  background: var(--rust-bg);
+  transform: rotate(-2deg);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
 }
 
-.hide {
+.output.hide {
   display: none;
 }
 
-.output span {
-  font-weight: bold;
-  font-size: 1.2em;
+/* optional: if script.js toggles a class like "under-budget" on #output,
+   this flips the stamp to green ink */
+.output.under-budget,
+.output.remaining {
+  border-color: var(--green);
+  color: var(--green);
+  background: var(--green-bg);
 }
 
-.surplus {
-  color: var(--light-pink);
-}
-
-.deficit {
-  color: var(--light-green);
+@media (max-width: 420px) {
+  .container {
+    padding: 24px 18px 36px;
+  }
 }
