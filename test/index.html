@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Document</title>
+</head>
+<body>
+      <h1>Hello</h1>
+
+      <script>
+const fruits = [
+
+  { name: "Apple", price: 120 },
+  { name: "Banana", price: 40 },
+  { name: "Cheery", price: 250 },
+  { name: "Zebra", price: 500 }, // Example
+  { name: "Mango", price: 100 },
+  { name: "Chikoo", price: 80 },
+  { name: "King", price: 350 }, // Example
+  { name: "World", price: 600 }, // Example
+  { name: "New", price: 150 }, // Example
+  { name: "Grapes", price: 90 }
+];
+
+            fruits.sort((a,b) => {
+                  if(a.name > b.name){
+                        return 1;
+                  }
+                  if(a.name < b.name){
+                        return -1;
+                  }
+                 return 0;
+            });
+
+            console.log(fruits)
+      </script>
+</body>
+</html>
