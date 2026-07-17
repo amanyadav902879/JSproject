@@ -1,0 +1,67 @@
+import { useState } from 'react'
+
+function FilterableList() {
+  const allSongs = [
+    { id: 1, name: 'Peaceful', artist: 'John' },
+    { id: 2, name: 'Happy Vibes', artist: 'Jane' },
+    { id: 3, name: 'Sad Songs', artist: 'Alex' },
+    { id: 4, name: 'Party Time', artist: 'Emma' },
+    { id: 5, name: 'Night Mode', artist: 'Raj' }
+  ]
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedGenre, setSelectedGenre] = useState('all')
+
+  // Filter songs based on search
+  const filteredSongs = allSongs.filter(song => 
+    song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    song.artist.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  return (
+    <div style={{ maxWidth: '500px', margin: '20px auto' }}>
+      <h2>🎵 Song Finder</h2>
+
+      <input
+        type="text"
+        placeholder="Song या artist search करें..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ width: '100%', padding: '10px', marginBottom: '15px', boxSizing: 'border-box' }}
+      />
+
+      <p>Found: {filteredSongs.length} songs</p>
+
+      <div style={{ border: '1px solid #ddd', borderRadius: '8px' }}>
+        {filteredSongs.length > 0 ? (
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            {filteredSongs.map((song, index) => (
+              <li
+                key={song.id}
+                style={{
+                  padding: '12px',
+                  borderBottom: index !== filteredSongs.length - 1 ? '1px solid #eee' : 'none',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center'
+                }}
+              >
+                <div>
+                  <strong>{song.name}</strong>
+                  <p style={{ margin: '4px 0 0 0', color: '#999', fontSize: '12px' }}>by {song.artist}</p>
+                </div>
+                <button style={{ padding: '6px 12px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>
+                  ▶️
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p style={{ padding: '20px', textAlign: 'center', color: '#999' }}>कोई songs नहीं मिले 😢</p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+export default FilterableList

@@ -1,0 +1,66 @@
+import { useState } from 'react'
+
+function LoginForm() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value)
+  }
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    
+    if (email === '' || password === '') {
+      setMessage('❌ सभी fields भरें!')
+      return
+    }
+
+    if (password.length < 6) {
+      setMessage('❌ Password कम से कम 6 characters का होना चाहिए')
+      return
+    }
+
+    setMessage(`✅ Login successful! Welcome ${email}`)
+    setEmail('')
+    setPassword('')
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ maxWidth: '300px', margin: '20px auto' }}>
+      <h2>Login करें</h2>
+
+      <input
+        type="email"
+        value={email}
+        onChange={handleEmailChange}
+        placeholder="Email enter करें"
+        style={{ width: '100%', padding: '8px', marginBottom: '10px', boxSizing: 'border-box' }}
+      />
+
+      <input
+        type="password"
+        value={password}
+        onChange={handlePasswordChange}
+        placeholder="Password enter करें"
+        style={{ width: '100%', padding: '8px', marginBottom: '10px', boxSizing: 'border-box' }}
+      />
+
+      <button 
+        type="submit"
+        style={{ width: '100%', padding: '10px', background: 'blue', color: 'white', border: 'none', borderRadius: '5px' }}
+      >
+        Login
+      </button>
+
+      {message && <p style={{ marginTop: '10px', color: message.includes('✅') ? 'green' : 'red' }}>{message}</p>}
+    </form>
+  )
+}
+
+export default LoginForm

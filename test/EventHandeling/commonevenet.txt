@@ -1,0 +1,55 @@
+function EventDemo() {
+  const handleClick = () => {
+    console.log('Button clicked!')
+  }
+
+  const handleChange = (e) => {
+    console.log('Input value:', e.target.value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault() // Form submit को block करो
+    console.log('Form submitted!')
+  }
+
+  const handleMouseEnter = () => {
+    console.log('Mouse entered!')
+  }
+
+  return (
+    <div>
+      {/* onClick */}
+      <button onClick={handleClick}>Click me</button>
+
+      {/* onChange */}
+      <input onChange={handleChange} placeholder="Type something" />
+
+      {/* onSubmit */}
+      <form onSubmit={handleSubmit}>
+        <input type="text" />
+        <button type="submit">Submit</button>
+      </form>
+
+      {/* onMouseEnter, onMouseLeave */}
+      <div 
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={() => console.log('Mouse left!')}
+        style={{ padding: '20px', background: 'lightblue' }}
+      >
+        Hover over me!
+      </div>
+
+      {/* onFocus, onBlur */}
+      <input 
+        onFocus={() => console.log('Input focused')}
+        onBlur={() => console.log('Input blurred')}
+      />
+
+      {/* onKeyDown, onKeyUp */}
+      <input 
+        onKeyDown={(e) => console.log('Key pressed:', e.key)}
+        onKeyUp={(e) => console.log('Key released:', e.key)}
+      />
+    </div>
+  )
+}
