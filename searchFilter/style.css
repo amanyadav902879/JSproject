@@ -1,0 +1,221 @@
+    :root {
+  --ink: #1c2b2d;
+  --paper: #f6f3ee;
+  --teal: #0f5257;
+  --teal-deep: #0a3a3e;
+  --marigold: #e8a33d;
+  --card-bg: #ffffff;
+  --muted: #6b7674;
+  --border: #e3ddd1;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--paper);
+  font-family: 'Karla', sans-serif;
+  color: var(--ink);
+  padding-bottom: 60px;
+}
+
+.topbar {
+  background: var(--teal-deep);
+  color: var(--paper);
+  padding: 28px 32px 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.brand {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.dot { color: var(--marigold); }
+
+.tagline {
+  color: #cfe3e0;
+  font-size: 0.95rem;
+}
+
+.controls {
+  max-width: 1100px;
+  margin: 28px auto 0;
+  padding: 0 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: center;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1 1 260px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+
+#searchInput {
+  width: 100%;
+  padding: 11px 14px 11px 38px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Karla', sans-serif;
+  font-size: 0.95rem;
+  background: var(--card-bg);
+}
+
+#searchInput:focus {
+  outline: none;
+  border-color: var(--teal);
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+}
+
+select {
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-family: 'Karla', sans-serif;
+  font-size: 0.9rem;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+select:focus { outline: none; border-color: var(--teal); }
+
+.price-range {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+
+.price-range input {
+  width: 68px;
+  padding: 9px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  font-family: 'Karla', sans-serif;
+}
+
+.price-range button {
+  padding: 9px 14px;
+  border: none;
+  border-radius: 8px;
+  background: var(--teal);
+  color: white;
+  font-family: 'Karla', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.price-range button:hover { background: var(--teal-deep); }
+
+.result-count {
+  max-width: 1100px;
+  margin: 18px auto 0;
+  padding: 0 24px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.grid {
+  max-width: 1100px;
+  margin: 14px auto 0;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(15, 82, 87, 0.12);
+}
+
+.card-img {
+  height: 140px;
+  background: linear-gradient(135deg, var(--teal) 0%, var(--teal-deep) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Fraunces', serif;
+  font-size: 2.2rem;
+  color: rgba(255,255,255,0.85);
+}
+
+.card-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.card-category {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--marigold);
+  font-weight: 700;
+}
+
+.card-name {
+  font-family: 'Fraunces', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.card-spec {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.card-price {
+  margin-top: auto;
+  padding-top: 8px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--teal-deep);
+}
+
+.no-results {
+  text-align: center;
+  margin-top: 60px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+  .controls { flex-direction: column; align-items: stretch; }
+  .filter-group { flex-direction: column; }
+}

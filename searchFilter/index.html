@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bazario — Shop Products</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="topbar">
+    <div class="brand">Bazario<span class="dot">.</span></div>
+    <p class="tagline">Har cheez, ek jagah</p>
+  </header>
+
+  <section class="controls">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="7"/>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="searchInput" placeholder="Product khojo...">
+    </div>
+
+    <div class="filter-group">
+      <select id="categoryFilter">
+        <option value="all">Saari Categories</option>
+      </select>
+
+      <select id="sortFilter">
+        <option value="none">Sort: Default</option>
+        <option value="low-high">Price: Low se High</option>
+        <option value="high-low">Price: High se Low</option>
+      </select>
+    </div>
+
+    <div class="price-range">
+      <label>Price:</label>
+      <input type="number" id="minPrice" placeholder="Min">
+      <span>—</span>
+      <input type="number" id="maxPrice" placeholder="Max">
+      <button id="applyPrice">Apply</button>
+    </div>
+  </section>
+
+  <p class="result-count" id="resultCount"></p>
+
+  <main class="grid" id="productGrid"></main>
+
+  <p class="no-results" id="noResults" style="display:none;">Koi product nahi mila. Filters change karke dekho.</p>
+
+  <script src="script.js"></script>
+</body>
+</html>
