@@ -1,15 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Document</title>
-</head>
-<body>
-      <h1>Hello</h1>
+      <style>
+            form {
+  max-width: 400px;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: Arial, sans-serif;
+}
 
+label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+input,
+textarea {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #0078d4;
+  box-shadow: 0 0 3px rgba(0, 120, 212, 0.5);
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button[type="submit"] {
+  background-color: #0078d4;
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #005ea2;
+}
+      </style>
+</head>
+
+<body>
+      <form>
+  <label>Enter your email: </label>
+  <input required placeholder="username@sampleCompany.com" type="email" pattern=".+@sampleCompany\.com" />
+
+  <label>Enter your feedback: </label>
+  <textarea required placeholder="Your feedback here..."></textarea>
+
+  <button type="submit">Submit Feedback</button>
+</form>
       <script>
-            
+            /* const name=[2,3,4,5,6,7,8]
+            name.forEach(surname => console.log(surname * 2))
+
+            const number = [4,6,8,2]
+            const doubled= number.map((numbers) => numbers * 4)
+
+            const vowel = [1,2,3,4,5,6,8].map((element, index, array) =>{
+                  console.log(`Element ${element}`)
+                  console.log(`Element ${index}`)
+                   console.log(`Element ${array}`)
+                  return element * 4;
+            }) 
+
+            console.log(number)
+            console.log(doubled)
+            const item = [45,37,28, 44, 78]
+            const double = item.filter((items) => items % 2 === 0)
+            console.log(double)
+
+
+            const developers=[
+                  {name:"aman",age:10},
+                  {name:"nilesh",age:21},
+                  {name:"aakash", age:18},
+                  {name:"yash",age:21}
+            ]
+
+            const person = developers.filter((persons) => persons.age > 10);
+            console.log(person) */
+
+            const transactions = [
+                  { amount: 100, type: "credit" },
+                  { amount: 200, type: "cash" },
+                  { amount: 500, type: "debit" },
+                  { amount: 150, type: "credit" },
+                  { amount: 300, type: "cash" },
+                  { amount: 450, type: "debit" },
+                  { amount: 700, type: "credit" },
+                  { amount: 250, type: "cash" },
+                  { amount: 900, type: "debit" },
+                  { amount: 120, type: "credit" },
+                  { amount: 600, type: "cash" },
+                  { amount: 350, type: "debit" },
+                  { amount: 800, type: "credit" },
+                  { amount: 1000, type: "cash" },
+                  { amount: 550, type: "debit" }
+            ];
+            const credits = transactions.filter((credit) => credit.type === "credit")
+                  .map((credit) => credit.amount * 1.1)
+                  .reduce((sum, amount) => sum + amount, 0);
+
+            console.log(credits)
+
+            const fruits = [
+                  { id: 1, name: "Apple", color: "Red", price: 120, quantity: 10 },
+                  { id: 2, name: "Banana", color: "Yellow", price: 40, quantity: 25 },
+                  { id: 3, name: "Orange", color: "Orange", price: 80, quantity: 15 },
+                  { id: 4, name: "Mango", color: "Yellow", price: 150, quantity: 8 },
+                  { id: 5, name: "Grapes", color: "Green", price: 90, quantity: 20 },
+                  { id: 6, name: "Watermelon", color: "Green", price: 60, quantity: 5 },
+                  { id: 7, name: "Pineapple", color: "Brown", price: 110, quantity: 6 },
+                  { id: 8, name: "Strawberry", color: "Red", price: 200, quantity: 12 },
+                  { id: 9, name: "Kiwi", color: "Green", price: 180, quantity: 9 },
+                  { id: 10, name: "Papaya", color: "Orange", price: 70, quantity: 14 },
+                  { id: 11, name: "Guava", color: "Green", price: 50, quantity: 18 },
+                  { id: 12, name: "Cherry", color: "Red", price: 250, quantity: 7 },
+                  { id: 13, name: "Pear", color: "Green", price: 100, quantity: 11 },
+                  { id: 14, name: "Peach", color: "Pink", price: 160, quantity: 10 },
+                  { id: 15, name: "Blueberry", color: "Blue", price: 300, quantity: 4 }
+            ];
+
+            fruits.sort()
+            console.log(fruits)
+            const fruit = fruits.filter((apple,index) => apple.price > 50)
+            .map((apple) =>apple.price * 2)
+            console.log(fruit)
       </script>
 </body>
+
 </html>
