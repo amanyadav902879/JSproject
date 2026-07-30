@@ -1,0 +1,72 @@
+Filtering While Rendering
+
+const numbers = [1, 2, 3, 4, 5];
+
+function App() {
+  return (
+    <div>
+      {numbers
+        .filter((num) => num % 2 === 0)
+        .map((num) => (
+          <p key={num}>{num}</p>
+        ))}
+    </div>
+  );
+}
+
+Passing Data to a Component
+
+function Card({ name, price }) {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>₹{price}</p>
+    </div>
+  );
+}
+
+export default Card;
+
+
+App.jsx
+
+import Card from "./Card";
+
+function App() {
+  const products = [
+    { id: 1, name: "Laptop", price: 50000 },
+    { id: 2, name: "Phone", price: 20000 }
+  ];
+
+  return (
+    <div>
+      {products.map((product) => (
+        <Card
+          key={product.id}
+          name={product.name}
+          price={product.price}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default App;
+
+Practice Exercise
+
+Create a React app that displays this array:
+
+const employees = [
+  { id: 1, name: "Aman", role: "Frontend Developer" },
+  { id: 2, name: "Rahul", role: "Backend Developer" },
+  { id: 3, name: "Priya", role: "UI/UX Designer" }
+];
+
+Use map() to render each employee in a separate card showing:
+
+Name
+Role
+A "View Profile" button
+
+This exercise will help you practice rendering lists, using key, and passing data into components.
