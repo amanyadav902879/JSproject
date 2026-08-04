@@ -1,0 +1,2854 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebForge — Learn HTML, CSS & JS Through Projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ["Space Grotesk", "sans-serif"],
+              body: ["IBM Plex Sans", "sans-serif"],
+              mono: ["JetBrains Mono", "monospace"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      :root {
+        --bg: #0c0e14;
+        --surface: #151820;
+        --surface2: #1c1f2b;
+        --border: #2a2e3d;
+        --fg: #e4e5ea;
+        --muted: #6c7086;
+        --accent: #f97316;
+        --accent2: #fb923c;
+        --glow: rgba(249, 115, 22, 0.15);
+        --success: #22c55e;
+        --error: #ef4444;
+        --warn: #eab308;
+        --t1: #22c55e;
+        --t2: #3b82f6;
+        --t3: #a855f7;
+        --t4: #ef4444;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: "IBM Plex Sans", sans-serif;
+        overflow: hidden;
+        height: 100vh;
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+      .CodeMirror {
+        background: var(--surface) !important;
+        color: var(--fg) !important;
+        font-family: "JetBrains Mono", monospace !important;
+        font-size: 13px !important;
+        height: 100% !important;
+        border: none !important;
+        line-height: 1.6 !important;
+      }
+      .CodeMirror-gutters {
+        background: var(--surface) !important;
+        border-right: 1px solid var(--border) !important;
+      }
+      .CodeMirror-linenumber {
+        color: #3a3e4f !important;
+      }
+      .CodeMirror-cursor {
+        border-left: 2px solid var(--accent) !important;
+      }
+      .CodeMirror-selected {
+        background: rgba(249, 115, 22, 0.12) !important;
+      }
+      .cm-s-material-darker .cm-keyword {
+        color: #c792ea !important;
+      }
+      .cm-s-material-darker .cm-def {
+        color: #82aaff !important;
+      }
+      .cm-s-material-darker .cm-string {
+        color: #c3e88d !important;
+      }
+      .cm-s-material-darker .cm-number {
+        color: #f78c6c !important;
+      }
+      .cm-s-material-darker .cm-tag {
+        color: #f07178 !important;
+      }
+      .cm-s-material-darker .cm-attribute {
+        color: #ffcb6b !important;
+      }
+      .cm-s-material-darker .cm-comment {
+        color: #546e7a !important;
+        font-style: italic;
+      }
+      .ember {
+        position: fixed;
+        width: 3px;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 50%;
+        pointer-events: none;
+        opacity: 0;
+        z-index: 0;
+        filter: blur(0.5px);
+      }
+      @keyframes ember-rise {
+        0% {
+          transform: translateY(0) translateX(0);
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 0.2;
+        }
+        100% {
+          transform: translateY(-105vh) translateX(var(--d)) scale(0.2);
+          opacity: 0;
+        }
+      }
+      .toast-box {
+        position: fixed;
+        top: 66px;
+        right: 14px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        pointer-events: none;
+      }
+      .toast {
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 500;
+        pointer-events: auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--border);
+        animation:
+          tin 0.3s ease,
+          tout 0.3s ease 2.7s forwards;
+      }
+      .toast-s {
+        background: #0a2e1a;
+        border-color: #166534;
+        color: #4ade80;
+      }
+      .toast-e {
+        background: #2e0a0a;
+        border-color: #7f1d1d;
+        color: #f87171;
+      }
+      .toast-i {
+        background: #1a1508;
+        border-color: #854d0e;
+        color: #fbbf24;
+      }
+      .toast-xp {
+        background: linear-gradient(135deg, #2e1a00, #1a0e00);
+        border-color: #c2410c;
+        color: var(--accent2);
+      }
+      @keyframes tin {
+        from {
+          transform: translateX(120%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+      @keyframes tout {
+        to {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+      }
+      @keyframes glow-pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 8px var(--glow);
+        }
+        50% {
+          box-shadow:
+            0 0 24px var(--glow),
+            0 0 48px rgba(249, 115, 22, 0.04);
+        }
+      }
+      @keyframes check-pop {
+        0% {
+          transform: scale(0);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+      @keyframes confetti-fall {
+        0% {
+          transform: translateY(0) rotate(0);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg);
+          opacity: 0;
+        }
+      }
+      @keyframes fire-f {
+        0%,
+        100% {
+          transform: scaleY(1) scaleX(1);
+        }
+        25% {
+          transform: scaleY(1.1) scaleX(0.95);
+        }
+        50% {
+          transform: scaleY(0.95) scaleX(1.05);
+        }
+        75% {
+          transform: scaleY(1.05) scaleX(0.98);
+        }
+      }
+      .fire-i {
+        animation: fire-f 0.8s ease-in-out infinite;
+        display: inline-block;
+      }
+      .confetti {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        z-index: 99999;
+        pointer-events: none;
+        border-radius: 2px;
+        animation: confetti-fall linear forwards;
+      }
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.72);
+        backdrop-filter: blur(8px);
+        z-index: 1000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-bg.on {
+        display: flex;
+      }
+      .modal-c {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        max-height: 85vh;
+        overflow: hidden;
+        animation: modin 0.25s ease;
+      }
+      @keyframes modin {
+        from {
+          transform: scale(0.95) translateY(8px);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1) translateY(0);
+          opacity: 1;
+        }
+      }
+      .rh {
+        width: 4px;
+        cursor: col-resize;
+        background: var(--border);
+        transition: background 0.2s;
+        flex-shrink: 0;
+      }
+      .rh:hover,
+      .rh.on {
+        background: var(--accent);
+      }
+      .th {
+        cursor: pointer;
+        user-select: none;
+        transition: background 0.15s;
+      }
+      .th:hover {
+        background: var(--surface2);
+      }
+      .tc {
+        transition: transform 0.2s;
+      }
+      .th.col .tc {
+        transform: rotate(-90deg);
+      }
+      .pm {
+        width: 375px !important;
+        max-width: 100%;
+        margin: 0 auto;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .pt {
+        width: 768px !important;
+        max-width: 100%;
+        margin: 0 auto;
+        border: 2px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .pd {
+        width: 100% !important;
+      }
+      .pc {
+        transition: all 0.2s;
+        border: 1px solid var(--border);
+      }
+      .pc:hover {
+        border-color: var(--accent);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      }
+      .ta {
+        color: var(--accent) !important;
+        border-bottom: 2px solid var(--accent);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+        .ember {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="font-body">
+    <div id="embers" aria-hidden="true"></div>
+    <div class="toast-box" id="toasts"></div>
+
+    <!-- Navbar -->
+    <header
+      class="h-14 flex items-center justify-between px-4 border-b relative z-50"
+      style="background: var(--surface); border-color: var(--border)"
+    >
+      <div class="flex items-center gap-3">
+        <button
+          id="sb-tog"
+          class="lg:hidden text-[var(--muted)] hover:text-[var(--fg)]"
+          aria-label="Toggle sidebar"
+        >
+          <i class="fa-solid fa-bars text-lg"></i>
+        </button>
+        <div class="flex items-center gap-2">
+          <div
+            class="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold text-sm"
+            style="background: linear-gradient(135deg, #f97316, #ea580c)"
+          >
+            <i class="fa-solid fa-fire text-xs"></i>
+          </div>
+          <span
+            class="font-display font-bold text-lg tracking-tight hidden sm:block"
+            >WebForge</span
+          >
+        </div>
+        <nav class="hidden md:flex items-center gap-1 ml-3">
+          <button
+            onclick="openCat()"
+            class="px-3 py-1.5 rounded-lg text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] hover:bg-[var(--surface2)] transition"
+          >
+            <i class="fa-solid fa-th-large mr-1.5"></i>Catalog
+          </button>
+          <button
+            onclick="openSkills()"
+            class="px-3 py-1.5 rounded-lg text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] hover:bg-[var(--surface2)] transition"
+          >
+            <i class="fa-solid fa-chart-pie mr-1.5"></i>Skills
+          </button>
+          <button
+            onclick="openBadges()"
+            class="px-3 py-1.5 rounded-lg text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] hover:bg-[var(--surface2)] transition"
+          >
+            <i class="fa-solid fa-award mr-1.5"></i>Badges
+          </button>
+        </nav>
+      </div>
+      <div class="flex items-center gap-4">
+        <div>
+          <span class="text-sm text-[var(--muted)]">XP</span>
+          <span class="font-display font-bold text-[var(--accent2)]" id="xp-v"
+            >0</span
+          >
+        </div>
+        <div
+          class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-sm"
+          style="
+            background: rgba(234, 88, 12, 0.1);
+            border: 1px solid rgba(234, 88, 12, 0.2);
+          "
+        >
+          <span class="fire-i text-orange-400"
+            ><i class="fa-solid fa-fire text-xs"></i
+          ></span>
+          <span class="font-display font-semibold text-orange-300" id="streak-v"
+            >0</span
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="flex" style="height: calc(100vh - 56px)">
+      <!-- Sidebar -->
+      <aside
+        id="sidebar"
+        class="w-60 flex-shrink-0 border-r overflow-y-auto transition-all duration-300"
+        style="background: var(--surface); border-color: var(--border)"
+      >
+        <div class="p-3">
+          <div class="relative">
+            <i
+              class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-xs"
+            ></i
+            ><input
+              id="sb-search"
+              type="text"
+              placeholder="Search projects..."
+              class="w-full pl-8 pr-3 py-2 rounded-lg text-sm border outline-none focus:border-[var(--accent)] transition"
+              style="
+                background: var(--surface2);
+                border-color: var(--border);
+                color: var(--fg);
+              "
+            />
+          </div>
+        </div>
+        <div id="p-list" class="pb-4"></div>
+      </aside>
+
+      <!-- Editor Area -->
+      <main class="flex-1 flex flex-col min-w-0">
+        <div class="flex-1 flex min-h-0" id="epc">
+          <!-- Editor -->
+          <div class="flex flex-col min-w-0" id="ep" style="width: 50%">
+            <div
+              class="flex items-center border-b px-2"
+              style="background: var(--surface2); border-color: var(--border)"
+            >
+              <button
+                class="et ta px-4 py-2.5 text-sm font-medium font-mono transition"
+                data-t="html"
+                onclick="swTab('html')"
+              >
+                <i class="fa-brands fa-html5 mr-1.5 text-orange-400"></i>HTML
+              </button>
+              <button
+                class="et px-4 py-2.5 text-sm font-medium font-mono text-[var(--muted)] hover:text-[var(--fg)] transition"
+                data-t="css"
+                onclick="swTab('css')"
+              >
+                <i class="fa-brands fa-css3-alt mr-1.5 text-blue-400"></i>CSS
+              </button>
+              <button
+                class="et px-4 py-2.5 text-sm font-medium font-mono text-[var(--muted)] hover:text-[var(--fg)] transition"
+                data-t="js"
+                onclick="swTab('js')"
+              >
+                <i class="fa-brands fa-js mr-1.5 text-yellow-400"></i>JS
+              </button>
+              <div class="flex-1"></div>
+              <button
+                onclick="resetCode()"
+                class="px-2 py-1.5 text-xs text-[var(--muted)] hover:text-[var(--fg)] transition"
+                title="Reset"
+              >
+                <i class="fa-solid fa-rotate-left mr-1"></i>Reset
+              </button>
+            </div>
+            <div class="flex-1 relative min-h-0">
+              <div id="e-html" class="absolute inset-0"></div>
+              <div id="e-css" class="absolute inset-0 hidden"></div>
+              <div id="e-js" class="absolute inset-0 hidden"></div>
+            </div>
+          </div>
+          <div class="rh" id="rhandle"></div>
+          <!-- Preview -->
+          <div class="flex flex-col min-w-0 flex-1" id="pp">
+            <div
+              class="flex items-center border-b px-3 gap-2"
+              style="background: var(--surface2); border-color: var(--border)"
+            >
+              <span class="text-sm font-medium text-[var(--muted)]"
+                >Preview</span
+              >
+              <div class="flex-1"></div>
+              <div
+                class="flex items-center gap-0.5 rounded-lg p-0.5"
+                style="background: var(--surface)"
+              >
+                <button
+                  onclick="setPM('mobile')"
+                  class="pmb p-1.5 rounded text-[var(--muted)] hover:text-[var(--fg)] transition text-xs"
+                  data-m="mobile"
+                >
+                  <i class="fa-solid fa-mobile-screen"></i>
+                </button>
+                <button
+                  onclick="setPM('tablet')"
+                  class="pmb p-1.5 rounded text-[var(--muted)] hover:text-[var(--fg)] transition text-xs"
+                  data-m="tablet"
+                >
+                  <i class="fa-solid fa-tablet-screen-button"></i>
+                </button>
+                <button
+                  onclick="setPM('desktop')"
+                  class="pmb p-1.5 rounded text-[var(--accent)] transition text-xs"
+                  data-m="desktop"
+                >
+                  <i class="fa-solid fa-desktop"></i>
+                </button>
+              </div>
+              <button
+                onclick="refreshPV()"
+                class="p-1.5 rounded text-[var(--muted)] hover:text-[var(--fg)] transition text-xs"
+              >
+                <i class="fa-solid fa-arrows-rotate"></i>
+              </button>
+            </div>
+            <div
+              class="flex-1 overflow-hidden p-2"
+              style="background: var(--bg)"
+            >
+              <div
+                id="pw"
+                class="w-full h-full pd rounded-lg overflow-hidden border"
+                style="border-color: var(--border); background: #fff"
+              >
+                <iframe
+                  id="pframe"
+                  sandbox="allow-scripts allow-same-origin"
+                  class="w-full h-full border-0"
+                  title="Live preview"
+                ></iframe>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Bottom bar -->
+        <div
+          id="bbar"
+          class="border-t px-4 py-2 flex items-center gap-3 flex-wrap"
+          style="
+            background: var(--surface);
+            border-color: var(--border);
+            min-height: 50px;
+          "
+        >
+          <div
+            id="checks-c"
+            class="flex items-center gap-2 flex-1 min-w-0 overflow-x-auto"
+          ></div>
+          <div class="flex items-center gap-2 flex-shrink-0">
+            <button
+              onclick="showHint()"
+              class="px-3 py-1.5 rounded-lg text-sm font-medium border transition hover:bg-[var(--surface2)]"
+              style="border-color: var(--border); color: var(--warn)"
+            >
+              <i class="fa-solid fa-lightbulb mr-1"></i>Hint
+            </button>
+            <button
+              onclick="runChecks()"
+              class="px-3 py-1.5 rounded-lg text-sm font-medium border transition hover:bg-[var(--surface2)]"
+              style="border-color: var(--border); color: var(--fg)"
+            >
+              <i class="fa-solid fa-check-double mr-1"></i>Check
+            </button>
+            <button
+              onclick="submitProj()"
+              class="px-4 py-1.5 rounded-lg text-sm font-bold text-white transition hover:opacity-90"
+              style="background: linear-gradient(135deg, #f97316, #ea580c)"
+            >
+              <i class="fa-solid fa-rocket mr-1"></i>Submit
+            </button>
+            <button
+              onclick="revealSol()"
+              id="sol-btn"
+              class="px-3 py-1.5 rounded-lg text-sm font-medium border transition hover:bg-[var(--surface2)]"
+              style="border-color: var(--border); color: var(--muted)"
+            >
+              <i class="fa-solid fa-eye mr-1"></i>Solution
+            </button>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Welcome -->
+    <div
+      id="welcome"
+      class="fixed inset-0 z-40 flex items-center justify-center"
+      style="background: var(--bg)"
+    >
+      <div class="text-center max-w-lg px-6">
+        <div
+          class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+          style="
+            background: linear-gradient(135deg, #f97316, #ea580c);
+            box-shadow: 0 0 60px rgba(249, 115, 22, 0.3);
+          "
+        >
+          <i class="fa-solid fa-fire text-white text-3xl"></i>
+        </div>
+        <h1
+          class="font-display text-4xl sm:text-5xl font-bold mb-3 tracking-tight"
+          style="
+            background: linear-gradient(135deg, #f97316, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          "
+        >
+          WebForge
+        </h1>
+        <p class="text-[var(--muted)] text-lg mb-8 leading-relaxed">
+          Learn HTML, CSS & JavaScript by building
+          <span class="text-[var(--fg)] font-medium">55 real projects</span>. No
+          tutorials, no slides — just code.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+          <button
+            onclick="openCat()"
+            class="px-6 py-3 rounded-xl font-display font-semibold text-white transition hover:scale-[1.02]"
+            style="
+              background: linear-gradient(135deg, #f97316, #ea580c);
+              box-shadow: 0 4px 24px rgba(249, 115, 22, 0.3);
+            "
+          >
+            Browse Projects
+          </button>
+          <button
+            onclick="
+              loadProj(1);
+              document.getElementById('welcome').style.display = 'none';
+            "
+            class="px-6 py-3 rounded-xl font-display font-semibold border transition hover:bg-[var(--surface2)]"
+            style="border-color: var(--border); color: var(--fg)"
+          >
+            Start with Project 1
+          </button>
+        </div>
+        <div
+          class="mt-10 flex justify-center gap-8 text-sm text-[var(--muted)]"
+        >
+          <div>
+            <span class="text-[var(--fg)] font-bold text-lg block">55</span
+            >Projects
+          </div>
+          <div>
+            <span class="text-[var(--fg)] font-bold text-lg block">4</span>Tiers
+          </div>
+          <div>
+            <span class="text-[var(--fg)] font-bold text-lg block">20+</span
+            >Concepts
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalog Modal -->
+    <div class="modal-bg" id="cat-m">
+      <div
+        class="modal-c w-[95vw] max-w-6xl flex flex-col"
+        style="max-height: 85vh"
+      >
+        <div
+          class="p-5 border-b flex items-center justify-between flex-shrink-0"
+          style="border-color: var(--border)"
+        >
+          <h2 class="font-display text-xl font-bold">Project Catalog</h2>
+          <button
+            onclick="closeM('cat-m')"
+            class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface2)] text-[var(--muted)]"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div
+          class="p-4 border-b flex flex-col sm:flex-row gap-3 flex-shrink-0"
+          style="border-color: var(--border)"
+        >
+          <div class="relative flex-1">
+            <i
+              class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)] text-sm"
+            ></i
+            ><input
+              id="cat-search"
+              type="text"
+              placeholder="Search by name or tag..."
+              class="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm border outline-none focus:border-[var(--accent)] transition"
+              style="
+                background: var(--surface2);
+                border-color: var(--border);
+                color: var(--fg);
+              "
+              oninput="filterCat()"
+            />
+          </div>
+          <div class="flex gap-1.5 flex-wrap" id="cat-tiers"></div>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4">
+          <div
+            id="cat-grid"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"
+          ></div>
+          <p
+            id="cat-empty"
+            class="hidden text-center text-[var(--muted)] py-12"
+          >
+            No projects match your search.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Skills Modal -->
+    <div class="modal-bg" id="skills-m">
+      <div class="modal-c w-[90vw] max-w-2xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-display text-xl font-bold">Skill Radar</h2>
+          <button
+            onclick="closeM('skills-m')"
+            class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface2)] text-[var(--muted)]"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="flex justify-center mb-4" style="max-height: 320px">
+          <canvas id="radar"></canvas>
+        </div>
+        <div id="skill-det" class="grid grid-cols-2 gap-2 text-sm"></div>
+      </div>
+    </div>
+
+    <!-- Badges Modal -->
+    <div class="modal-bg" id="badges-m">
+      <div class="modal-c w-[90vw] max-w-3xl p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="font-display text-xl font-bold">Badges</h2>
+          <button
+            onclick="closeM('badges-m')"
+            class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface2)] text-[var(--muted)]"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div id="badges-g" class="grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+
+    <!-- Hint Modal -->
+    <div class="modal-bg" id="hint-m">
+      <div class="modal-c w-[90vw] max-w-md p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display text-lg font-bold">
+            <i class="fa-solid fa-lightbulb text-[var(--warn)] mr-2"></i>Hint
+          </h2>
+          <button
+            onclick="closeM('hint-m')"
+            class="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-[var(--surface2)] text-[var(--muted)]"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <p id="hint-txt" class="text-[var(--fg)] leading-relaxed"></p>
+        <p class="text-xs text-[var(--muted)] mt-3">
+          <i class="fa-solid fa-info-circle mr-1"></i>Each hint used costs 2 XP
+          from this project's reward.
+        </p>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/xml/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      /* ===== PROJECT DATA ===== */
+      const P = [
+        // Tier 1
+        {
+          id: 1,
+          n: "Personal Bio Card",
+          t: 1,
+          tg: ["html-basics", "flexbox", "semantic-html"],
+          d: "Centered bio card with photo, name, title, bio, and social icons.",
+          xp: 10,
+          s: {
+            html: '<article class="card">\n  <!-- Add: img, h1, p (bio), footer with links -->\n</article>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#1a1a2e;font-family:sans-serif;color:#eee}\n.card{background:#16213e;border-radius:16px;padding:2rem;text-align:center;width:320px}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: "article", m: "Article element" },
+            { s: "img", m: "Profile image" },
+            { s: "h1", m: "Heading" },
+            { s: "footer", m: "Footer" },
+          ],
+          h: [
+            "Start with img (circular), h1 (name), p (bio), footer (links)",
+            "Make image circular: border-radius:50%, width:120px",
+            "Add hover effect: transform:scale(1.03) on card",
+          ],
+        },
+        {
+          id: 2,
+          n: "Simple Resume Page",
+          t: 1,
+          tg: ["html-basics", "semantic-html", "page-layout"],
+          d: "Clean resume: experience, education, skills sections.",
+          xp: 10,
+          s: {
+            html: '<main class="resume">\n  <header><!-- Name, title --></header>\n  <section class="exp"><h2>Experience</h2></section>\n  <section class="edu"><h2>Education</h2></section>\n  <section class="skills"><h2>Skills</h2></section>\n</main>',
+            css: "body{margin:0;font-family:Georgia,serif;background:#f5f5f0;color:#222}\n.resume{max-width:800px;margin:2rem auto;padding:3rem;background:#fff}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: "header", m: "Header" },
+            { s: "section.exp", m: "Experience" },
+            { s: "section.edu", m: "Education" },
+            { s: "section.skills", m: "Skills" },
+          ],
+          h: [
+            "Use semantic sections with descriptive classes",
+            "Style h2 with bottom border for section dividers",
+            "Add @media print for clean printing",
+          ],
+        },
+        {
+          id: 3,
+          n: "Recipe Card Layout",
+          t: 1,
+          tg: ["html-basics", "css-grid", "card-design"],
+          d: "Recipe card with image, title, ingredients list, and steps.",
+          xp: 10,
+          s: {
+            html: '<div class="recipe">\n  <img src="https://picsum.photos/seed/recipe/600/300" alt="Dish">\n  <div class="body">\n    <h2>Recipe Title</h2>\n    <h3>Ingredients</h3><ul><li>Item 1</li><li>Item 2</li></ul>\n    <h3>Steps</h3><ol><li>Step one</li><li>Step two</li></ol>\n  </div>\n</div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;background:#fdf6ec;font-family:sans-serif}\n.recipe{width:420px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.08)}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: "img", m: "Image" },
+            { s: "h2", m: "Title" },
+            { s: "ul", m: "Ingredients" },
+            { s: "ol", m: "Steps" },
+          ],
+          h: [
+            "Use overflow:hidden on card for rounded image corners",
+            "Style li with custom padding and subtle borders",
+            "Pair serif title with sans-serif body",
+          ],
+        },
+        {
+          id: 4,
+          n: "Restaurant Menu",
+          t: 1,
+          tg: ["flexbox", "typography", "responsive"],
+          d: "Styled menu with categories, dish names, descriptions, and prices.",
+          xp: 10,
+          s: {
+            html: '<nav class="menu-nav">\n  <a href="#starters" class="active">Starters</a>\n  <a href="#mains">Mains</a>\n  <a href="#desserts">Desserts</a>\n</nav>\n<main><section id="starters"><h2>Starters</h2></section></main>',
+            css: "body{margin:0;font-family:serif;background:#1a1a1a;color:#f0e6d3}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: "nav", m: "Navigation" },
+            { s: "section", m: "Section" },
+            { s: "h2", m: "Heading" },
+          ],
+          h: [
+            "Use flexbox justify-between for name-price dot leaders",
+            "Style active nav link with underline accent",
+            "Keep hierarchical font sizes",
+          ],
+        },
+        {
+          id: 5,
+          n: "Pricing Table",
+          t: 1,
+          tg: ["flexbox", "card-design", "responsive"],
+          d: "3-column pricing: Basic, Pro (highlighted), Enterprise.",
+          xp: 10,
+          s: {
+            html: '<div class="pricing">\n  <div class="plan"><h3>Basic</h3><div class="price">$9<span>/mo</span></div><ul><li>Feature 1</li></ul><button>Get Started</button></div>\n  <div class="plan featured"><h3>Pro</h3><div class="price">$29<span>/mo</span></div><ul><li>All Basic + more</li></ul><button>Get Started</button></div>\n  <div class="plan"><h3>Enterprise</h3><div class="price">$99<span>/mo</span></div><ul><li>Everything included</li></ul><button>Contact Us</button></div>\n</div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.pricing{display:flex;gap:1.5rem;flex-wrap:wrap;justify-content:center}\n.plan{background:#1e293b;border-radius:12px;padding:2rem;width:260px;border:1px solid #334155}\n.plan.featured{border-color:#f97316;transform:scale(1.05)}\n.price{font-size:2.5rem;font-weight:700;margin:1rem 0}\n.price span{font-size:1rem;color:#94a3b8}\nul{list-style:none;padding:0;margin:1.5rem 0}\nli{padding:.4rem 0;border-bottom:1px solid #334155}\nbutton{width:100%;padding:.75rem;border:none;border-radius:8px;font-weight:600;cursor:pointer;background:#334155;color:#e2e8f0}\n.plan.featured button{background:#f97316;color:#fff}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: ".plan", m: "Plan cards" },
+            { s: ".featured", m: "Featured plan" },
+          ],
+          h: [
+            "Transform scale(1.05) and colored border for featured",
+            'Add "Most Popular" badge above featured plan',
+            "flex-wrap for responsive stacking",
+          ],
+        },
+        {
+          id: 6,
+          n: "Photo Gallery (Grid)",
+          t: 1,
+          tg: ["css-grid", "images", "hover-effects"],
+          d: "Responsive gallery using CSS Grid with hover zoom.",
+          xp: 10,
+          s: {
+            html: '<div class="gallery">\n  <div class="gi"><img src="https://picsum.photos/seed/g1/400/400" alt="Photo"></div>\n  <div class="gi"><img src="https://picsum.photos/seed/g2/400/300" alt="Photo"></div>\n  <div class="gi"><img src="https://picsum.photos/seed/g3/400/500" alt="Photo"></div>\n  <div class="gi"><img src="https://picsum.photos/seed/g4/400/400" alt="Photo"></div>\n  <div class="gi"><img src="https://picsum.photos/seed/g5/400/300" alt="Photo"></div>\n  <div class="gi"><img src="https://picsum.photos/seed/g6/400/400" alt="Photo"></div>\n</div>',
+            css: "body{margin:0;padding:2rem;background:#111;font-family:sans-serif}\n.gallery{display:grid;gap:8px}\n.gi{overflow:hidden;border-radius:8px}\n.gi img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: ".gallery", m: "Gallery" },
+            { s: ".gi", m: "Gallery items" },
+          ],
+          h: [
+            "grid-template-columns:repeat(auto-fill,minmax(250px,1fr))",
+            "Hover: scale(1.1) on img with overflow:hidden",
+            "Try grid-column:span 2 for variety",
+          ],
+        },
+        {
+          id: 7,
+          n: "CSS-Only Navbar",
+          t: 1,
+          tg: ["css-techniques", "responsive", "checkbox-hack"],
+          d: "Responsive hamburger nav using only CSS checkbox hack.",
+          xp: 10,
+          s: {
+            html: '<nav class="navbar">\n  <div class="logo">Brand</div>\n  <input type="checkbox" id="nt" class="nt">\n  <label for="nt" class="ham"><span></span><span></span><span></span></label>\n  <ul class="nl"><li><a href="#">Home</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li></ul>\n</nav>\n<main><h1>Content</h1><p>Resize to see navbar collapse.</p></main>',
+            css: "body{margin:0;font-family:sans-serif;background:#1e293b;color:#e2e8f0}\n.navbar{display:flex;align-items:center;padding:1rem 2rem;background:#0f172a;position:sticky;top:0}\n.logo{font-weight:700;color:#f97316}\n.nt{display:none}\n.nl{display:flex;list-style:none;gap:1.5rem;margin:0 0 0 auto;padding:0}\n.ham{display:none;flex-direction:column;gap:4px;cursor:pointer;margin-left:auto}\n.ham span{display:block;width:24px;height:2px;background:#e2e8f0;transition:.3s}\n@media(max-width:768px){.ham{display:flex}.nl{display:none;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:#0f172a;padding:1rem}.nt:checked~.nl{display:flex}}",
+            js: "// Pure CSS — no JavaScript!",
+          },
+          c: [
+            { s: 'input[type="checkbox"]', m: "Checkbox toggle" },
+            { s: ".ham", m: "Hamburger" },
+            { s: ".nl", m: "Nav links" },
+          ],
+          h: [
+            "Key: .nt:checked ~ .nl { display:flex }",
+            "Hide checkbox but keep in DOM for :checked",
+            "Transform spans into X when checked",
+          ],
+        },
+        {
+          id: 8,
+          n: "Product Landing Page",
+          t: 1,
+          tg: ["page-layout", "hero-design", "sections"],
+          d: "Full landing: hero, features, testimonials, footer.",
+          xp: 10,
+          s: {
+            html: '<header class="hero"><h1>Product Name</h1><p>Tagline here.</p><button>Get Started</button></header>\n<section class="features"><h2>Features</h2><div class="fg"><div class="fc"><h3>Fast</h3><p>Desc</p></div><div class="fc"><h3>Secure</h3><p>Desc</p></div><div class="fc"><h3>Easy</h3><p>Desc</p></div></div></section>\n<footer>&copy; 2026</footer>',
+            css: "body{margin:0;font-family:sans-serif;color:#1e293b}\n.hero{text-align:center;padding:6rem 2rem;background:linear-gradient(135deg,#0f172a,#1e3a5f);color:#fff}\n.hero h1{font-size:3rem;margin-bottom:1rem}\n.hero button{padding:.8rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-size:1.1rem;cursor:pointer}",
+            js: "// No JS needed!",
+          },
+          c: [
+            { s: ".hero", m: "Hero" },
+            { s: ".features", m: "Features" },
+            { s: "footer", m: "Footer" },
+          ],
+          h: [
+            "Large padding-top (6-8rem) for hero breathing room",
+            "Feature cards with subtle border and hover shadow",
+            "Gradient or pattern on hero for interest",
+          ],
+        },
+        {
+          id: 9,
+          n: "CSS-Only Accordion",
+          t: 1,
+          tg: ["css-techniques", "checkbox-hack", "transitions"],
+          d: "Collapsible accordion using checkbox hack — no JS.",
+          xp: 10,
+          s: {
+            html: '<div class="acc">\n  <div class="ai"><input type="checkbox" id="a1" class="at"><label for="a1" class="atitle">What is WebForge?</label><div class="ac"><p>A project-based learning platform.</p></div></div>\n  <div class="ai"><input type="checkbox" id="a2" class="at"><label for="a2" class="atitle">Is it free?</label><div class="ac"><p>Yes, the core is free.</p></div></div>\n  <div class="ai"><input type="checkbox" id="a3" class="at"><label for="a3" class="atitle">Prior experience?</label><div class="ac"><p>No! Starts from basics.</p></div></div>\n</div>',
+            css: "body{display:flex;justify-content:center;padding:3rem;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.acc{width:500px;max-width:100%}\n.at{display:none}\n.atitle{display:block;padding:1rem;background:#1e293b;border:1px solid #334155;cursor:pointer;margin-top:-1px;transition:.3s}\n.ac{max-height:0;overflow:hidden;transition:max-height .3s;padding:0 1rem;background:#1e293b}\n.ac p{padding:1rem 0;margin:0}",
+            js: "// Pure CSS!",
+          },
+          c: [
+            { s: ".acc", m: "Accordion" },
+            { s: "label", m: "Labels" },
+          ],
+          h: [
+            ".at:checked ~ .ac { max-height:200px }",
+            "Transition on max-height for smooth animation",
+            "Add rotate transform to arrow on checked",
+          ],
+        },
+        {
+          id: 10,
+          n: "Card Hover Effects",
+          t: 1,
+          tg: ["transitions", "transforms", "hover-effects"],
+          d: "Cards with creative hovers: lift, glow, border-draw.",
+          xp: 10,
+          s: {
+            html: '<div class="cards">\n  <div class="hc lift"><h3>Lift</h3><p>Hover me</p></div>\n  <div class="hc glow"><h3>Glow</h3><p>Hover me</p></div>\n  <div class="hc border-draw"><h3>Border</h3><p>Hover me</p></div>\n</div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a;font-family:sans-serif;color:#fff}\n.cards{display:flex;gap:2rem;flex-wrap:wrap;justify-content:center;padding:2rem}\n.hc{width:200px;height:260px;background:#1a1a1a;border:1px solid #333;border-radius:12px;display:flex;flex-direction:column;justify-content:center;align-items:center;transition:all .4s}",
+            js: "// Pure CSS!",
+          },
+          c: [{ s: ".hc", m: "Hover cards" }],
+          h: [
+            "Lift: translateY(-10px) + larger box-shadow",
+            "Glow: colored box-shadow with spread",
+            "Border-draw: pseudo-element gradient border scaling in",
+          ],
+        },
+        {
+          id: 11,
+          n: "Styled Contact Form",
+          t: 1,
+          tg: ["forms", "input-styling", "layout"],
+          d: "Contact form with floating labels and custom focus states.",
+          xp: 10,
+          s: {
+            html: '<form class="cf">\n  <div class="fg"><input type="text" id="name" required><label for="name">Your Name</label></div>\n  <div class="fg"><input type="email" id="email" required><label for="email">Email</label></div>\n  <div class="fg"><textarea id="msg" rows="4" required></textarea><label for="msg">Message</label></div>\n  <button type="submit">Send</button>\n</form>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#1a1a2e;font-family:sans-serif}\n.cf{width:400px;max-width:90vw}\n.fg{position:relative;margin-bottom:1.5rem}\n.fg input,.fg textarea{width:100%;padding:1rem;background:#16213e;border:2px solid #334155;border-radius:8px;color:#e2e8f0;font-size:1rem;outline:none;transition:border .3s}\n.fg label{position:absolute;left:1rem;top:1rem;color:#64748b;transition:all .3s;pointer-events:none}",
+            js: "// No JS needed for styling!",
+          },
+          c: [
+            { s: "form", m: "Form" },
+            { s: 'input[type="text"]', m: "Text input" },
+            { s: "textarea", m: "Textarea" },
+            { s: 'button[type="submit"]', m: "Submit" },
+          ],
+          h: [
+            "Float label: input:focus ~ label { top:-.5rem; font-size:.75rem }",
+            "border-color:#f97316 on focus",
+            "Gradient submit button with hover scale",
+          ],
+        },
+        {
+          id: 12,
+          n: "404 Error Page",
+          t: 1,
+          tg: ["creativity", "typography", "animation"],
+          d: "Creative, visually striking 404 error page.",
+          xp: 10,
+          s: {
+            html: '<div class="ep"><h1 class="ec">404</h1><p class="em">Page not found</p><a href="#" class="bb">Go Home</a></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a;font-family:sans-serif;color:#fff}\n.ep{text-align:center}\n.ec{font-size:8rem;font-weight:900;margin:0}\n.em{font-size:1.5rem;color:#666;margin:1rem 0 2rem}",
+            js: "// Optional: fun JS interactions",
+          },
+          c: [
+            { s: "h1", m: "Error code" },
+            { s: "a", m: "Back link" },
+          ],
+          h: [
+            "Huge 404 with gradient or glitch effect",
+            "CSS animation: subtle float or glitch",
+            "Pure CSS illustration with shapes",
+          ],
+        },
+        // Tier 2
+        {
+          id: 13,
+          n: "Counter App",
+          t: 2,
+          tg: ["dom-manipulation", "events", "state"],
+          d: "Counter with +, -, reset buttons and live display.",
+          xp: 15,
+          s: {
+            html: '<div class="ca"><h1>Counter</h1><div class="cd" id="disp">0</div><div class="btns"><button id="dec">-</button><button id="rst">Reset</button><button id="inc">+</button></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ca{text-align:center}\n.cd{font-size:5rem;font-weight:900;margin:1rem 0;color:#f97316}\n.btns{display:flex;gap:1rem;justify-content:center}\nbutton{width:60px;height:60px;border-radius:50%;border:2px solid #334155;background:#1e293b;color:#e2e8f0;font-size:1.5rem;cursor:pointer}",
+            js: 'let count = 0;\nconst d = document.getElementById("disp");\n// Add click listeners to inc, dec, rst\n// Update d.textContent = count',
+          },
+          c: [
+            { s: "#disp", m: "Display" },
+            { s: "#inc", m: "Increment" },
+            { s: "#dec", m: "Decrement" },
+            { s: "#rst", m: "Reset" },
+          ],
+          h: [
+            'getElementById for each button, addEventListener("click")',
+            "Single count variable, update display on each click",
+            "Reset sets count=0 and updates display",
+          ],
+        },
+        {
+          id: 14,
+          n: "To-Do List",
+          t: 2,
+          tg: ["dom-manipulation", "events", "arrays", "crud"],
+          d: "Add tasks, mark complete, delete. Classic CRUD.",
+          xp: 15,
+          s: {
+            html: '<div class="ta-app"><h1>My Tasks</h1><form id="tf"><input id="ti" placeholder="Add a task..." required><button type="submit">Add</button></form><ul id="tl"></ul><p id="em" class="empty">No tasks yet.</p></div>',
+            css: "body{display:flex;justify-content:center;padding:3rem 1rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ta-app{width:420px;max-width:100%}\n#tf{display:flex;gap:.5rem;margin-bottom:1.5rem}\n#ti{flex:1;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\n#tf button{padding:.75rem 1.25rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\nul{list-style:none;padding:0}\nli{display:flex;align-items:center;gap:.75rem;padding:.75rem;background:#1e293b;border-radius:8px;margin-bottom:.5rem;border:1px solid #334155}\n.empty{text-align:center;color:#64748b}",
+            js: 'const form=document.getElementById("tf"),input=document.getElementById("ti"),list=document.getElementById("tl");\n// Submit: create li with checkbox, span, delete button\n// Toggle: add/remove line-through class\n// Delete: removeChild',
+          },
+          c: [
+            { s: "#tf", m: "Form" },
+            { s: "#tl", m: "Task list" },
+          ],
+          h: [
+            'form.addEventListener("submit",e=>{e.preventDefault();...})',
+            "createElement for li, checkbox, span, delete button",
+            'Toggle: li.classList.toggle("done") with CSS line-through',
+          ],
+        },
+        {
+          id: 15,
+          n: "Calculator",
+          t: 2,
+          tg: ["dom-manipulation", "events", "logic"],
+          d: "Basic arithmetic calculator with display and buttons.",
+          xp: 15,
+          s: {
+            html: '<div class="calc"><div class="disp" id="disp">0</div><div class="btns">\n<button class="cl" data-a="clear">C</button><button class="op" data-a="%">%</button><button class="op" data-a="/">/</button>\n<button data-v="7">7</button><button data-v="8">8</button><button data-v="9">9</button><button class="op" data-a="*">*</button>\n<button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button><button class="op" data-a="-">-</button>\n<button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button class="op" data-a="+">+</button>\n<button data-v="0" style="grid-column:span 2">0</button><button data-v=".">.</button><button class="eq" data-a="=">=</button>\n</div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a;font-family:sans-serif}\n.calc{width:300px;background:#1a1a1a;border-radius:16px;padding:1.5rem;box-shadow:0 20px 60px rgba(0,0,0,.5)}\n.disp{background:#111;border-radius:12px;padding:1.25rem;text-align:right;font-size:2.5rem;color:#fff;margin-bottom:1rem;min-height:65px;word-break:break-all}\n.btns{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}\nbutton{padding:1rem;border:none;border-radius:10px;font-size:1.2rem;background:#2a2a2a;color:#fff;cursor:pointer}\n.op{background:#333;color:#f97316}.eq{background:#f97316;color:#fff}.cl{background:#dc2626;color:#fff}",
+            js: 'let expr="";\nconst disp=document.getElementById("disp");\n// Event delegation on .btns\n// data-v: append to expr\n// data-a: clear, operators, or = (use Function for eval)\n// Update disp.textContent',
+          },
+          c: [
+            { s: "#disp", m: "Display" },
+            { s: ".btns", m: "Buttons" },
+          ],
+          h: [
+            "Event delegation on .btns container — check e.target.dataset",
+            'new Function("return "+expr)() instead of eval()',
+            "Handle division by zero and empty expressions",
+          ],
+        },
+        {
+          id: 16,
+          n: "Digital Clock",
+          t: 2,
+          tg: ["setInterval", "date-api", "dom-manipulation"],
+          d: "Live-updating clock with hours, minutes, seconds.",
+          xp: 15,
+          s: {
+            html: '<div class="cc"><div class="clk" id="clk">00:00:00</div><div class="dt" id="dt"></div></div>',
+            css: 'body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a;font-family:"Courier New",monospace}\n.clk{font-size:5rem;color:#f97316;text-shadow:0 0 30px rgba(249,115,22,.3)}\n.dt{text-align:center;color:#666;font-size:1.2rem;margin-top:1rem}',
+            js: 'const ck=document.getElementById("clk"),dt=document.getElementById("dt");\nfunction update(){\n  const n=new Date();\n  ck.textContent=[n.getHours(),n.getMinutes(),n.getSeconds()].map(v=>String(v).padStart(2,"0")).join(":");\n  dt.textContent=n.toLocaleDateString("en-US",{weekday:"long",year:"numeric",month:"long",day:"numeric"});\n}\nupdate();\nsetInterval(update,1000);',
+          },
+          c: [
+            { s: "#clk", m: "Clock" },
+            { s: "#dt", m: "Date" },
+          ],
+          h: [
+            "new Date().getHours/Minutes/Seconds()",
+            'String(num).padStart(2,"0") for leading zeros',
+            "setInterval(update, 1000) keeps it ticking",
+          ],
+        },
+        {
+          id: 17,
+          n: "Random Quote Generator",
+          t: 2,
+          tg: ["arrays", "dom-manipulation", "events"],
+          d: "Display random quotes from an array with a button.",
+          xp: 15,
+          s: {
+            html: '<div class="qb"><blockquote id="qt">"Click for a quote."</blockquote><p id="qa">— WebForge</p><button id="nq">New Quote</button></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#1a1a2e;font-family:Georgia,serif;color:#e2e8f0}\n.qb{text-align:center;max-width:500px;padding:3rem;background:#16213e;border-radius:16px;border-left:4px solid #f97316}\nblockquote{font-size:1.5rem;font-style:italic;margin:0 0 1rem}\n#a{color:#f97316;margin-bottom:2rem}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;cursor:pointer}",
+            js: 'const q=[{t:"The only way to learn a new language is by writing programs in it.",a:"Dennis Ritchie"},{t:"Talk is cheap. Show me the code.",a:"Linus Torvalds"},{t:"Code is like humor. When you have to explain it, it\'s bad.",a:"Cory House"},{t:"First, solve the problem. Then, write the code.",a:"John Johnson"},{t:"Simplicity is the soul of efficiency.",a:"Austin Freeman"}];\n// Pick random, update qt and qa',
+          },
+          c: [
+            { s: "#qt", m: "Quote" },
+            { s: "#nq", m: "Button" },
+          ],
+          h: [
+            "Math.floor(Math.random()*q.length) for random index",
+            "Avoid same quote twice — check and re-roll",
+            "Add fade transition when changing",
+          ],
+        },
+        {
+          id: 18,
+          n: "Color Flipper",
+          t: 2,
+          tg: ["dom-manipulation", "events", "random"],
+          d: "Click to change background to random color, show hex code.",
+          xp: 15,
+          s: {
+            html: '<div class="cf"><h1>Color Flipper</h1><p id="cc">#F97316</p><button id="fb">Flip Color</button></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#F97316;font-family:sans-serif;color:#fff;transition:background .4s}\n.cf{text-align:center}\n#cc{font-family:monospace;font-size:2rem;margin:1rem 0 2rem}\nbutton{padding:.75rem 2rem;border:2px solid #fff;border-radius:8px;background:transparent;color:#fff;font-size:1rem;cursor:pointer}",
+            js: "// Generate random hex, apply to body, show in #cc",
+          },
+          c: [
+            { s: "#cc", m: "Color code" },
+            { s: "#fb", m: "Button" },
+          ],
+          h: [
+            '"#"+Math.floor(Math.random()*16777215).toString(16).padStart(6,"0")',
+            "document.body.style.backgroundColor = color",
+            "Transition on body for smooth change",
+          ],
+        },
+        {
+          id: 19,
+          n: "BMI Calculator",
+          t: 2,
+          tg: ["forms", "math", "dom-manipulation"],
+          d: "Input height/weight, calculate BMI, show category.",
+          xp: 15,
+          s: {
+            html: '<div class="bmi"><h1>BMI Calculator</h1><label>Height (cm)</label><input id="h" type="number" placeholder="170"><label>Weight (kg)</label><input id="w" type="number" placeholder="70"><button id="calc">Calculate</button><div id="r"></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.bmi{text-align:center;width:350px}\ninput{display:block;width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:1rem;outline:none;margin:.5rem 0 1rem}\ninput:focus{border-color:#f97316}\nbutton{width:100%;padding:.75rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n#r{margin-top:1.5rem;font-size:1.25rem;min-height:60px}",
+            js: "// BMI = weight / (height/100)^2\n// <18.5 Underweight, 18.5-24.9 Normal, 25-29.9 Overweight, >=30 Obese",
+          },
+          c: [
+            { s: "#h", m: "Height" },
+            { s: "#w", m: "Weight" },
+            { s: "#r", m: "Result" },
+          ],
+          h: [
+            "Convert cm to m: height/100",
+            "if/else if chain for categories",
+            "Color-code: green normal, yellow overweight, red obese",
+          ],
+        },
+        {
+          id: 20,
+          n: "Temperature Converter",
+          t: 2,
+          tg: ["forms", "math", "events"],
+          d: "Convert Celsius to Fahrenheit live as you type.",
+          xp: 15,
+          s: {
+            html: '<div class="tc"><h1>Temperature Converter</h1><label>Celsius</label><input id="c" type="number" placeholder="0"><label>Fahrenheit</label><input id="f" type="number" placeholder="32"></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.tc{text-align:center;width:350px}\ninput{display:block;width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:1.2rem;text-align:center;outline:none;margin:.5rem 0 1.5rem}\ninput:focus{border-color:#f97316}",
+            js: '// F = C*9/5+32, C = (F-32)*5/9\n// Use "input" event for live conversion',
+          },
+          c: [
+            { s: "#c", m: "Celsius" },
+            { s: "#f", m: "Fahrenheit" },
+          ],
+          h: [
+            '"input" event (not "change") for live updates',
+            "Handle empty input gracefully",
+            "Prevent infinite loop: only update other field if values differ",
+          ],
+        },
+        {
+          id: 21,
+          n: "Tip Calculator",
+          t: 2,
+          tg: ["forms", "math", "dom-manipulation"],
+          d: "Bill amount + tip %, calculate total and per-person split.",
+          xp: 15,
+          s: {
+            html: '<div class="tip"><h1>Tip Calculator</h1><input id="bill" type="number" placeholder="Bill amount"><input id="tip" type="number" placeholder="Tip %" value="15"><input id="ppl" type="number" placeholder="Split" value="1"><div id="r"></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.tip{text-align:center;width:350px}\ninput{display:block;width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:1rem;outline:none;margin:.5rem 0}\n#r{margin-top:1.5rem;font-size:1.2rem}",
+            js: "// tip=bill*(tipPct/100), total=bill+tip, perPerson=total/people",
+          },
+          c: [
+            { s: "#bill", m: "Bill" },
+            { s: "#r", m: "Result" },
+          ],
+          h: [
+            "Live calculation on input event",
+            ".toFixed(2) for currency formatting",
+            "Add quick tip buttons: 10%, 15%, 20%",
+          ],
+        },
+        {
+          id: 22,
+          n: "Character Counter",
+          t: 2,
+          tg: ["events", "string-methods", "dom-manipulation"],
+          d: "Live char/word count with progress bar toward limit.",
+          xp: 15,
+          s: {
+            html: '<div class="cc"><h1>Character Counter</h1><textarea id="tx" rows="6" placeholder="Start typing..." maxlength="280"></textarea><div class="stats"><span id="ch">0 / 280</span><span id="wd">0 words</span></div><div class="pb"><div class="pf" id="pf"></div></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.cc{width:450px;max-width:90vw}\ntextarea{width:100%;padding:1rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;resize:vertical}\ntextarea:focus{border-color:#f97316}\n.stats{display:flex;justify-content:space-between;margin-top:.5rem;color:#94a3b8}\n.pb{height:4px;background:#334155;border-radius:2px;margin-top:.5rem;overflow:hidden}\n.pf{height:100%;width:0%;background:#f97316;transition:width .2s}",
+            js: "// Count chars and words on input event\n// Update progress bar width %",
+          },
+          c: [
+            { s: "textarea", m: "Textarea" },
+            { s: "#ch", m: "Char count" },
+            { s: "#pf", m: "Progress bar" },
+          ],
+          h: [
+            "textarea.value.length for chars",
+            "Split by whitespace, filter empty for words",
+            "Change bar color to red near limit",
+          ],
+        },
+        {
+          id: 23,
+          n: "Password Strength",
+          t: 2,
+          tg: ["string-methods", "conditional-logic", "dom"],
+          d: "Real-time password strength: weak/medium/strong with rule indicators.",
+          xp: 15,
+          s: {
+            html: '<div class="ps"><h1>Password Strength</h1><input type="password" id="pw" placeholder="Enter password"><div class="sb"><div class="sf" id="sf"></div></div><p id="st">Enter a password</p><ul id="rl"><li id="r1">8+ characters</li><li id="r2">Uppercase</li><li id="r3">Lowercase</li><li id="r4">Number</li><li id="r5">Special char</li></ul></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ps{width:380px;text-align:center}\ninput{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;margin:1rem 0}\ninput:focus{border-color:#f97316}\n.sb{height:6px;background:#334155;border-radius:3px;overflow:hidden}\n.sf{height:100%;width:0%;transition:all .3s;border-radius:3px}\nul{list-style:none;padding:0;text-align:left;margin-top:1rem}\nli{padding:.3rem 0;color:#64748b;transition:color .3s}\nli.ok{color:#22c55e}",
+            js: "// Check: length>=8, /[A-Z]/, /[a-z]/, /[0-9]/, /[^A-Za-z0-9]/\n// Each pass = 20% width, color by level",
+          },
+          c: [
+            { s: "#pw", m: "Password input" },
+            { s: "#sf", m: "Strength bar" },
+          ],
+          h: [
+            "Regex for each rule check",
+            "20% per rule, color: 0-40% red, 60% yellow, 80-100% green",
+            "Add .ok class to li when rule passes",
+          ],
+        },
+        {
+          id: 24,
+          n: "Palindrome Checker",
+          t: 2,
+          tg: ["string-methods", "logic"],
+          d: "Check if a word/phrase is a palindrome, ignoring spaces/punctuation.",
+          xp: 15,
+          s: {
+            html: '<div class="pc"><h1>Palindrome Checker</h1><input id="inp" placeholder="Enter a word or phrase"><button id="ck">Check</button><p id="res"></p></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.pc{text-align:center;width:400px}\ninput{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;margin:1rem 0}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n#res{margin-top:1.5rem;font-size:1.25rem;font-weight:600}",
+            js: '// Clean: str.replace(/[^A-Za-z0-9]/g,"").toLowerCase()\n// Compare with reversed version',
+          },
+          c: [
+            { s: "#inp", m: "Input" },
+            { s: "#ck", m: "Check btn" },
+            { s: "#res", m: "Result" },
+          ],
+          h: [
+            'replace(/[^A-Za-z0-9]/g,"") removes non-alphanumeric',
+            'split("").reverse().join("") reverses string',
+            "Show cleaned version so user understands",
+          ],
+        },
+        {
+          id: 25,
+          n: "FizzBuzz Visualizer",
+          t: 2,
+          tg: ["loops", "dom-creation", "conditionals"],
+          d: "Generate FizzBuzz 1-N as a styled color-coded grid.",
+          xp: 15,
+          s: {
+            html: '<div class="fb"><h1>FizzBuzz</h1><div class="ctrl"><input id="lim" type="number" value="30" min="1" max="100"><button id="gen">Generate</button></div><div class="grid" id="grid"></div></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.fb{text-align:center;width:100%;max-width:600px}\n.ctrl{display:flex;gap:.5rem;justify-content:center;margin:1.5rem 0}\ninput{width:80px;padding:.5rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;text-align:center;outline:none}\nbutton{padding:.5rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:6px}\n.grid div{padding:.75rem .25rem;border-radius:8px;font-weight:600;font-size:.85rem;text-align:center}",
+            js: '// 3&5: "FizzBuzz" purple, 3: "Fizz" green, 5: "Buzz" blue, else: number gray',
+          },
+          c: [
+            { s: "#grid", m: "Grid" },
+            { s: "#gen", m: "Generate btn" },
+          ],
+          h: [
+            "Check i%3===0 && i%5===0 FIRST",
+            "Create divs, set background by type",
+            "auto-fill grid for responsive layout",
+          ],
+        },
+        {
+          id: 26,
+          n: "Rock Paper Scissors",
+          t: 2,
+          tg: ["logic", "events", "random"],
+          d: "Play RPS vs computer, track wins/losses/draws.",
+          xp: 15,
+          s: {
+            html: '<div class="rps"><h1>Rock Paper Scissors</h1><div class="ch"><button data-c="rock">Rock</button><button data-c="paper">Paper</button><button data-c="scissors">Scissors</button></div><div class="sc"><p>W:<span id="w">0</span> L:<span id="l">0</span> D:<span id="d">0</span></p></div><p id="res">Make your move!</p></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.rps{text-align:center}\n.ch{display:flex;gap:1rem;justify-content:center;margin:2rem 0}\n.ch button{padding:1rem 2rem;border:2px solid #334155;border-radius:12px;background:#1e293b;color:#e2e8f0;font-size:1.1rem;cursor:pointer;transition:.2s}\n.ch button:hover{border-color:#f97316;transform:scale(1.05)}\n#res{font-size:1.5rem;font-weight:700;min-height:2rem}",
+            js: '// choices=["rock","paper","scissors"]\n// Computer: random pick\n// Determine winner, update score',
+          },
+          c: [
+            { s: ".ch", m: "Choices" },
+            { s: "#res", m: "Result" },
+            { s: "#w", m: "Wins" },
+          ],
+          h: [
+            "choices[Math.floor(Math.random()*3)] for computer",
+            "rock>scissors, scissors>paper, paper>rock",
+            "Show what computer chose",
+          ],
+        },
+        {
+          id: 27,
+          n: "Number Guessing Game",
+          t: 2,
+          tg: ["logic", "events", "dom"],
+          d: 'Guess 1-100 with "too high/low" hints, track attempts.',
+          xp: 15,
+          s: {
+            html: '<div class="ng"><h1>Guess the Number</h1><p>Think of a number 1-100.</p><input id="g" type="number" min="1" max="100"><button id="gb">Guess</button><p id="h"></p><p>Attempts: <span id="a">0</span></p><button id="rb" style="display:none">Play Again</button></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ng{text-align:center;width:350px}\ninput{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:1.2rem;text-align:center;outline:none;margin:1rem 0}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer;margin:.25rem}\n#h{font-size:1.25rem;font-weight:600;min-height:2rem;margin:1rem 0}",
+            js: "// Random 1-100, compare, show high/low/correct\n// Disable input on win, show restart",
+          },
+          c: [
+            { s: "#g", m: "Guess input" },
+            { s: "#h", m: "Hint" },
+            { s: "#a", m: "Attempts" },
+          ],
+          h: [
+            "Math.floor(Math.random()*100)+1",
+            "Disable input+button when won",
+            "Suggest binary search after 7+ attempts",
+          ],
+        },
+        {
+          id: 28,
+          n: "Dice Roller",
+          t: 2,
+          tg: ["random", "dom", "animation"],
+          d: "Roll dice with visual dot patterns and rolling animation.",
+          xp: 15,
+          s: {
+            html: '<div class="dr"><h1>Dice Roller</h1><div class="dc"><div class="die" id="d1"></div><div class="die" id="d2"></div></div><button id="rl">Roll</button><p id="tot">Total: —</p></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.dr{text-align:center}\n.dc{display:flex;gap:2rem;justify-content:center;margin:2rem 0}\n.die{width:80px;height:80px;background:#fff;border-radius:12px;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:10px;gap:4px;transition:transform .3s}\n.die.roll{animation:roll .4s}\n@keyframes roll{0%{transform:rotate(0)}50%{transform:rotate(180deg) scale(.8)}100%{transform:rotate(360deg)}}\n.dot{width:100%;height:100%;background:#1a1a1a;border-radius:50%;opacity:0}\n.dot.on{opacity:1}",
+            js: "// Map 1-6 to grid positions that show dots\n// Add .roll class, setTimeout to show result",
+          },
+          c: [
+            { s: ".die", m: "Dice" },
+            { s: "#rl", m: "Roll btn" },
+          ],
+          h: [
+            "Position map: 0-8 = TL,TC,TR,ML,C,MR,BL,BC,BR",
+            "1:[4], 2:[2,6], 3:[2,4,6], 4:[0,2,6,8], 5:[0,2,4,6,8], 6:[0,2,3,5,6,8]",
+            "Animation class + setTimeout for result reveal",
+          ],
+        },
+        {
+          id: 29,
+          n: "Light/Dark Mode",
+          t: 2,
+          tg: ["dom", "localStorage", "css-variables"],
+          d: "Toggle themes, persist in localStorage.",
+          xp: 15,
+          s: {
+            html: '<div class="app"><header><h1>My App</h1><button id="tg"><i class="fa-solid fa-moon"></i></button></header><main><p>Click toggle to switch themes. Preference is saved.</p><div class="card"><h3>Feature Card</h3><p>Content here.</p></div><div class="card"><h3>Another Card</h3><p>More content.</p></div></main></div>',
+            css: ':root{--bg:#f8fafc;--surface:#fff;--fg:#1e293b;--muted:#64748b;--border:#e2e8f0}\n[data-theme="dark"]{--bg:#0f172a;--surface:#1e293b;--fg:#e2e8f0;--muted:#94a3b8;--border:#334155}\nbody{background:var(--bg);color:var(--fg);font-family:sans-serif;margin:0;transition:background .3s,color .3s}\nheader{display:flex;justify-content:space-between;align-items:center;padding:1rem 2rem;border-bottom:1px solid var(--border)}\n#tg{background:none;border:2px solid var(--border);border-radius:8px;padding:.5rem .75rem;cursor:pointer;color:var(--fg);font-size:1.1rem}\nmain{padding:2rem;max-width:600px;margin:0 auto}\n.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;transition:.3s}',
+            js: "// Check localStorage, toggle data-theme, save\n// Update icon sun/moon",
+          },
+          c: [
+            { s: "#tg", m: "Toggle" },
+            { s: ".card", m: "Cards" },
+          ],
+          h: [
+            'document.documentElement.setAttribute("data-theme","dark")',
+            "localStorage.getItem/setItem for persistence",
+            'matchMedia("(prefers-color-scheme:dark)") for default',
+          ],
+        },
+        {
+          id: 30,
+          n: "Star Rating Widget",
+          t: 2,
+          tg: ["events", "dom", "hover-effects"],
+          d: "Click to rate 1-5 stars with hover preview.",
+          xp: 15,
+          s: {
+            html: '<div class="sr"><h2>Rate this project</h2><div class="stars" id="stars"><span class="star" data-v="1">&#9733;</span><span class="star" data-v="2">&#9733;</span><span class="star" data-v="3">&#9733;</span><span class="star" data-v="4">&#9733;</span><span class="star" data-v="5">&#9733;</span></div><p id="rt">Select a rating</p></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.sr{text-align:center}\n.stars{display:flex;gap:.5rem;justify-content:center;margin:1.5rem 0}\n.star{font-size:2.5rem;color:#334155;cursor:pointer;transition:color .15s,transform .15s}\n.star:hover{transform:scale(1.2)}\n.star.on{color:#f97316}",
+            js: "// Hover: highlight up to hovered\n// Click: set rating\n// Mouseout: restore to selected",
+          },
+          c: [
+            { s: ".star", m: "Stars" },
+            { s: "#rt", m: "Rating text" },
+          ],
+          h: [
+            "Loop stars, add/remove .on based on data-v",
+            "Store selected value to restore on mouseout",
+            "Compare each star data-v to hovered/selected",
+          ],
+        },
+        // Tier 3
+        {
+          id: 31,
+          n: "Quiz App",
+          t: 3,
+          tg: ["arrays", "state", "events", "dom"],
+          d: "Multiple choice quiz with score, progress bar, results.",
+          xp: 25,
+          s: {
+            html: '<div class="qa"><div class="pb"><div class="pf" id="pb"></div></div><div id="qc"><h2 id="qn"></h2><div id="opts"></div><p id="fb"></p><button id="nb" style="display:none">Next</button></div><div id="rs" style="display:none"><h2>Quiz Complete!</h2><p id="sc"></p><button id="rb">Restart</button></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.qa{width:500px;max-width:90vw}\n.pb{height:6px;background:#334155;border-radius:3px;margin-bottom:2rem;overflow:hidden}\n.pf{height:100%;width:0%;background:#f97316;transition:width .4s}\n#qn{font-size:1.3rem;margin-bottom:1.5rem}\n.opt{display:block;width:100%;padding:.85rem;margin-bottom:.5rem;background:#1e293b;border:2px solid #334155;border-radius:8px;color:#e2e8f0;font-size:1rem;text-align:left;cursor:pointer}\n.opt:hover{border-color:#f97316}\n.opt.ok{border-color:#22c55e;background:#0a2e1a}\n.opt.no{border-color:#ef4444;background:#2e0a0a}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer;margin-top:1rem}",
+            js: 'const qd=[{q:"What does HTML stand for?",o:["Hyper Text Markup Language","High Tech Modern Language","Hyper Transfer Markup Logic"],a:0},{q:"Which CSS property controls text size?",o:["text-style","font-size","text-size"],a:1},{q:"Which is NOT a JS data type?",o:["String","Boolean","Float"],a:2},{q:"What does DOM stand for?",o:["Document Object Model","Data Object Management","Digital Ordinance Map"],a:0},{q:"Which array method adds to end?",o:["push()","pop()","shift()"],a:0}];\n// Track currentQ, score, answered\n// Show Q + options, handle answer, next, results',
+          },
+          c: [
+            { s: "#qn", m: "Question" },
+            { s: "#opts", m: "Options" },
+            { s: "#pb", m: "Progress" },
+            { s: "#rs", m: "Results" },
+          ],
+          h: [
+            "Disable options after answering",
+            "Show correct/wrong with different classes",
+            "Percentage + different messages by score range",
+          ],
+        },
+        {
+          id: 32,
+          n: "Team Card Generator",
+          t: 3,
+          tg: ["arrays", "dom-creation", "templates"],
+          d: "Select team from dropdown, generate player cards.",
+          xp: 25,
+          s: {
+            html: '<div class="tc"><h1>Team Cards</h1><select id="ts"><option value="">Select team</option><option value="india">India</option><option value="spain">Spain</option><option value="brazil">Brazil</option></select><div class="cards" id="cards"></div></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.tc{text-align:center;width:100%;max-width:800px}\nselect{padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;margin-bottom:2rem}\n.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}\n.card{background:#1e293b;border:1px solid #334155;border-radius:12px;overflow:hidden;transition:transform .2s}\n.card:hover{transform:translateY(-4px)}\n.card img{width:100%;height:160px;object-fit:cover}\n.cb{padding:.75rem}\n.cb h3{margin:0 0 .25rem}",
+            js: 'const teams={india:[{n:"Virat Kohli",r:"Batsman",rt:95},{n:"Jasprit Bumrah",r:"Bowler",rt:93}],spain:[{n:"Pedri",r:"Midfielder",rt:90},{n:"Yamal",r:"Forward",rt:88}],brazil:[{n:"Vinicius Jr",r:"Forward",rt:93},{n:"Casemiro",r:"Midfielder",rt:86}]};\n// On change: get team, generate card HTML',
+          },
+          c: [
+            { s: "#ts", m: "Select" },
+            { s: "#cards", m: "Cards container" },
+          ],
+          h: [
+            "Template literals for card HTML from data",
+            "picsum with seed based on name for images",
+            "Clear container before regenerating",
+          ],
+        },
+        {
+          id: 33,
+          n: "Expense Tracker",
+          t: 3,
+          tg: ["arrays", "crud", "math", "dom"],
+          d: "Add income/expenses, running balance, delete transactions.",
+          xp: 25,
+          s: {
+            html: '<div class="et"><h1>Expense Tracker</h1><div class="bal" id="bal">$0.00</div><form id="tf"><input id="desc" placeholder="Description" required><div class="row"><input id="amt" type="number" step="0.01" placeholder="Amount" required><select id="type"><option value="expense">Expense</option><option value="income">Income</option></select></div><button type="submit">Add</button></form><ul id="txs"></ul></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.et{width:450px;max-width:100%}\n.bal{text-align:center;font-size:2.5rem;font-weight:900;margin-bottom:2rem}\nform{display:flex;flex-direction:column;gap:.5rem;margin-bottom:1.5rem}\n.row{display:flex;gap:.5rem}\ninput,select{padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\n.row input{flex:1}\nbutton{padding:.75rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\nul{list-style:none;padding:0}\nli{display:flex;justify-content:space-between;align-items:center;padding:.75rem;background:#1e293b;border-radius:8px;margin-bottom:.5rem;border-left:3px solid}\nli.income{border-left-color:#22c55e}\nli.expense{border-left-color:#ef4444}",
+            js: "// transactions=[{id,desc,amt,type}]\n// Add, delete, re-render, recalc balance",
+          },
+          c: [
+            { s: "#bal", m: "Balance" },
+            { s: "#tf", m: "Form" },
+            { s: "#txs", m: "Transactions" },
+          ],
+          h: [
+            "Date.now() for unique IDs",
+            "Re-render full list on each change",
+            "Green balance positive, red negative",
+          ],
+        },
+        {
+          id: 34,
+          n: "Weather App",
+          t: 3,
+          tg: ["async", "fetch", "api", "dom"],
+          d: "Fetch weather from public API, show temp/description/icon.",
+          xp: 25,
+          s: {
+            html: '<div class="wa"><h1>Weather App</h1><div class="srch"><input id="city" placeholder="City name"><button id="sb">Search</button></div><div class="wc" id="wc" style="display:none"><h2 id="cn"></h2><div class="temp" id="tmp"></div><p id="dsc"></p></div><p id="err" style="display:none"></p></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:linear-gradient(135deg,#0f172a,#1e3a5f);font-family:sans-serif;color:#e2e8f0}\n.wa{text-align:center;width:400px}\n.srch{display:flex;gap:.5rem;margin-bottom:2rem}\ninput{flex:1;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n.wc{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem}\n.temp{font-size:4rem;font-weight:900;margin:.5rem 0}",
+            js: '// fetch("https://wttr.in/"+city+"?format=j1")\n// .then(r=>r.json())\n// data.current_condition[0].temp_C, .weatherDesc[0].value',
+          },
+          c: [
+            { s: "#city", m: "City input" },
+            { s: "#wc", m: "Weather card" },
+            { s: "#tmp", m: "Temperature" },
+          ],
+          h: [
+            "wttr.in is free, no API key needed",
+            "Add loading state while fetching",
+            "Handle errors: city not found, network",
+          ],
+        },
+        {
+          id: 35,
+          n: "Movie Search",
+          t: 3,
+          tg: ["async", "fetch", "api", "dom-creation"],
+          d: "Search movies via OMDB API, show poster/title/year.",
+          xp: 25,
+          s: {
+            html: '<div class="ms"><h1>Movie Search</h1><div class="srch"><input id="q" placeholder="Search movies..."><button id="sb">Search</button></div><div class="res" id="res"></div></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ms{text-align:center;width:100%;max-width:800px}\n.srch{display:flex;gap:.5rem;justify-content:center;margin-bottom:2rem}\ninput{flex:1;max-width:400px;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n.res{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem}\n.mc{background:#1e293b;border-radius:12px;overflow:hidden;border:1px solid #334155}\n.mc img{width:100%;height:250px;object-fit:cover}\n.mi{padding:.75rem}\n.mi h3{font-size:.95rem;margin:0 0 .25rem}\n.mi p{margin:0;color:#94a3b8;font-size:.8rem}",
+            js: '// fetch("https://www.omdbapi.com/?s="+query+"&apikey=trilogy")\n// data.Search: [{Title,Year,imdbID,Poster}]',
+          },
+          c: [
+            { s: "#q", m: "Search input" },
+            { s: "#res", m: "Results" },
+          ],
+          h: [
+            'Handle Poster:"N/A" with placeholder',
+            'Show "no results" when Response==="False"',
+            "Loading spinner while fetching",
+          ],
+        },
+        {
+          id: 36,
+          n: "GitHub Profile Finder",
+          t: 3,
+          tg: ["async", "fetch", "api", "dom"],
+          d: "Enter username, fetch and display GitHub profile.",
+          xp: 25,
+          s: {
+            html: '<div class="gh"><h1>GitHub Finder</h1><div class="srch"><input id="un" placeholder="Username"><button id="sb">Search</button></div><div class="prof" id="prof"></div></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.gh{text-align:center;width:500px;max-width:100%}\n.srch{display:flex;gap:.5rem;margin-bottom:2rem}\ninput{flex:1;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}\n.prof{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:2rem;text-align:center}\n.prof img{width:120px;height:120px;border-radius:50%;border:3px solid #f97316}",
+            js: '// fetch("https://api.github.com/users/"+username)\n// login, name, avatar_url, bio, public_repos, followers, following',
+          },
+          c: [
+            { s: "#un", m: "Username" },
+            { s: "#prof", m: "Profile" },
+          ],
+          h: [
+            "GitHub API is free, no auth for basic lookups",
+            'Show "User not found" on 404',
+            "Link name to their GitHub profile URL",
+          ],
+        },
+        {
+          id: 37,
+          n: "Countdown Timer",
+          t: 3,
+          tg: ["setInterval", "date-api", "dom"],
+          d: "Set target date, show days/hours/minutes/seconds remaining.",
+          xp: 25,
+          s: {
+            html: '<div class="cd"><h1>Countdown</h1><input type="datetime-local" id="td"><button id="go">Start</button><div class="tm"><div class="u"><span id="d">00</span><label>Days</label></div><div class="u"><span id="h">00</span><label>Hours</label></div><div class="u"><span id="m">00</span><label>Min</label></div><div class="u"><span id="s">00</span><label>Sec</label></div></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.cd{text-align:center}\ninput{padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;margin-right:.5rem}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer;margin:1rem 0}\n.tm{display:flex;gap:1.5rem;justify-content:center;margin-top:2rem}\n.u{text-align:center}\n.u span{display:block;font-size:3rem;font-weight:900;color:#f97316}\n.u label{color:#64748b;font-size:.85rem;text-transform:uppercase}",
+            js: "// diff = target - now\n// days = Math.floor(diff/(1000*60*60*24))\n// hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60))\n// Update every second, clear on done",
+          },
+          c: [
+            { s: "#td", m: "Date input" },
+            { s: ".tm", m: "Timer" },
+            { s: ".u", m: "Time units" },
+          ],
+          h: [
+            "Use modulo for extracting each unit",
+            "Store interval ID for clearInterval",
+            "Set default target (New Year) for immediate demo",
+          ],
+        },
+        {
+          id: 38,
+          n: "Stopwatch with Laps",
+          t: 3,
+          tg: ["setInterval", "state", "dom-creation"],
+          d: "Start/stop/reset stopwatch with lap recording.",
+          xp: 25,
+          s: {
+            html: '<div class="sw"><div class="dsp" id="dsp">00:00.000</div><div class="ctrl"><button id="ss">Start</button><button id="lap">Lap</button><button id="rst">Reset</button></div><ul id="laps"></ul></div>',
+            css: 'body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a;font-family:"Courier New",monospace;color:#0f0}\n.sw{text-align:center}\n.dsp{font-size:4rem;margin-bottom:2rem;text-shadow:0 0 20px rgba(0,255,0,.3)}\n.ctrl{display:flex;gap:1rem;justify-content:center;margin-bottom:2rem}\nbutton{padding:.75rem 2rem;border:2px solid #333;border-radius:8px;background:#111;color:#0f0;font-family:inherit;cursor:pointer}\n#laps{list-style:none;padding:0;max-height:300px;overflow-y:auto}\nli{padding:.5rem;border-bottom:1px solid #1a1a1a;display:flex;justify-content:space-between}',
+            js: "// Track: running, startTime, elapsed, intervalId\n// Start/stop accumulate elapsed\n// Lap: record current elapsed",
+          },
+          c: [
+            { s: "#dsp", m: "Display" },
+            { s: "#ss", m: "Start/Stop" },
+            { s: "#laps", m: "Laps" },
+          ],
+          h: [
+            "performance.now() for ms precision",
+            "Format: min=ms/60000, sec=(ms%60000)/1000, ms=ms%1000",
+            "Accumulate elapsed on pause, add to new start",
+          ],
+        },
+        {
+          id: 39,
+          n: "Drag-and-Drop Kanban",
+          t: 3,
+          tg: ["drag-events", "dom", "state"],
+          d: "3-column board (To Do / In Progress / Done) with drag-drop.",
+          xp: 25,
+          s: {
+            html: '<div class="kb"><div class="col" data-s="todo"><h3>To Do</h3><div class="cards" id="c1"></div></div><div class="col" data-s="prog"><h3>In Progress</h3><div class="cards" id="c2"></div></div><div class="col" data-s="done"><h3>Done</h3><div class="cards" id="c3"></div></div></div>',
+            css: "body{display:flex;justify-content:center;padding:1rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.kb{display:flex;gap:1rem;width:100%;max-width:1000px;min-height:80vh}\n.col{flex:1;background:#1e293b;border-radius:12px;padding:1rem;display:flex;flex-direction:column}\nh3{margin:0 0 1rem;padding-bottom:.5rem;border-bottom:2px solid #334155}\n.cards{flex:1;min-height:100px}\n.kc{background:#334155;padding:.75rem;border-radius:8px;margin-bottom:.5rem;cursor:grab;transition:opacity .2s}\n.kc:active{cursor:grabbing;opacity:.5}",
+            js: "// Cards with status, render into columns\n// dragstart, dragover, drop events\n// Update status on drop, re-render",
+          },
+          c: [{ s: ".col", m: "Columns" }],
+          h: [
+            'dataTransfer.setData("text",cardId) on dragstart',
+            "preventDefault on dragover to allow drop",
+            "Move card to new column status on drop",
+          ],
+        },
+        {
+          id: 40,
+          n: "Image Carousel",
+          t: 3,
+          tg: ["dom", "events", "animation"],
+          d: "Slider with prev/next, dots, and auto-play.",
+          xp: 25,
+          s: {
+            html: '<div class="car"><div class="sl" id="sl"><img src="https://picsum.photos/seed/s1/800/400" alt="Slide"><img src="https://picsum.photos/seed/s2/800/400" alt="Slide"><img src="https://picsum.photos/seed/s3/800/400" alt="Slide"><img src="https://picsum.photos/seed/s4/800/400" alt="Slide"></div><button class="pv" id="pv">&#10094;</button><button class="nx" id="nx">&#10095;</button><div class="dots" id="dots"></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0a0a0a}\n.car{position:relative;width:800px;max-width:90vw;overflow:hidden;border-radius:12px}\n.sl{display:flex;transition:transform .5s}\n.sl img{width:100%;flex-shrink:0;object-fit:cover;height:400px}\n.pv,.nx{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.5);color:#fff;border:none;padding:1rem;cursor:pointer;font-size:1.2rem;border-radius:50%}\n.pv{left:1rem}.nx{right:1rem}\n.dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:.5rem}\n.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer}\n.dot.on{background:#fff}",
+            js: "// Track index, translateX for slide\n// Generate dots, auto-play with setInterval\n// Pause on hover",
+          },
+          c: [
+            { s: ".sl", m: "Slides" },
+            { s: "#pv", m: "Prev" },
+            { s: "#nx", m: "Next" },
+          ],
+          h: [
+            "translateX(-${index*100}%) for sliding",
+            "Clear+restart interval on manual nav",
+            "mouseenter pause, mouseleave resume",
+          ],
+        },
+        {
+          id: 41,
+          n: "Lazy-Load Gallery",
+          t: 3,
+          tg: ["intersection-observer", "performance", "images"],
+          d: "20+ images that load on scroll via IntersectionObserver.",
+          xp: 25,
+          s: {
+            html: '<div class="g" id="g"></div>',
+            css: "body{padding:2rem;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.g{columns:3;gap:8px;max-width:900px;margin:0 auto}\n.g img{width:100%;border-radius:8px;margin-bottom:8px;display:block;opacity:0;transition:opacity .5s}\n.g img.ld{opacity:1}",
+            js: "// Generate 24 imgs with data-src\n// IntersectionObserver: set src=data-src when visible\n// Add .ld class, unobserve after loading",
+          },
+          c: [{ s: ".g", m: "Gallery" }],
+          h: [
+            "data-src instead of src to prevent loading",
+            "img.src=img.dataset.src in observer callback",
+            "Placeholder bg color to prevent layout jump",
+          ],
+        },
+        {
+          id: 42,
+          n: "Form Validation",
+          t: 3,
+          tg: ["forms", "regex", "events", "dom"],
+          d: "Real-time validation: name, email, password, phone with inline errors.",
+          xp: 25,
+          s: {
+            html: '<form id="f" novalidate><div class="fld"><label>Name</label><input id="nm" type="text" placeholder="John Doe"><span class="err" id="nm-e"></span></div><div class="fld"><label>Email</label><input id="em" type="email" placeholder="john@example.com"><span class="err" id="em-e"></span></div><div class="fld"><label>Password</label><input id="pw" type="password" placeholder="Min 8 chars"><span class="err" id="pw-e"></span></div><div class="fld"><label>Phone</label><input id="ph" type="tel" placeholder="+91 98765 43210"><span class="err" id="ph-e"></span></div><button type="submit">Register</button></form>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\nform{width:400px;max-width:90vw}\n.fld{margin-bottom:1.25rem}\nlabel{display:block;margin-bottom:.25rem;font-size:.9rem;color:#94a3b8}\ninput{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;transition:border .2s}\ninput.ok{border-color:#22c55e}\ninput.bad{border-color:#ef4444}\n.err{display:block;color:#ef4444;font-size:.8rem;min-height:1.2rem}\nbutton{width:100%;padding:.75rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}",
+            js: "// Name: 2+ words, Email: regex, Password: 8+ chars+upper+num, Phone: pattern\n// Validate on input, show/hide errors, ok/bad classes",
+          },
+          c: [
+            { s: "#f", m: "Form" },
+            { s: ".fld", m: "Fields" },
+            { s: ".err", m: "Errors" },
+          ],
+          h: [
+            "Email regex: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/",
+            'Validate on "input" event for real-time',
+            'Track "touched" state (blur) to avoid premature errors',
+          ],
+        },
+        {
+          id: 43,
+          n: "LocalStorage Notes",
+          t: 3,
+          tg: ["localStorage", "crud", "dom", "events"],
+          d: "CRUD notes app persisted in localStorage.",
+          xp: 25,
+          s: {
+            html: '<div class="na"><h1>My Notes</h1><form id="nf"><textarea id="nt" rows="3" placeholder="Write a note..."></textarea><button type="submit">Save</button></form><div class="notes" id="notes"></div></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.na{width:500px;max-width:100%}\ntextarea{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;resize:vertical;font-family:inherit}\ntextarea:focus{border-color:#f97316}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer;margin-top:.5rem}\n.note{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:1rem;margin-top:.75rem}\n.note p{margin:0 0 .5rem;white-space:pre-wrap}\n.note-m{display:flex;justify-content:space-between;align-items:center}\n.note-t{color:#64748b;font-size:.8rem}",
+            js: '// notes=JSON.parse(localStorage.getItem("notes"))||[]\n// Each: {id,text,createdAt}\n// Save after every change, edit mode support',
+          },
+          c: [
+            { s: "#nf", m: "Form" },
+            { s: "#notes", m: "Notes container" },
+          ],
+          h: [
+            "JSON.parse/stringify for localStorage",
+            "editingId variable: null=new, number=editing",
+            "Delete with filter, re-save array",
+          ],
+        },
+        {
+          id: 44,
+          n: "Currency Converter",
+          t: 3,
+          tg: ["async", "fetch", "api", "math"],
+          d: "Convert currencies using free exchange rate API.",
+          xp: 25,
+          s: {
+            html: '<div class="cv"><h1>Currency Converter</h1><div class="row"><input id="amt" type="number" value="1"><select id="fr"></select><span>&rarr;</span><select id="to"></select></div><p class="res" id="res"></p><button id="sw">Swap</button></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.cv{text-align:center;width:450px}\n.row{display:flex;align-items:center;gap:.75rem;justify-content:center;margin:2rem 0}\ninput{width:120px;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;font-size:1.2rem;text-align:center;outline:none}\nselect{padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\n.res{font-size:2rem;font-weight:700;color:#f97316;margin:1rem 0}\n#sw{background:#1e293b;border:2px solid #334155;color:#e2e8f0;padding:.5rem 1.5rem;border-radius:8px;cursor:pointer}",
+            js: '// fetch("https://open.er-api.com/v6/latest/USD")\n// rates in response.rates\n// Convert: amount * (rates[to]/rates[from])',
+          },
+          c: [
+            { s: "#amt", m: "Amount" },
+            { s: "#fr", m: "From" },
+            { s: "#to", m: "To" },
+          ],
+          h: [
+            "Fetch rates once, convert locally on input",
+            "Populate selects from Object.keys(rates)",
+            "Swap just switches select values + recalculates",
+          ],
+        },
+        {
+          id: 45,
+          n: "Typing Speed Test",
+          t: 3,
+          tg: ["events", "timing", "dom", "math"],
+          d: "Type a paragraph, measure WPM, accuracy, and time.",
+          xp: 25,
+          s: {
+            html: '<div class="tt"><h1>Typing Speed Test</h1><div class="td" id="td"></div><textarea id="ta" placeholder="Start typing..." rows="4"></textarea><div class="stats"><span>WPM: <strong id="wpm">0</strong></span><span>Accuracy: <strong id="acc">100%</strong></span><span>Time: <strong id="time">0s</strong></span></div><button id="rb">Restart</button></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.tt{text-align:center;width:600px;max-width:90vw}\n.td{background:#1e293b;padding:1.25rem;border-radius:8px;margin:1.5rem 0;text-align:left;line-height:1.8;font-size:1.1rem;border:1px solid #334155}\n.cc{color:#22c55e}.cw{color:#ef4444;background:rgba(239,68,68,.2);border-radius:2px}\ntextarea{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;resize:none;font-family:inherit}\n.stats{display:flex;justify-content:center;gap:2rem;margin:1.5rem 0;font-size:1.1rem}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}",
+            js: "// Sample text, wrap chars in spans\n// First keypress starts timer\n// Compare typed vs original, highlight correct/wrong\n// WPM = (correct/5) / minutes",
+          },
+          c: [
+            { s: "#td", m: "Text display" },
+            { s: "#ta", m: "Typing area" },
+            { s: "#wpm", m: "WPM" },
+          ],
+          h: [
+            "Wrap each char in span for individual coloring",
+            '"started" flag for timer on first keypress',
+            "(correctChars/5)/minutes for WPM",
+          ],
+        },
+        // Tier 4
+        {
+          id: 46,
+          n: "Chat UI Mockup",
+          t: 4,
+          tg: ["dom-creation", "events", "animation"],
+          d: "Chat interface with bubbles, typing indicator, simulated bot replies.",
+          xp: 50,
+          s: {
+            html: '<div class="ca"><div class="ch"><h3>WebForge Bot</h3><span class="st">Online</span></div><div class="msgs" id="msgs"></div><div class="ia"><input id="mi" placeholder="Type a message..."><button id="snd">Send</button></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ca{width:400px;max-width:95vw;background:#1e293b;border-radius:16px;overflow:hidden;border:1px solid #334155;display:flex;flex-direction:column;height:600px}\n.ch{padding:1rem;border-bottom:1px solid #334155;display:flex;justify-content:space-between;align-items:center}\n.st{color:#22c55e;font-size:.85rem}\n.msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem}\n.msg{max-width:80%;padding:.75rem 1rem;border-radius:12px;font-size:.95rem;animation:mi .3s}\n@keyframes mi{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}\n.msg.bot{background:#334155;align-self:flex-start;border-bottom-left-radius:4px}\n.msg.user{background:#f97316;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}\n.typing{align-self:flex-start;color:#64748b;font-style:italic}\n.ia{display:flex;gap:.5rem;padding:1rem;border-top:1px solid #334155}\ninput{flex:1;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}",
+            js: "// Bot replies array\n// On send: add user msg, show typing, setTimeout bot reply\n// Scroll to bottom on new message",
+          },
+          c: [
+            { s: "#msgs", m: "Messages" },
+            { s: "#mi", m: "Input" },
+          ],
+          h: [
+            "Append msg divs with bot/user classes",
+            'Show "typing..." for 1-2s before bot reply',
+            "scrollTo bottom on each new message",
+          ],
+        },
+        {
+          id: 47,
+          n: "Kanban with Persistence",
+          t: 4,
+          tg: ["drag-events", "localStorage", "state"],
+          d: "Kanban board with drag-drop AND localStorage persistence.",
+          xp: 50,
+          s: {
+            html: '<div class="kb"><div class="col" data-s="todo"><h3>To Do</h3><div class="cards" id="c1"></div></div><div class="col" data-s="prog"><h3>In Progress</h3><div class="cards" id="c2"></div></div><div class="col" data-s="done"><h3>Done</h3><div class="cards" id="c3"></div></div></div>',
+            css: "body{display:flex;justify-content:center;padding:1rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.kb{display:flex;gap:1rem;width:100%;max-width:1000px;min-height:80vh}\n.col{flex:1;background:#1e293b;border-radius:12px;padding:1rem;display:flex;flex-direction:column}\nh3{margin:0 0 1rem;padding-bottom:.5rem;border-bottom:2px solid #334155}\n.cards{flex:1;min-height:100px}\n.kc{background:#334155;padding:.75rem;border-radius:8px;margin-bottom:.5rem;cursor:grab}\n.kc:active{cursor:grabbing;opacity:.5}",
+            js: "// Same as #39 but save/load from localStorage\n// Save after every drag-drop\n// Load on page init",
+          },
+          c: [{ s: ".col", m: "Columns" }],
+          h: [
+            "JSON.stringify cards array to localStorage on every change",
+            "Parse and render on page load",
+            "Add new card button with inline input",
+          ],
+        },
+        {
+          id: 48,
+          n: "Pomodoro Timer",
+          t: 4,
+          tg: ["setInterval", "state", "notifications", "dom"],
+          d: "25-min work / 5-min break timer with notifications.",
+          xp: 50,
+          s: {
+            html: '<div class="po"><h1>Pomodoro</h1><div class="mode"><button class="on" data-m="work">Work</button><button data-m="break">Break</button></div><div class="timer" id="tm">25:00</div><div class="ctrl"><button id="ss">Start</button><button id="rst">Reset</button></div><p>Sessions: <span id="sess">0</span></p></div>',
+            css: 'body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.po{text-align:center}\n.mode{display:flex;gap:.5rem;justify-content:center;margin-bottom:2rem}\n.mode button{padding:.5rem 1.5rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;cursor:pointer}\n.mode button.on{border-color:#f97316;color:#f97316}\n.timer{font-size:5rem;font-weight:900;font-family:"Courier New",monospace;margin:2rem 0;color:#f97316}\n.ctrl{display:flex;gap:1rem;justify-content:center;margin-bottom:1.5rem}\n.ctrl button{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}',
+            js: "// work=25*60, break=5*60 seconds\n// Toggle modes, countdown, notification on complete\n// Track sessions completed",
+          },
+          c: [
+            { s: "#tm", m: "Timer" },
+            { s: "#ss", m: "Start/Stop" },
+            { s: ".mode", m: "Mode buttons" },
+          ],
+          h: [
+            "Decrement seconds, format as MM:SS",
+            "Use Notification API when timer ends",
+            "Switch to break mode automatically after work",
+          ],
+        },
+        {
+          id: 49,
+          n: "Multi-Step Form",
+          t: 4,
+          tg: ["state", "dom", "events", "validation"],
+          d: "Multi-step form wizard with progress bar and validation per step.",
+          xp: 50,
+          s: {
+            html: '<div class="msf"><div class="pb"><div class="steps"><span class="on">1</span><span>2</span><span>3</span></div><div class="pf" id="pf" style="width:33%"></div></div><form id="f"><div class="step" id="s1"><h2>Personal Info</h2><input id="nm" placeholder="Full Name" required><input id="em" type="email" placeholder="Email" required><button type="button" onclick="nextStep()">Next</button></div><div class="step" id="s2" style="display:none"><h2>Address</h2><input id="addr" placeholder="Address"><input id="city" placeholder="City"><button type="button" onclick="prevStep()">Back</button><button type="button" onclick="nextStep()">Next</button></div><div class="step" id="s3" style="display:none"><h2>Confirm</h2><div id="summary"></div><button type="button" onclick="prevStep()">Back</button><button type="submit">Submit</button></div></form></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.msf{width:500px;max-width:90vw}\n.pb{margin-bottom:2rem}\n.steps{display:flex;justify-content:space-between;margin-bottom:.5rem}\n.steps span{width:30px;height:30px;border-radius:50%;background:#334155;display:flex;align-items:center;justify-content:center;font-weight:600}\n.steps span.on{background:#f97316}\n.pf{height:4px;background:#f97316;border-radius:2px;transition:width .3s}\n.step{display:flex;flex-direction:column;gap:1rem}\ninput{padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 2rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer;align-self:flex-start}",
+            js: "// currentStep=1, totalSteps=3\n// nextStep: validate, hide current, show next, update progress\n// prevStep: go back\n// Step 3: show summary of all inputs",
+          },
+          c: [
+            { s: ".step", m: "Form steps" },
+            { s: ".pb", m: "Progress bar" },
+          ],
+          h: [
+            "Track currentStep, show/hide step divs",
+            "Validate before allowing next",
+            "Step 3: build summary HTML from all inputs",
+          ],
+        },
+        {
+          id: 50,
+          n: "Vanilla SPA Router",
+          t: 4,
+          tg: ["hash-events", "dom", "architecture"],
+          d: 'Simple hash-based SPA router with multiple "pages".',
+          xp: 50,
+          s: {
+            html: '<nav class="nav"><a href="#home">Home</a><a href="#about">About</a><a href="#contact">Contact</a></nav><main id="app"></main>',
+            css: "body{margin:0;font-family:sans-serif;background:#0f172a;color:#e2e8f0}\n.nav{display:flex;gap:1.5rem;padding:1rem 2rem;border-bottom:1px solid #334155;background:#151820}\n.nav a{color:#6c7086;text-decoration:none;font-weight:500;transition:color .2s}\n.nav a:hover,.nav a.active{color:#f97316}\n#app{padding:2rem;max-width:800px;margin:0 auto}",
+            js: '// routes = { home: ()=>app.innerHTML="...", about: ()=>..., contact: ()=>... }\n// Listen to hashchange event\n// Parse location.hash, call matching route function\n// Default route for empty hash',
+          },
+          c: [
+            { s: ".nav", m: "Navigation" },
+            { s: "#app", m: "App container" },
+          ],
+          h: [
+            'window.addEventListener("hashchange", route)',
+            "location.hash.slice(1) gets the route name",
+            "Add .active class to matching nav link",
+          ],
+        },
+        {
+          id: 51,
+          n: "Debounce Search",
+          t: 4,
+          tg: ["performance", "events", "dom", "arrays"],
+          d: "Search-as-you-type with debounce against a static dataset.",
+          xp: 50,
+          s: {
+            html: '<div class="ds"><h1>Search Users</h1><input id="q" placeholder="Search by name..."><ul id="res"></ul></div>',
+            css: "body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ds{width:500px;max-width:100%}\ninput{width:100%;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;margin-bottom:1rem}\ninput:focus{border-color:#f97316}\nul{list-style:none;padding:0}\nli{padding:.75rem;background:#1e293b;border-radius:8px;margin-bottom:.5rem;border:1px solid #334155}",
+            js: 'const users=[{name:"Alice",role:"Developer"},{name:"Bob",role:"Designer"},{name:"Charlie",role:"Manager"},{name:"Diana",role:"Developer"},{name:"Eve",role:"Designer"},{name:"Frank",role:"Manager"},{name:"Grace",role:"Developer"},{name:"Hank",role:"Designer"}];\n// Implement debounce(fn, delay)\n// Filter users by name, render results',
+          },
+          c: [
+            { s: "#q", m: "Search input" },
+            { s: "#res", m: "Results" },
+          ],
+          h: [
+            "Debounce: setTimeout+clearTimeout pattern, 300ms delay",
+            "filter() with toLowerCase().includes(query)",
+            'Show "no results" message when empty',
+          ],
+        },
+        {
+          id: 52,
+          n: "Canvas Drawing App",
+          t: 4,
+          tg: ["canvas-api", "events", "dom"],
+          d: "Freehand drawing tool with color picker and brush size.",
+          xp: 50,
+          s: {
+            html: '<div class="da"><div class="tools"><input type="color" id="clr" value="#f97316"><input type="range" id="sz" min="1" max="50" value="5"><button id="clr-btn">Clear</button></div><canvas id="cv"></canvas></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.da{text-align:center}\n.tools{display:flex;gap:1rem;justify-content:center;margin-bottom:1rem;align-items:center}\ncanvas{background:#fff;border-radius:12px;cursor:crosshair;border:2px solid #334155}",
+            js: "// Get canvas context\n// mousedown: start drawing\n// mousemove: lineTo if drawing\n// mouseup/mouseleave: stop\n// Color from picker, size from range",
+          },
+          c: [
+            { s: "canvas", m: "Canvas" },
+            { s: "#clr", m: "Color picker" },
+            { s: "#sz", m: "Size slider" },
+          ],
+          h: [
+            "ctx.beginPath(), ctx.moveTo(), ctx.lineTo(), ctx.stroke()",
+            "Set ctx.strokeStyle and ctx.lineWidth from controls",
+            "clearRect(0,0,w,h) for clear button",
+          ],
+        },
+        {
+          id: 53,
+          n: "Audio Player",
+          t: 4,
+          tg: ["html5-audio", "events", "dom", "playlists"],
+          d: "Custom audio player with playlist using HTML5 audio.",
+          xp: 50,
+          s: {
+            html: '<div class="ap"><h1>Audio Player</h1><div class="now"><p id="title">No track selected</p></div><div class="prog"><input type="range" id="prog" min="0" max="100" value="0"></div><div class="time"><span id="cur">0:00</span><span id="dur">0:00</span></div><div class="ctrl"><button id="prev">Prev</button><button id="pp">Play</button><button id="next">Next</button></div><ul id="pl"></ul></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.ap{width:400px;text-align:center}\n.now{margin:1.5rem 0}\n#title{font-size:1.2rem;font-weight:600}\n.prog{margin:1rem 0}\ninput[type=range]{width:100%;accent-color:#f97316}\n.time{display:flex;justify-content:space-between;color:#64748b;font-size:.85rem;margin-bottom:1rem}\n.ctrl{display:flex;gap:1rem;justify-content:center;margin-bottom:1.5rem}\n.ctrl button{width:50px;height:50px;border-radius:50%;border:2px solid #334155;background:#1e293b;color:#e2e8f0;cursor:pointer;font-size:1rem}\n#pp{width:60px;height:60px;background:#f97316;border-color:#f97316;color:#fff}\nul{list-style:none;padding:0;text-align:left}\nli{padding:.75rem;border-radius:8px;cursor:pointer;margin-bottom:.25rem}\nli:hover,.li.on{background:#1e293b}",
+            js: "// Audio element (create with new Audio())\n// Playlist array with free audio URLs\n// Play/pause, next/prev, progress update\n// timeupdate event for progress bar",
+          },
+          c: [
+            { s: "#pp", m: "Play/Pause" },
+            { s: "#prog", m: "Progress" },
+            { s: "#pl", m: "Playlist" },
+          ],
+          h: [
+            "new Audio(url) for audio element",
+            "timeupdate event to sync progress bar",
+            "Format seconds as M:SS with Math.floor",
+          ],
+        },
+        {
+          id: 54,
+          n: "Markdown Previewer",
+          t: 4,
+          tg: ["string-processing", "events", "dom", "security"],
+          d: "Textarea input renders Markdown as HTML in real-time preview.",
+          xp: 50,
+          s: {
+            html: '<div class="mp"><div class="ed"><h3>Markdown</h3><textarea id="md" rows="15" placeholder="# Hello World\n\nType **bold** and *italic* text..."></textarea></div><div class="pv"><h3>Preview</h3><div id="out"></div></div></div>',
+            css: 'body{display:flex;justify-content:center;padding:2rem;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.mp{display:flex;gap:1rem;width:100%;max-width:900px;height:80vh}\n.ed,.pv{flex:1;display:flex;flex-direction:column}\nh3{margin:0 0 .5rem;color:#64748b}\ntextarea{flex:1;padding:1rem;border:2px solid #334155;border-radius:8px;background:#1e293b;color:#e2e8f0;outline:none;resize:none;font-family:"JetBrains Mono",monospace;font-size:.9rem}\n#out{flex:1;padding:1rem;background:#1e293b;border:2px solid #334155;border-radius:8px;overflow-y:auto;line-height:1.6}\n#out h1,#out h2,#out h3{color:#e2e8f0;margin:1rem 0 .5rem}\n#out code{background:#334155;padding:.15rem .4rem;border-radius:4px;font-size:.9rem}\n#out pre{background:#0f172a;padding:1rem;border-radius:8px;overflow-x:auto}\n#out blockquote{border-left:3px solid #f97316;padding-left:1rem;color:#94a3b8;margin:1rem 0}',
+            js: "// Simple Markdown parser:\n// ## headings, **bold**, *italic*, `code`, ```pre```, > blockquote, - lists\n// Replace patterns with HTML tags\n// Update preview on input event",
+          },
+          c: [
+            { s: "#md", m: "Markdown input" },
+            { s: "#out", m: "Preview output" },
+          ],
+          h: [
+            "Use replace() with regex for each pattern",
+            "Order matters: code blocks before inline code",
+            "Sanitize: escape HTML first, then apply markdown",
+          ],
+        },
+        {
+          id: 55,
+          n: "AI Chatbot UI",
+          t: 4,
+          tg: ["async", "fetch", "api", "dom-creation", "events"],
+          d: "Chat UI wired to a mock API endpoint (simulated AI responses).",
+          xp: 50,
+          s: {
+            html: '<div class="chat"><div class="ch"><div class="bot-info"><div class="avatar">AI</div><div><h3>WebForge AI</h3><span class="st">Ready</span></div></div></div><div class="msgs" id="msgs"><div class="msg bot">Hi! I can help you with HTML, CSS, and JS questions. Try asking something!</div></div><div class="ia"><input id="mi" placeholder="Ask about HTML, CSS, or JS..."><button id="snd">Send</button></div></div>',
+            css: "body{display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;background:#0f172a;font-family:sans-serif;color:#e2e8f0}\n.chat{width:450px;max-width:95vw;background:#1e293b;border-radius:16px;overflow:hidden;border:1px solid #334155;display:flex;flex-direction:column;height:650px}\n.ch{padding:1rem;border-bottom:1px solid #334155}\n.bot-info{display:flex;align-items:center;gap:.75rem}\n.avatar{width:40px;height:40px;border-radius:50%;background:#f97316;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.85rem}\n.st{color:#22c55e;font-size:.8rem}\n.msgs{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.75rem}\n.msg{max-width:85%;padding:.75rem 1rem;border-radius:12px;font-size:.95rem;line-height:1.5;animation:mi .3s}\n@keyframes mi{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}\n.msg.bot{background:#334155;align-self:flex-start;border-bottom-left-radius:4px}\n.msg.user{background:#f97316;color:#fff;align-self:flex-end;border-bottom-right-radius:4px}\n.ia{display:flex;gap:.5rem;padding:1rem;border-top:1px solid #334155}\ninput{flex:1;padding:.75rem;border:2px solid #334155;border-radius:8px;background:#0f172a;color:#e2e8f0;outline:none}\nbutton{padding:.75rem 1.5rem;border:none;border-radius:8px;background:#f97316;color:#fff;font-weight:600;cursor:pointer}",
+            js: '// Simulated AI responses based on keywords\n// If user mentions "html": respond about HTML\n// If "css": respond about CSS\n// If "js"/"javascript": respond about JS\n// Otherwise: generic helpful response\n// Show typing indicator, then response after delay',
+          },
+          c: [
+            { s: "#msgs", m: "Messages" },
+            { s: "#mi", m: "Input" },
+            { s: "#snd", m: "Send" },
+          ],
+          h: [
+            "Keyword matching for simulated responses",
+            "Show typing indicator div, remove after delay",
+            "scrollTo bottom on each new message",
+          ],
+        },
+      ];
+
+      /* ===== STATE ===== */
+      let state = {
+        xp: 0,
+        streak: 0,
+        completed: [],
+        hintsUsed: {},
+        currentProj: null,
+        activeTab: "html",
+      };
+      // Load from localStorage
+      try {
+        const saved = JSON.parse(localStorage.getItem("wf-state"));
+        if (saved) {
+          state.xp = saved.xp || 0;
+          state.streak = saved.streak || 0;
+          state.completed = saved.completed || [];
+          state.hintsUsed = saved.hintsUsed || {};
+        }
+      } catch (e) {}
+      function saveState() {
+        try {
+          localStorage.setItem(
+            "wf-state",
+            JSON.stringify({
+              xp: state.xp,
+              streak: state.streak,
+              completed: state.completed,
+              hintsUsed: state.hintsUsed,
+            }),
+          );
+        } catch (e) {}
+      }
+
+      /* ===== CODEMIRROR EDITORS ===== */
+      let editors = {};
+      function initEditors() {
+        const opts = {
+          theme: "material-darker",
+          lineNumbers: true,
+          lineWrapping: true,
+          tabSize: 2,
+          indentWithTabs: false,
+          autoCloseBrackets: true,
+        };
+        editors.html = CodeMirror(document.getElementById("e-html"), {
+          ...opts,
+          mode: "htmlmixed",
+        });
+        editors.css = CodeMirror(document.getElementById("e-css"), {
+          ...opts,
+          mode: "css",
+        });
+        editors.js = CodeMirror(document.getElementById("e-js"), {
+          ...opts,
+          mode: "javascript",
+        });
+        // Live preview on change
+        Object.values(editors).forEach((ed) => {
+          ed.on("change", () => {
+            clearTimeout(ed._deb);
+            ed._deb = setTimeout(updatePreview, 300);
+          });
+        });
+      }
+
+      /* ===== PREVIEW ===== */
+      function updatePreview() {
+        const frame = document.getElementById("pframe");
+        const html = editors.html.getValue();
+        const css = editors.css.getValue();
+        const js = editors.js.getValue();
+        const doc = `<!DOCTYPE html><html><head><style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
+        frame.srcdoc = doc;
+      }
+      function refreshPV() {
+        updatePreview();
+        toast("Preview refreshed", "i");
+      }
+
+      /* ===== TAB SWITCHING ===== */
+      function swTab(tab) {
+        state.activeTab = tab;
+        document.querySelectorAll(".et").forEach((b) => {
+          b.classList.remove("ta");
+          b.style.color = b.dataset.t === tab ? "" : "var(--muted)";
+        });
+        document.querySelector(`.et[data-t="${tab}"]`).classList.add("ta");
+        ["html", "css", "js"].forEach((t) => {
+          document.getElementById("e-" + t).style.display =
+            t === tab ? "block" : "none";
+        });
+        editors[tab].refresh();
+        editors[tab].focus();
+      }
+
+      /* ===== PREVIEW MODES ===== */
+      function setPM(m) {
+        const w = document.getElementById("pw");
+        w.className =
+          "w-full h-full " +
+          (m === "mobile" ? "pm" : m === "tablet" ? "pt" : "pd") +
+          " rounded-lg overflow-hidden border";
+        w.style.borderColor = "var(--border)";
+        w.style.background = "#fff";
+        document.querySelectorAll(".pmb").forEach((b) => {
+          b.style.color = b.dataset.m === m ? "var(--accent)" : "var(--muted)";
+        });
+      }
+
+      /* ===== RESIZE HANDLE ===== */
+      function initResize() {
+        const h = document.getElementById("rhandle"),
+          ep = document.getElementById("ep");
+        let dragging = false,
+          startX,
+          startW;
+        h.addEventListener("mousedown", (e) => {
+          dragging = true;
+          startX = e.clientX;
+          startW = ep.offsetWidth;
+          h.classList.add("on");
+          document.body.style.cursor = "col-resize";
+          document.body.style.userSelect = "none";
+          e.preventDefault();
+        });
+        document.addEventListener("mousemove", (e) => {
+          if (!dragging) return;
+          const nw = Math.max(
+            250,
+            Math.min(startW + (e.clientX - startX), window.innerWidth - 300),
+          );
+          ep.style.width = nw + "px";
+          Object.values(editors).forEach((ed) => ed.refresh());
+        });
+        document.addEventListener("mouseup", () => {
+          if (dragging) {
+            dragging = false;
+            h.classList.remove("on");
+            document.body.style.cursor = "";
+            document.body.style.userSelect = "";
+          }
+        });
+      }
+
+      /* ===== PROJECT LOADING ===== */
+      function loadProj(id) {
+        const proj = P.find((p) => p.id === id);
+        if (!proj) return;
+        state.currentProj = id;
+        saveState();
+        editors.html.setValue(proj.s.html);
+        editors.css.setValue(proj.s.css);
+        editors.js.setValue(proj.s.js);
+        swTab("html");
+        updatePreview();
+        renderChecks([]);
+        // Highlight in sidebar
+        document.querySelectorAll(".p-item").forEach((el) => {
+          el.style.background = el.dataset.id == id ? "var(--surface2)" : "";
+          el.style.borderLeft =
+            el.dataset.id == id
+              ? "3px solid var(--accent)"
+              : "3px solid transparent";
+        });
+        // Close welcome if open
+        const w = document.getElementById("welcome");
+        if (w) w.style.display = "none";
+        // Update bottom bar visibility
+        document.getElementById("bbar").style.display = "flex";
+        // Update solution button
+        document.getElementById("sol-btn").style.display =
+          state.completed.includes(id) ? "none" : "inline-flex";
+      }
+
+      /* ===== RESET CODE ===== */
+      function resetCode() {
+        if (!state.currentProj) return;
+        const proj = P.find((p) => p.id === state.currentProj);
+        editors.html.setValue(proj.s.html);
+        editors.css.setValue(proj.s.css);
+        editors.js.setValue(proj.s.js);
+        swTab("html");
+        updatePreview();
+        renderChecks([]);
+        toast("Code reset to starter", "i");
+      }
+
+      /* ===== AUTO-CHECKS ===== */
+      function runChecks() {
+        if (!state.currentProj) return;
+        const proj = P.find((p) => p.id === state.currentProj);
+        const frame = document.getElementById("pframe");
+        const results = [];
+        proj.c.forEach((ch) => {
+          try {
+            const doc = frame.contentDocument;
+            if (!doc) {
+              results.push({ ...ch, pass: false });
+              return;
+            }
+            if (
+              ch.s.startsWith(".") ||
+              ch.s.startsWith("#") ||
+              ch.s.startsWith("[")
+            ) {
+              const el = doc.querySelector(ch.s);
+              results.push({ ...ch, pass: !!el });
+            } else {
+              const el = doc.querySelector(ch.s);
+              results.push({ ...ch, pass: !!el });
+            }
+          } catch (e) {
+            results.push({ ...ch, pass: false });
+          }
+        });
+        renderChecks(results);
+        const passed = results.filter((r) => r.pass).length;
+        if (passed === results.length) toast("All checks passed!", "s");
+        else toast(`${passed}/${results.length} checks passed`, "i");
+      }
+
+      function renderChecks(results) {
+        const c = document.getElementById("checks-c");
+        if (!results.length) {
+          c.innerHTML =
+            '<span class="text-xs text-[var(--muted)]">Click "Check" to verify your project</span>';
+          return;
+        }
+        c.innerHTML = results
+          .map(
+            (r) =>
+              `<div class="flex items-center gap-1.5 text-xs px-2 py-1 rounded-md ${r.pass ? "bg-green-900/30 text-green-400" : "bg-red-900/30 text-red-400"}" style="animation:check-pop .3s ease"><i class="fa-solid ${r.pass ? "fa-check" : "fa-xmark"}"></i>${r.m}</div>`,
+          )
+          .join("");
+      }
+
+      /* ===== HINTS ===== */
+      function showHint() {
+        if (!state.currentProj) return;
+        const proj = P.find((p) => p.id === state.currentProj);
+        const used = state.hintsUsed[proj.id] || 0;
+        if (used >= proj.h.length) {
+          toast("No more hints available", "i");
+          return;
+        }
+        state.hintsUsed[proj.id] = used + 1;
+        saveState();
+        document.getElementById("hint-txt").textContent = proj.h[used];
+        document.getElementById("hint-m").classList.add("on");
+      }
+
+      /* ===== SUBMIT ===== */
+      function submitProj() {
+        if (!state.currentProj) return;
+        const proj = P.find((p) => p.id === state.currentProj);
+        if (state.completed.includes(proj.id)) {
+          toast("Already completed!", "i");
+          return;
+        }
+        // Run checks first
+        const frame = document.getElementById("pframe");
+        let allPass = true;
+        proj.c.forEach((ch) => {
+          try {
+            if (
+              !frame.contentDocument ||
+              !frame.contentDocument.querySelector(ch.s)
+            )
+              allPass = false;
+          } catch (e) {
+            allPass = false;
+          }
+        });
+        // Complete anyway (encouragement-first approach)
+        state.completed.push(proj.id);
+        const hintsUsed = state.hintsUsed[proj.id] || 0;
+        const xpEarned = Math.max(1, proj.xp - hintsUsed * 2);
+        state.xp += xpEarned;
+        // Streak
+        const today = new Date().toDateString();
+        const lastDate = localStorage.getItem("wf-lastdate");
+        if (lastDate !== today) {
+          state.streak++;
+          localStorage.setItem("wf-lastdate", today);
+        }
+        saveState();
+        updateUI();
+        renderSidebar();
+        toast(`+${xpEarned} XP earned!`, "xp");
+        spawnConfetti();
+        document.getElementById("sol-btn").style.display = "none";
+        checkBadges();
+      }
+
+      /* ===== SOLUTION REVEAL ===== */
+      function revealSol() {
+        if (!state.currentProj) return;
+        // For MVP, solutions aren't included in starter — show a message
+        toast(
+          "Solutions unlock after completing 3 projects in the same tier",
+          "i",
+        );
+      }
+
+      /* ===== SIDEBAR ===== */
+      function renderSidebar(filter = "") {
+        const list = document.getElementById("p-list");
+        const tiers = [
+          { t: 1, n: "HTML/CSS Basics", c: "var(--t1)" },
+          { t: 2, n: "JS Fundamentals", c: "var(--t2)" },
+          { t: 3, n: "Intermediate", c: "var(--t3)" },
+          { t: 4, n: "Advanced", c: "var(--t4)" },
+        ];
+        let html = "";
+        tiers.forEach((tier) => {
+          const projects = P.filter(
+            (p) =>
+              p.t === tier.t &&
+              p.n.toLowerCase().includes(filter.toLowerCase()),
+          );
+          if (!projects.length) return;
+          const done = projects.filter((p) =>
+            state.completed.includes(p.id),
+          ).length;
+          html += `<div class="mb-1"><div class="th flex items-center gap-2 px-3 py-2" onclick="this.classList.toggle('col')"><i class="fa-solid fa-chevron-down tc text-xs" style="color:${tier.c}"></i><span class="text-xs font-semibold tracking-wide" style="color:${tier.c}">${tier.n}</span><span class="ml-auto text-xs text-[var(--muted)]">${done}/${projects.length}</span></div><div class="pl-3">`;
+          projects.forEach((p) => {
+            const isDone = state.completed.includes(p.id);
+            html += `<div class="p-item flex items-center gap-2 px-3 py-2 cursor-pointer text-sm hover:bg-[var(--surface2)] transition ${state.currentProj === p.id ? "bg-[var(--surface2)]" : ""}" style="border-left:3px solid ${state.currentProj === p.id ? "var(--accent)" : "transparent"}" data-id="${p.id}" onclick="loadProj(${p.id})"><i class="fa-solid ${isDone ? "fa-check-circle text-green-500" : "fa-circle text-[var(--border)]"} text-xs"></i><span class="truncate ${isDone ? "text-[var(--muted)]" : ""}">${p.n}</span></div>`;
+          });
+          html += `</div></div>`;
+        });
+        list.innerHTML = html;
+      }
+      document
+        .getElementById("sb-search")
+        .addEventListener("input", (e) => renderSidebar(e.target.value));
+
+      /* ===== CATALOG ===== */
+      let catTier = "all";
+      function openCat() {
+        document.getElementById("cat-m").classList.add("on");
+        renderCatTiers();
+        renderCatGrid();
+      }
+      function renderCatTiers() {
+        const tiers = [
+          { v: "all", n: "All", bg: "var(--accent)", fg: "#fff" },
+          { v: "1", n: "T1 Basics", bg: "var(--surface2)", fg: "var(--t1)" },
+          { v: "2", n: "T2 JS Fund.", bg: "var(--surface2)", fg: "var(--t2)" },
+          { v: "3", n: "T3 Intermed.", bg: "var(--surface2)", fg: "var(--t3)" },
+          { v: "4", n: "T4 Advanced", bg: "var(--surface2)", fg: "var(--t4)" },
+        ];
+        document.getElementById("cat-tiers").innerHTML = tiers
+          .map(
+            (t) =>
+              `<button class="ctb px-3 py-1.5 rounded-lg text-xs font-semibold transition" data-t="${t.v}" onclick="setCatTier('${t.v}')" style="background:${catTier === t.v ? t.bg : "var(--surface2)"};color:${catTier === t.v ? t.fg : t.fg}">${t.n}</button>`,
+          )
+          .join("");
+      }
+      function setCatTier(t) {
+        catTier = t;
+        renderCatTiers();
+        renderCatGrid();
+      }
+      function filterCat() {
+        renderCatGrid();
+      }
+      function renderCatGrid() {
+        const search = (
+          document.getElementById("cat-search")?.value || ""
+        ).toLowerCase();
+        const filtered = P.filter(
+          (p) =>
+            (catTier === "all" || p.t == catTier) &&
+            (p.n.toLowerCase().includes(search) ||
+              p.tg.some((t) => t.includes(search))),
+        );
+        const grid = document.getElementById("cat-grid");
+        const empty = document.getElementById("cat-empty");
+        if (!filtered.length) {
+          grid.innerHTML = "";
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+        const tc = {
+          1: "var(--t1)",
+          2: "var(--t2)",
+          3: "var(--t3)",
+          4: "var(--t4)",
+        };
+        const tl = {
+          1: "Beginner",
+          2: "JS Fund.",
+          3: "Intermediate",
+          4: "Advanced",
+        };
+        grid.innerHTML = filtered
+          .map((p) => {
+            const done = state.completed.includes(p.id);
+            return `<div class="pc rounded-xl p-4 cursor-pointer ${done ? "opacity-70" : ""}" style="background:var(--surface)" onclick="closeM('cat-m');loadProj(${p.id})"><div class="flex items-center justify-between mb-2"><span class="text-xs font-semibold px-2 py-0.5 rounded-full" style="background:${tc[p.t]}22;color:${tc[p.t]}">${tl[p.t]}</span><span class="text-xs text-[var(--accent2)] font-mono font-bold">${p.xp} XP</span></div><h3 class="font-display font-semibold text-sm mb-1 ${done ? "line-through text-[var(--muted)]" : ""}">${p.n}</h3><p class="text-xs text-[var(--muted)] mb-3 line-clamp-2">${p.d}</p><div class="flex flex-wrap gap-1">${p.tg
+              .slice(0, 3)
+              .map(
+                (t) =>
+                  `<span class="text-[10px] px-1.5 py-0.5 rounded bg-[var(--surface2)] text-[var(--muted)]">${t}</span>`,
+              )
+              .join(
+                "",
+              )}</div>${done ? '<div class="mt-2 text-xs text-green-500"><i class="fa-solid fa-check mr-1"></i>Completed</div>' : ""}</div>`;
+          })
+          .join("");
+      }
+
+      /* ===== SKILLS RADAR ===== */
+      let radarChart = null;
+      const skillMap = {
+        html: [
+          "html-basics",
+          "semantic-html",
+          "page-layout",
+          "hero-design",
+          "sections",
+        ],
+        css: [
+          "flexbox",
+          "css-grid",
+          "card-design",
+          "responsive",
+          "typography",
+          "transitions",
+          "transforms",
+          "hover-effects",
+          "css-techniques",
+          "input-styling",
+          "forms",
+          "css-variables",
+          "animation",
+          "creativity",
+        ],
+        js: [
+          "dom-manipulation",
+          "events",
+          "state",
+          "arrays",
+          "logic",
+          "random",
+          "math",
+          "string-methods",
+          "conditional-logic",
+          "loops",
+          "dom-creation",
+          "setInterval",
+          "date-api",
+        ],
+        advanced: [
+          "async",
+          "fetch",
+          "api",
+          "crud",
+          "state-management",
+          "regex",
+          "timing",
+          "drag-events",
+          "performance",
+          "intersection-observer",
+          "localStorage",
+          "canvas-api",
+          "html5-audio",
+          "string-processing",
+          "hash-events",
+          "architecture",
+          "dom-creation",
+        ],
+      };
+      function openSkills() {
+        document.getElementById("skills-m").classList.add("on");
+        const skills = getSkillData();
+        renderRadar(skills);
+        renderSkillDetails(skills);
+      }
+      function getSkillData() {
+        const tags = {};
+        state.completed.forEach((id) => {
+          const p = P.find((x) => x.id === id);
+          if (p)
+            p.tg.forEach((t) => {
+              tags[t] = (tags[t] || 0) + 1;
+            });
+        });
+        const data = {};
+        Object.entries(skillMap).forEach(([cat, ts]) => {
+          const total = ts.length;
+          const hit = ts.filter((t) => tags[t]).length;
+          data[cat] = Math.round((hit / Math.max(1, total)) * 100);
+        });
+        return data;
+      }
+      function renderRadar(data) {
+        const ctx = document.getElementById("radar").getContext("2d");
+        if (radarChart) radarChart.destroy();
+        radarChart = new Chart(ctx, {
+          type: "radar",
+          data: {
+            labels: ["HTML", "CSS", "JavaScript", "Advanced JS"],
+            datasets: [
+              {
+                label: "Skill Level",
+                data: [
+                  data.html || 0,
+                  data.css || 0,
+                  data.js || 0,
+                  data.advanced || 0,
+                ],
+                backgroundColor: "rgba(249,115,22,0.15)",
+                borderColor: "#F97316",
+                borderWidth: 2,
+                pointBackgroundColor: "#F97316",
+                pointBorderColor: "#F97316",
+                pointRadius: 5,
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            scales: {
+              r: {
+                beginAtZero: true,
+                max: 100,
+                ticks: { display: false, stepSize: 25 },
+                grid: { color: "rgba(255,255,255,0.06)" },
+                pointLabels: {
+                  color: "#E4E5EA",
+                  font: { size: 13, family: "Space Grotesk" },
+                },
+                angleLines: { color: "rgba(255,255,255,0.06)" },
+              },
+            },
+            plugins: { legend: { display: false } },
+          },
+        });
+      }
+      function renderSkillDetails(data) {
+        const names = {
+          html: "HTML Fundamentals",
+          css: "CSS & Layout",
+          js: "JavaScript Core",
+          advanced: "Advanced JS & APIs",
+        };
+        const colors = {
+          html: "var(--t1)",
+          css: "var(--t2)",
+          js: "var(--t3)",
+          advanced: "var(--t4)",
+        };
+        document.getElementById("skill-det").innerHTML = Object.entries(data)
+          .map(
+            ([k, v]) =>
+              `<div class="flex items-center gap-3 p-2 rounded-lg" style="background:var(--surface2)"><span class="text-xs font-semibold w-24" style="color:${colors[k]}">${names[k]}</span><div class="flex-1 h-2 rounded-full" style="background:var(--border)"><div class="h-full rounded-full transition-all" style="width:${v}%;background:${colors[k]}"></div></div><span class="text-xs font-mono font-bold" style="color:${colors[k]}">${v}%</span></div>`,
+          )
+          .join("");
+      }
+
+      /* ===== BADGES ===== */
+      const BADGES = [
+        {
+          id: "first",
+          name: "First Forge",
+          desc: "Complete your first project",
+          icon: "fa-fire",
+          check: () => state.completed.length >= 1,
+        },
+        {
+          id: "five",
+          name: "5 Projects Done",
+          desc: "Complete 5 projects",
+          icon: "fa-star",
+          check: () => state.completed.length >= 5,
+        },
+        {
+          id: "ten",
+          name: "Deca-Forge",
+          desc: "Complete 10 projects",
+          icon: "fa-trophy",
+          check: () => state.completed.length >= 10,
+        },
+        {
+          id: "twenty",
+          name: "Forge Master",
+          desc: "Complete 20 projects",
+          icon: "fa-crown",
+          check: () => state.completed.length >= 20,
+        },
+        {
+          id: "fifty",
+          name: "Legendary Forger",
+          desc: "Complete 50 projects",
+          icon: "fa-gem",
+          check: () => state.completed.length >= 50,
+        },
+        {
+          id: "t1",
+          name: "HTML/CSS Complete",
+          desc: "Finish all Tier 1 projects",
+          icon: "fa-code",
+          check: () =>
+            P.filter((p) => p.t === 1).every((p) =>
+              state.completed.includes(p.id),
+            ),
+        },
+        {
+          id: "t2",
+          name: "JS Fundamentals Done",
+          desc: "Finish all Tier 2 projects",
+          icon: "fa-js",
+          check: () =>
+            P.filter((p) => p.t === 2).every((p) =>
+              state.completed.includes(p.id),
+            ),
+        },
+        {
+          id: "streak3",
+          name: "3-Day Streak",
+          desc: "Practice 3 days in a row",
+          icon: "fa-bolt",
+          check: () => state.streak >= 3,
+        },
+        {
+          id: "streak7",
+          name: "Week Warrior",
+          desc: "7-day streak",
+          icon: "fa-fire-flame-curved",
+          check: () => state.streak >= 7,
+        },
+        {
+          id: "xp100",
+          name: "Century Club",
+          desc: "Earn 100+ XP",
+          icon: "fa-medal",
+          check: () => state.xp >= 100,
+        },
+        {
+          id: "xp500",
+          name: "XP Hunter",
+          desc: "Earn 500+ XP",
+          icon: "fa-shield",
+          check: () => state.xp >= 500,
+        },
+        {
+          id: "no-hints",
+          name: "Self-Solver",
+          desc: "Complete 5 projects without hints",
+          icon: "fa-lightbulb",
+          check: () =>
+            state.completed.filter(
+              (id) => !state.hintsUsed[id] || state.hintsUsed[id] === 0,
+            ).length >= 5,
+        },
+      ];
+      let earnedBadges = new Set();
+      try {
+        const eb = JSON.parse(localStorage.getItem("wf-badges"));
+        if (Array.isArray(eb)) earnedBadges = new Set(eb);
+      } catch (e) {}
+      function saveBadges() {
+        try {
+          localStorage.setItem("wf-badges", JSON.stringify([...earnedBadges]));
+        } catch (e) {}
+      }
+      function checkBadges() {
+        BADGES.forEach((b) => {
+          if (!earnedBadges.has(b.id) && b.check()) {
+            earnedBadges.add(b.id);
+            toast(`Badge earned: ${b.name}!`, "s");
+            saveBadges();
+          }
+        });
+      }
+      function openBadges() {
+        document.getElementById("badges-m").classList.add("on");
+        document.getElementById("badges-g").innerHTML = BADGES.map((b) => {
+          const earned = earnedBadges.has(b.id);
+          return `<div class="p-4 rounded-xl border text-center transition ${earned ? "" : "opacity-40"}" style="background:var(--surface);border-color:${earned ? "var(--accent)" : "var(--border)"}"><div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3 text-xl" style="background:${earned ? "linear-gradient(135deg,#F97316,#EA580C)" : "var(--surface2)"};color:${earned ? "#fff" : "var(--muted)"}"><i class="fa-solid ${b.icon}"></i></div><h4 class="font-display font-semibold text-sm mb-1">${b.name}</h4><p class="text-xs text-[var(--muted)]">${b.desc}</p>${earned ? '<span class="text-[10px] text-green-500 mt-2 block"><i class="fa-solid fa-check mr-1"></i>Earned</span>' : ""}</div>`;
+        }).join("");
+      }
+
+      /* ===== UI UPDATE ===== */
+      function updateUI() {
+        document.getElementById("xp-v").textContent = state.xp;
+        document.getElementById("streak-v").textContent = state.streak;
+      }
+
+      /* ===== MODALS ===== */
+      function closeM(id) {
+        document.getElementById(id).classList.remove("on");
+      }
+      document.querySelectorAll(".modal-bg").forEach((m) => {
+        m.addEventListener("click", (e) => {
+          if (e.target === m) m.classList.remove("on");
+        });
+      });
+
+      /* ===== TOAST ===== */
+      function toast(msg, type = "i") {
+        const c = document.getElementById("toasts");
+        const t = document.createElement("div");
+        t.className = "toast toast-" + type;
+        t.textContent = msg;
+        c.appendChild(t);
+        setTimeout(() => t.remove(), 3100);
+      }
+
+      /* ===== CONFETTI ===== */
+      function spawnConfetti() {
+        const colors = [
+          "#F97316",
+          "#FBBF24",
+          "#22C55E",
+          "#3B82F6",
+          "#A855F7",
+          "#EF4444",
+        ];
+        for (let i = 0; i < 40; i++) {
+          const c = document.createElement("div");
+          c.className = "confetti";
+          c.style.left = Math.random() * 100 + "vw";
+          c.style.top = "-10px";
+          c.style.background =
+            colors[Math.floor(Math.random() * colors.length)];
+          c.style.animationDuration = 1.5 + Math.random() * 2 + "s";
+          c.style.animationDelay = Math.random() * 0.5 + "s";
+          c.style.transform = `rotate(${Math.random() * 360}deg)`;
+          document.body.appendChild(c);
+          setTimeout(() => c.remove(), 4000);
+        }
+      }
+
+      /* ===== EMBER PARTICLES ===== */
+      function initEmbers() {
+        const c = document.getElementById("embers");
+        for (let i = 0; i < 15; i++) {
+          const e = document.createElement("div");
+          e.className = "ember";
+          e.style.left = Math.random() * 100 + "vw";
+          e.style.bottom = "-10px";
+          e.style.setProperty("--d", Math.random() * 60 - 30 + "px");
+          e.style.animation = `ember-rise ${6 + Math.random() * 8}s linear ${Math.random() * 10}s infinite`;
+          e.style.width = 2 + Math.random() * 3 + "px";
+          e.style.height = e.style.width;
+          c.appendChild(e);
+        }
+      }
+
+      /* ===== SIDEBAR TOGGLE (mobile) ===== */
+      document.getElementById("sb-tog").addEventListener("click", () => {
+        const sb = document.getElementById("sidebar");
+        sb.style.display = sb.style.display === "none" ? "block" : "none";
+      });
+
+      /* ===== INIT ===== */
+      function init() {
+        initEditors();
+        initResize();
+        initEmbers();
+        renderSidebar();
+        updateUI();
+        checkBadges();
+        // Load last project if any
+        if (state.currentProj) {
+          loadProj(state.currentProj);
+        } else {
+          document.getElementById("bbar").style.display = "none";
+        }
+        // Keyboard shortcuts
+        document.addEventListener("keydown", (e) => {
+          if (e.ctrlKey && e.key === "1") {
+            e.preventDefault();
+            swTab("html");
+          }
+          if (e.ctrlKey && e.key === "2") {
+            e.preventDefault();
+            swTab("css");
+          }
+          if (e.ctrlKey && e.key === "3") {
+            e.preventDefault();
+            swTab("js");
+          }
+          if (e.ctrlKey && e.key === "Enter") {
+            e.preventDefault();
+            runChecks();
+          }
+        });
+      }
+      init();
+    </script>
+  </body>
+</html>
