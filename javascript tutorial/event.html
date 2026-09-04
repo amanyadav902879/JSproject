@@ -854,7 +854,13 @@ const quizData=[
     {q:"e.stopPropagation() kya karta hai?",o:["Event delete ho jaata hai","Bubbling rok deta hai","Parent ko remove karta hai","Child ko remove karta hai"],c:1,e:"Bubbling rok deta hai — parent listeners fire nahi hote." },
     {q:"Event delegation kyun use karte hain?",o:["Speed badhata hai","Memory save hota hai","Dynamic elements kaam karte hain","Sab upar wale sahi hai"],c:3,e:"Ek listener se 100 elements handle ho sakte hain. Dynamic elements bhi automatically kaam karte hain. Performance + maintainability dono badhti hai."},
     {q:"e.preventDefault() kyon use karte hain?",o:["Default browser behavior rokta hai","Animation rokta hai","Network request rokta hai","CSS apply rokta hai"],c:0,e:"Default behavior rokta hai — form submit se page reload rokna, link click se navigate rokna etc."},
-    {q:"element.remove() se element kya hota hai?",o:["Hidden ho jaata hai","DOM se hat jaata hai permanently","CSS se hide hota hai","Parent se detach hota hai"],c:1,e:"Element DOM se permanently delete ho jaata hai."}
+    {q:"element.remove() se element kya hota hai?",o:["Hidden ho jaata hai","DOM se hat jaata hai permanently","CSS se hide hota hai","Parent se detach hota hai"],c:1,e:"Element DOM se permanently delete ho jaata hai."},
+    {q:"addEventListener() ka pehla argument kya hota hai?",o:["Element ka id","Event type","Callback ka result","CSS selector"],c:1,e:"Pehla argument event type hota hai, jaise click, input ya submit."},
+    {q:"event.target aur event.currentTarget mein kya fark hai?",o:["Dono hamesha same hote hain","target trigger hua element hai, currentTarget listener wala element hai","target parent hai","currentTarget text hota hai"],c:1,e:"target actual trigger element hota hai, currentTarget us element ko batata hai jiske listener ne event handle kiya."},
+    {q:"input field ki value live read karne ke liye kaunsa event useful hai?",o:["input","resize","scroll","load"],c:0,e:"input event har value change par fire hota hai, isliye live validation ke liye useful hai."},
+    {q:"Keyboard key press ko check karne ke liye kaunsa property use hota hai?",o:["event.button","event.key","event.codeName","event.input"],c:1,e:"event.key pressed key ka naam deta hai, jaise Enter, a ya Escape."},
+    {q:"event.preventDefault() ka return value kya hota hai?",o:["true","false","undefined","Event object"],c:2,e:"preventDefault() default action ko rokta hai aur koi useful value return nahi karta."},
+    {q:"Once-only event listener banane ke liye kaunsa option use hota hai?",o:["{ once: true }","{ single: true }","{ first: true }","{ stop: true }"],c:0,e:"{ once: true } listener ko pehli baar run hone ke baad automatically remove kar deta hai."}
 ];
 let quizIdx=0,quizScore=0,quizTotal=quizData.length,quizAnswered=0;
 function renderQuiz(){

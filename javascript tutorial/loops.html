@@ -1,0 +1,2790 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ghoomo Phiro Loop 🔄</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: #151d2e;
+            --card2: #1a2540;
+            --border: #1e3a5f;
+            --fg: #e8edf5;
+            --muted: #6b7fa3;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --purple: #a855f7;
+            --pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Background Effect === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 { top: -150px; left: -100px; background: var(--accent); }
+        .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+        .bg-glow-3 { top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--purple); opacity: 0.08; }
+
+        /* === Header === */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        header h1 {
+            font-weight: 900;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header .badge-chapter {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* === Roadmap === */
+        .roadmap-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
+        }
+
+        .roadmap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .roadmap h3 {
+            font-size: 1rem;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roadmap-track {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .rm-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .rm-chip.done { border-color: var(--accent); color: var(--accent); }
+        .rm-chip.now {
+            background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.15));
+            border-color: var(--accent2);
+            color: var(--accent2);
+            box-shadow: 0 0 18px rgba(0,212,255,0.25);
+            animation: pulseChip 2s infinite;
+        }
+        .rm-chip.future { opacity: 0.55; }
+
+        @keyframes pulseChip {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+            50% { box-shadow: 0 0 22px rgba(0,212,255,0.45); }
+        }
+
+        /* === Sections === */
+        .section {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .section > p.section-desc {
+            color: var(--muted);
+            max-width: 760px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        /* === Intro Concept Box === */
+        .concept-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .concept-box h4 {
+            color: var(--accent);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-box p {
+            color: var(--fg);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .concept-box code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        /* === Operator Family Cards === */
+        .op-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .op-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .op-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.12);
+        }
+
+        .op-card .op-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+        }
+
+        .op-card:nth-child(2) .op-icon { background: rgba(0,212,255,0.1); color: var(--accent2); }
+        .op-card:nth-child(3) .op-icon { background: rgba(168,85,247,0.1); color: var(--purple); }
+        .op-card:nth-child(4) .op-icon { background: rgba(255,107,157,0.1); color: var(--pink); }
+        .op-card:nth-child(5) .op-icon { background: rgba(255,165,2,0.1); color: var(--warn); }
+        .op-card:nth-child(6) .op-icon { background: rgba(255,71,87,0.1); color: var(--danger); }
+
+        .op-card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+        .op-card .op-symbols {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .op-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* === Operator Tables === */
+        .op-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        table.op-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 0.9rem;
+            min-width: 560px;
+        }
+
+        .op-table th {
+            background: var(--bg2);
+            color: var(--accent2);
+            text-align: left;
+            padding: 13px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .op-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(30,58,95,0.5);
+            vertical-align: middle;
+        }
+
+        .op-table tr:last-child td { border-bottom: none; }
+        .op-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+        .op-table .sym {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .op-table .ex {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.85rem;
+        }
+
+        .op-table .res {
+            font-family: 'Fira Code', monospace;
+            color: var(--warn);
+            font-weight: 600;
+        }
+
+        .op-table .desc { color: var(--muted); }
+
+        /* === Code Blocks === */
+        .code-block {
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.75;
+            overflow-x: auto;
+            white-space: pre;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .code-block .cm { color: var(--muted); }
+        .code-block .kw { color: var(--purple); }
+        .code-block .st { color: var(--accent); }
+        .code-block .nm { color: var(--accent2); }
+        .code-block .op { color: var(--warn); }
+        .code-block .out { color: var(--pink); }
+
+        /* === Gotcha / Warning Box === */
+        .gotcha {
+            background: rgba(255,71,87,0.07);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-left: 4px solid var(--danger);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .gotcha h5 {
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .gotcha p, .gotcha li { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .gotcha ul { padding-left: 20px; margin-top: 6px; }
+        .gotcha code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255,71,87,0.12);
+            color: var(--pink);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Tip Box === */
+        .tipbox {
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.25);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .tipbox h5 {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .tipbox p { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .tipbox code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Two Column Split === */
+        .split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 780px) {
+            .split-2 { grid-template-columns: 1fr; }
+        }
+
+        .split-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .split-card h5 { margin-bottom: 10px; font-size: 1rem; }
+        .split-card.vs-lose { border-top: 3px solid var(--warn); }
+        .split-card.vs-strict { border-top: 3px solid var(--accent); }
+
+        .split-card ul { list-style: none; }
+        .split-card li {
+            padding: 7px 0;
+            color: var(--fg);
+            font-size: 0.87rem;
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .split-card li:last-child { border-bottom: none; }
+        .split-card li i { margin-right: 8px; }
+        .split-card .li-ok i { color: var(--accent); }
+        .split-card .li-bad i { color: var(--danger); }
+    </style>
+<style>
+        /* === Flow Demo (Concept) === */
+        .flow {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: stretch;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-cond {
+            background: var(--bg2);
+            border: 2px dashed var(--accent2);
+            border-radius: 12px;
+            padding: 16px 22px;
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .flow-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: center;
+            min-width: 150px;
+            font-size: 0.88rem;
+        }
+
+        .flow-box .f-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .flow-box.true-path { border-top: 3px solid var(--accent); }
+        .flow-box.true-path .f-tag { color: var(--accent); }
+        .flow-box.false-path { border-top: 3px solid var(--danger); }
+        .flow-box.false-path .f-tag { color: var(--danger); }
+        .flow-arrow {
+            align-self: center;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        /* === Loop Machine Simulator === */
+        .lsm {
+            background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(0,212,255,0.08));
+            border: 1px solid var(--purple);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 26px 0;
+        }
+
+        .lsm h4 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .lsm h4 i { color: var(--purple); margin-right: 8px; }
+
+        .lsm p.ls-desc {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.87rem;
+            margin-bottom: 20px;
+        }
+
+        .lsm-types {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .lsm-types button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .lsm-types button:hover { border-color: var(--purple); color: var(--purple); }
+
+        .lsm-types button.active {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .lsm-input-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .lsm-input-row label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .lsm-input-row input {
+            width: 86px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 10px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            text-align: center;
+        }
+
+        .lsm-input-row input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(168,85,247,0.25); }
+
+        .lsm-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            color: #0a0e17;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 12px 30px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .lsm-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,255,136,0.3); }
+
+        .lsm-code-line {
+            text-align: center;
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.28);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 11px 14px;
+            margin: 0 auto 18px;
+            max-width: 580px;
+            font-size: 0.84rem;
+            color: var(--accent);
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+
+        .lsm-track {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .itr {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.84rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.35s;
+        }
+
+        .itr.show { opacity: 1; transform: translateY(0); }
+
+        .itr .i-num { color: var(--muted); font-size: 0.7rem; min-width: 84px; }
+        .itr .i-val { color: var(--accent); font-weight: 700; }
+        .itr .i-check { color: var(--muted); font-size: 0.78rem; }
+        .itr .i-out { margin-left: auto; color: var(--accent2); font-size: 0.8rem; text-align: right; }
+
+        .itr.pass { border-color: rgba(0,255,136,0.45); }
+        .itr.pass .i-check { color: var(--accent); font-weight: 700; }
+
+        .itr.fail { border-color: rgba(255,71,87,0.5); opacity: 0.8; }
+        .itr.fail .i-check { color: var(--danger); font-weight: 700; }
+        .itr.fail .i-out { color: var(--danger); }
+
+        .lsm-summary {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            min-height: 24px;
+        }
+
+        .lsm-summary code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        /* === Analogies === */
+        .analogy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .analogy-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analogy-card:hover {
+            border-color: var(--accent2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.12);
+        }
+
+        .analogy-card .a-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .analogy-card h4 { margin-bottom: 8px; font-size: 1.02rem; }
+        .analogy-card h4 span { color: var(--accent2); }
+        .analogy-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+        .analogy-card .a-code {
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: rgba(0,255,136,0.07);
+            border-radius: 8px;
+            padding: 9px 12px;
+            line-height: 1.6;
+        }
+
+        /* === Examples Gallery === */
+        .ex-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .ex-tab {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .ex-tab:hover { border-color: var(--accent2); color: var(--accent2); }
+
+        .ex-tab.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .ex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .ex-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .ex-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .ex-card .ex-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ex-card .ex-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(0,255,136,0.12);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ex-card .ex-title { font-size: 0.92rem; font-weight: 600; }
+
+        .ex-card pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            padding: 16px 18px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .ex-card .ex-out {
+            padding: 12px 18px;
+            border-top: 1px dashed var(--border);
+            color: var(--warn);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .ex-card .ex-out::before { content: '▶ Output: '; color: var(--muted); }
+
+        /* === Use Cases === */
+        .use-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .use-card {
+            background: linear-gradient(145deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+
+        .use-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+
+        .use-card .u-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .use-card .u-logo { font-size: 1.8rem; }
+        .use-card h4 { font-size: 1rem; }
+        .use-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px; }
+        .use-card .u-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .u-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.12);
+            color: var(--purple);
+            border: 1px solid rgba(168,85,247,0.3);
+        }
+
+        .use-card .u-snippet {
+            margin-top: 12px;
+            background: #0d1321;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--accent2);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* === Playground === */
+        .playground {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .pg-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pg-top .pg-title { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .pg-top .pg-title i { color: var(--accent); }
+
+        .pg-snippets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .pg-snippets button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 7px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pg-snippets button:hover { border-color: var(--accent); color: var(--accent); }
+
+        .pg-body { display: grid; grid-template-columns: 1fr 1fr; }
+        @media (max-width: 820px) { .pg-body { grid-template-columns: 1fr; } }
+
+        .pg-body textarea {
+            width: 100%;
+            height: 320px;
+            background: #0d1321;
+            border: none;
+            resize: vertical;
+            padding: 18px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            outline: none;
+            border-right: 1px solid var(--border);
+        }
+
+        @media (max-width: 820px) { .pg-body textarea { border-right: none; border-bottom: 1px solid var(--border); } }
+
+        .pg-console {
+            height: 320px;
+            overflow-y: auto;
+            padding: 18px;
+            background: var(--bg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        .pg-console .cl { padding: 3px 0; color: var(--fg); word-break: break-word; }
+        .pg-console .cl-err { color: var(--danger); }
+        .pg-console .cl-info { color: var(--accent2); }
+        .pg-console .cl-warn { color: var(--warn); }
+
+        .pg-runbar {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 10px 26px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-run:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,255,136,0.3); }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+        .pg-hint { color: var(--muted); font-size: 0.75rem; margin-left: auto; }
+        @media (max-width: 640px) { .pg-hint { margin-left: 0; } }
+    </style>
+<style>
+        /* === Workshop === */
+        .ws-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .ws-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .ws-item:hover { border-color: var(--accent); }
+
+        .ws-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ws-head:hover { background: rgba(0,255,136,0.03); }
+
+        .ws-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 11px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ws-badge.easy { background: rgba(0,255,136,0.12); color: var(--accent); border: 1px solid rgba(0,255,136,0.3); }
+        .ws-badge.medium { background: rgba(255,165,2,0.12); color: var(--warn); border: 1px solid rgba(255,165,2,0.3); }
+        .ws-badge.hard { background: rgba(255,71,87,0.12); color: var(--danger); border: 1px solid rgba(255,71,87,0.3); }
+
+        .ws-head .ws-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+        .ws-head .ws-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.8rem; }
+        .ws-item.open .ws-arrow { transform: rotate(180deg); }
+
+        .ws-body { display: none; padding: 0 20px 20px; }
+        .ws-item.open .ws-body { display: block; }
+
+        .ws-body .ws-task {
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .ws-body .ws-task code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .ws-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent2);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            transition: all 0.25s;
+        }
+
+        .ws-toggle-btn:hover { border-color: var(--accent2); }
+
+        .ws-hint, .ws-sol {
+            display: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.84rem;
+            line-height: 1.7;
+        }
+
+        .ws-hint.show, .ws-sol.show { display: block; }
+
+        .ws-hint {
+            background: rgba(255,165,2,0.07);
+            border: 1px dashed rgba(255,165,2,0.4);
+            color: var(--fg);
+        }
+
+        .ws-hint strong { color: var(--warn); }
+
+        .ws-sol {
+            background: #0d1321;
+            border: 1px solid var(--border);
+        }
+
+        .ws-sol pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+        }
+
+        /* === Projects === */
+        .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+
+        .proj-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .proj-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+
+        .proj-card .p-emoji { font-size: 2rem; margin-bottom: 10px; }
+        .proj-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .proj-card .p-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 12px; }
+
+        .proj-card .p-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+
+        .p-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .proj-card .p-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+            align-self: flex-start;
+        }
+
+        .proj-card .p-btn:hover { background: rgba(0,255,136,0.1); }
+
+        .proj-card .p-starter {
+            display: none;
+            margin-top: 14px;
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .proj-card .p-starter.show { display: block; }
+
+        .proj-card .p-starter pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+            margin-bottom: 10px;
+        }
+
+        .proj-card .p-challenge {
+            color: var(--warn);
+            font-size: 0.78rem;
+            line-height: 1.65;
+        }
+
+        .proj-card .p-challenge strong { color: var(--warn); }
+
+        /* === Interview Accordion === */
+        .iq-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+
+        .iq-filter {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 9px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .iq-filter:hover { border-color: var(--accent2); color: var(--accent2); }
+        .iq-filter.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+        }
+
+        .iq-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .iq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .iq-q {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .iq-q:hover { background: rgba(0,255,136,0.03); }
+
+        .iq-level {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .iq-level.easy { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .iq-level.medium { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .iq-level.hard { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        .iq-q .iq-text { font-size: 0.9rem; font-weight: 600; flex: 1; line-height: 1.5; }
+        .iq-q .iq-arrow { color: var(--muted); font-size: 0.78rem; transition: transform 0.3s; }
+        .iq-item.open .iq-arrow { transform: rotate(180deg); }
+
+        .iq-a { display: none; padding: 0 18px 18px; }
+        .iq-item.open .iq-a { display: block; }
+
+        .iq-a .iq-answer {
+            background: var(--bg2);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: var(--fg);
+            font-size: 0.86rem;
+            line-height: 1.75;
+        }
+
+        .iq-a .iq-answer code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .iq-a .iq-answer pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            background: #0d1321;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.65;
+        }
+
+        /* === Cheat Sheet === */
+        .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+        .cheat-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .cheat-box h4 {
+            color: var(--accent2);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cheat-box table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .cheat-box td { padding: 6px 4px; border-bottom: 1px dashed rgba(30,58,95,0.6); }
+        .cheat-box td:first-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .cheat-box tr:last-child td { border-bottom: none; }
+
+        .cheat-box ul { list-style: none; }
+        .cheat-box li {
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: var(--fg);
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .cheat-box li:last-child { border-bottom: none; }
+        .cheat-box li i { color: var(--accent); margin-right: 7px; }
+        .cheat-box li code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            background: rgba(0,212,255,0.08);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* === Quiz === */
+        .quiz-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-progress .q-count { color: var(--muted); font-size: 0.85rem; }
+        .quiz-progress .q-score { font-family: 'Fira Code', monospace; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+        .quiz-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 18px; line-height: 1.6; }
+        .quiz-q code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+
+        .quiz-opt {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 18px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: var(--fg);
+            text-align: left;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .quiz-opt:hover { border-color: var(--accent2); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: var(--accent); background: rgba(0,255,136,0.1); color: var(--accent); }
+        .quiz-opt.wrong { border-color: var(--danger); background: rgba(255,71,87,0.1); color: var(--danger); }
+        .quiz-opt:disabled { cursor: default; }
+
+        .quiz-feedback { margin-top: 14px; font-size: 0.88rem; line-height: 1.6; min-height: 22px; }
+        .quiz-feedback.good { color: var(--accent); }
+        .quiz-feedback.bad { color: var(--danger); }
+
+        .quiz-next {
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 11px 28px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .quiz-next.show { display: inline-block; }
+
+        .quiz-final { text-align: center; padding: 20px 0; }
+        .quiz-final .qf-emoji { font-size: 3rem; margin-bottom: 12px; }
+        .quiz-final h4 { font-size: 1.3rem; margin-bottom: 8px; }
+        .quiz-final p { color: var(--muted); margin-bottom: 18px; font-size: 0.92rem; }
+
+        /* === Footer === */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer .f-next {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+        footer p { color: var(--muted); font-size: 0.82rem; line-height: 1.8; }
+        footer .f-heart { color: var(--danger); }
+
+        /* === Responsive === */
+        @media (max-width: 640px) {
+            .section { padding: 32px 16px; }
+            .lsm { padding: 20px 16px; }
+            .roadmap-track { justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- ============ HERO ============ -->
+    <header>
+        <span class="badge-chapter">⚡ Chapter 4 — JavaScript Journey</span>
+        <h1>Ghoomo Phiro Loop 🔄</h1>
+        <p>Decisions lena aa gaya... ab seekhenge <b>REPEAT</b> karna! 100 baar "I love JS" likhna hai? 100 lines nahi — bas <b>3 lines ka loop</b>! Code ko banayenge MACHINE jaisa — jo thakta nahi, bas ghoomta rehta hai. Chalo shuru! 🔁</p>
+    </header>
+
+    <!-- ============ ROADMAP ============ -->
+    <div class="roadmap-wrap">
+        <div class="roadmap">
+            <h3><i class="fas fa-map-signs"></i> Tumhara JavaScript Journey</h3>
+            <div class="roadmap-track">
+                <span class="rm-chip done"><i class="fas fa-check"></i> 1. Variables</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 2. Operators</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 3. Conditionals</span>
+                <span class="rm-chip now"><i class="fas fa-location-arrow"></i> 4. Loops (TUM YAHIN HO)</span>
+                <span class="rm-chip future">5. Functions</span>
+                <span class="rm-chip future">6. Arrays</span>
+                <span class="rm-chip future">7. Objects</span>
+                <span class="rm-chip future">8. DOM + Projects</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INTRO: LOOP KYA HAI ============ -->
+    <section class="section" id="intro">
+        <span class="section-tag"><i class="fas fa-lightbulb"></i> Concept</span>
+        <h2>Loop Kya Hota Hai? 🤔</h2>
+        <p class="section-desc">Loop ka matlab hai <b>repeat karna</b>. Socho: teacher bolti hai "I love JS" 100 baar likho. Ek-ek line likhoge? 😩 Nahi! Ek loop likho — 3 lines ka code 100 baar ka kaam karega. <b>Ek baar likho, hazaar baar chalao</b> — yahi hai programming ka asli superpower!</p>
+
+        <div class="concept-box">
+            <h4><i class="fas fa-dumbbell"></i> Gym Reps Analogy</h4>
+            <p>Trainer bolta hai: "<b>10 push-ups</b> karo." Tum kya karte ho? Rep 1 karo → count karo → 10 hua? Nahi → phir karo → count karo → ... jab tak 10 na ho jaye. Ye EXACTLY wahi hai jo loop karta hai!<br><br>
+            Programming mein: <code>for (let rep = 1; rep &lt;= 10; rep++)</code> — rep 1 se shuru, har baar count badhao, 10 tak repeat. Pichle chapter ki <b>conditions</b> (Chapter 3) yahi pe kaam aati hai — loop har round mein check karta hai: <b>"abhi rukna hai ya aage ghoomna hai?"</b> 🔄</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-box" style="border-top:3px solid var(--purple);"><span class="f-tag" style="color:var(--purple);">START 🏁</span>i = 1 banao<br>(ek baar hi)</div>
+            <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-cond">check: i &lt;= 5?</div>
+            <div class="flow-arrow"><i class="fas fa-check"></i></div>
+            <div class="flow-box true-path"><span class="f-tag">TRUE ✅</span>kaam karo, phir i++ 🔄<br><small style="color:var(--muted);">wapas check pe ghoomo!</small></div>
+            <div class="flow-arrow"><i class="fas fa-times"></i></div>
+            <div class="flow-box false-path"><span class="f-tag">FALSE ❌</span>loop se bahar<br>agla code chalao ➡️</div>
+        </div>
+
+        <div class="code-block"><span class="cm">// Loop ka life cycle (yeh 3 cheezein har loop mein hoti hai):</span>
+<span class="cm">// 1. INIT   → counting variable banao (ek baar)</span>
+<span class="cm">// 2. CHECK  → condition true? toh chalao (har round mein)</span>
+<span class="cm">// 3. UPDATE → count badhao (har round ke baad)</span>
+
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">5</span>; i<span class="op">++</span>) {
+  console.log(<span class="st">"Round"</span>, i);   <span class="cm">// 5 baar chalega</span>
+}
+<span class="out">// Round 1, Round 2, Round 3, Round 4, Round 5</span></div>
+
+        <p class="section-desc" style="margin-bottom:12px;">JavaScript mein <b>6 looping tools</b> hain — har ek ka apna moment. Sab cards dekho, phir ek-ek karke detail mein 👇</p>
+        <div class="op-grid">
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-repeat"></i></div>
+                <h4>1. for loop</h4>
+                <div class="op-symbols">for (init; check; update) { ... }</div>
+                <p>Sabse popular — jab <b>ginti pata hai</b> (10 baar, 100 tak). Tino parts ek line mein — tight aur clean!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-sync-alt"></i></div>
+                <h4>2. while loop</h4>
+                <div class="op-symbols">while (condition) { ... }</div>
+                <p>Jab <b>ginti nahi pata</b>, sirf condition pata hai — "jab tak pet na bhare khaao". Pehle check, phir chalao.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-play-circle"></i></div>
+                <h4>3. do-while loop</h4>
+                <div class="op-symbols">do { ... } while (condition);</div>
+                <p><b>Pehle chalao, phir check karo</b> — kam se kam 1 baar pakka chalega! Menu dikhana, retry lena.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-stop-circle"></i></div>
+                <h4>4. break &amp; continue</h4>
+                <div class="op-symbols">break; / continue;</div>
+                <p><b>break</b> = loop se bahar nikalo. <b>continue</b> = ye round skip karo, agla chalao. Loop ka remote control!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-box-open"></i></div>
+                <h4>5. for...of</h4>
+                <div class="op-symbols">for (let item of list) { ... }</div>
+                <p>Array ya string ke <b>har item pe</b> ek-ek baar — bina counting ke! Fruits list, playlist, messages.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-key"></i></div>
+                <h4>6. for...in &amp; Nested</h4>
+                <div class="op-symbols">for (let key in obj) / loop in loop</div>
+                <p><b>for...in</b> object ki keys pe chalta hai. <b>Nested loop</b> = loop ke andar loop — patterns banane ke liye!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FOR LOOP ============ -->
+    <section class="section" id="forloop">
+        <span class="section-tag"><i class="fas fa-repeat"></i> Tool #1</span>
+        <h2>for Loop — Repeat Ka Raja 👑</h2>
+        <p class="section-desc">Jab tumhe <b>pata hai kitni baar</b> chalana hai — 10 push-ups, 5 stars, 1 se 100 tak — tab <code>for</code> loop. Bracket ke andar <b>3 parts</b> hote hai, semicolon se alag: <code>shuru; check; badhao</code>. Ek line mein poora plan!</p>
+
+        <div class="code-block"><span class="cm">// Syntax: for (START; CHECK; UPDATE)</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">5</span>; i<span class="op">++</span>) {
+  <span class="cm">//   ↑         ↑        ↑</span>
+  <span class="cm">//  init     check    update</span>
+  console.log(<span class="st">"Rep no."</span>, i);
+}
+<span class="out">// Rep no. 1 ... Rep no. 5</span>
+
+<span class="cm">// "I love JS" 3 baar — dekho kitna short! 🔥</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">0</span>; i <span class="op">&lt;</span> <span class="nm">3</span>; i<span class="op">++</span>) {
+  console.log(<span class="st">"I love JS ❤️"</span>);
+}
+
+<span class="cm">// Ulta ginti — 5 se 1 tak</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">5</span>; i <span class="op">&gt;=</span> <span class="nm">1</span>; i<span class="op">--</span>) {
+  console.log(i);
+}
+<span class="out">// 5 4 3 2 1</span></div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> for Loop Ke 3 Rules</h5>
+            <p><b>1.</b> <code>init</code> sirf <b>PEHLI baar</b> chalta hai, <code>check + update</code> har round mein.<br>
+            <b>2.</b> <code>i++</code> (update) likhna <b>kabhi mat bhoolna</b> — bhool gaye toh i wahi rahega, condition hamesha true, loop kabhi nahi rukega = <b>INFINITE LOOP!</b> 😱<br>
+            <b>3.</b> <code>i &lt;= 5</code> matlab 1,2,3,4,5 (5 baar). <code>i &lt; 5</code> matlab 1,2,3,4 (4 baar, agar i=1 se shuru). <b>Off-by-one</b> ka dhyan rakho!</p>
+        </div>
+    </section>
+
+    <!-- ============ WHILE LOOP ============ -->
+    <section class="section" id="whileloop">
+        <span class="section-tag"><i class="fas fa-sync-alt"></i> Tool #2</span>
+        <h2>while Loop — Jab Tak Chalega ♾️</h2>
+        <p class="section-desc">Kabhi socha hai — "<b>jab tak</b> pet na bhare, khaate raho"? Ginti nahi pata kitni rotiyan lagengi, bas <b>condition</b> pata hai: "pet bhara? RUKO, warna aur khao." Yahi <code>while</code> loop hai — condition pe depend karta hai, counting pe nahi!</p>
+
+        <div class="code-block"><span class="cm">// Syntax: pehle CHECK, phir chalao</span>
+<span class="kw">while</span> (condition) {
+  <span class="cm">// kaam karo</span>
+  <span class="cm">// update — BHOOLNA MAT! 😅</span>
+}
+
+<span class="cm">// Pet bhara check 🍛</span>
+<span class="kw">let</span> roti = <span class="nm">0</span>;
+<span class="kw">let</span> petBhara = <span class="kw">false</span>;
+
+<span class="kw">while</span> (petBhara === <span class="kw">false</span>) {
+  roti<span class="op">++</span>;
+  console.log(<span class="st">"Roti #"</span> + roti + <span class="st">" khaayi 🍽️"</span>);
+  <span class="kw">if</span> (roti <span class="op">&gt;=</span> <span class="nm">4</span>) petBhara = <span class="kw">true</span>;
+}
+console.log(<span class="st">"Pet bhara! Ab sona 😴"</span>);
+
+<span class="cm">// Paise double karo jab tak 100 na ho</span>
+<span class="kw">let</span> paisa = <span class="nm">1</span>;
+<span class="kw">while</span> (paisa <span class="op">&lt;</span> <span class="nm">100</span>) {
+  paisa = paisa * <span class="nm">2</span>;
+  console.log(<span class="st">"Ab hai ₹"</span> + paisa);
+}
+<span class="out">// ₹2, ₹4, ₹8, ₹16, ₹32, ₹64, ₹128</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: Infinite Loop — Browser Hang! 💀</h5>
+            <p>while loop mein <b>update likhna bhool gaye</b> toh condition <b>kabhi false hi nahi hogi</b> — loop kabhi nahi rukega:</p>
+            <ul>
+                <li><code>let i = 1; while (i &lt;= 5) { console.log(i); }</code> — i++ gaya! i hamesha 1 rahega → <b>page hang, laptop garam, battery khatam!</b> 🔥</li>
+                <li>Fix: loop ke andar <b>hamesha</b> update karo: <code>i++</code> ya condition ko badalne wala kuch</li>
+                <li>Emergency exit: <code>break</code> lagao ya condition aisi banao jo kabhi na kabhi false ho</li>
+            </ul>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-balance-scale"></i> for ya while? Kab Kya?</h5>
+            <p><b>for:</b> ginti <b>pata hai</b> — "10 baar", "1 se 100", "array ke saare items". Counting wala kaam.<br>
+            <b>while:</b> ginti <b>nahi pata</b> — "jab tak user sahi input na de", "jab tak game khatam na ho", "jab tak balance khatam na ho". Condition wala kaam.<br>
+            Dono se ek dusre ka kaam ho sakta hai — par sahi choice = clean code!</p>
+        </div>
+    </section>
+
+    <!-- ============ DO-WHILE ============ -->
+    <section class="section" id="dowhile">
+        <span class="section-tag"><i class="fas fa-play-circle"></i> Tool #3</span>
+        <h2>do-while — Pehle Karo, Phir Socho 🎲</h2>
+        <p class="section-desc">JEE form bharte waqt portal <b>pehle form dikhata hai</b>, phir check karta hai ki bharne layak ho ya nahi. Menu pehle dikhaya jata hai, phir poocha jata hai "order karega?" — <b>at least EK baar toh hona hi hai!</b> Yahi <code>do-while</code> hai: pehle kaam, baad mein check.</p>
+
+        <div class="code-block"><span class="cm">// Syntax: do PEHLE, check BAAD mein (semicolon yaad!)</span>
+<span class="kw">do</span> {
+  <span class="cm">// ye code KAM SE KAM 1 BAAR pakka chalega</span>
+} <span class="kw">while</span> (condition)<span class="op">;</span>  <span class="cm">// ← ye semicolon zaroori hai!</span>
+
+<span class="cm">// ATM PIN — pehle poochho, galat toh dobara 🏧</span>
+<span class="kw">let</span> tries = <span class="nm">0</span>;
+<span class="kw">let</span> pinSahi = <span class="kw">false</span>;
+
+<span class="kw">do</span> {
+  tries<span class="op">++</span>;
+  console.log(<span class="st">"Attempt #"</span> + tries + <span class="st">": PIN poocha"</span>);
+  <span class="kw">if</span> (tries <span class="op">&gt;=</span> <span class="nm">3</span>) pinSahi = <span class="kw">true</span>;
+} <span class="kw">while</span> (pinSahi === <span class="kw">false</span> &amp;&amp; tries <span class="op">&lt;</span> <span class="nm">3</span>);
+
+<span class="cm">// MAGIC DEMO: condition pehle se false, PHIR BHI chala! 🤯</span>
+<span class="kw">let</span> x = <span class="nm">100</span>;
+
+<span class="kw">do</span> {
+  console.log(<span class="st">"Chal gaya! x ="</span> + x);
+  x<span class="op">++</span>;
+} <span class="kw">while</span> (x <span class="op">&lt;</span> <span class="nm">5</span>);
+<span class="out">// "Chal gaya! x =100" — 1 baar chala, chahe 100 < 5 false hai!</span></div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Cheez</th><th>while</th><th>do-while</th></tr>
+                <tr><td class="sym">Check kab?</td><td class="ex">PEHLE check, phir chalao</td><td class="ex">PEHLE chalao, phir check</td></tr>
+                <tr><td class="sym">Minimum runs</td><td class="res">0 baar (condition false toh skip)</td><td class="res">1 baar (pakka!)</td></tr>
+                <tr><td class="sym">Semicolon</td><td class="ex">nahi lagta</td><td class="res">while (...) ke baad LAGTA hai!</td></tr>
+                <tr><td class="sym">Use kab</td><td class="ex">counting, arrays, game loop</td><td class="ex">menu, retry, form dikhana</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-wrench"></i> do-while Ka Asli Use</h5>
+            <p>Jab <b>user se input lena</b> ho aur sahi hone tak dobara poochna ho: <code>do { poochho(); } while (inputGalat);</code> — input toh POOCHHNA hi padega pehli baar, chahe user pehli baar mein hi sahi de! Games mein dice roll, quiz mein retry — sab do-while.</p>
+        </div>
+    </section>
+
+    <!-- ============ BREAK & CONTINUE ============ -->
+    <section class="section" id="breakcontinue">
+        <span class="section-tag"><i class="fas fa-stop-circle"></i> Tool #4</span>
+        <h2>break &amp; continue — Loop Ka Remote 🎛️</h2>
+        <p class="section-desc">Movie dekh rahe ho, <b>boring</b> ho gaya? Beech mein hi chhod ke bahar — yeh <code>break</code> hai. Thali mein karela aaya? Wo <b>skip</b> karo, baaki sab khao — yeh <code>continue</code> hai. Dono loop ke andar conditions ke saath use hote hai!</p>
+
+        <div class="split-2">
+            <div class="split-card vs-strict">
+                <h5 style="color:var(--accent);"><i class="fas fa-door-open"></i> break — Loop Se BAHAR</h5>
+                <ul>
+                    <li class="li-ok"><i class="fas fa-check"></i> Loop <b>turant khatam</b> — uske baad ka code chalta hai</li>
+                    <li class="li-ok"><i class="fas fa-check"></i> Jaise: list mein item <b>mil gaya</b> — aur dhundhne ki zaroorat nahi!</li>
+                    <li class="li-ok"><i class="fas fa-check"></i> Switch chapter se yaad hai? Wahi bhi break se nikalta tha!</li>
+                </ul>
+            </div>
+            <div class="split-card vs-lose">
+                <h5 style="color:var(--warn);"><i class="fas fa-forward"></i> continue — Sirf Ye Round SKIP</h5>
+                <ul>
+                    <li class="li-ok"><i class="fas fa-check"></i> Current round <b>skip</b>, loop <b>chalta rehta hai</b></li>
+                    <li class="li-ok"><i class="fas fa-check"></i> Jaise: even numbers <b>chhod do</b>, sirf odd print karo</li>
+                    <li class="li-ok"><i class="fas fa-check"></i> break ki tarah loop ko <b>nahi maarta</b> — bas jhatka deta hai!</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="code-block"><span class="cm">// break: 7 pe STOP 🛑</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">10</span>; i<span class="op">++</span>) {
+  <span class="kw">if</span> (i <span class="op">===</span> <span class="nm">7</span>) {
+    console.log(<span class="st">"7 mil gaya — dhundhna band! 🔍"</span>);
+    <span class="kw">break</span>;
+  }
+  console.log(i);
+}
+<span class="out">// 1 2 3 4 5 6, phir "7 mil gaya" — 8,9,10 kabhi nahi chale</span>
+
+<span class="cm">// continue: even numbers SKIP 🫥</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">6</span>; i<span class="op">++</span>) {
+  <span class="kw">if</span> (i <span class="op">%</span> <span class="nm">2</span> <span class="op">===</span> <span class="nm">0</span>) <span class="kw">continue</span>;  <span class="cm">// even? skip karo</span>
+  console.log(<span class="st">"Odd number:"</span>, i);
+}
+<span class="out">// Odd number: 1, 3, 5</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: continue + while = Dhyan Se!</h5>
+            <p>while loop mein <code>continue</code> ke baad agar <b>update wali line pehle</b> nahi hai, toh update kabhi nahi hoga — <b>infinite loop!</b> 😱<br>
+            <code>while (i &lt; 5) { if (i === 3) continue; console.log(i); i++; }</code> — i = 3 pe continue hua, i++ kabhi nahi chala, i hamesha 3 = <b>hang!</b> Fix: update <b>continue se pehle</b> rakho, ya for loop use karo (waha update har round chalta hi hai).</p>
+        </div>
+    </section>
+
+    <!-- ============ FOR...OF & FOR...IN ============ -->
+    <section class="section" id="forofin">
+        <span class="section-tag"><i class="fas fa-box-open"></i> Tool #5</span>
+        <h2>for...of &amp; for...in — Seedha Item Lo 🎁</h2>
+        <p class="section-desc">Array ke har item ke liye <code>i = 0; i &lt; arr.length; i++</code> likhna boring hai na? <code>for...of</code> bolta hai: "<b>bhai counting mujhe karne do, tum bas item lo!</b>" Aur <code>for...in</code> object ki <b>keys</b> ke liye hai. Dono life savers hai!</p>
+
+        <div class="code-block"><span class="cm">// for...of — ARRAY ke items (values milte hai)</span>
+<span class="kw">let</span> fruits = [<span class="st">"aam"</span>, <span class="st">"seb"</span>, <span class="st">"kela"</span>];
+
+<span class="kw">for</span> (<span class="kw">let</span> fruit <span class="kw">of</span> fruits) {
+  console.log(<span class="st">"Aaj khao:"</span>, fruit);
+}
+<span class="out">// Aaj khao: aam / seb / kela</span>
+
+<span class="cm">// for...in — OBJECT ki keys</span>
+<span class="kw">let</span> student = { naam: <span class="st">"Rahul"</span>, marks: <span class="nm">92</span>, city: <span class="st">"Delhi"</span> };
+
+<span class="kw">for</span> (<span class="kw">let</span> key <span class="kw">in</span> student) {
+  console.log(key, <span class="st">"→"</span>, student[key]);
+}
+<span class="out">// naam → Rahul / marks → 92 / city → Delhi</span>
+
+<span class="cm">// String pe bhi for...of chalta hai!</span>
+<span class="kw">let</span> naam = <span class="st">"JS"</span>;
+<span class="kw">for</span> (<span class="kw">let</span> letter <span class="kw">of</span> naam) console.log(letter);
+<span class="out">// J / S</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: of ya in? Confuse Mat Hona!</h5>
+            <ul>
+                <li><code>for...of</code> → <b>VALUES</b> deta hai (aam, seb, kela) — arrays, strings pe use karo</li>
+                <li><code>for...in</code> → <b>KEYS/INDEX</b> deta hai (0, 1, 2 ya "naam", "marks") — objects ke liye bana hai</li>
+                <li>Array pe <code>for...in</code> chala diya toh <b>items nahi, indexes</b> milenge — 0, 1, 2! 🤦</li>
+                <li>Common mistake: <code>for (let fruit in fruits)</code> → fruit = 0, 1, 2 (numbers!), aam nahi</li>
+            </ul>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Yaad Rakhne Ka Tareeka</h5>
+            <p><b>"of" = object ki value... matlab item</b> — array ke <b>of</b> items ek-ek karke milte hai. <b>"in" = index/keys</b> — object ke <b>in</b> keys milte hai. Arrays → <code>of</code>, Objects → <code>in</code>. Bas!</p>
+        </div>
+    </section>
+
+    <!-- ============ NESTED LOOPS ============ -->
+    <section class="section" id="nested">
+        <span class="section-tag"><i class="fas fa-layer-group"></i> Tool #6</span>
+        <h2>Nested Loops — Loop Ke Andar Loop 🔁🔁</h2>
+        <p class="section-desc">Ghari dekho — ghanta wala needle <b>1 ghanta</b> poora karta hai, aur us dauraan minute wala needle <b>60 baar</b> ghoomta hai! Ek ke andar ek — yahi <b>nested loop</b> hai. Outer loop 1 baar chale, inner loop <b>poora</b> chalega. Patterns, tables, grids — sab isi se bante hai!</p>
+
+        <div class="code-block"><span class="cm">// Nested loop: 3 rounds × 4 reps = 12 baar!</span>
+<span class="kw">for</span> (<span class="kw">let</span> round = <span class="nm">1</span>; round <span class="op">&lt;=</span> <span class="nm">3</span>; round<span class="op">++</span>) {
+  console.log(<span class="st">"--- Round"</span> + round + <span class="st">" ---"</span>);
+  <span class="kw">for</span> (<span class="kw">let</span> rep = <span class="nm">1</span>; rep <span class="op">&lt;=</span> <span class="nm">4</span>; rep<span class="op">++</span>) {
+    console.log(<span class="st">"  Rep"</span> + rep);
+  }
+}
+
+<span class="cm">// Star pattern — pehli baar dekhoge toh dimaag ghoomta hai 😵</span>
+<span class="kw">for</span> (<span class="kw">let</span> i = <span class="nm">1</span>; i <span class="op">&lt;=</span> <span class="nm">3</span>; i<span class="op">++</span>) {
+  <span class="kw">let</span> line = <span class="st">""</span>;
+  <span class="kw">for</span> (<span class="kw">let</span> j = <span class="nm">1</span>; j <span class="op">&lt;=</span> i; j<span class="op">++</span>) {
+    line = line + <span class="st">"⭐"</span>;
+  }
+  console.log(line);
+}
+<span class="out">// ⭐ / ⭐⭐ / ⭐⭐⭐</span></div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-brain"></i> Nested Ka Rule + Performance Baat</h5>
+            <p><b>Rule:</b> Outer loop ki <b>har 1 iteration</b> mein inner loop <b>apni poori life</b> jiye ga. 3×4 = 12 baar, 100×100 = 10,000 baar! Isliye nested loops ko <b>O(n²)</b> kehte hai interview mein — data bada hua toh iterations <b>square</b> ho jaate hai. Chhota data fine, lakhon rows pe soch samajh ke likhna!</p>
+        </div>
+    </section>
+
+    <!-- ============ LOOP MACHINE SIMULATOR ============ -->
+    <section class="section" id="lsm">
+        <span class="section-tag"><i class="fas fa-gamepad"></i> Live Simulator</span>
+        <h2>Loop Machine — Har Iteration Ki Race! 🏁</h2>
+        <p class="section-desc">Loop type chuno, Start/End/Step set karo aur CHALAO dabao — <b>har iteration live</b> dekho: i ki value, condition ka result, output. Aur <b>do-while ka magic</b> test karo: aisi values daalo jo condition ko pehli baar hi fail kare — phir bhi 1 iteration chalega! 🤯</p>
+
+        <div class="lsm">
+            <h4><i class="fas fa-infinity"></i> Loop Machine</h4>
+            <p class="ls-desc">Loop chuno → values do → CHALAO → iteration-by-iteration live hisaab!</p>
+            <div class="lsm-types" id="lsmTypes">
+                <button class="active" onclick="setLoopType(0)">for</button>
+                <button onclick="setLoopType(1)">while</button>
+                <button onclick="setLoopType(2)">do-while</button>
+            </div>
+            <div class="lsm-input-row">
+                <label>Start:</label>
+                <input type="number" id="lsmStart" value="1">
+                <label>End:</label>
+                <input type="number" id="lsmEnd" value="5">
+                <label>Step:</label>
+                <input type="number" id="lsmStep" value="1">
+                <button class="lsm-btn" onclick="runLoop()"><i class="fas fa-play"></i> CHALAO!</button>
+            </div>
+            <div class="lsm-code-line" id="lsmCode">for (let i = 1; i <= 5; i += 1) { console.log(i); }</div>
+            <div class="lsm-track" id="lsmTrack"></div>
+            <div class="lsm-summary" id="lsmSummary">CHALAO dabao — iterations ki race yaha dikhegi! 🏁</div>
+        </div>
+    </section>
+
+    <!-- ============ REAL LIFE ANALOGIES ============ -->
+    <section class="section" id="analogies">
+        <span class="section-tag"><i class="fas fa-home"></i> Real-Life Connection</span>
+        <h2>Loops Tumhari Life Mein Roz Chal Rahe Hai! 🏠</h2>
+        <p class="section-desc">Tum roz ke kaamon mein loops chala rahe ho, bas naam nahi pata tha! Yeh 6 cards dekho — samajh pakka ho jayegi:</p>
+
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="a-emoji">🏋️</span>
+                <h4>Gym Reps = <span>for loop</span></h4>
+                <p>"10 push-ups karo" — count <b>pata hai</b> (10). Rep 1, 2, 3... 10 hote hi band. Fixed counting ka loop = for!</p>
+                <div class="a-code">for (let rep = 1; rep <= 10; rep++) {
+  doPushUp();
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🍛</span>
+                <h4>Pet Bharna = <span>while loop</span></h4>
+                <p>Kitni rotiyan lagengi? <b>Pata nahi!</b> Bas pata hai: "jab tak pet na bhare, khaate raho." Condition-based = while!</p>
+                <div class="a-code">while (petBhara === false) {
+  ekAurRoti();
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎢</span>
+                <h4>Ride Trial = <span>do-while</span></h4>
+                <p>Theme park wale <b>pehle ride try karvate hai</b>, phir ticket bechte hai! Pehle kaam, baad mein check — kam se kam ek baar!</p>
+                <div class="a-code">do {
+  tryRide();
+} while (mazaAaya);</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🥬</span>
+                <h4>Karela Skip = <span>continue</span></h4>
+                <p>Thali mein karela aaya? Usko side karo, <b>aage ke items khao</b>. Loop ruka nahi, bas ye round skip hua!</p>
+                <div class="a-code">for (let item of thali) {
+  if (item === "karela") continue;
+  khao(item);
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎬</span>
+                <h4>Boring Movie Chhodna = <span>break</span></h4>
+                <p>Film beech mein boring? Uth ke bahar — <b>aur koi scene nahi dekhoge!</b> Loop bhi break pe turant khatam!</p>
+                <div class="a-code">for (let scene = 1; scene <= 10; scene++) {
+  if (scene === 4) break; // boring!
+  dekho(scene);
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎵</span>
+                <h4>Playlist = <span>for...of</span></h4>
+                <p>Playlist ke <b>har gaana ek-ek karke</b> bajta hai — koi counting nahi, koi index nahi. Seedha item lo, chalao!</p>
+                <div class="a-code">for (let gaana of playlist) {
+  bajao(gaana);
+}</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXAMPLES GALLERY ============ -->
+    <section class="section" id="examples">
+        <span class="section-tag"><i class="fas fa-code"></i> Examples Gallery</span>
+        <h2>15 Examples — Har Loop Ke Pakke Udaharan 📚</h2>
+        <p class="section-desc">Tabs se category badlo, examples padho, output <b>pehle khud predict karo</b> — phir Playground mein chala ke match karo. Prediction karne se logic muscle banti hai!</p>
+
+        <div class="ex-tabs" id="exTabs">
+            <button class="ex-tab active" onclick="switchExTab(0)"><i class="fas fa-repeat"></i> for</button>
+            <button class="ex-tab" onclick="switchExTab(1)"><i class="fas fa-sync-alt"></i> while</button>
+            <button class="ex-tab" onclick="switchExTab(2)"><i class="fas fa-play-circle"></i> do-while</button>
+            <button class="ex-tab" onclick="switchExTab(3)"><i class="fas fa-stop-circle"></i> break/continue</button>
+            <button class="ex-tab" onclick="switchExTab(4)"><i class="fas fa-box-open"></i> for...of/in</button>
+        </div>
+
+        <div class="ex-grid" id="exGrid"></div>
+    </section>
+
+    <!-- ============ USE CASES ============ -->
+    <section class="section" id="usecases">
+        <span class="section-tag"><i class="fas fa-rocket"></i> Real-World Use Cases</span>
+        <h2>Bade Apps Ke Loops Kaise Chalte Hai? 🌍</h2>
+        <p class="section-desc">Instagram se lekar GPay tak — har app ke har list, har feed, har retry ke peeche loops chal rahe hai. Dekho kaise:</p>
+
+        <div class="use-grid">
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📸</span><h4>Instagram — Feed Scroll</h4></div>
+                <p>Feed infinite hai! Scroll karte hi loop chalta hai: "aur posts hai? dikha do, warna fetch karo, phir dikhao..." — while loop ka perfect use!</p>
+                <div class="u-chips"><span class="u-chip">while</span><span class="u-chip">fetch</span></div>
+                <div class="u-snippet">while (userScrolling) {
+  if (posts.length === 0) {
+    fetchMorePosts();  // API se laao
+  }
+  showNextPost();
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🛒</span><h4>Zomato — Cart Total</h4></div>
+                <p>Cart ki har item ka price jodo — for...of se ek-ek item lo aur total badhao. UI mein item list bhi isi loop se render hota hai!</p>
+                <div class="u-chips"><span class="u-chip">for...of</span><span class="u-chip">accumulator</span></div>
+                <div class="u-snippet">let total = 0;
+for (let item of cart) {
+  total = total + item.price;
+}
+console.log("Bill: ₹" + total);</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">💬</span><h4>WhatsApp — Messages Render</h4></div>
+                <p>Chat kholte hi 100 messages dikhne hain? for loop har message ke liye ek bubble banata hai — bina loop ke 100 baar code likhna padta!</p>
+                <div class="u-chips"><span class="u-chip">for</span><span class="u-chip">render</span></div>
+                <div class="u-snippet">for (let i = 0; i < messages.length; i++) {
+  makeBubble(messages[i].text,
+             messages[i].mine);
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🎮</span><h4>Games — Game Loop</h4></div>
+                <p>Har game ka dil ek <code>while</code> loop hai: "jab tak game over nahi hua — input lo, update karo, screen draw karo." Health 0? break — khatam!</p>
+                <div class="u-chips"><span class="u-chip">while</span><span class="u-chip">break</span></div>
+                <div class="u-snippet">while (playing) {
+  takeInput();
+  updateWorld();
+  drawScreen();
+  if (health <= 0) { playing = false; }
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🏧</span><h4>ATM — PIN Retry</h4></div>
+                <p>PIN toh <b>pehli baar poochna hi padega</b> na? do-while: pehle poochho, galat toh dobara. 3 galat? Card block — break!</p>
+                <div class="u-chips"><span class="u-chip">do-while</span><span class="u-chip">retry</span></div>
+                <div class="u-snippet">let tries = 0, ok = false;
+do {
+  ok = askPin();       // pehle poochho!
+  tries++;
+  if (tries >= 3) break;
+} while (!ok);
+if (!ok) blockCard();</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📺</span><h4>YouTube — Playlist Autoplay</h4></div>
+                <p>Queue ke har video ek-ek karke play hota hai — for...of! Deleted video mila? continue — skip karo, agla chalao. Autoplay off? break!</p>
+                <div class="u-chips"><span class="u-chip">for...of</span><span class="u-chip">continue</span></div>
+                <div class="u-snippet">for (let video of queue) {
+  if (video.deleted) continue;
+  play(video);
+  if (!autoplay) break;
+}</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PLAYGROUND ============ -->
+    <section class="section" id="playground">
+        <span class="section-tag"><i class="fas fa-terminal"></i> Code Playground</span>
+        <h2>Khud Chala Ke Dekho! 🧪</h2>
+        <p class="section-desc">6 ready-made snippets — load karo, run karo (ya <b>Ctrl+Enter</b> dabao), phir values badal ke experiment karo. Yahi se asli samajh aati hai!</p>
+
+        <div class="playground">
+            <div class="pg-top">
+                <span class="pg-title"><i class="fas fa-flask"></i> Experiment Zone</span>
+                <div class="pg-snippets">
+                    <button onclick="loadSnippet(0)">🔢 Counting Machine</button>
+                    <button onclick="loadSnippet(1)">📊 Table Generator</button>
+                    <button onclick="loadSnippet(2)">🍋 FizzBuzz</button>
+                    <button onclick="loadSnippet(3)">⏳ Countdown Blast</button>
+                    <button onclick="loadSnippet(4)">💰 Gullak Simulator</button>
+                    <button onclick="loadSnippet(5)">🚫 break/continue Demo</button>
+                </div>
+            </div>
+            <div class="pg-body">
+                <textarea id="pgCode" spellcheck="false" placeholder="// Yaha apna JavaScript likho..."></textarea>
+                <div class="pg-console" id="pgConsole"><div class="cl-info">▸ Console ready. Code likho aur Run dabao!</div></div>
+            </div>
+            <div class="pg-runbar">
+                <button class="btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run (Ctrl+Enter)</button>
+                <button class="btn-clear" onclick="clearConsole()"><i class="fas fa-broom"></i> Clear Console</button>
+                <span class="pg-hint">Tip: limits badlo, step badlo — break lagao, continue lagao!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORKSHOP ============ -->
+    <section class="section" id="workshop">
+        <span class="section-tag"><i class="fas fa-dumbbell"></i> Workshop — Khud Karo!</span>
+        <h2>6 Workshop Tasks 💪</h2>
+        <p class="section-desc">Pehle khud likho, phir hint dekho, phir solution match karo. Yaad hai na — dekhne se 20%, karne se 100% seekhte hai! 🔥</p>
+
+        <div class="ws-list">
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 1: 1 se 20 Tak Ginti (for se)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>for</code> loop se 1 se 20 tak numbers print karo — har number ek line mein. Fir wahi kaam <code>i -= 1</code> se ulta karo: 20 se 1 tak!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>for (let i = 1; i &lt;= 20; i++)</code>. Ulta karne ke liye: <code>let i = 20; i &gt;= 1; i--</code> — check ulta, update bhi ulta!</div>
+                    <div class="ws-sol"><pre>for (let i = 1; i <= 20; i++) {
+  console.log(i);
+}
+// 1 2 3 ... 20
+
+for (let i = 20; i >= 1; i--) {
+  console.log(i);
+}
+// 20 19 18 ... 1</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 2: 7 Ka Table</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">7 ka table print karo is format mein: <code>7 x 1 = 7</code>, <code>7 x 2 = 14</code> ... <code>7 x 10 = 70</code>. String aur number ko <code>+</code> se jodna yaad hai na (Chapter 1)!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>n = 7</code> variable lo. Loop <code>i</code> ko 1 se 10 tak ghumaao aur print karo: <code>n + " x " + i + " = " + (n * i)</code>. Brackets lagao multiplication ke liye!</div>
+                    <div class="ws-sol"><pre>let n = 7;
+
+for (let i = 1; i <= 10; i++) {
+  console.log(n + " x " + i + " = " + (n * i));
+}
+// 7 x 1 = 7
+// 7 x 2 = 14
+// ...
+// 7 x 10 = 70</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 3: Sirf EVEN Numbers (2 Tarike!)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">1 se 30 tak ke <b>sirf even</b> numbers print karo — par <b>do alag tarike</b> se: (1) step wala trick <code>i += 2</code>, (2) <code>if + continue</code> wala tariqa. Dono ka output same aana chahiye!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Tarike 1: 2 se shuru karo, step 2 — <code>for (let i = 2; i &lt;= 30; i += 2)</code>. Tarike 2: <code>i % 2 !== 0</code> pe <code>continue</code> karo (odd skip).</div>
+                    <div class="ws-sol"><pre>// Tarike 1: step trick
+for (let i = 2; i <= 30; i += 2) {
+  console.log(i);
+}
+
+// Tarike 2: continue se odd skip
+for (let i = 1; i <= 30; i++) {
+  if (i % 2 !== 0) continue;
+  console.log(i);
+}
+// Dono ka output: 2 4 6 ... 30</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 4: 1 se 50 Tak Ka Jod (Sum)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>total</code> naam ka variable bahar banao (0 se shuru). Loop ke andar har number ko total mein jodo. End mein print karo: <code>"Sum: 1275"</code> hona chahiye. Ye <b>accumulator pattern</b> hai — Zomato cart isi se banta hai!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>total</code> ko loop ke <b>BAHAR</b> banao (andar banaoge toh har round reset ho jayega!). Andar: <code>total = total + i</code> ya short mein <code>total += i</code>.</div>
+                    <div class="ws-sol"><pre>let total = 0;   // BAHAR — accumulator!
+
+for (let i = 1; i <= 50; i++) {
+  total += i;    // har round jodte jao
+}
+
+console.log("Sum:", total);
+// Sum: 1275</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 5: Number Ulta Karo (1234 → 4321)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>num = 1234</code> ko ulta karo — 4321! Loop chale jab tak number 0 na ho jaye. <b>Trick:</b> <code>num % 10</code> se aakhri digit milti hai, <code>Math.floor(num / 10)</code> se aakhri digit udd jaati hai. Chapter 2 ka modulo yaha kaam aayega!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Ek <code>rev = 0</code> banao. Har round: <code>rev = rev * 10 + (num % 10)</code> — digit uthao, rev mein peeche jodo. Fir <code>num = Math.floor(num / 10)</code>. while loop use karo: <code>while (num > 0)</code>.</div>
+                    <div class="ws-sol"><pre>let num = 1234;
+let rev = 0;
+
+while (num > 0) {
+  let digit = num % 10;          // 4, 3, 2, 1
+  rev = rev * 10 + digit;        // 4, 43, 432, 4321
+  num = Math.floor(num / 10);    // 123, 12, 1, 0
+}
+
+console.log("Ulta:", rev);
+// Ulta: 4321</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 6: Factorial (5! = 120)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Factorial matlab: <code>5! = 5 × 4 × 3 × 2 × 1 = 120</code>. Loop se calculate karo <code>n = 5</code> ke liye. Bonus: <code>0! = 1</code> bhi handle karna hai (kaifiyat: multiplication 1 se shuru hota hai, 0 se nahi!).</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Sum ki tarah hi hai — bas jodne ki jagah <b>guna</b> karna hai. Accumulator <code>fact = 1</code> lo (0 nahi! 0 se guna karoge toh sab 0 ho jayega 😅). Loop: <code>fact *= i</code>.</div>
+                    <div class="ws-sol"><pre>let n = 5;
+let fact = 1;   // 1 se shuru — 0 se NAHI!
+
+for (let i = 1; i <= n; i++) {
+  fact = fact * i;
+}
+
+console.log(n + "! =", fact);
+// 5! = 120
+
+// n = 0 test karo → 0! = 1 (loop nahi chalega,
+// fact = 1 hi print hoga — automatic sahi!)</pre></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MINI PROJECTS ============ -->
+    <section class="section" id="projects">
+        <span class="section-tag"><i class="fas fa-hammer"></i> Mini Projects</span>
+        <h2>6 Mini Projects — Loops Ka Asli Khel 🔨</h2>
+        <p class="section-desc">Har project mein starter code hai — chalao, samjho, phir challenges complete karo. Yahi portfolio banata hai!</p>
+
+        <div class="proj-grid">
+            <div class="proj-card">
+                <span class="p-emoji">🎯</span>
+                <h4>Table Generator Pro</h4>
+                <p class="p-desc">Koi bhi number + koi bhi range — full table generator. Ghar ke chhote bhai-behen ki maths practice app!</p>
+                <div class="p-chips"><span class="p-chip">for</span><span class="p-chip">string +</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let num = 9;
+let from = 1, to = 12;
+
+console.log("Table of " + num + " 📊");
+for (let i = from; i <= to; i++) {
+  console.log(num + " x " + i + " = " + (num * i));
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Ulta table bhi print karo (12 x ... = 9). 2) Har line ke saath "even/odd" bhi batao. 3) Do numbers ka common table (LCM tak) nikalo!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">⏰</span>
+                <h4>New Year Countdown</h4>
+                <p class="p-desc">10 se 0 tak countdown, har second ek message, end mein "HAPPY NEW YEAR! 🎉" — while loop ka perfect use.</p>
+                <div class="p-chips"><span class="p-chip">while</span><span class="p-chip">countdown</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let t = 10;
+
+while (t >= 0) {
+  if (t === 0) {
+    console.log("HAPPY NEW YEAR! 🎉");
+  } else {
+    console.log(t + "... ");
+  }
+  t--;
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) 10 se 1 ke bich "5" pe "Dher sara pyaar 💕" print karo. 2) Rocket ASCII art banao (nested loop se triangle). 3) setTimeout() se real delay add karo!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🍋</span>
+                <h4>FizzBuzz Machine</h4>
+                <p class="p-desc">Interview ka SABSE famous question! 1-30 print karo, par 3 pe "Fizz", 5 pe "Buzz", dono pe "FizzBuzz".</p>
+                <div class="p-chips"><span class="p-chip">for</span><span class="p-chip">%</span><span class="p-chip">if-else</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>for (let i = 1; i <= 30; i++) {
+  if (i % 15 === 0) {
+    console.log("FizzBuzz");
+  } else if (i % 3 === 0) {
+    console.log("Fizz");
+  } else if (i % 5 === 0) {
+    console.log("Buzz");
+  } else {
+    console.log(i);
+  }
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>i % 15</code> ki jagah <code>i % 3 === 0 && i % 5 === 0</code> likho — same result? 2) Order badal ke dekho — kya FizzBuzz tootta hai? 3) 7 aur 11 ke saath bhi karo!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">💰</span>
+                <h4>Gullak Simulator</h4>
+                <p class="p-desc">Har mahine ₹500 jama karte ho — kitne mahine mein gullak mein ₹5000 ho jayenge? while loop khud calculate karega!</p>
+                <div class="p-chips"><span class="p-chip">while</span><span class="p-chip">accumulator</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let saving = 0;
+let month = 0;
+let target = 5000;
+
+while (saving < target) {
+  month++;
+  saving += 500;
+  console.log("Mahine " + month +
+    ": ₹" + saving + " 💰");
+}
+console.log("TARGET DONE in " + month + " months!");</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Har 6 mahine baad ₹1000 bonus add karo. 2) Interest wala version: har mahine 2% interest bhi jodo. 3) Batado kaunsa mahina target ke <b>cross</b> karta hai!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🔺</span>
+                <h4>Star Pattern Printer</h4>
+                <p class="p-desc">Nested loop ka jaadu — triangles, pyramid, diamond. Coding round mein pattern wale sawal isi pe hote hai!</p>
+                <div class="p-chips"><span class="p-chip">nested for</span><span class="p-chip">pattern</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let n = 5;
+
+// Seedha triangle
+for (let i = 1; i <= n; i++) {
+  let line = "";
+  for (let j = 1; j <= i; j++) {
+    line += "⭐";
+  }
+  console.log(line);
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Ulta triangle banao (5 se 1). 2) Number triangle: 1 / 22 / 333 / 4444. 3) Pyramid with spaces (3 loops ka kaam!). 4) Chessboard pattern 8×8 (if + nested).</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🔁</span>
+                <h4>Digit Reverser + Palindrome</h4>
+                <p class="p-desc">Number ko ulta karo (while + modulo), phir check karo palindrome hai ya nahi — mummy yaad karvao momos ki tarah same-ulte!</p>
+                <div class="p-chips"><span class="p-chip">while</span><span class="p-chip">%</span><span class="p-chip">===</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let num = 12321;
+let original = num;
+let rev = 0;
+
+while (num > 0) {
+  rev = rev * 10 + (num % 10);
+  num = Math.floor(num / 10);
+}
+
+console.log("Ulta:", rev);
+if (rev === original) {
+  console.log("Palindrome hai! 🪞");
+} else {
+  console.log("Palindrome nahi 😢");
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Digit sum bhi nikalo (12321 → 9). 2) String wala tarike se bhi karo (split-reverse-join) — compare karo. 3) 100-200 ke saare palindromes dhundo (nested loop + logic)!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INTERVIEW QUESTIONS ============ -->
+    <section class="section" id="interview">
+        <span class="section-tag"><i class="fas fa-briefcase"></i> Interview Prep</span>
+        <h2>16 Interview Questions — Loops Edition 💼</h2>
+        <p class="section-desc">Loops se interviews mein yahi poocha jata hai — filters laga ke level-wise practice karo. Har answer mein "kyu" bhi hai, sirf "kya" nahi!</p>
+
+        <div class="iq-filters" id="iqFilters">
+            <button class="iq-filter active" onclick="switchIqFilter('all')">Sab (16)</button>
+            <button class="iq-filter" onclick="switchIqFilter('easy')">🟢 Easy</button>
+            <button class="iq-filter" onclick="switchIqFilter('medium')">🟡 Medium</button>
+            <button class="iq-filter" onclick="switchIqFilter('hard')">🔴 Hard</button>
+        </div>
+
+        <div class="iq-list" id="iqList"></div>
+    </section>
+
+    <!-- ============ CHEAT SHEET ============ -->
+    <section class="section" id="cheatsheet">
+        <span class="section-tag"><i class="fas fa-scroll"></i> Cheat Sheet</span>
+        <h2>Ek Nazar Mein Sab Kuch 📋</h2>
+        <p class="section-desc">Interview/exam se ek ghanta pehle — bas yeh 4 boxes revise kar lo!</p>
+
+        <div class="cheat-grid">
+            <div class="cheat-box">
+                <h4><i class="fas fa-code"></i> Syntax Reference</h4>
+                <table>
+                    <tr><td>for</td><td>for (let i = 0; i &lt; n; i++) { ... }</td></tr>
+                    <tr><td>while</td><td>while (cond) { ... update! }</td></tr>
+                    <tr><td>do-while</td><td>do { ... } while (cond);</td></tr>
+                    <tr><td>for...of</td><td>for (let item of arr) { ... }</td></tr>
+                    <tr><td>for...in</td><td>for (let key in obj) { ... }</td></tr>
+                    <tr><td>break</td><td>loop turant khatam</td></tr>
+                    <tr><td>continue</td><td>sirf ye round skip</td></tr>
+                    <tr><td>infinite</td><td>for (;;) { ... } + break</td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-route"></i> Kaunsa Loop Kab?</h4>
+                <ul>
+                    <li><i class="fas fa-repeat"></i> <code>for</code> — ginti pata hai (n baar, 1 se 100)</li>
+                    <li><i class="fas fa-sync-alt"></i> <code>while</code> — condition pata hai, ginti nahi</li>
+                    <li><i class="fas fa-play-circle"></i> <code>do-while</code> — kam se kam 1 baar pakka (menu, retry)</li>
+                    <li><i class="fas fa-box-open"></i> <code>for...of</code> — array/string ke items</li>
+                    <li><i class="fas fa-key"></i> <code>for...in</code> — object ki keys</li>
+                    <li><i class="fas fa-layer-group"></i> <code>nested</code> — grid, table, patterns</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-bomb"></i> Common Mistakes</h4>
+                <ul>
+                    <li><i class="fas fa-xmark"></i> <code>i++</code> bhool gaye → <b>infinite loop!</b></li>
+                    <li><i class="fas fa-xmark"></i> <code>i &lt;= arr.length</code> → aakhri pe <code>undefined</code> (off-by-one) — <code>&lt;</code> likho!</li>
+                    <li><i class="fas fa-xmark"></i> do-while ke <code>while (...)</code> ke baad <b>semicolon</b> lagana zaroori</li>
+                    <li><i class="fas fa-xmark"></i> <code>for (...);</code> — bracket ke baad semicolon = loop khaali chal gaya!</li>
+                    <li><i class="fas fa-xmark"></i> Array pe <code>for...in</code> → items nahi, <b>indexes</b> milte hai</li>
+                    <li><i class="fas fa-xmark"></i> while + <code>continue</code> — update pehle nahi toh hang!</li>
+                    <li><i class="fas fa-xmark"></i> Accumulator <code>0</code> se guna karna — factorial mein <code>1</code> se shuru karo</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-lightbulb"></i> Interview Facts</h4>
+                <ul>
+                    <li><i class="fas fa-star"></i> <code>for (;;)</code> bhi infinite loop banata hai (teeno parts optional!)</li>
+                    <li><i class="fas fa-star"></i> do-while mein check <b>BAAD</b> mein hota hai — isliye 1 baar pakka</li>
+                    <li><i class="fas fa-star"></i> <code>break</code> sirf <b>apne</b> loop se bahar nikalta hai (nested mein sirf inner)</li>
+                    <li><i class="fas fa-star"></i> Nested loops = O(n²) — 1000 items pe 10 lakh steps!</li>
+                    <li><i class="fas fa-star"></i> <code>arr.length</code> ko variable mein cache karna minor optimization hai</li>
+                    <li><i class="fas fa-star"></i> var/let + setTimeout + loop = famous closure sawal (3 3 3 vs 0 1 2)</li>
+                    <li><i class="fas fa-star"></i> FizzBuzz = loop + conditions ka sabse famous combo</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz">
+        <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
+        <h2>Loops Ka Exam — 5 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Loops ke Boss ho. Chalo!</p>
+
+        <div class="quiz-box">
+            <div class="quiz-progress">
+                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-score" id="quizScore">Score: 0</span>
+            </div>
+            <div class="quiz-q" id="quizQ">Loading...</div>
+            <div class="quiz-opts" id="quizOpts"></div>
+            <div class="quiz-feedback" id="quizFb"></div>
+            <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Agla Sawaal →</button>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="f-next"><i class="fas fa-forward"></i> Next Chapter: Functions — Apni Khud Ki Machine 🎁 (Code ka dabba jo baar-baar use ho!)</div>
+        <p>Chapter 4 Complete! Ab tumhara code thakta nahi — jitna kaam bolo, utna ghoomta hai! 🎉<br>
+        Ghoomo Phiro Loop 🔄 — banaya gaya aapke liye <span class="f-heart">❤️</span> ke saath. Workshop ke tasks zaroor karo!</p>
+    </footer>
+
+    <script>
+        /* ==================== EXAMPLES GALLERY ==================== */
+        var exData = [
+            [ // for
+                { t: 'Counting 1 se 5', c: 'for (let i = 1; i <= 5; i++) {\n  console.log("Round", i);\n}', o: 'Round 1\nRound 2\nRound 3\nRound 4\nRound 5' },
+                { t: 'Table of 3', c: 'let n = 3;\n\nfor (let i = 1; i <= 10; i++) {\n  console.log(n + " x " + i + " = " + (n * i));\n}', o: '3 x 1 = 3\n3 x 2 = 6\n...\n3 x 10 = 30' },
+                { t: 'Sum 1 se 100 (Accumulator)', c: 'let total = 0;\n\nfor (let i = 1; i <= 100; i++) {\n  total += i;\n}\nconsole.log("Total:", total);', o: 'Total: 5050' }
+            ],
+            [ // while
+                { t: 'Countdown 5 se 1', c: 'let t = 5;\n\nwhile (t >= 1) {\n  console.log(t);\n  t--;\n}\nconsole.log("GO! 🚀");', o: '5\n4\n3\n2\n1\nGO! 🚀' },
+                { t: 'Paisa Double Jab Tak 100 Na Ho', c: 'let paisa = 1;\nlet din = 0;\n\nwhile (paisa < 100) {\n  paisa = paisa * 2;\n  din++;\n}\nconsole.log(din + " din mein ₹" + paisa);', o: '7 din mein ₹128' },
+                { t: 'Array Print (while se)', c: 'let items = ["chai", "coffee", "lassi"];\nlet i = 0;\n\nwhile (i < items.length) {\n  console.log(items[i]);\n  i++;\n}', o: 'chai\ncoffee\nlassi' }
+            ],
+            [ // do-while
+                { t: 'Menu 3 Baar Dikhana', c: 'let visits = 0;\n\ndo {\n  visits++;\n  console.log("Menu dikha #" + visits);\n} while (visits < 3);\n\nconsole.log("Ab order karo! 🍽️");', o: 'Menu dikha #1\nMenu dikha #2\nMenu dikha #3\nAb order karo! 🍽️' },
+                { t: 'MAGIC: False Condition — Phir Bhi Chala!', c: 'let x = 100;\n\ndo {\n  console.log("Chala! x =", x);\n  x++;\n} while (x < 5);\n\n// 100 < 5 false hai — phir bhi 1 baar chala!', o: 'Chala! x = 100' },
+                { t: 'Dice — 6 Aane Tak Ghoomo 🎲', c: 'let count = 0;\nlet roll;\n\ndo {\n  roll = Math.ceil(Math.random() * 6);\n  count++;\n  console.log("Roll " + count + ": " + roll);\n} while (roll !== 6);\n\nconsole.log("6 mila! 🎲");', o: 'Roll 1: 4\nRoll 2: 6\n6 mila! 🎲 (har run alag!)' }
+            ],
+            [ // break/continue
+                { t: 'break — 7 Pe STOP', c: 'for (let i = 1; i <= 10; i++) {\n  if (i === 7) {\n    console.log("STOP! 🛑");\n    break;\n  }\n  console.log(i);\n}', o: '1\n2\n3\n4\n5\n6\nSTOP! 🛑' },
+                { t: 'continue — Even Skip Karo', c: 'for (let i = 1; i <= 6; i++) {\n  if (i % 2 === 0) continue;\n  console.log(i);\n}', o: '1\n3\n5' },
+                { t: 'Menu Mein Dhundo (break se fast exit)', c: 'let menu = ["samosa", "dosa", "idli", "vada"];\nlet found = -1;\n\nfor (let i = 0; i < menu.length; i++) {\n  if (menu[i] === "idli") {\n    found = i;\n    break;\n  }\n}\nconsole.log(found > -1 ? "Index " + found + " pe mila! 🎯" : "Nahi mila 😢");', o: 'Index 2 pe mila! 🎯' }
+            ],
+            [ // for...of / for...in
+                { t: 'for...of — Fruits', c: 'let fruits = ["🍎", "🍌", "🥭"];\n\nfor (let fruit of fruits) {\n  console.log("Khao:", fruit);\n}', o: 'Khao: 🍎\nKhao: 🍌\nKhao: 🥭' },
+                { t: 'for...in — Object Ki Keys', c: 'let student = {\n  naam: "Rahul",\n  marks: 92,\n  city: "Delhi"\n};\n\nfor (let key in student) {\n  console.log(key + " → " + student[key]);\n}', o: 'naam → Rahul\nmarks → 92\ncity → Delhi' },
+                { t: 'String Pe for...of', c: 'let word = "JS";\nlet count = 0;\n\nfor (let ch of word) {\n  console.log(ch);\n  count++;\n}\nconsole.log(count + " letters");', o: 'J\nS\n2 letters' }
+            ]
+        ];
+
+        function hl(code) {
+            var s = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            s = s.replace(/("[^"\n]*")/g, '<span class="st">$1</span>');
+            s = s.replace(/(\/\/[^\n<]*)/g, '<span class="cm">$1</span>');
+            s = s.replace(/\b(let|const|var|if|else|for|while|do|of|in|switch|case|break|continue|default|true|false|null|undefined|NaN|function|return|new)\b/g, '<span class="kw">$1</span>');
+            s = s.replace(/(^|[\s(=+\-*\/%,<>!:])(\d+\.?\d*)\b/g, '$1<span class="nm">$2</span>');
+            return s;
+        }
+
+        function renderExamples(idx) {
+            var grid = document.getElementById('exGrid');
+            var html = '';
+            var list = exData[idx];
+            for (var i = 0; i < list.length; i++) {
+                var ex = list[i];
+                html += '<div class="ex-card">'
+                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 3 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
+                    + '<pre>' + hl(ex.c) + '</pre>'
+                    + '<div class="ex-out">' + ex.o.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' &nbsp;|&nbsp; ') + '</div>'
+                    + '</div>';
+            }
+            grid.innerHTML = html;
+        }
+
+        function switchExTab(idx) {
+            var tabs = document.querySelectorAll('.ex-tab');
+            for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+            tabs[idx].classList.add('active');
+            renderExamples(idx);
+        }
+
+        /* ==================== INTERVIEW QUESTIONS ==================== */
+        var iqData = [
+            { lvl: 'easy', q: 'Loop kya hai? Programming mein kyu zaroori hai?', a: 'Loop ek tareeka hai <b>same kaam baar-baar</b> karne ka — bina same code likhe. Socho 100 baar "Hello" print karna: bina loop ke 100 lines, loop ke saath sirf <b>3 lines</b>!<pre>for (let i = 1; i <= 100; i++) {\n  console.log("Hello");\n}</pre>Isko <b>DRY principle</b> kehte hai — Don\'t Repeat Yourself. Apps mein loops har jagah hai: feed ki posts, cart ke items, chat ke messages — sab loops se render hote hai. Programmers ka favourite slogan: <b>"lazy coder = smart coder"</b> — jo kaam machine se ho sakta hai, wo haath se nahi!' },
+            { lvl: 'easy', q: 'for loop ke 3 parts kya hai? Kaunsa part kab chalta hai?', a: 'Teeno parts semicolon se alag hote hai: <code>for (INIT; CONDITION; UPDATE)</code><br><br>1. <b>INIT</b> (<code>let i = 1</code>) — sirf <b>PEHLI baar</b> chalta hai, counting variable banta hai<br>2. <b>CONDITION</b> (<code>i &lt;= 5</code>) — <b>har round se pehle</b> check hota hai; true toh body chale, false toh loop bahar<br>3. <b>UPDATE</b> (<code>i++</code>) — <b>har round ke baad</b> chalta hai<br><br>Flow: init → check → body → update → check → body → update → ... jab tak check fail na ho. Interview mein yeh order bolna zaroori hai — <b>update condition ke BAAD chalta hai, pehle nahi!</b>' },
+            { lvl: 'easy', q: 'while loop kab use karna chahiye?', a: 'Jab <b>iterations ki ginti pata na ho</b> — sirf condition pata ho. for tab use karte hai jab "10 baar" pata ho; while tab jab "jab tak ... na ho jaye" bola jaye.<br><br>Examples: "jab tak user sahi password na de", "jab tak game over na ho", "jab tak balance khatam na ho", "jab tak dice pe 6 na aaye".<br><br>Golden rule: <b>while ke andar aisi kuch na kuch zaroor likho jo condition ko ek na ek din FALSE kar de</b> (update ya flag change) — warna infinite loop!' },
+            { lvl: 'easy', q: 'break aur continue mein kya farak hai?', a: '<b>break</b> = poore loop se <b>bahar</b> — loop wahi khatam, aage ka code chalta hai. <b>continue</b> = sirf <b>current round skip</b> — loop aage chalta rehta hai.<pre>for (let i = 1; i <= 5; i++) {\n  if (i === 3) continue;  // 3 skip\n  if (i === 5) break;     // 5 pe ruk jao\n  console.log(i);\n}\n// Output: 1, 2, 4</pre>Real life: break = boring movie beech mein chhod dena; continue = thali mein karela skip karna. break ka use search mein hota hai (item mil gaya → aur dhundhne ki kya zaroorat), continue ka filtering mein (galat item skip karo).' },
+            { lvl: 'easy', q: 'do-while ka syntax likho. Semicolon kaha lagta hai?', a: '<pre>let i = 1;\ndo {\n  console.log(i);\n  i++;\n} while (i <= 5);   // ← semicolon YAHAN lagta hai!</pre>Do baatein yaad rakho: (1) <code>while (...) </code> ke baad <b>semicolon (;) LAGTA HAI</b> — ye while loop se alag hai jaha semicolon nahi lagta! (2) Body <b>pehle</b> chalti hai, check <b>baad</b> mein hota hai — isliye do-while <b>minimum 1 baar</b> hamesha chalta hai, chahe condition shuru se false ho.' },
+            { lvl: 'medium', q: 'Infinite loop kya hai? Kaise banta hai aur kaise bachte hai?', a: 'Infinite loop = loop jo <b>kabhi khatam nahi hota</b>, kyunki condition kabhi false nahi hoti. Do common wajah:<br><br>1. <b>Update bhool gaye</b> — <code>while (i &lt;= 5) { console.log(i); }</code> — i++ gaya, i hamesha 1<br>2. <b>Condition kabhi false hi nahi hoti</b> — <code>while (x !== 10) { x = x + 2; }</code> — x 2,4,6,8,10,12... 10 chhod ke nikal gaya (even series mein 10 milta hai, par agar x = 1 hota toh kabhi 10 nahi banta!)<br><br>Nateeja: browser tab hang, CPU 100%, fan ki awaaz 😅. Bachao: (1) har while mein update likho, (2) condition aisi banao jo pakka false ho, (3) safety counter lagao: <code>if (attempts > 100) break;</code>' },
+            { lvl: 'medium', q: 'for loop ke 3 parts optional hai? <code>for (;;)</code> kya karta hai?', a: 'Haan — <b>teeno parts optional</b> hai! Semicolons likhna zaroori hai, values nahi.<br><br><code>for (;;)</code> = init nahi, condition nahi ( matlab hamesha true), update nahi = <b>INFINITE LOOP</b>! Games aur servers mein intentional use hota hai — andar <code>break</code> se exit hota hai:<pre>for (;;) {\n  let cmd = getInput();\n  if (cmd === "quit") break;\n  process(cmd);\n}</pre>Parts kahin bhi ja sakte hai: <code>let i = 0;</code> pehle likh do, update body mein kar do — for ke andar sirf semicolons bhi chalega. Ye sawal interviewer "concepts clear hai ya ratta" check karne ke liye poochta hai!' },
+            { lvl: 'medium', q: 'for...of aur for...in mein kya difference hai?', a: '<b>for...of</b> = <b>VALUES</b> deta hai — arrays, strings ke items ek-ek karke. <b>for...in</b> = <b>KEYS/INDEXES</b> deta hai — object ki keys ya array ke indexes.<pre>let fruits = ["aam", "seb", "kela"];\nfor (let f of fruits) console.log(f);      // aam, seb, kela ✅\nfor (let i in fruits) console.log(i);      // 0, 1, 2 (indexes!)</pre>Rules: <b>Array/String → for...of</b>, <b>Object → for...in</b> (object pe for...of error deta hai). Array pe for...in chalana bad practice hai — keys string mein milti hai aur unexpected properties bhi aa sakti hai. Interview mein bolna: "for...in objects ke liye bana hai, arrays ke liye for...of ya forEach better hai."' },
+            { lvl: 'medium', q: 'Off-by-one error kya hota hai? Example do.', a: 'Loop ki ginti mein <b>ek kam ya ek zyada</b> round chal jana — programming ki sabse common bug!<pre>let arr = ["a", "b", "c"];  // length = 3, last index = 2\n\nfor (let i = 0; i <= arr.length; i++) {   // <= GALAT!\n  console.log(arr[i]);  // a, b, c, undefined 😱\n}\n\nfor (let i = 0; i < arr.length; i++) {    // < SAHI\n  console.log(arr[i]);  // a, b, c ✅\n}</pre>Index <b>0 se shuru</b> hota hai isliye last index = length - 1. <code>&lt;=</code> lagaya toh ek extra round chala jaha <code>arr[3]</code> exist hi nahi karta → <code>undefined</code>. Ye bug aaj bhi production apps mein milta hai — isliye interviewer ko pasand hai!' },
+            { lvl: 'medium', q: 'Nested loop mein total iterations kaise count hoti hai?', a: '<b>Outer × Inner</b> — outer ki har 1 round mein inner <b>poora</b> chalta hai.<pre>for (let i = 1; i <= 3; i++) {      // outer: 3 baar\n  for (let j = 1; j <= 4; j++) {    // inner: har baar 4 baar\n    // total: 3 × 4 = 12 baar\n  }\n}</pre>Performance angle (interviewers ko ye pasand hai): nested loops = <b>O(n²)</b>. 100 items pe 10,000 steps, 10,000 items pe <b>1 crore steps</b>! Isliye bade data pe nested loops se bacho ya optimize karo. Patterns (stars, tables, grids) banane ke liye nested hi sahara hai — multiplication table bhi nested loop hai: outer = number, inner = 1 se 10.' },
+            { lvl: 'medium', q: 'Loop mein var aur let use karne mein kya farak hota hai?', a: '<b>let</b> block-scoped hai — har iteration mein <b>naya i</b> banta hai. <b>var</b> function-scoped hai — <b>ek hi i</b> poore loop mein share hota hai.<pre>for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i));  // 3, 3, 3 😱\n}\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i));  // 0, 1, 2 ✅\n}</pre>var wale case mein loop khatam hone tak i = 3 ho chuka, aur setTimeout baad mein chalta hai — usse wahi EK shared i milta hai. let mein har iteration ka apna alag i frozen hota hai. Ye JavaScript ka <b>sabse famous closure sawal</b> hai — Functions chapter mein aur gehraai se karenge!' },
+            { lvl: 'medium', q: 'Accumulator pattern kya hai? Kaha use hota hai?', a: 'Loop ke <b>BAHAR</b> ek variable banao, loop ke <b>andar</b> usme kuch jodte/jodte jao — isko accumulator (jodne wala) pattern kehte hai.<pre>let total = 0;            // BAHAR — warna har round reset!\nfor (let i = 1; i <= 50; i++) {\n  total += i;             // andar jodo\n}\nconsole.log(total);       // 1275</pre>Important: accumulator hamesha loop se <b>pehle declare</b> karo — andar banaoge toh har round mein 0 ho jayega! Variants: <b>sum</b> (total += i), <b>product/factorial</b> (fact *= i, par 1 se shuru), <b>count</b> (if condition pass → count++), <b>string building</b> (line += "*"). Zomato cart total, marks ka average, gullak saving — sab yahi pattern hai!' },
+            { lvl: 'hard', q: 'FizzBuzz solution likho aur logic explain karo.', a: 'Sabse famous interview question! 1-100 print karo, 3 ke multiple pe "Fizz", 5 ke pe "Buzz", dono ke pe "FizzBuzz":<pre>for (let i = 1; i <= 100; i++) {\n  if (i % 15 === 0)      console.log("FizzBuzz");\n  else if (i % 3 === 0)  console.log("Fizz");\n  else if (i % 5 === 0)  console.log("Buzz");\n  else                   console.log(i);\n}</pre>Do trap yaha hai: (1) <code>15 se check karna ZAROORI</code> hai — agar 3 pehle check kar liya toh 15 pe "Fizz" print hoga, FizzBuzz kabhi nahi aayega! (ya <code>i % 3 === 0 && i % 5 === 0</code> likho) (2) <code>%</code> (modulo) — remainder 0 matlab perfect multiple. Interviewer isse dekhta hai: loops + conditions + order-of-logic — teeno ek sawal mein!' },
+            { lvl: 'hard', q: 'Loop optimization ke kaunse tarike hai?', a: 'Interview mein yeh 4 bolo:<br><br>1. <b>arr.length cache karo</b> — <code>const n = arr.length; for (let i = 0; i &lt; n; i++)</code> — har round mein length dobara calculate nahi hoti (chhota sa gain, par concept achha)<br>2. <b>Early exit (break)</b> — item mil gaya? turant break karo, baki rounds waste mat karo. Search mein yeh sabse bada optimization hai!<br>3. <b>Loop ke andar kam kaam karo</b> — calculation jo har round same result degi (jaise tax rate) use loop se <b>pehle</b> nikaal lo<br>4. <b>Nested loops soch ke</b> — O(n²) bade data pe dushman hai; ho sake toh ek loop + object/map se solve karo<br><br>Honest point bhi add karo: "modern engines bohot fast hai — readability pehle, optimization sirf jab performance problem dikhe. Premature optimization evil hai!" — ye line interviewer ko impress karti hai 😄' },
+            { lvl: 'hard', q: '<code>while (true)</code> + break pattern kab use karna chahiye? Ye good practice kaise hai?', a: 'Lagta hai dangerous (infinite loop!), par intentional pattern hai — <b>exit condition body ke andar decide hoti hai</b>:<pre>while (true) {\n  let choice = showMenu();\n  if (choice === "exit") break;    // yahi asli condition hai\n  handleChoice(choice);\n}</pre>Use cases: <b>game loop</b> (jab tak quit na ho), <b>menu systems</b> (jab tak user exit na bole), <b>retry logic</b> (jab tak success na mile), <b>server request handling</b>.<br><br>Ye isliye better hai ki kabhi-kabhi exit condition loop ke <b>beech mein</b> pata chalti hai — upar condition mein sab likhna awkward hota. Rules: (1) break ka rasta <b>100% clear</b> hona chahiye, (2) safety counter lagao (<code>if (tries > 1000) break;</code>), (3) comment likho "intentional infinite". Interview mein bolna: "conditional-exit ki jagah middle-exit clean hota hai — bas exit guarantee chahiye!"' },
+            { lvl: 'hard', q: 'Ek number ke digits ka sum loop se kaise nikaloge? (123 → 6)', a: 'Modulo + Math.floor ka combo — number theory ka classic:<pre>let num = 123;\nlet sum = 0;\n\nwhile (num > 0) {\n  sum += num % 10;             // aakhri digit uthao: 3, 2, 1\n  num = Math.floor(num / 10);  // aakhri digit hatao: 12, 1, 0\n}\nconsole.log(sum);  // 6</pre>Logic: <code>num % 10</code> hamesha <b>aakhri digit</b> deta hai (123 % 10 = 3). <code>Math.floor(num / 10)</code> aakhri digit <b>hata</b> deta hai (123 → 12). Har round: digit nikalo, sum mein jodo, number chhota karo — number 0 hote hi loop khatam.<br><br>Yahi technique se: <b>number reverse</b> karna (123 → 321), <b>palindrome check</b> (121 → ulta bhi 121), <b>digit count</b>, <b>Armstrong number</b> — sab banate hai! Ek pattern, 5 sawal ke jawab 💪' }
+        ];
+
+        function renderInterview(filter) {
+            var list = document.getElementById('iqList');
+            var html = '';
+            for (var i = 0; i < iqData.length; i++) {
+                var q = iqData[i];
+                if (filter !== 'all' && q.lvl !== filter) continue;
+                html += '<div class="iq-item" onclick="toggleIq(this)">'
+                    + '<div class="iq-q">'
+                    + '<span class="iq-level ' + q.lvl + '">' + q.lvl + '</span>'
+                    + '<span class="iq-text">Q' + (i + 1) + '. ' + q.q + '</span>'
+                    + '<i class="fas fa-chevron-down iq-arrow"></i>'
+                    + '</div>'
+                    + '<div class="iq-a"><div class="iq-answer">' + q.a + '</div></div>'
+                    + '</div>';
+            }
+            list.innerHTML = html || '<p style="color:var(--muted)">Is filter mein kuch nahi.</p>';
+        }
+
+        function switchIqFilter(f) {
+            var btns = document.querySelectorAll('.iq-filter');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            event.currentTarget.classList.add('active');
+            renderInterview(f);
+        }
+
+        function toggleIq(el) { el.classList.toggle('open'); }
+
+        /* ==================== WORKSHOP ==================== */
+        function toggleWs(item) { item.classList.toggle('open'); }
+
+        function toggleHint(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-hint').classList.toggle('show');
+        }
+
+        function toggleSol(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-sol').classList.toggle('show');
+        }
+
+        /* ==================== PROJECTS ==================== */
+        function toggleProj(btn) {
+            btn.parentElement.querySelector('.p-starter').classList.toggle('show');
+        }
+
+        /* ==================== PLAYGROUND ==================== */
+        var snippets = [
+            { c: '// 🔢 Counting Machine (for)\nfor (let i = 1; i <= 10; i++) {\n  console.log("Number:", i);\n}\n\n// Init EK baar → check har round → update har round ke baad' },
+            { c: '// 📊 Table Generator\nlet num = 6;   // isko badal ke dekho!\n\nfor (let i = 1; i <= 10; i++) {\n  console.log(num + " x " + i + " = " + (num * i));\n}' },
+            { c: '// 🍋 FizzBuzz — interview ka favourite!\n// 3 pe Fizz, 5 pe Buzz, dono pe FizzBuzz\n\nfor (let i = 1; i <= 15; i++) {\n  if (i % 15 === 0) {\n    console.log("FizzBuzz");\n  } else if (i % 3 === 0) {\n    console.log("Fizz");\n  } else if (i % 5 === 0) {\n    console.log("Buzz");\n  } else {\n    console.log(i);\n  }\n}' },
+            { c: '// ⏳ Countdown Blast (while)\nlet t = 5;\n\nwhile (t >= 1) {\n  console.log(t + "...");\n  t--;   // ye line HATA ke dekho — INFINITE LOOP! 😱\n}\nconsole.log("GO! 🚀");' },
+            { c: '// 💰 Gullak Simulator (while + accumulator)\nlet saving = 0;\nlet month = 0;\n\nwhile (saving < 5000) {\n  month++;\n  saving += 500;\n  console.log("Mahine " + month + ": ₹" + saving);\n}\n\nconsole.log("Target poora — " + month + " mahine mein! 🎉");' },
+            { c: '// 🚫 break & continue ka khel\nfor (let i = 1; i <= 10; i++) {\n  if (i === 3) {\n    continue;   // 3 skip — unlucky number! 🫥\n  }\n  if (i === 7) {\n    console.log("7 mila — STOP! 🛑");\n    break;\n  }\n  console.log(i);\n}\n// 1, 2, 4, 5, 6, "7 mila — STOP!"' }
+        ];
+
+        function loadSnippet(idx) {
+            document.getElementById('pgCode').value = snippets[idx].c;
+        }
+
+        function clearConsole() {
+            document.getElementById('pgConsole').innerHTML = '<div class="cl-info">▸ Console cleared. Naya code chalao!</div>';
+        }
+
+        function addLine(text, cls) {
+            var con = document.getElementById('pgConsole');
+            var div = document.createElement('div');
+            div.className = 'cl ' + (cls || '');
+            div.textContent = text;
+            con.appendChild(div);
+            con.scrollTop = con.scrollHeight;
+        }
+
+        function runCode() {
+            var code = document.getElementById('pgCode').value;
+            var con = document.getElementById('pgConsole');
+            con.innerHTML = '';
+            if (!code.trim()) {
+                addLine('⚠️ Pehle kuch code likho!', 'cl-warn');
+                return;
+            }
+            var fakeConsole = {
+                log: function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    addLine(args.map(function (a) {
+                        if (typeof a === 'object' && a !== null) {
+                            try { return JSON.stringify(a); } catch (e) { return String(a); }
+                        }
+                        return String(a);
+                    }).join(' '), '');
+                },
+                warn: function () { addLine('⚠️ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-warn'); },
+                error: function () { addLine('❌ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-err'); },
+                table: function (arr) {
+                    try { addLine(JSON.stringify(arr, null, 1), 'cl-info'); } catch (e) { addLine(String(arr), ''); }
+                }
+            };
+            try {
+                var fn = new Function('console', '"use strict";\n' + code);
+                fn(fakeConsole);
+            } catch (err) {
+                addLine('❌ Error: ' + err.message, 'cl-err');
+                addLine('💡 Tip: brackets () {} aur loop ki condition/update check karo', 'cl-info');
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+        });
+
+        /* ==================== LOOP MACHINE SIMULATOR ==================== */
+        var loopNames = ['for', 'while', 'do-while'];
+        var loopIdx = 0;
+        var lsmBusy = false;
+        var MAXI = 40;
+
+        function setLoopType(idx) {
+            loopIdx = idx;
+            var btns = document.querySelectorAll('#lsmTypes button');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            btns[idx].classList.add('active');
+            updateCodeLine();
+            document.getElementById('lsmSummary').innerHTML = 'Loop type: <code>' + loopNames[idx] + '</code>' + (idx === 2 ? ' — pehle KAAM, phir CHECK!' : ' — pehle CHECK, phir kaam!') + ' Ab CHALAO dabao 🏁';
+        }
+
+        function updateCodeLine() {
+            var s = parseInt(document.getElementById('lsmStart').value);
+            var en = parseInt(document.getElementById('lsmEnd').value);
+            var st = parseInt(document.getElementById('lsmStep').value);
+            if (isNaN(s) || isNaN(en) || isNaN(st)) return;
+            var cond = st >= 0 ? ('i <= ' + en) : ('i >= ' + en);
+            var upd = st >= 0 ? ('i += ' + st) : ('i -= ' + Math.abs(st));
+            var line = '';
+            if (loopIdx === 0) {
+                line = 'for (let i = ' + s + '; ' + cond + '; ' + upd + ') { console.log(i); }';
+            } else if (loopIdx === 1) {
+                line = 'let i = ' + s + ';  while (' + cond + ') { console.log(i);  ' + upd + '; }';
+            } else {
+                line = 'let i = ' + s + ';  do { console.log(i);  ' + upd + '; } while (' + cond + ');';
+            }
+            document.getElementById('lsmCode').textContent = line;
+        }
+
+        function condText(v, en, positive) {
+            return positive ? ('(' + v + ' <= ' + en + ')') : ('(' + v + ' >= ' + en + ')');
+        }
+
+        function runLoop() {
+            if (lsmBusy) return;
+            var start = parseInt(document.getElementById('lsmStart').value);
+            var end = parseInt(document.getElementById('lsmEnd').value);
+            var step = parseInt(document.getElementById('lsmStep').value);
+            var track = document.getElementById('lsmTrack');
+            var summary = document.getElementById('lsmSummary');
+
+            if (isNaN(start) || isNaN(end) || isNaN(step)) {
+                summary.innerHTML = '⚠️ Teeno values mein sahi NUMBER daalo bhai!';
+                return;
+            }
+
+            var positive = step >= 0;
+            updateCodeLine();
+            track.innerHTML = '';
+
+            /* --- Step 0 = infinite --- */
+            if (step === 0) {
+                summary.innerHTML = '🚨 <b>INFINITE LOOP!</b> Step 0 hai — i kabhi badhega hi nahi, condition hamesha true rahegi, loop <b>kabhi nahi rukega</b>! Browser hang ho jata — humne emergency brake lagaya 🔴 (Update hamesha badalne wala hona chahiye!)';
+                return;
+            }
+
+            /* --- Simulate iterations --- */
+            var rows = [];
+            var i = start;
+            var count = 0;
+            var infLoop = false;
+
+            if (loopIdx <= 1) {
+                // for / while — CHECK FIRST
+                while (true) {
+                    count++;
+                    if (count > MAXI + 1) { infLoop = true; break; }
+                    var pass = positive ? (i <= end) : (i >= end);
+                    if (pass) {
+                        rows.push({ kind: 'pass', v: i, num: 'Iter ' + (rows.length + 1), check: condText(i, end, positive) + ' ✓', out: 'print: ' + i });
+                        i += step;
+                    } else {
+                        rows.push({ kind: 'fail', v: i, num: 'Exit Check', check: condText(i, end, positive) + ' ✗', out: 'kuch print nahi 🚪' });
+                        break;
+                    }
+                }
+            } else {
+                // do-while — RUN FIRST, CHECK AFTER
+                while (true) {
+                    count++;
+                    if (count > MAXI + 1) { infLoop = true; break; }
+                    var cur = i;
+                    i += step;
+                    var pass2 = positive ? (i <= end) : (i >= end);
+                    rows.push({ kind: pass2 ? 'pass' : 'fail', v: cur, num: 'Iter ' + (rows.length + 1), check: 'update → i=' + i + ', ' + condText(i, end, positive) + (pass2 ? ' ✓' : ' ✗'), out: 'print: ' + cur });
+                    if (!pass2) break;
+                }
+            }
+
+            /* --- Render rows hidden, then animate --- */
+            var passCount = 0;
+            var html = '';
+            for (var r = 0; r < rows.length; r++) {
+                if (rows[r].kind === 'pass') passCount++;
+                html += '<div class="itr ' + rows[r].kind + '">'
+                    + '<span class="i-num">' + rows[r].num + '</span>'
+                    + '<span class="i-val">i = ' + rows[r].v + '</span>'
+                    + '<span class="i-check">' + rows[r].check + '</span>'
+                    + '<span class="i-out">' + rows[r].out + '</span>'
+                    + '</div>';
+            }
+            track.innerHTML = html;
+
+            /* --- Summary text --- */
+            var lastFail = rows[rows.length - 1];
+            var sumHtml = '';
+            if (infLoop) {
+                sumHtml = '🚨 <b>' + MAXI + '+ iterations — INFINITE LOOP ka shak!</b> Condition kabhi false nahi ho rahi — real browser yaha <b>hang</b> ho jata! 💀 Step aur End check karo.';
+            } else if (loopIdx <= 1) {
+                if (passCount === 0) {
+                    sumHtml = '📉 <b>0 iterations!</b> Pehli check hi fail hui ' + lastFail.check.replace(' ✗', ' ✗') + ' — for/while <b>pehle CHECK</b> karte hai, kaam baad mein. Loop ki body <b>ek baar bhi nahi chali!</b>';
+                } else {
+                    sumHtml = '🏁 <b>Total ' + passCount + ' iterations!</b> Aakhri check: i = ' + lastFail.v + ', ' + lastFail.check + ' — wahi pe loop ruka. Loop ki zindagi: <b>check → kaam → update → dobara check!</b>';
+                }
+            } else {
+                if (rows.length === 1 && lastFail.kind === 'fail') {
+                    sumHtml = '🤯 <b>do-while MAGIC!</b> Condition pehli hi check mein fail hui, <b>PHIR BHI 1 iteration chala</b> — kyunki do-while <b>PEHLE kaam karta hai, PHIR check!</b> Yahi iska superpower hai. (while hota toh 0 baar!)';
+                } else {
+                    sumHtml = '🏁 <b>Total ' + rows.length + ' iterations!</b> Har baar <b>PEHLE print</b> hua, <b>PHIR check</b> hua — aakhri check ✗ pe loop ruka. do-while = kam se kam 1 baar pakka!';
+                }
+            }
+
+            /* --- Animate --- */
+            lsmBusy = true;
+            var els = track.children;
+            var k = 0;
+            var timer = setInterval(function () {
+                if (k >= els.length) {
+                    clearInterval(timer);
+                    lsmBusy = false;
+                    summary.innerHTML = sumHtml;
+                    return;
+                }
+                els[k].classList.add('show');
+                k++;
+            }, 180);
+        }
+
+        /* ==================== QUIZ ==================== */
+        var quizData = [
+            { q: '<code>for (let i = 0; i < 3; i++) { console.log(i); }</code> — output kya hoga?', opts: ['0, 1, 2', '1, 2, 3', '0, 1, 2, 3', '1, 2, 3, 0, 1, 2...'], correct: 0, exp: 'i = 0 se shuru hua, condition i < 3 hai — matlab 0, 1, 2 chalenge. i = 3 hote hi condition false! (i < 3 aur i <= 3 ka farak = off-by-one ka trap!)' },
+            { q: 'while aur do-while mein sabse bada farak kya hai?', opts: ['do-while fast hota hai', 'do-while kam se kam 1 baar pakka chalta hai', 'while 1 baar pakka chalta hai', 'Koi farak nahi hai'], correct: 1, exp: 'do-while PEHLE body chalata hai, PHIR check karta hai — isliye condition false ho tab bhi 1 baar chalta hai! while pehle check karta hai — false hua toh 0 baar chala.' },
+            { q: '<code>break</code> aur <code>continue</code> mein kya farak hai?', opts: ['Dono loop band karte hai', 'continue loop band karta hai, break round skip karta hai', 'break poora loop khatam karta hai, continue sirf current round skip karta hai', 'Dono bilkul same hai'], correct: 2, exp: 'break = loop se turant BAHAR (aage ka code chalta hai). continue = sirf ye round skip, loop chalta rehta hai. Movie beech mein chhodna vs karela side mein rakh dena!' },
+            { q: '<code>let i = 10; while (i < 5) { console.log(i); i++; }</code> — kitni baar chalega?', opts: ['10 baar', '5 baar', '0 baar — body kabhi nahi chali', 'Infinite'], correct: 2, exp: 'Pehli check hi fail (10 < 5 ✗)! while PEHLE check karta hai, chalana baad mein — isliye body ek baar bhi nahi chali. do-while hota toh 1 baar pakka chal jata!' },
+            { q: 'Infinite loop KAB banta hai?', opts: ['Jab i++ (update) likhna bhool jao', 'Jab condition kabhi false na ho', 'Dono wajah se!', 'JS mein infinite loop banta hi nahi'], correct: 2, exp: 'Dono! Update bhool gaye toh i wahi atka rahega; condition kabhi false na ho toh loop kabhi nahi rukega. Browser hang, laptop garam! Emergency exit: break lagao.' }
+        ];
+
+        var quizIdx = 0, quizScore = 0, quizLock = false;
+
+        function renderQuiz() {
+            var q = quizData[quizIdx];
+            document.getElementById('quizCount').textContent = 'Sawaal ' + (quizIdx + 1) + ' / ' + quizData.length;
+            document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+            document.getElementById('quizQ').innerHTML = 'Q' + (quizIdx + 1) + '. ' + q.q;
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').classList.remove('show');
+            quizLock = false;
+
+            var box = document.getElementById('quizOpts');
+            box.innerHTML = '';
+            for (var i = 0; i < q.opts.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.textContent = q.opts[i];
+                btn.setAttribute('data-i', i);
+                btn.onclick = function () { answerQuiz(parseInt(this.getAttribute('data-i'))); };
+                box.appendChild(btn);
+            }
+        }
+
+        function answerQuiz(i) {
+            if (quizLock) return;
+            quizLock = true;
+            var q = quizData[quizIdx];
+            var btns = document.querySelectorAll('.quiz-opt');
+            for (var j = 0; j < btns.length; j++) {
+                btns[j].disabled = true;
+                if (parseInt(btns[j].getAttribute('data-i')) === q.correct) btns[j].classList.add('correct');
+            }
+            var fb = document.getElementById('quizFb');
+            if (i === q.correct) {
+                quizScore++;
+                document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+                fb.textContent = '✅ Sahi jawab! ' + q.exp;
+                fb.className = 'quiz-feedback good';
+            } else {
+                btns[i].classList.add('wrong');
+                fb.textContent = '❌ Oops! Sahi jawab highlighted hai. ' + q.exp;
+                fb.className = 'quiz-feedback bad';
+            }
+            document.getElementById('quizNext').classList.add('show');
+        }
+
+        function nextQuestion() {
+            if (quizIdx < quizData.length - 1) {
+                quizIdx++;
+                renderQuiz();
+            } else {
+                showFinal();
+            }
+        }
+
+        function showFinal() {
+            var msg, emoji;
+            if (quizScore === 5) { msg = 'PERFECT! Tum Loops ke Boss ho — Ghoomo Phiro Master! 🔄'; emoji = '🏆'; }
+            else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
+            else { msg = 'Koi baat nahi — upar sections dobara padho, Loop Machine se khelo!'; emoji = '📚'; }
+
+            document.getElementById('quizCount').textContent = 'Quiz Complete!';
+            document.getElementById('quizQ').innerHTML = '';
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').textContent = '🔄 Dobara Khelein';
+            document.getElementById('quizNext').classList.add('show');
+            document.getElementById('quizNext').onclick = restartQuiz;
+
+            document.getElementById('quizOpts').innerHTML = '<div class="quiz-final">'
+                + '<div class="qf-emoji">' + emoji + '</div>'
+                + '<h4>Score: ' + quizScore + ' / ' + quizData.length + '</h4>'
+                + '<p>' + msg + '</p>'
+                + '</div>';
+        }
+
+        function restartQuiz() {
+            quizIdx = 0;
+            quizScore = 0;
+            var btn = document.getElementById('quizNext');
+            btn.textContent = 'Agla Sawaal →';
+            btn.onclick = nextQuestion;
+            renderQuiz();
+        }
+
+        /* ==================== INIT ==================== */
+        renderExamples(0);
+        renderInterview('all');
+        loadSnippet(0);
+        updateCodeLine();
+        renderQuiz();
+    </script>
+</body>
+</html>
