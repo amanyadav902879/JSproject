@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrays & Objects — Complete Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{--bg:#0c0f16;--bg2:#111620;--card:#151c2a;--card2:#1a2236;--border:#1f2e47;--border2:#2a3d5e;--fg:#e4eaf4;--fg2:#c4cfdf;--muted:#5e7290;--accent:#00e87b;--accent2:#00c9ff;--amber:#ffb020;--red:#ff4d6a;--purple:#b46eff;--pink:#ff6eb4;--orange:#ff8c42;}
+        *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+        body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--fg);line-height:1.7;overflow-x:hidden;}
+        ::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:6px;}
+        .bg-dots{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:radial-gradient(rgba(0,232,123,0.04) 1px,transparent 1px);background-size:32px 32px;}
+        .bg-blob{position:fixed;border-radius:50%;filter:blur(140px);pointer-events:none;z-index:0;}
+        .blob1{width:600px;height:600px;top:-200px;left:-150px;background:rgba(0,232,123,0.07);}
+        .blob2{width:500px;height:500px;bottom:-200px;right:-100px;background:rgba(0,201,255,0.06);}
+        .blob3{width:400px;height:400px;top:50%;left:40%;background:rgba(180,110,255,0.04);}
+        .sidebar{position:fixed;left:0;top:0;bottom:0;width:256px;background:rgba(12,15,22,0.94);backdrop-filter:blur(20px);border-right:1px solid var(--border);z-index:100;padding:24px 0;overflow-y:auto;transition:transform .35s;}
+        .sidebar-logo{padding:0 20px 20px;border-bottom:1px solid var(--border);margin-bottom:14px;}
+        .sidebar-logo h2{font-size:1rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .sidebar-logo span{font-size:.7rem;color:var(--muted);display:block;margin-top:2px;}
+        .nav-section{padding:0 12px;margin-bottom:6px;}
+        .nav-section-title{font-size:.63rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);padding:8px 8px 4px;font-weight:700;}
+        .nav-link{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:9px;color:var(--fg2);text-decoration:none;font-size:.82rem;font-weight:500;transition:all .2s;cursor:pointer;position:relative;}
+        .nav-link:hover{background:rgba(0,232,123,0.06);color:var(--fg);}
+        .nav-link.active{background:rgba(0,232,123,0.1);color:var(--accent);font-weight:600;}
+        .nav-link.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:20px;background:var(--accent);border-radius:0 3px 3px 0;}
+        .nav-link i{width:16px;text-align:center;font-size:.78rem;opacity:.7;}.nav-link.active i{opacity:1;}
+        .nav-done{margin-left:auto;width:16px;height:16px;border-radius:50%;background:var(--accent);color:#000;font-size:.55rem;display:flex;align-items:center;justify-content:center;font-weight:800;opacity:0;transition:opacity .3s;}
+        .nav-link.seen .nav-done{opacity:1;}
+        .menu-toggle{display:none;position:fixed;top:16px;left:16px;z-index:200;width:44px;height:44px;border-radius:12px;background:var(--card);border:1px solid var(--border);color:var(--fg);font-size:1.1rem;cursor:pointer;align-items:center;justify-content:center;}
+        .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99;}
+        .main{margin-left:256px;position:relative;z-index:1;min-height:100vh;}
+        .content-wrap{max-width:880px;margin:0 auto;padding:40px 40px 80px;}
+        .progress-bar-wrap{position:sticky;top:0;z-index:50;background:rgba(12,15,22,0.88);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);padding:12px 40px;}
+        .progress-info{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+        .progress-info span{font-size:.73rem;color:var(--muted);font-weight:600;}.progress-info .pct{color:var(--accent);font-family:'Fira Code',monospace;}
+        .progress-track{height:4px;background:var(--border);border-radius:4px;overflow:hidden;}
+        .progress-fill{height:100%;width:0%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s;}
+        .hero{text-align:center;padding:50px 20px 40px;}
+        .hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,232,123,0.08);border:1px solid rgba(0,232,123,0.2);padding:6px 16px;border-radius:50px;font-size:.76rem;color:var(--accent);font-weight:600;margin-bottom:18px;}
+        .hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:900;line-height:1.15;margin-bottom:14px;}
+        .hero h1 .grad{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero p{color:var(--muted);font-size:1rem;max-width:560px;margin:0 auto 24px;}
+        .hero-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;}
+        .hero-stat .num{font-family:'Fira Code',monospace;font-weight:700;font-size:1.5rem;color:var(--accent);}
+        .hero-stat .lbl{font-size:.72rem;color:var(--muted);}
+        .section{margin-bottom:52px;scroll-margin-top:70px;opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s;}.section.visible{opacity:1;transform:translateY(0);}
+        .section-label{display:inline-flex;align-items:center;gap:6px;font-size:.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:700;margin-bottom:8px;}
+        .section h2{font-size:1.7rem;font-weight:800;margin-bottom:14px;line-height:1.3;}
+        .section h3{font-size:1.1rem;font-weight:700;margin:22px 0 10px;display:flex;align-items:center;gap:8px;}
+        .section h3 .h3i{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-size:.78rem;}
+        .section p{color:var(--fg2);margin-bottom:12px;font-size:.93rem;}
+        .section ul,.section ol{padding-left:20px;margin-bottom:12px;}.section li{color:var(--fg2);margin-bottom:5px;font-size:.9rem;}.section li::marker{color:var(--accent);}
+        .divider{height:1px;background:var(--border);margin:36px 0;}
+        .icard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:14px;transition:border-color .3s;}.icard:hover{border-color:var(--border2);}
+        .icard.ab{border-left:3px solid var(--accent);}.icard.amb{border-left:3px solid var(--amber);}.icard.rd{border-left:3px solid var(--red);}.icard.bl{border-left:3px solid var(--accent2);}.icard.pu{border-left:3px solid var(--purple);}
+        .tip{display:flex;gap:12px;padding:16px 18px;border-radius:12px;margin-bottom:14px;font-size:.86rem;}.tip i{margin-top:2px;font-size:.95rem;flex-shrink:0;}.tip .tt{flex:1;color:var(--fg2);line-height:1.6;}.tip .tt strong{color:var(--fg);}
+        .tip-w{background:rgba(255,176,32,0.06);border:1px solid rgba(255,176,32,0.15);}.tip-w i{color:var(amber);}
+        .tip-d{background:rgba(255,77,106,0.06);border:1px solid rgba(255,77,106,0.15);}.tip-d i{color:var(--red);}
+        .tip-i{background:rgba(0,201,255,0.06);border:1px solid rgba(0,201,255,0.15);}.tip-i i{color:var(--accent2);}
+        .tip-s{background:rgba(0,232,123,0.06);border:1px solid rgba(0,232,123,0.15);}.tip-s i{color:var(--accent);}
+        .cblock{background:#080b12;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+        .chead{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);}
+        .cdots{display:flex;gap:6px;}.cdots span{width:10px;height:10px;border-radius:50%;}.cdots span:nth-child(1){background:var(--red);}.cdots span:nth-child(2){background:var(--amber);}.cdots span:nth-child(3){background:var(--accent);}
+        .clang{font-size:.68rem;color:var(--muted);font-family:'Fira Code',monospace;text-transform:uppercase;letter-spacing:1px;}
+        .ccopy{background:none;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:6px;cursor:pointer;font-size:.68rem;font-family:'Poppins',sans-serif;transition:all .2s;}.ccopy:hover{color:var(--accent);border-color:var(--accent);}
+        .cbody{padding:14px 20px;font-family:'Fira Code',monospace;font-size:.8rem;line-height:1.85;overflow-x:auto;white-space:pre;}
+        .sk{color:var(--purple);font-weight:600;}.ss{color:var(--accent);}.sn{color:var(--orange);}.sb{color:var(--amber);}.snull{color:var(--red);}.sc{color:#3d5070;font-style:italic;}.sf{color:var(--accent2);}.sv{color:var(--fg);}.so{color:#5e7290;}.sp{color:var(--pink);}
+        .pg{background:#080b12;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:14px;}
+        .pg-ed{width:100%;min-height:70px;padding:14px 20px;background:transparent;border:none;color:var(--fg);font-family:'Fira Code',monospace;font-size:.82rem;line-height:1.8;resize:vertical;outline:none;}
+        .pg-out{border-top:1px solid var(--border);padding:10px 20px;font-family:'Fira Code',monospace;font-size:.8rem;line-height:1.7;min-height:30px;color:var(--muted);}
+        .pg-out .ol{display:flex;gap:8px;}.pg-out .oa{color:var(--accent);user-select:none;}.pg-out .ov{color:var(--fg);}.pg-out .oe{color:var(--red);}
+        .pg-run{display:flex;gap:8px;padding:8px 16px;border-top:1px solid var(--border);}
+        .brun{padding:7px 18px;border:none;border-radius:8px;background:var(--accent);color:#000;font-weight:700;font-size:.8rem;cursor:pointer;font-family:'Poppins',sans-serif;display:flex;align-items:center;gap:6px;transition:all .2s;}.brun:hover{box-shadow:0 4px 16px rgba(0,232,123,0.3);transform:translateY(-1px);}
+        .breset{padding:7px 14px;border:1px solid var(--border);border-radius:8px;background:transparent;color:var(--muted);font-weight:600;font-size:.76rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:all .2s;}.breset:hover{color:var(--fg);border-color:var(--border2);}
+        .ctable{width:100%;border-collapse:separate;border-spacing:0;margin-bottom:14px;font-size:.86rem;}
+        .ctable thead th{background:var(--card2);padding:11px 14px;text-align:left;font-weight:700;font-size:.76rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--border);}
+        .ctable thead th:first-child{border-radius:10px 0 0 0;}.ctable thead th:last-child{border-radius:0 10px 0 0;}
+        .ctable tbody td{padding:11px 14px;border-bottom:1px solid var(--border);color:var(--fg2);vertical-align:top;}
+        .ctable tbody tr:last-child td{border-bottom:none;}.ctable tbody tr:last-child td:first-child{border-radius:0 0 0 10px;}.ctable tbody tr:last-child td:last-child{border-radius:0 0 10px 0;}
+        .ctable tbody tr{transition:background .2s;}.ctable tbody tr:hover{background:rgba(255,255,255,0.015);}
+        .bsm{display:inline-block;padding:2px 9px;border-radius:5px;font-family:'Fira Code',monospace;font-size:.7rem;font-weight:700;}
+        .bsm-y{background:rgba(0,232,123,0.1);color:var(--accent);}.bsm-n{background:rgba(255,77,106,0.1);color:var(--red);}
+        code{font-family:'Fira Code',monospace;background:rgba(0,232,123,0.08);color:var(--accent);padding:1px 6px;border-radius:4px;font-size:.85rem;}
+        .mq{background:var(--card2);border:1px solid var(--border2);border-radius:14px;padding:22px;margin:20px 0;}
+        .mq-q{font-weight:700;font-size:.93rem;margin-bottom:12px;line-height:1.6;}
+        .mq-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+        .mq-o{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;cursor:pointer;border:1px solid var(--border);background:var(--bg);color:var(--fg2);font-size:.83rem;font-family:'Fira Code',monospace;transition:all .2s;text-align:left;}
+        .mq-o:hover{border-color:var(--accent);transform:translateX(4px);}
+        .mq-o.correct{border-color:var(--accent);background:rgba(0,232,123,0.08);color:var(--accent);}
+        .mq-o.wrong{border-color:var(--red);background:rgba(255,77,106,0.08);color:var(--red);}
+        .mq-o.disabled{pointer-events:none;opacity:.5;}.mq-o.disabled.correct,.mq-o.disabled.wrong{opacity:1;}
+        .mq-o .ol{width:24px;height:24px;border-radius:6px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.72rem;flex-shrink:0;}
+        .mq-fb{padding:10px 14px;border-radius:9px;font-size:.82rem;font-weight:600;display:none;margin-bottom:8px;}
+        .mq-fb.show{display:block;animation:fi .3s;}.mq-fb.fok{background:rgba(0,232,123,0.06);color:var(--accent);border:1px solid rgba(0,232,123,0.15);}
+        .mq-fb.fno{background:rgba(255,77,106,0.06);color:var(--red);border:1px solid rgba(255,77,106,0.15);}
+        @keyframes fi{from{opacity:0}to{opacity:1}}
+        .method-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:8px;font-family:'Fira Code',monospace;font-size:.78rem;font-weight:600;margin:2px 4px 2px 0;border:1px solid var(--border);background:var(--card);transition:all .2s;cursor:default;}
+        .method-badge:hover{border-color:var(--accent);transform:translateY(-1px);}
+        .method-badge.mut{border-color:rgba(255,176,32,0.3);color:var(--amber);}
+        .method-badge.imm{border-color:rgba(0,232,123,0.3);color:var(--accent);}
+        .toast-wrap{position:fixed;top:16px;right:16px;z-index:9999;display:flex;flex-direction:column;gap:8px;}
+        .toast-msg{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:12px 18px;display:flex;align-items:center;gap:10px;font-size:.83rem;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,0.4);animation:tI .3s ease,tO .3s ease 2.4s forwards;}
+        .toast-msg.t-ok{border-left:3px solid var(--accent);}.toast-msg.t-ok i{color:var(--accent);}
+        @keyframes tI{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes tO{from{opacity:1}to{opacity:0;transform:translateX(30px)}}
+        @media(max-width:900px){.sidebar{transform:translateX(-100%);}.sidebar.open{transform:translateX(0);}.menu-toggle{display:flex;}.sidebar-overlay.show{display:block;}.main{margin-left:0;}.content-wrap{padding:70px 18px 60px;}.progress-bar-wrap{padding:12px 18px;}}
+        @media(max-width:500px){.ctable{font-size:.76rem;}.ctable thead th,.ctable tbody td{padding:8px 8px;}}
+    </style>
+</head>
+<body>
+<div class="bg-dots"></div><div class="bg-blob blob1"></div><div class="bg-blob blob2"></div><div class="bg-blob blob3"></div>
+<div class="toast-wrap" id="toastWrap"></div>
+<button class="menu-toggle" id="menuToggle" aria-label="Menu"><i class="fa-solid fa-bars"></i></button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo"><h2><i class="fa-brands fa-js"></i> JS Chapter 3</h2><span>Arrays & Objects</span></div>
+    <div class="nav-section"><div class="nav-section-title">Arrays</div>
+        <a class="nav-link" data-target="sec-arr-intro" onclick="go('sec-arr-intro')"><i class="fa-solid fa-list"></i> Array Basics<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-map" onclick="go('sec-map')"><i class="fa-solid fa-arrows-turn-right"></i> map()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-filter" onclick="go('sec-filter')"><i class="fa-solid fa-filter"></i> filter()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-reduce" onclick="go('sec-reduce')"><i class="fa-solid fa-compress"></i> reduce()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-foreach" onclick="go('sec-foreach')"><i class="fa-solid fa-rotate"></i> forEach()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-find" onclick="go('sec-find')"><i class="fa-solid fa-magnifying-glass"></i> find() & findIndex()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-some" onclick="go('sec-some')"><i class="fa-solid fa-circle-check"></i> some() & every()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-sort" onclick="go('sec-sort')"><i class="fa-solid fa-arrow-down-a-z"></i> sort()<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-arr-more" onclick="go('sec-arr-more')"><i class="fa-solid fa-plus"></i> More Methods<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-arr-pg" onclick="go('sec-arr-pg')"><i class="fa-solid fa-play"></i> Array Playground<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Objects</div>
+        <a class="nav-link" data-target="sec-obj-intro" onclick="go('sec-obj-intro')"><i class="fa-solid fa-cube"></i> Object Basics<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-nested" onclick="go('sec-nested')"><i class="fa-solid fa-cubes"></i> Nested Objects<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-destruct" onclick="go('sec-destruct')"><i class="fa-solid fa-scissors"></i> Destructuring<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-spread" onclick="go('sec-spread')"><i class="fa-solid fa-expand"></i> Spread & Rest<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-optional" onclick="go('sec-optional')"><i class="fa-solid fa-question"></i> Optional Chaining<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-obj-methods" onclick="go('sec-obj-methods')"><i class="fa-solid fa-wrench"></i> Object Methods<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-this" onclick="go('sec-this')"><i class="fa-solid fa-hand-point-right"></i> this Keyword<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+        <a class="nav-link" data-target="sec-obj-pg" onclick="go('sec-obj-pg')"><i class="fa-solid fa-play"></i> Object Playground<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+    </div>
+    <div class="nav-section"><div class="nav-section-title">Quiz</div>
+        <a class="nav-link" data-target="sec-quiz" onclick="go('sec-quiz')"><i class="fa-solid fa-trophy"></i> Mega Quiz<span class="nav-done"><i class="fa-solid fa-check"></i></span></a>
+    </div>
+</nav>
+
+<div class="main">
+    <div class="progress-bar-wrap"><div class="progress-info"><span>Progress</span><span class="pct" id="pPct">0%</span></div><div class="progress-track"><div class="progress-fill" id="pFill"></div></div></div>
+    <div class="content-wrap">
+
+        <div class="hero">
+            <div class="hero-badge"><i class="fa-solid fa-book-open"></i> Chapter 3 — Data Structures</div>
+            <h1>Arrays & <span class="grad">Objects</span></h1>
+            <p>JavaScript mein data store karne ke 2 sabse important tareke. Har method 5+ examples ke saath — by heart nahi, samajh ke.</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="num">18</div><div class="lbl">Topics</div></div>
+                <div class="hero-stat"><div class="num">60+</div><div class="lbl">Examples</div></div>
+                <div class="hero-stat"><div class="num">2</div><div class="lbl">Playgrounds</div></div>
+                <div class="hero-stat"><div class="num">10</div><div class="lbl">Quiz Qs</div></div>
+            </div>
+        </div>
+        <div class="divider"></div>
+
+        <!-- ====== ARRAY INTRO ====== -->
+        <section class="section" id="sec-arr-intro">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 01</div>
+            <h2>Array Basics — Ordered Collection</h2>
+            <p>Array ek <strong>ordered list</strong> hai jismein kisi bhi type ki values store ho sakti hain. Zero-indexed — pehla element <code>[0]</code> par hai.</p>
+
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// Array banana — 3 tarike</span>
+<span class="sk">const</span> <span class="sv">arr1</span> <span class="so">=</span> <span class="so">[</span><span class="sn">10</span><span class="so">,</span> <span class="sn">20</span><span class="so">,</span> <span class="sn">30</span><span class="so">,</span> <span class="sn">40</span><span class="so">,</span> <span class="sn">50</span><span class="so">];</span>            <span class="sc">// Literal (best)</span>
+<span class="sk">const</span> <span class="sv">arr2</span> <span class="so">=</span> <span class="sk">new</span> <span class="sf">Array</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span> <span class="sn">2</span><span class="so">,</span> <span class="sn">3</span><span class="so">);</span>                <span class="sc">// Constructor</span>
+<span class="sk">const</span> <span class="sv">arr3</span> <span class="so">=</span> <span class="sf">Array</span><span class="so">.</span><span class="sf">of</span><span class="so">(</span><span class="ss">"a"</span><span class="so">,</span> <span class="ss">"b"</span><span class="so">,</span> <span class="ss">"c"</span><span class="so">);</span>             <span class="sc">// Array.of()</span>
+
+<span class="sc">// Mixed types — JS mein allowed!</span>
+<span class="sk">const</span> <span class="sv">mixed</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span> <span class="ss">"hello"</span><span class="so">,</span> <span class="sb">true</span><span class="so">,</span> <span class="snull">null</span><span class="so">,</span> <span class="so">{</span><span class="sv">a</span><span class="so">:</span><span class="sn">1</span><span class="so">},</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">]];</span>
+
+<span class="sc">// Access & Modify — index se</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">arr1</span><span class="so">[</span><span class="sn">0</span><span class="so">]);</span>     <span class="sc">// 10 (pehla)</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">arr1</span><span class="so">[</span><span class="sv">arr1</span><span class="so">.</span><span class="sv">length</span> <span class="so">-</span> <span class="sn">1</span><span class="so">]);</span> <span class="sc">// 50 (last)</span>
+<span class="sv">arr1</span><span class="so">[</span><span class="sn">0</span><span class="so">]</span> <span class="so">=</span> <span class="sn">99</span><span class="so">;</span>              <span class="sc">// Modify</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">arr1</span><span class="so">[</span><span class="sn">0</span><span class="so">]);</span>     <span class="sc">// 99</span>
+
+<span class="sc">// Important properties</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">arr1</span><span class="so">.</span><span class="sv">length</span><span class="so">);</span>  <span class="sc">// 5</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Array</span><span class="so">.</span><span class="sf">isArray</span><span class="so">(</span><span class="sv">arr1</span><span class="so">));</span> <span class="sc">// true</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sk">typeof</span> <span class="sv">arr1</span><span class="so">);</span>      <span class="sc">// "object" (!)</span>
+
+<span class="sc">// CRUD — Add, Remove, Search</span>
+<span class="sk">const</span> <span class="sv">fruits</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"Mango"</span><span class="so">,</span> <span class="ss">"Apple"</span><span class="so">];</span>
+
+<span class="sc">// ADD — end se</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">push</span><span class="so">(</span><span class="ss">"Banana"</span><span class="so">);</span>          <span class="sc">// ["Mango","Apple","Banana"]</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">push</span><span class="so">(</span><span class="ss">"Grapes"</span><span class="so">,</span> <span class="ss">"Kiwi"</span><span class="so">);</span>  <span class="sc">// multiple add</span>
+
+<span class="sc">// ADD — start se</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">unshift</span><span class="so">(</span><span class="ss">"Papaya"</span><span class="so">);</span>         <span class="sc">// ["Papaya","Mango",...]</span>
+
+<span class="sc">// REMOVE — end se</span>
+<span class="sk">const</span> <span class="sv">last</span> <span class="so">=</span> <span class="sv">fruits</span><span class="so">.</span><span class="sf">pop</span><span class="so">();</span>          <span class="sc">// "Kiwi" returned</span>
+
+<span class="sc">// REMOVE — start se</span>
+<span class="sk">const</span> <span class="sv">first</span> <span class="so">=</span> <span class="sv">fruits</span><span class="so">.</span><span class="sf">shift</span><span class="so">();</span>         <span class="sc">// "Papaya" returned</span>
+
+<span class="sc">// REMOVE — middle se (index, deleteCount)</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">splice</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span> <span class="sn">1</span><span class="so">);</span>               <span class="sc">// index 1 se 1 hatao</span>
+
+<span class="sc">// EXTRACT — bina remove kiye copy karo</span>
+<span class="sk">const</span> <span class="sv">copy</span> <span class="so">=</span> <span class="sv">fruits</span><span class="so">.</span><span class="sf">slice</span><span class="so">(</span><span class="sn">0</span><span class="so">,</span> <span class="sn">2</span><span class="so">);</span>        <span class="sc">// index 0-1 tak copy</span>
+
+<span class="sc">// SEARCH</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">fruits</span><span class="so">.</span><span class="sf">indexOf</span><span class="so">(</span><span class="ss">"Mango"</span><span class="so">));</span>   <span class="sc">// 0 (index)</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">fruits</span><span class="so">.</span><span class="sf">includes</span><span class="so">(</span><span class="ss">"Apple"</span><span class="so">));</span>   <span class="sc">// true/false</span>
+
+<span class="sc">// CONVERT</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">fruits</span><span class="so">.</span><span class="sf">join</span><span class="so">(</span><span class="ss">" | "</span><span class="so">));</span>        <span class="sc">// "Mango | Apple | ..."</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">"a-b-c"</span><span class="so">.</span><span class="sf">split</span><span class="so">(</span><span class="ss">"-"</span><span class="so">));</span>      <span class="sc">// ["a","b","c"]</span>
+
+<span class="sc">// EMPTY / FILL</span>
+<span class="sk">const</span> <span class="sv">zeros</span> <span class="so">=</span> <span class="sk">new</span> <span class="sf">Array</span><span class="so">(</span><span class="sn">5</span><span class="so">).</span><span class="sf">fill</span><span class="so">(</span><span class="sn">0</span><span class="so">);</span> <span class="sc">// [0,0,0,0,0]</span>
+<span class="sk">const</span> <span class="sv">range</span> <span class="so">=</span> <span class="so">[...</span><span class="sf">Array</span><span class="so">(</span><span class="sn">5</span><span class="so">).</span><span class="sf">keys</span><span class="so">()];</span> <span class="sc">// [0,1,2,3,4]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">zeros</span><span class="so">,</span> <span class="sv">range</span><span class="so">);</span>
+
+<span class="sc">// FLATTEN — nested array ko flat karo</span>
+<span class="sk">const</span> <span class="sv">nested</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span> <span class="so">[</span><span class="sn">2</span><span class="so">,</span> <span class="sn">3</span><span class="so">],</span> <span class="so">[</span><span class="sn">4</span><span class="so">,</span> <span class="so">[</span><span class="sn">5</span><span class="so">,</span> <span class="sn">6</span><span class="so">]]];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nested</span><span class="so">.</span><span class="sf">flat</span><span class="so">());</span>       <span class="sc">// [1,2,3,4,[5,6]]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nested</span><span class="so">.</span><span class="sf">flat</span><span class="so">(</span><span class="sn">Infinity</span><span class="so">));</span> <span class="sc">// [1,2,3,4,5,6]</span></div></div>
+
+            <div class="tip tip-i"><i class="fa-solid fa-circle-info"></i><div class="tt"><strong>Mutating vs Non-Mutating:</strong> <code>push/pop/shift/unshift/splice/sort/reverse</code> original array change karte hain (mutating). <code>map/filter/slice/concat</code> naya array return karte hain (non-mutating).</div></div>
+        </section>
+
+        <!-- ====== MAP ====== -->
+        <section class="section" id="sec-map">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 02</div>
+            <h2>map() — Har Element Ko Transform Karo</h2>
+            <p>Har element pe function chalao, naya array banao. Original array <strong>change nahi hoti</strong>.</p>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// Syntax: array.map((element, index, array) => newValue)</span>
+
+<span class="sc">// 1. Double every number</span>
+<span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span> <span class="sn">2</span><span class="so">,</span> <span class="sn">3</span><span class="so">,</span> <span class="sn">4</span><span class="so">,</span> <span class="sn">5</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">doubled</span> <span class="so">=</span> <span class="sv">nums</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">*</span> <span class="sn">2</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">doubled</span><span class="so">);</span> <span class="sc">// [2, 4, 6, 8, 10]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">);</span>    <span class="sc">// [1,2,3,4,5] — original safe!</span>
+
+<span class="sc">// 2. String array → uppercase</span>
+<span class="sk">const</span> <span class="sv">names</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"rahul"</span><span class="so">,</span> <span class="ss">"priya"</span><span class="so">,</span> <span class="ss">"amit"</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">upper</span> <span class="so">=</span> <span class="sv">names</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span><span class="so">.</span><span class="sf">toUpperCase</span><span class="so">());</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">upper</span><span class="so">);</span> <span class="sc">// ["RAHUL","PRIYA","AMIT"]</span>
+
+<span class="sc">// 3. Objects array — extract specific field</span>
+<span class="sk">const</span> <span class="sv">users</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span> <span class="sv">age</span><span class="so">:</span><span class="sn">25</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Priya"</span><span class="so">,</span> <span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Amit"</span><span class="so">,</span> <span class="sv">age</span><span class="so">:</span><span class="sn">30</span><span class="so">}</span>
+<span class="so">];</span>
+<span class="sk">const</span> <span class="sv">justNames</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">name</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">justNames</span><span class="so">);</span> <span class="sc">// ["Rahul","Priya","Amit"]</span>
+
+<span class="sc">// 4. Transform objects — add new field</span>
+<span class="sk">const</span> <span class="sv">withStatus</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="so">({</span>
+    <span class="so">...</span><span class="sv">u</span><span class="so">,</span>
+    <span class="sv">isActive</span><span class="so">:</span> <span class="sv">u</span><span class="so">.</span><span class="sv">age</span> <span class="so">>=</span> <span class="sn">25</span>
+<span class="so">}));</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">withStatus</span><span class="so">);</span>
+<span class="sc">// [{name:"Rahul",age:25,isActive:true}, {name:"Priya",age:22,isActive:false}, ...]</span>
+
+<span class="sc">// 5. Index use karo</span>
+<span class="sk">const</span> <span class="sv">indexed</span> <span class="so">=</span> <span class="sv">nums</span><span class="so">.</span><span class="sf">map</span><span class="so">((</span><span class="sv">n</span><span class="so">,</span> <span class="sv">i</span><span class="so">)</span> <span class="so">=></span> <span class="ss">`${</span><span class="sv">i</span><span class="so">}</span><span class="ss">: ${</span><span class="sv">n</span><span class="so">}</span><span class="ss">`</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">indexed</span><span class="so">);</span> <span class="sc">// ["0: 1","1: 2","2: 3",...]</span>
+
+<span class="sc">// 6. Celsius → Fahrenheit</span>
+<span class="sk">const</span> <span class="sv">celsius</span> <span class="so">=</span> <span class="so">[</span><span class="sn">0</span><span class="so">,</span> <span class="sn">100</span><span class="so">,</span> <span class="sn">37</span><span class="so">,</span> <span class="sn">-40</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">fahrenheit</span> <span class="so">=</span> <span class="sv">celsius</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">c</span> <span class="so">=></span> <span class="so">+</span><span class="so">((</span><span class="sv">c</span> <span class="so">*</span> <span class="sn">9</span><span class="so">/</span> <span class="sn">5</span> <span class="so">+</span> <span class="sn">32</span><span class="so">).</span><span class="sf">toFixed</span><span class="so">(</span><span class="sn">1</span><span class="so">));</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">fahrenheit</span><span class="so">);</span> <span class="sc">// [32, 212, 98.6, -40]</span></div></div>
+        </section>
+
+        <!-- ====== FILTER ====== -->
+        <section class="section" id="sec-filter">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 03</div>
+            <h2>filter() — Condition Ke Hisab Se Chuno</h2>
+            <p>Har element pe test karo — <code>true</code> return karne wale rakho, baaki hatado. Naya array milta hai.</p>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// 1. Even numbers filter</span>
+<span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">,</span><span class="sn">5</span><span class="so">,</span><span class="sn">6</span><span class="so">,</span><span class="sn">7</span><span class="so">,</span><span class="sn">8</span><span class="so">,</span><span class="sn">9</span><span class="so">,</span><span class="sn">10</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">evens</span> <span class="so">=</span> <span class="sv">nums</span><span class="so">.</span><span class="sf">filter</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">%</span> <span class="sn">2</span> <span class="so">===</span> <span class="sn">0</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">evens</span><span class="so">);</span> <span class="sc">// [2,4,6,8,10]</span>
+
+<span class="sc">// 2. Adults filter (objects)</span>
+<span class="sk">const</span> <span class="sv">people</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">25</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Sneha"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">17</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Amit"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">30</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Pooja"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">15</span><span class="so">}</span>
+<span class="so">];</span>
+<span class="sk">const</span> <span class="sv">adults</span> <span class="so">=</span> <span class="sv">people</span><span class="so">.</span><span class="sf">filter</span><span class="so">(</span><span class="sv">p</span> <span class="so">=></span> <span class="sv">p</span><span class="so">.</span><span class="sv">age</span> <span class="so">>=</span> <span class="sn">18</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">adults</span><span class="so">);</span> <span class="sc">// Rahul & Amit</span>
+
+<span class="sc">// 3. Remove falsy values</span>
+<span class="sk">const</span> <span class="sv">messy</span> <span class="so">=</span> <span class="so">[</span><span class="sn">0</span><span class="so">,</span> <span class="ss">"hello"</span><span class="so">,</span> <span class="snull">null</span><span class="so">,</span> <span class="sb">false</span><span class="so">,</span> <span class="ss">"world"</span><span class="so">,</span> <span class="sb">undefined</span><span class="so">,</span> <span class="ss">""</span><span class="so">,</span> <span class="sn">42</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">clean</span> <span class="so">=</span> <span class="sv">messy</span><span class="so">.</span><span class="sf">filter</span><span class="so">(</span><span class="sv">v</span> <span class="so">=></span> <span class="sv">v</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">clean</span><span class="so">);</span> <span class="sc">// ["hello","world",42]</span>
+
+<span class="sc">// 4. Search — names starting with "R"</span>
+<span class="sk">const</span> <span class="sv">allNames</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="ss">"Priya"</span><span class="so">,</span><span class="ss">"Ravi"</span><span class="so">,</span><span class="ss">"Amit"</span><span class="so">,</span><span class="ss">"Riya"</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">rNames</span> <span class="so">=</span> <span class="sv">allNames</span><span class="so">.</span><span class="sf">filter</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span><span class="so">.</span><span class="sf">startsWith</span><span class="so">(</span><span class="ss">"R"</span><span class="so">));</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">rNames</span><span class="so">);</span> <span class="sc">// ["Rahul","Ravi","Riya"]</span>
+
+<span class="sc">// 5. Unique values (remove duplicates)</span>
+<span class="sk">const</span> <span class="sv">dups</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">unique</span> <span class="so">=</span> <span class="so">[...</span><span class="sk">new</span> <span class="sf">Set</span><span class="so">(</span><span class="sv">dups</span><span class="so">)];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">unique</span><span class="so">);</span> <span class="sc">// [1,2,3,4]</span>
+
+<span class="sc">// 6. map + filter chain — adults ke naam uppercase</span>
+<span class="sk">const</span> <span class="sv">result</span> <span class="so">=</span> <span class="sv">people</span>
+    <span class="so">.</span><span class="sf">filter</span><span class="so">(</span><span class="sv">p</span> <span class="so">=></span> <span class="sv">p</span><span class="so">.</span><span class="sv">age</span> <span class="so">>=</span> <span class="sn">18</span><span class="so">)</span>
+    <span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">p</span> <span class="so">=></span> <span class="sv">p</span><span class="so">.</span><span class="sv">name</span><span class="so">.</span><span class="sf">toUpperCase</span><span class="so">());</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">result</span><span class="so">);</span> <span class="sc">// ["RAHUL","AMIT"]</span></div></div>
+        </section>
+
+        <!-- ====== REDUCE ====== -->
+        <section class="section" id="sec-reduce">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 04</div>
+            <h2>reduce() — Array Ko Ek Value Mein Convert Karo</h2>
+            <p>Sabse powerful array method. Array se ek single value banao — sum, object, string, kuch bhi.</p>
+
+            <div class="icard ab">
+                <p style="margin:0;font-size:.88rem;"><strong>Syntax:</strong> <code style="font-size:.82rem;">array.reduce((accumulator, currentValue, index, array) => newAccumulator, initialValue)</code></p>
+            </div>
+
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// 1. Sum — classic example</span>
+<span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">,</span><span class="sn">5</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">sum</span> <span class="so">=</span> <span class="sv">nums</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">acc</span><span class="so">,</span> <span class="sv">n</span><span class="so">)</span> <span class="so">=></span> <span class="sv">acc</span> <span class="so">+</span> <span class="sv">n</span><span class="so">,</span> <span class="sn">0</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">sum</span><span class="so">);</span> <span class="sc">// 15</span>
+<span class="sc">// Step by step: 0+1=1, 1+2=3, 3+3=6, 6+4=10, 10+5=15</span>
+
+<span class="sc">// 2. Max value find</span>
+<span class="sk">const</span> <span class="sv">max</span> <span class="so">=</span> <span class="sv">nums</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span> <span class="so">></span> <span class="sv">b</span> <span class="so">?</span> <span class="sv">a</span> <span class="so">:</span> <span class="sv">b</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">max</span><span class="so">);</span> <span class="sc">// 5</span>
+
+<span class="sc">// 3. Count frequency — array se object banao</span>
+<span class="sk">const</span> <span class="sv">votes</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"JS"</span><span class="so">,</span><span class="ss">"Py"</span><span class="so">,</span><span class="ss">"JS"</span><span class="so">,</span><span class="ss">"Go"</span><span class="so">,</span><span class="ss">"JS"</span><span class="so">,</span><span class="ss">"Py"</span><span class="so">,</span><span class="ss">"Rust"</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">freq</span> <span class="so">=</span> <span class="sv">votes</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">acc</span><span class="so">,</span> <span class="sv">lang</span><span class="so">)</span> <span class="so">=></span> <span class="so">{</span>
+    <span class="sv">acc</span><span class="so">[</span><span class="sv">lang</span><span class="so">]</span> <span class="so">=</span> <span class="so">(</span><span class="sv">acc</span><span class="so">[</span><span class="sv">lang</span><span class="so">]</span> <span class="so">||</span> <span class="sn">0</span><span class="so">)</span> <span class="so">+</span> <span class="sn">1</span><span class="so">;</span>
+    <span class="sk">return</span> <span class="sv">acc</span><span class="so">;</span>
+<span class="so">},</span> <span class="so">{});</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">freq</span><span class="so">);</span> <span class="sc">// {JS:3, Py:2, Go:1, Rust:1}</span>
+
+<span class="sc">// 4. Group by property</span>
+<span class="sk">const</span> <span class="sv">items</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Shirt"</span><span class="so">,</span><span class="sv">cat</span><span class="so">:</span><span class="ss">"Clothing"</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Laptop"</span><span class="so">,</span><span class="sv">cat</span><span class="so">:</span><span class="ss">"Electronics"</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Jeans"</span><span class="so">,</span><span class="sv">cat</span><span class="so">:</span><span class="ss">"Clothing"</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Phone"</span><span class="so">,</span><span class="sv">cat</span><span class="so">:</span><span class="ss">"Electronics"</span><span class="so">}</span>
+<span class="so">];</span>
+<span class="sk">const</span> <span class="sv">grouped</span> <span class="so">=</span> <span class="sv">items</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">acc</span><span class="so">,</span> <span class="sv">item</span><span class="so">)</span> <span class="so">=></span> <span class="so">{</span>
+    <span class="sk">if</span> <span class="so">(!</span><span class="sv">acc</span><span class="so">[</span><span class="sv">item</span><span class="so">.</span><span class="sv">cat</span><span class="so">])</span> <span class="sv">acc</span><span class="so">[</span><span class="sv">item</span><span class="so">.</span><span class="sv">cat</span><span class="so">]</span> <span class="so">=</span> <span class="so">[];</span>
+    <span class="sv">acc</span><span class="so">[</span><span class="sv">item</span><span class="so">.</span><span class="sv">cat</span><span class="so">].</span><span class="sf">push</span><span class="so">(</span><span class="sv">item</span><span class="so">.</span><span class="sv">name</span><span class="so">);</span>
+    <span class="sk">return</span> <span class="sv">acc</span><span class="so">;</span>
+<span class="so">},</span> <span class="so">{});</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">grouped</span><span class="so">);</span>
+<span class="sc">// {Clothing:["Shirt","Jeans"], Electronics:["Laptop","Phone"]}</span>
+
+<span class="sc">// 5. Array to object (map bhi kar sakte hain)</span>
+<span class="sk">const</span> <span class="sv">pairs</span> <span class="so">=</span> <span class="so">[[</span><span class="ss">"a"</span><span class="so">,</span><span class="sn">1</span><span class="so">],[</span><span class="ss">"b"</span><span class="so">,</span><span class="sn">2</span><span class="so">],[</span><span class="ss">"c"</span><span class="so">,</span><span class="sn">3</span><span class="so">]];</span>
+<span class="sk">const</span> <span class="sv">obj</span> <span class="so">=</span> <span class="sv">pairs</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">acc</span><span class="so">,</span> <span class="so">[</span><span class="sv">k</span><span class="so">,</span><span class="sv">v</span><span class="so">])</span> <span class="so">=></span> <span class="so">({</span><span class="so">...</span><span class="sv">acc</span><span class="so">,</span> <span class="so">[</span><span class="sv">k</span><span class="so">]:</span><span class="sv">v</span><span class="so">}),</span> <span class="so">{});</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">obj</span><span class="so">);</span> <span class="sc">// {a:1, b:2, c:3}</span>
+
+<span class="sc">// 6. Pipe/compose — functions chain karo</span>
+<span class="sk">const</span> <span class="sf">pipe</span> <span class="so">=</span> <span class="so">(...</span><span class="sv">fns</span><span class="so">)</span> <span class="so">=></span> <span class="sv">x</span> <span class="so">=></span> <span class="sv">fns</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">v</span><span class="so">,</span> <span class="sv">f</span><span class="so">)</span> <span class="so">=></span> <span class="sf">f</span><span class="so">(</span><span class="sv">v</span><span class="so">),</span> <span class="sv">x</span><span class="so">);</span>
+<span class="sk">const</span> <span class="sv">transform</span> <span class="so">=</span> <span class="sf">pipe</span><span class="so">(</span>
+    <span class="sv">x</span> <span class="so">=></span> <span class="sv">x</span> <span class="so">*</span> <span class="sn">2</span><span class="so">,</span>
+    <span class="sv">x</span> <span class="so">=></span> <span class="sv">x</span> <span class="so">+</span> <span class="sn">10</span><span class="so">,</span>
+    <span class="sv">x</span> <span class="so">=></span> <span class="sv">x</span> <span class="so">/</span> <span class="sn">2</span>
+<span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">transform</span><span class="so">(</span><span class="sn">5</span><span class="so">));</span> <span class="sc">// 10 → 20 → 30 → 15</span></div></div>
+
+            <div class="tip tip-d"><i class="fa-solid fa-bug"></i><div class="tt"><strong>Initial value dena bhoolna mat!</strong> <code>[].reduce((a,b) => a+b)</code> error dega. Hamesha second argument do: <code>.reduce((a,b) => a+b, 0)</code></div></div>
+        </section>
+
+        <!-- ====== FOREACH ====== -->
+        <section class="section" id="sec-foreach">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 05</div>
+            <h2>forEach() — Simple Loop</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">fruits</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"Mango"</span><span class="so">,</span> <span class="ss">"Apple"</span><span class="so">,</span> <span class="ss">"Banana"</span><span class="so">];</span>
+
+<span class="sc">// Basic forEach</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">forEach</span><span class="so">((</span><span class="sv">fruit</span><span class="so">)</span> <span class="so">=></span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">fruit</span><span class="so">);</span>
+<span class="so">});</span>
+
+<span class="sc">// With index</span>
+<span class="sv">fruits</span><span class="so">.</span><span class="sf">forEach</span><span class="so">((</span><span class="sv">fruit</span><span class="so">,</span> <span class="sv">i</span><span class="so">)</span> <span class="so">=></span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">`${i}: ${fruit}`</span><span class="so">);</span>
+<span class="so">});</span>
+
+<span class="sc">// DOM elements par (real world)</span>
+<span class="sc">// document.querySelectorAll('li').forEach(li => li.style.color = 'red');</span>
+
+<span class="sc">// ⚠️ Differences from map:</span>
+<span class="sc">// 1. forEach returns undefined — chain nahi kar sakte</span>
+<span class="sc">// 2. break/continue kaam nahi karta</span>
+<span class="sc">// 3. Cannot be awaited in async code</span>
+<span class="sc">// Rule: Agar naya array chahiye → map(). Sirf side effect → forEach()</span></div></div>
+        </section>
+
+        <!-- ====== FIND ====== -->
+        <section class="section" id="sec-find">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 06</div>
+            <h2>find() & findIndex() — Pehla Match Dhundho</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">users</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">1</span><span class="so">,</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">25</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">2</span><span class="so">,</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Priya"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">3</span><span class="so">,</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Amit"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">30</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">4</span><span class="so">,</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Sneha"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">}</span>
+<span class="so">];</span>
+
+<span class="sc">// find() — pehla matching element (value)</span>
+<span class="sk">const</span> <span class="sv">found</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">find</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">name</span> <span class="so">===</span> <span class="ss">"Amit"</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">found</span><span class="so">);</span> <span class="sc">// {id:3, name:"Amit", age:30}</span>
+
+<span class="sc">// findIndex() — pehla matching index</span>
+<span class="sk">const</span> <span class="sv">idx</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">findIndex</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">age</span> <span class="so">===</span> <span class="sn">22</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">idx</span><span class="so">);</span> <span class="sc">// 1 (Priya — pehli 22 wali)</span>
+
+<span class="sc">// Not found? → undefined / -1</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">users</span><span class="so">.</span><span class="sf">find</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">age</span> <span class="so">></span> <span class="sn">100</span><span class="so">));</span>      <span class="sc">// undefined</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">users</span><span class="so">.</span><span class="sf">findIndex</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">age</span> <span class="so">></span> <span class="sn">100</span><span class="so">));</span> <span class="sc">// -1</span>
+
+<span class="sc">// findLast() — last matching (ES2023)</span>
+<span class="sk">const</span> <span class="sv">last22</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">findLast</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">age</span> <span class="so">===</span> <span class="sn">22</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">last22</span><span class="so">);</span> <span class="sc">// Sneha</span>
+
+<span class="sc">// Practical: find & update</span>
+<span class="sk">const</span> <span class="sv">targetId</span> <span class="so">=</span> <span class="sn">2</span><span class="so">;</span>
+<span class="sk">const</span> <span class="sv">targetIdx</span> <span class="so">=</span> <span class="sv">users</span><span class="so">.</span><span class="sf">findIndex</span><span class="so">(</span><span class="sv">u</span> <span class="so">=></span> <span class="sv">u</span><span class="so">.</span><span class="sv">id</span> <span class="so">===</span> <span class="sv">targetId</span><span class="so">);</span>
+<span class="sk">if</span> <span class="so">(</span><span class="sv">targetIdx</span> <span class="so">!==</span> <span class="sn">-1</span><span class="so">)</span> <span class="sv">users</span><span class="so">[</span><span class="sv">targetIdx</span><span class="so">].</span><span class="sv">age</span> <span class="so">=</span> <span class="sn">23</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">users</span><span class="so">[</span><span class="sn">1</span><span class="so">].</span><span class="sv">age</span><span class="so">);</span> <span class="sc">// 23</span></div></div>
+        </section>
+
+        <!-- ====== SOME & EVERY ====== -->
+        <section class="section" id="sec-some">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 07</div>
+            <h2>some() & every() — Boolean Check</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">2</span><span class="so">,</span><span class="sn">4</span><span class="so">,</span><span class="sn">6</span><span class="so">,</span><span class="sn">8</span><span class="so">,</span><span class="sn">10</span><span class="so">];</span>
+
+<span class="sc">// some() — Kya EK BHI match karta hai?</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">.</span><span class="sf">some</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">></span> <span class="sn">5</span><span class="so">));</span>    <span class="sc">// true (8,10 > 5)</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">.</span><span class="sf">some</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">%</span> <span class="sn">2</span> <span class="so">!==</span> <span class="sn">0</span><span class="so">));</span> <span class="sc">// false (sab even)</span>
+
+<span class="sc">// every() — Kya SAB match karte hain?</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">.</span><span class="sf">every</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">%</span> <span class="sn">2</span> <span class="so">===</span> <span class="sn">0</span><span class="so">));</span> <span class="sc">// true (sab even)</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">.</span><span class="sf">every</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">></span> <span class="sn">5</span><span class="so">));</span>    <span class="sc">// false (2,4 > 5 nahi)</span>
+
+<span class="sc">// Real use: form validation</span>
+<span class="sk">const</span> <span class="sv">form</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">""</span><span class="so">,</span> <span class="sv">email</span><span class="so">:</span><span class="ss">"test@test.com"</span><span class="so">,</span> <span class="sv">age</span><span class="so">:</span><span class="sn">25</span><span class="so">};</span>
+<span class="sk">const</span> <span class="sv">fields</span> <span class="so">=</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">values</span><span class="so">(</span><span class="sv">form</span><span class="so">);</span>
+<span class="sk">const</span> <span class="sv">hasEmpty</span> <span class="so">=</span> <span class="sv">fields</span><span class="so">.</span><span class="sf">some</span><span class="so">(</span><span class="sv">v</span> <span class="so">=></span> <span class="sv">v</span> <span class="so">===</span> <span class="ss">""</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">"Empty fields?"</span><span class="so">,</span> <span class="sv">hasEmpty</span><span class="so">);</span> <span class="sc">// true</span>
+
+<span class="sc">// All positive?</span>
+<span class="sk">const</span> <span class="sv">mixed</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span> <span class="sn">-2</span><span class="so">,</span> <span class="sn">3</span><span class="so">,</span> <span class="sn">4</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">mixed</span><span class="so">.</span><span class="sf">every</span><span class="so">(</span><span class="sv">n</span> <span class="so">=></span> <span class="sv">n</span> <span class="so">></span> <span class="sn">0</span><span class="so">));</span> <span class="sc">// false</span>
+
+<span class="sc">// Short circuit: some = OR, every = AND</span>
+<span class="sc">// some: ek mil gaya → true, aur check nahi karta</span>
+<span class="sc">// every: ek fail ho gaya → false, aur check nahi karta</span></div></div>
+        </section>
+
+        <!-- ====== SORT ====== -->
+        <section class="section" id="sec-sort">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 08</div>
+            <h2>sort() — Sorting (Careful!)</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// ⚠️ DEFAULT SORT — string comparison!</span>
+<span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">10</span><span class="so">,</span> <span class="sn">1</span><span class="so">,</span> <span class="sn">21</span><span class="so">,</span> <span class="sn">2</span><span class="so">];</span>
+<span class="sv">nums</span><span class="so">.</span><span class="sf">sort</span><span class="so">();</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums</span><span class="so">);</span> <span class="sc">// [1, 10, 2, 21] ← WRONG! String sort</span>
+
+<span class="sc">// ✅ CORRECT — numeric sort with compare function</span>
+<span class="sk">const</span> <span class="sv">nums2</span> <span class="so">=</span> <span class="so">[</span><span class="sn">10</span><span class="so">,</span> <span class="sn">1</span><span class="so">,</span> <span class="sn">21</span><span class="so">,</span> <span class="sn">2</span><span class="so">];</span>
+<span class="sv">nums2</span><span class="so">.</span><span class="sf">sort</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span> <span class="so">-</span> <span class="sv">b</span><span class="so">);</span>  <span class="sc">// ascending</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums2</span><span class="so">);</span> <span class="sc">// [1, 2, 10, 21] ✅</span>
+
+<span class="sv">nums2</span><span class="so">.</span><span class="sf">sort</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">b</span> <span class="so">-</span> <span class="sv">a</span><span class="so">);</span>  <span class="sc">// descending</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">nums2</span><span class="so">);</span> <span class="sc">// [21, 10, 2, 1]</span>
+
+<span class="sc">// String sort — case-insensitive</span>
+<span class="sk">const</span> <span class="sv">names</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"zebra"</span><span class="so">,</span> <span class="ss">"Apple"</span><span class="so">,</span> <span class="ss">"mango"</span><span class="so">];</span>
+<span class="sv">names</span><span class="so">.</span><span class="sf">sort</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span><span class="so">.</span><span class="sf">toLowerCase</span><span class="so">().</span><span class="sf">localeCompare</span><span class="so">(</span><span class="sv">b</span><span class="so">.</span><span class="sf">toLowerCase</span><span class="so">()));</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">names</span><span class="so">);</span> <span class="sc">// ["Apple","mango","zebra"]</span>
+
+<span class="sc">// Object sort — by property</span>
+<span class="sk">const</span> <span class="sv">people</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">25</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Amit"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">},</span>
+    <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Priya"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">30</span><span class="so">}</span>
+<span class="so">];</span>
+<span class="sv">people</span><span class="so">.</span><span class="sf">sort</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span><span class="so">.</span><span class="sv">age</span> <span class="so">-</span> <span class="sv">b</span><span class="so">.</span><span class="sv">age</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">people</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">p</span> <span class="so">=></span> <span class="sv">p</span><span class="so">.</span><span class="sv">name</span><span class="so">));</span> <span class="sc">// ["Amit","Rahul","Priya"]</span>
+
+<span class="sc">// ⚠️ sort() MUTATES original! Safe copy:</span>
+<span class="sk">const</span> <span class="sv">original</span> <span class="so">=</span> <span class="so">[</span><span class="sn">3</span><span class="so">,</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">sorted</span> <span class="so">=</span> <span class="so">[...</span><span class="sv">original</span><span class="so">].</span><span class="sf">sort</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span> <span class="so">-</span> <span class="sv">b</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">original</span><span class="so">);</span> <span class="sc">// [3,1,2] — safe!</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">sorted</span><span class="so">);</span>   <span class="sc">// [1,2,3]</span>
+
+<span class="sc">// toSorted() — non-mutating sort (ES2023)</span>
+<span class="sk">const</span> <span class="sv">safeSorted</span> <span class="so">=</span> <span class="sv">original</span><span class="so">.</span><span class="sf">toSorted</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span> <span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span> <span class="so">-</span> <span class="sv">b</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">safeSorted</span><span class="so">);</span> <span class="sc">// [1,2,3]</span></div></div>
+
+            <div class="tip tip-d"><i class="fa-solid fa-exclamation-triangle"></i><div class="tt"><strong>sort() MUTATES!</strong> Original array change ho jaati hai. Safe rahne ke liye <code>[...arr].sort()</code> ya <code>arr.toSorted()</code> use karo.</div></div>
+        </section>
+
+        <!-- ====== MORE ARRAY METHODS ====== -->
+        <section class="section" id="sec-arr-more">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 09</div>
+            <h2>More Array Methods</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// concat — arrays merge (non-mutating)</span>
+<span class="sk">const</span> <span class="sv">a</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">],</span> <span class="sv">b</span> <span class="so">=</span> <span class="so">[</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">a</span><span class="so">.</span><span class="sf">concat</span><span class="so">(</span><span class="sv">b</span><span class="so">));</span> <span class="sc">// [1,2,3,4]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">([</span><span class="sn">1</span><span class="so">],</span> <span class="so">[</span><span class="sn">2</span><span class="so">],</span> <span class="so">[</span><span class="sn">3</span><span class="so">].</span><span class="sf">flat</span><span class="so">());</span> <span class="sc">// [1,2,3] (spread trick)</span>
+
+<span class="sc">// reverse — ulta karo (MUTATING!)</span>
+<span class="sk">const</span> <span class="sv">rev</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">];</span>
+<span class="sv">rev</span><span class="so">.</span><span class="sf">reverse</span><span class="so">();</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">rev</span><span class="so">);</span> <span class="sc">// [3,2,1]</span>
+
+<span class="sc">// toReversed() — non-mutating (ES2023)</span>
+<span class="sk">const</span> <span class="sv">orig</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">orig</span><span class="so">.</span><span class="sf">toReversed</span><span class="so">());</span> <span class="sc">// [3,2,1]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">orig</span><span class="so">);</span> <span class="sc">// [1,2,3] — safe</span>
+
+<span class="sc">// splice — add/remove at any position (MUTATING)</span>
+<span class="sk">const</span> <span class="sv">arr</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"a"</span><span class="so">,</span><span class="ss">"b"</span><span class="so">,</span><span class="ss">"c"</span><span class="so">,</span><span class="ss">"d"</span><span class="so">];</span>
+<span class="sv">arr</span><span class="so">.</span><span class="sf">splice</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span> <span class="sn">2</span><span class="so">,</span> <span class="ss">"X"</span><span class="so">,</span> <span class="ss">"Y"</span><span class="so">);</span> <span class="sc">// index 1 se 2 hatao, X,Y daalo</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">arr</span><span class="so">);</span> <span class="sc">// ["a","X","Y","d"]</span>
+
+<span class="sc">// toSpliced() — non-mutating (ES2023)</span>
+<span class="sk">const</span> <span class="sv">newArr</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"a"</span><span class="so">,</span><span class="ss">"b"</span><span class="so">,</span><span class="ss">"c"</span><span class="so">].</span><span class="sf">toSpliced</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span> <span class="sn">1</span><span class="so">,</span> <span class="ss">"Z"</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">newArr</span><span class="so">);</span> <span class="sc">// ["a","Z","c"]</span>
+
+<span class="sc">// fill — values fill karo</span>
+<span class="sk">const</span> <span class="sv">grid</span> <span class="so">=</span> <span class="sk">new</span> <span class="sf">Array</span><span class="so">(</span><span class="sn">3</span><span class="so">).</span><span class="sf">fill</span><span class="so">(</span><span class="snull">null</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">grid</span><span class="so">);</span> <span class="sc">// [null, null, null]</span>
+
+<span class="sc">// entries() — [index, value] pairs</span>
+<span class="sk">for</span> <span class="so">(</span><span class="sk">const</span> <span class="so">[</span><span class="sv">i</span><span class="so">,</span> <span class="sv">v</span><span class="so">]</span> <span class="sk">of</span> <span class="so">[</span><span class="ss">"a"</span><span class="so">,</span><span class="ss">"b"</span><span class="so">,</span><span class="ss">"c"</span><span class="so">].</span><span class="sf">entries</span><span class="so">())</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">i</span><span class="so">,</span> <span class="sv">v</span><span class="so">);</span> <span class="sc">// 0 "a", 1 "b", 2 "c"</span>
+<span class="so">}</span>
+
+<span class="sc">// at() — negative index support (ES2022)</span>
+<span class="sk">const</span> <span class="sv">last</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">].</span><span class="sf">at</span><span class="so">(-</span><span class="sn">1</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">last</span><span class="so">);</span> <span class="sc">// 3 (Python jaisa!)</span></div></div>
+        </section>
+
+        <!-- ====== ARRAY PLAYGROUND ====== -->
+        <section class="section" id="sec-arr-pg">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Practice 01</div>
+            <h2>Array Playground</h2>
+            <p>Khud experiments karo! Code edit karo, Run dabao, result dekho.</p>
+            <div class="pg" id="pg-arr"><textarea class="pg-ed" spellcheck="false">const students = [
+    { name: "Rahul", marks: 85, subject: "Math" },
+    { name: "Priya", marks: 92, subject: "Science" },
+    { name: "Amit", marks: 45, subject: "Math" },
+    { name: "Sneha", marks: 78, subject: "English" },
+    { name: "Ravi", marks: 33, subject: "Science" },
+    { name: "Pooja", marks: 95, subject: "Math" }
+];
+
+// 1. Top scorers (marks > 80)
+const toppers = students.filter(s => s.marks > 80);
+console.log("Toppers:", toppers.map(s => s.name));
+
+// 2. Average marks
+const avg = students.reduce((sum, s) => sum + s.marks, 0) / students.length;
+console.log("Average:", avg.toFixed(1));
+
+// 3. Subject-wise groups
+const bySubject = students.reduce((acc, s) => {
+    (acc[s.subject] = acc[s.subject] || []).push(s.name);
+    return acc;
+}, {});
+console.log("By Subject:", bySubject);
+
+// 4. Names with grades
+const graded = students.map(s => ({
+    ...s,
+    grade: s.marks >= 90 ? "A+" : s.marks >= 80 ? "A" : s.marks >= 60 ? "B" : s.marks >= 40 ? "C" : "F"
+}));
+console.log("Graded:", graded.map(g => `${g.name}: ${g.grade}`));
+
+// 5. Kya koi fail hai?
+console.log("Anyone failed?", students.some(s => s.marks < 40));
+console.log("All passed?", students.every(s => s.marks >= 40));</textarea><div class="pg-out" id="pg-arr-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div><div class="pg-run"><button class="brun" onclick="rpg('pg-arr')"><i class="fa-solid fa-play"></i> Run</button><button class="breset" onclick="rpgReset('pg-arr')"><i class="fa-solid fa-rotate"></i> Reset</button></div></div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ====== OBJECT BASICS ====== -->
+        <section class="section" id="sec-obj-intro">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 10</div>
+            <h2>Object Basics — Key-Value Pairs</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// Object banana</span>
+<span class="sk">const</span> <span class="sv">user</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">name</span><span class="so">:</span> <span class="ss">"Aman"</span><span class="so">,</span>
+    <span class="sv">age</span><span class="so">:</span> <span class="sn">22</span><span class="so">,</span>
+    <span class="sv">email</span><span class="so">:</span> <span class="ss">"aman@test.com"</span><span class="so">,</span>
+    <span class="sv">isActive</span><span class="so">:</span> <span class="sb">true</span>
+<span class="so">};</span>
+
+<span class="sc">// Access — dot notation</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">.</span><span class="sv">name</span><span class="so">);</span>   <span class="sc">// "Aman"</span>
+
+<span class="sc">// Access — bracket notation (dynamic keys)</span>
+<span class="sk">const</span> <span class="sv">key</span> <span class="so">=</span> <span class="ss">"age"</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">[</span><span class="sv">key</span><span class="so">]);</span>    <span class="sc">// 22</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">[</span><span class="ss">"email"</span><span class="so">]);</span> <span class="sc">// "aman@test.com"</span>
+
+<span class="sc">// Add / Update property</span>
+<span class="sv">user</span><span class="so">.</span><span class="sv">city</span> <span class="so">=</span> <span class="ss">"Delhi"</span><span class="so">;</span>       <span class="sc">// add new</span>
+<span class="sv">user</span><span class="so">.</span><span class="sv">age</span> <span class="so">=</span> <span class="sn">23</span><span class="so">;</span>             <span class="sc">// update existing</span>
+
+<span class="sc">// Delete property</span>
+<span class="sk">delete</span> <span class="sv">user</span><span class="so">.</span><span class="sv">isActive</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">);</span>
+
+<span class="sc">// Check property exists</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">"name"</span> <span class="sk">in</span> <span class="sv">user</span><span class="so">);</span>               <span class="sc">// true</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">.</span><span class="sf">hasOwnProperty</span><span class="so">(</span><span class="ss">"city"</span><span class="so">));</span>  <span class="sc">// true</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">.</span><span class="sv">city</span> <span class="so">!==</span> <span class="sb">undefined</span><span class="so">);</span>      <span class="sc">// true</span>
+
+<span class="sc">// Computed property names — dynamic keys</span>
+<span class="sk">const</span> <span class="sv">field</span> <span class="so">=</span> <span class="ss">"phone"</span><span class="so">;</span>
+<span class="sk">const</span> <span class="sv">obj</span> <span class="so">=</span> <span class="so">{</span> <span class="so">[</span><span class="sv">field</span><span class="so">]:</span> <span class="ss">"9999999999"</span> <span class="so">};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">obj</span><span class="so">.</span><span class="sv">phone</span><span class="so">);</span> <span class="sc">// "9999999999"</span>
+
+<span class="sc">// Object.keys, Object.values, Object.entries</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">keys</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span>    <span class="sc">// ["name","age","email","city"]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">values</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span>  <span class="sc">// ["Aman",23,"aman@test.com","Delhi"]</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">entries</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span><span class="sc">// [["name","Aman"], ...]</span>
+
+<span class="sc">// Loop over object</span>
+<span class="sk">for</span> <span class="so">(</span><span class="sk">const</span> <span class="so">[</span><span class="sv">key</span><span class="so">,</span> <span class="sv">value</span><span class="so">]</span> <span class="sk">of</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">entries</span><span class="so">(</span><span class="sv">user</span><span class="so">))</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">`${key}: ${value}`</span><span class="so">);</span>
+<span class="so">}</span></div></div>
+        </section>
+
+        <!-- ====== NESTED OBJECTS ====== -->
+        <section class="section" id="sec-nested">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 11</div>
+            <h2>Nested Objects — Andar Andar</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">company</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">name</span><span class="so">:</span> <span class="ss">"TechCorp"</span><span class="so">,</span>
+    <span class="sv">founded</span><span class="so">:</span> <span class="sn">2020</span><span class="so">,</span>
+    <span class="sv">address</span><span class="so">:</span> <span class="so">{</span>
+        <span class="sv">city</span><span class="so">:</span> <span class="ss">"Bangalore"</span><span class="so">,</span>
+        <span class="sv">state</span><span class="so">:</span> <span class="ss">"Karnataka"</span><span class="so">,</span>
+        <span class="sv">pin</span><span class="so">:</span> <span class="sn">560001</span>
+    <span class="so">},</span>
+    <span class="sv">employees</span><span class="so">:</span> <span class="so">[</span>
+        <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="sv">role</span><span class="so">:</span><span class="ss">"Dev"</span><span class="so">},</span>
+        <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Priya"</span><span class="so">,</span><span class="sv">role</span><span class="so">:</span><span class="ss">"Design"</span><span class="so">}</span>
+    <span class="so">]</span>
+<span class="so">};</span>
+
+<span class="sc">// Access nested</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">company</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span><span class="so">);</span>        <span class="sc">// "Bangalore"</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">company</span><span class="so">.</span><span class="sv">employees</span><span class="so">[</span><span class="sn">0</span><span class="so">].</span><span class="sv">name</span><span class="so">);</span>  <span class="sc">// "Rahul"</span>
+
+<span class="sc">// Update nested</span>
+<span class="sv">company</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span> <span class="so">=</span> <span class="ss">"Mumbai"</span><span class="so">;</span>
+<span class="sv">company</span><span class="so">.</span><span class="sv">employees</span><span class="so">.</span><span class="sf">push</span><span class="so">({</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Amit"</span><span class="so">,</span><span class="sv">role</span><span class="so">:</span><span class="ss">"DevOps"</span><span class="so">});</span>
+
+<span class="sc">// Deep clone — spread se shallow copy hota hai!</span>
+<span class="sk">const</span> <span class="sv">shallow</span> <span class="so">=</span> <span class="so">{...</span><span class="sv">company</span><span class="so">};</span>
+<span class="sv">shallow</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span> <span class="so">=</span> <span class="ss">"Changed"</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">company</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span><span class="so">);</span> <span class="sc">// "Changed" — original bhi badal gaya!</span>
+
+<span class="sc">// ✅ Deep clone — structuredClone (modern)</span>
+<span class="sk">const</span> <span class="sv">deep</span> <span class="so">=</span> <span class="sf">structuredClone</span><span class="so">(</span><span class="sv">company</span><span class="so">);</span>
+<span class="sv">deep</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span> <span class="so">=</span> <span class="ss">"Pune"</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">company</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span><span class="so">);</span> <span class="sc">// "Changed" — safe!</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">deep</span><span class="so">.</span><span class="sv">address</span><span class="so">.</span><span class="sv">city</span><span class="so">);</span>   <span class="sc">// "Pune"</span>
+
+<span class="sc">// Deep clone — JSON trick (older method)</span>
+<span class="sk">const</span> <span class="sv">deep2</span> <span class="so">=</span> <span class="sf">JSON</span><span class="so">.</span><span class="sf">parse</span><span class="so">(</span><span class="sf">JSON</span><span class="so">.</span><span class="sf">stringify</span><span class="so">(</span><span class="sv">company</span><span class="so">));</span>
+
+<span class="sc">// Nested array of objects — real world data</span>
+<span class="sk">const</span> <span class="sv">data</span> <span class="so">=</span> <span class="so">[</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">1</span><span class="so">,</span><span class="sv">profile</span><span class="so">:{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"A"</span><span class="so">},</span><span class="sv">scores</span><span class="so">:[</span><span class="sn">90</span><span class="so">,</span><span class="sn">85</span><span class="so">]}</span><span class="so">,</span>
+    <span class="so">{</span><span class="sv">id</span><span class="so">:</span><span class="sn">2</span><span class="so">,</span><span class="sv">profile</span><span class="so">:{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"B"</span><span class="so">},</span><span class="sv">scores</span><span class="so">:[</span><span class="sn">70</span><span class="so">,</span><span class="sn">95</span><span class="so">]}</span>
+<span class="so">];</span>
+<span class="sk">const</span> <span class="sv">names</span> <span class="so">=</span> <span class="sv">data</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">d</span> <span class="so">=></span> <span class="sv">d</span><span class="so">.</span><span class="sv">profile</span><span class="so">.</span><span class="sv">name</span><span class="so">);</span>
+<span class="sk">const</span> <span class="sv">avgs</span> <span class="so">=</span> <span class="sv">data</span><span class="so">.</span><span class="sf">map</span><span class="so">(</span><span class="sv">d</span> <span class="so">=></span> <span class="sv">d</span><span class="so">.</span><span class="sv">scores</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span><span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span><span class="so">+</span><span class="sv">b</span><span class="so">,</span><span class="sn">0</span><span class="so">)</span> <span class="so">/</span> <span class="sv">d</span><span class="so">.</span><span class="sv">scores</span><span class="so">.</span><span class="sv">length</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">names</span><span class="so">,</span> <span class="sv">avgs</span><span class="so">);</span></div></div>
+        </section>
+
+        <!-- ====== DESTRUCTURING ====== -->
+        <section class="section" id="sec-destruct">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 12</div>
+            <h2>Destructuring — Clean Extract</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// Object Destructuring</span>
+<span class="sk">const</span> <span class="sv">user</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Aman"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">,</span><span class="sv">city</span><span class="so">:</span><span class="ss">"Delhi"</span><span class="so">};</span>
+
+<span class="sc">// Basic</span>
+<span class="sk">const</span> <span class="so">{</span><span class="sv">name</span><span class="so">,</span><span class="sv">age</span><span class="so">}</span> <span class="so">=</span> <span class="sv">user</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">name</span><span class="so">,</span><span class="sv">age</span><span class="so">);</span> <span class="sc">// "Aman" 22</span>
+
+<span class="sc">// Rename — different variable name</span>
+<span class="sk">const</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="sv">userName</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sv">userAge</span><span class="so">}</span> <span class="so">=</span> <span class="sv">user</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">userName</span><span class="so">);</span> <span class="sc">// "Aman"</span>
+
+<span class="sc">// Default values — agar property nahi mile</span>
+<span class="sk">const</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="sv">n</span><span class="so">,</span><span class="sv">country</span><span class="so">:</span><span class="sv">c</span> <span class="so">=</span> <span class="ss">"India"</span><span class="so">}</span> <span class="so">=</span> <span class="sv">user</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">c</span><span class="so">);</span> <span class="sc">// "India" (default laga)</span>
+
+<span class="sc">// Nested destructuring</span>
+<span class="sk">const</span> <span class="sv">student</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Rahul"</span><span class="so">,</span><span class="sv">addr</span><span class="so">:{</span><span class="sv">city</span><span class="so">:</span><span class="ss">"Mumbai"</span><span class="so">,</span><span class="sv">pin</span><span class="so">:</span><span class="sn">400001</span><span class="so">}};</span>
+<span class="sk">const</span> <span class="so">{</span><span class="sv">addr</span><span class="so">:{</span><span class="sv">city</span><span class="so">,</span><span class="sv">pin</span><span class="so">}}</span> <span class="so">=</span> <span class="sv">student</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">city</span><span class="so">,</span><span class="sv">pin</span><span class="so">);</span> <span class="sc">// "Mumbai" 400001</span>
+
+<span class="sc">// Function parameter destructuring</span>
+<span class="sk">function</span> <span class="sf">greet</span><span class="so">({</span><span class="sv">name</span><span class="so">,</span><span class="sv">age</span><span class="so">})</span> <span class="so">{</span>
+    <span class="sk">return</span> <span class="ss">`${name} is ${age} years old`</span><span class="so">;</span>
+<span class="so">}</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">greet</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span> <span class="sc">// "Aman is 22 years old"</span>
+
+<span class="sc">// Array Destructuring</span>
+<span class="sk">const</span> <span class="so">[</span><span class="sv">first</span><span class="so">,</span><span class="sv">second</span><span class="so">,</span><span class="sv">third</span><span class="so">]</span> <span class="so">=</span> <span class="so">[</span><span class="sn">10</span><span class="so">,</span><span class="sn">20</span><span class="so">,</span><span class="sn">30</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">first</span><span class="so">,</span><span class="sv">third</span><span class="so">);</span> <span class="sc">// 10 30</span>
+
+<span class="sc">// Skip elements</span>
+<span class="sk">const</span> <span class="so">[</span><span class="sv">a</span><span class="so">,</span><span class="so">,</span><span class="sv">c</span><span class="so">]</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">a</span><span class="so">,</span><span class="sv">c</span><span class="so">);</span> <span class="sc">// 1 3</span>
+
+<span class="sc">// Rest in destructuring</span>
+<span class="sk">const</span> <span class="so">[</span><span class="sv">head</span><span class="so">,</span><span class="so">...</span><span class="sv">tail</span><span class="so">]</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">head</span><span class="so">,</span><span class="sv">tail</span><span class="so">);</span> <span class="sc">// 1 [2,3,4]</span>
+
+<span class="sc">// Swap variables</span>
+<span class="sk">let</span> <span class="sv">x</span> <span class="so">=</span> <span class="sn">1</span><span class="so">,</span><span class="sv">y</span> <span class="so">=</span> <span class="sn">2</span><span class="so">;</span>
+<span class="so">[</span><span class="sv">x</span><span class="so">,</span><span class="sv">y</span><span class="so">]</span> <span class="so">=</span> <span class="so">[</span><span class="sv">y</span><span class="so">,</span><span class="sv">x</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">x</span><span class="so">,</span><span class="sv">y</span><span class="so">);</span> <span class="sc">// 2 1</span>
+
+<span class="sc">// Destructuring in loops</span>
+<span class="sk">const</span> <span class="sv">entries</span> <span class="so">=</span> <span class="so">[[</span><span class="ss">"a"</span><span class="so">,</span><span class="sn">1</span><span class="so">],[</span><span class="ss">"b"</span><span class="so">,</span><span class="sn">2</span><span class="so">],[</span><span class="ss">"c"</span><span class="so">,</span><span class="sn">3</span><span class="so">]];</span>
+<span class="sk">for</span> <span class="so">(</span><span class="sk">const</span> <span class="so">[</span><span class="sv">key</span><span class="so">,</span><span class="sv">val</span><span class="so">]</span> <span class="sk">of</span> <span class="sv">entries</span><span class="so">)</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">key</span><span class="so">,</span><span class="sv">val</span><span class="so">);</span>
+<span class="so">}</span></div></div>
+        </section>
+
+        <!-- ====== SPREAD & REST ====== -->
+        <section class="section" id="sec-spread">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 13</div>
+            <h2>Spread & Rest — ... Ka Dhamaal</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// SPREAD (...) — expand karo</span>
+
+<span class="sc">// 1. Array copy</span>
+<span class="sk">const</span> <span class="sv">orig</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">];</span>
+<span class="sk">const</span> <span class="sv">copy</span> <span class="so">=</span> <span class="so">[...</span><span class="sv">orig</span><span class="so">];</span>
+<span class="sv">copy</span><span class="so">.</span><span class="sf">push</span><span class="so">(</span><span class="sn">4</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">orig</span><span class="so">);</span> <span class="sc">// [1,2,3] — safe!</span>
+
+<span class="sc">// 2. Merge arrays</span>
+<span class="sk">const</span> <span class="sv">merged</span> <span class="so">=</span> <span class="so">[...</span><span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">],</span><span class="so">...</span><span class="so">[</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">],</span><span class="so">...</span><span class="so">[</span><span class="sn">5</span><span class="so">]];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">merged</span><span class="so">);</span> <span class="sc">// [1,2,3,4,5]</span>
+
+<span class="sc">// 3. Object merge — later overrides earlier</span>
+<span class="sk">const</span> <span class="sv">defaults</span> <span class="so">=</span> <span class="so">{</span><span class="sv">theme</span><span class="so">:</span><span class="ss">"dark"</span><span class="so">,</span><span class="sv">lang</span><span class="so">:</span><span class="ss">"en"</span><span class="so">,</span><span class="sv">debug</span><span class="so">:</span><span class="sb">false</span><span class="so">};</span>
+<span class="sk">const</span> <span class="sv">userConfig</span> <span class="so">=</span> <span class="so">{</span><span class="sv">lang</span><span class="so">:</span><span class="ss">"hi"</span><span class="so">,</span><span class="sv">debug</span><span class="so">:</span><span class="sb">true</span><span class="so">};</span>
+<span class="sk">const</span> <span class="sv">config</span> <span class="so">=</span> <span class="so">{...</span><span class="sv">defaults</span><span class="so">,</span><span class="so">...</span><span class="sv">userConfig</span><span class="so">};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">config</span><span class="so">);</span> <span class="sc">// {theme:"dark", lang:"hi", debug:true}</span>
+
+<span class="sc">// 4. Function arguments spread</span>
+<span class="sk">function</span> <span class="sf">sum</span><span class="so">(</span><span class="sv">a</span><span class="so">,</span><span class="sv">b</span><span class="so">,</span><span class="sv">c</span><span class="so">)</span> <span class="so">{</span><span class="sk">return</span> <span class="sv">a</span><span class="so">+</span><span class="sv">b</span><span class="so">+</span><span class="sv">c</span><span class="so">;}</span>
+<span class="sk">const</span> <span class="sv">nums</span> <span class="so">=</span> <span class="so">[</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">sum</span><span class="so">(...</span><span class="sv">nums</span><span class="so">));</span> <span class="sc">// 6</span>
+
+<span class="sc">// 5. Math.max with array</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Math</span><span class="so">.</span><span class="sf">max</span><span class="so">(...</span><span class="so">[</span><span class="sn">5</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">9</span><span class="so">,</span><span class="sn">1</span><span class="so">,</span><span class="sn">7</span><span class="so">]));</span> <span class="sc">// 9</span>
+
+<span class="sc">// REST (...) — collect karo (opposite of spread)</span>
+
+<span class="sc">// 1. Rest parameters</span>
+<span class="sk">function</span> <span class="sf">total</span><span class="so">(...</span><span class="sv">numbers</span><span class="so">)</span> <span class="so">{</span>
+    <span class="sk">return</span> <span class="sv">numbers</span><span class="so">.</span><span class="sf">reduce</span><span class="so">((</span><span class="sv">a</span><span class="so">,</span><span class="sv">b</span><span class="so">)</span> <span class="so">=></span> <span class="sv">a</span><span class="so">+</span><span class="sv">b</span><span class="so">,</span><span class="sn">0</span><span class="so">);</span>
+<span class="so">}</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">total</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">,</span><span class="sn">5</span><span class="so">));</span> <span class="sc">// 15</span>
+
+<span class="sc">// 2. First few + rest</span>
+<span class="sk">function</span> <span class="sf">log</span><span class="so">(</span><span class="sv">first</span><span class="so">,</span><span class="so">...</span><span class="sv">rest</span><span class="so">)</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">"First:"</span><span class="so">,</span><span class="sv">first</span><span class="so">);</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">"Rest:"</span><span class="so">,</span><span class="sv">rest</span><span class="so">);</span>
+<span class="so">}</span>
+<span class="sf">log</span><span class="so">(</span><span class="sn">1</span><span class="so">,</span><span class="sn">2</span><span class="so">,</span><span class="sn">3</span><span class="so">,</span><span class="sn">4</span><span class="so">);</span> <span class="sc">// First:1, Rest:[2,3,4]</span>
+
+<span class="sc">// 3. Object rest — remaining properties</span>
+<span class="sk">const</span> <span class="so">{</span><span class="sv">name</span><span class="so">,</span><span class="so">...</span><span class="sv">rest</span><span class="so">}</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Aman"</span><span class="so">,</span><span class="sv">age</span><span class="so">:</span><span class="sn">22</span><span class="so">,</span><span class="sv">city</span><span class="so">:</span><span class="ss">"Delhi"</span><span class="so">};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">rest</span><span class="so">);</span> <span class="sc">// {age:22, city:"Delhi"}</span>
+
+<span class="sc">// 4. Array destructuring with rest</span>
+<span class="sk">const</span> <span class="so">[</span><span class="sv">gold</span><span class="so">,</span><span class="sv">silver</span><span class="so">,</span><span class="so">...</span><span class="sv">others</span><span class="so">]</span> <span class="so">=</span> <span class="so">[</span><span class="ss">"India"</span><span class="so">,</span><span class="ss">"USA"</span><span class="so">,</span><span class="ss">"UK"</span><span class="so">,</span><span class="ss">"China"</span><span class="so">];</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">others</span><span class="so">);</span> <span class="sc">// ["UK","China"]</span></div></div>
+        </section>
+
+        <!-- ====== OPTIONAL CHAINING ====== -->
+        <section class="section" id="sec-optional">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 14</div>
+            <h2>Optional Chaining — Safe Property Access</h2>
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">user</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"Aman"</span><span class="so">};</span>
+<span class="sc">// user.address.city → TypeError!</span>
+<span class="sc">// user?.address?.city → undefined (safe!)</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">user</span><span class="so">?.</span><span class="sv">address</span><span class="so">?.</span><span class="sv">city</span><span class="so">);</span> <span class="sc">// undefined — no error!</span>
+
+<span class="sc">// With arrays</span>
+<span class="sk">const</span> <span class="sv">data</span> <span class="so">=</span> <span class="so">{</span><span class="sv">users</span><span class="so">:[</span><span class="so">{</span><span class="sv">name</span><span class="so">:</span><span class="ss">"A"</span><span class="so">}]};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">data</span><span class="so">?.</span><span class="sv">users</span><span class="so">?[</span><span class="sn">0</span><span class="so">]?.</span><span class="sv">name</span><span class="so">);</span> <span class="sc">// "A"</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">data</span><span class="so">?.</span><span class="sv">posts</span><span class="so">?[</span><span class="sn">0</span><span class="so">]?.</span><span class="sv">title</span><span class="so">);</span> <span class="sc">// undefined — safe!</span>
+
+<span class="sc">// With function calls</span>
+<span class="sk">const</span> <span class="sv">obj</span> <span class="so">=</span> <span class="so">{};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">obj</span><span class="so">?.</span><span class="sf">getName</span><span class="so">?.());</span> <span class="sc">// undefined — no error!</span>
+
+<span class="sc">// Nullish coalescing + optional chaining = BEST COMBO</span>
+<span class="sk">const</span> <span class="sv">city</span> <span class="so">=</span> <span class="sv">user</span><span class="so">?.</span><span class="sv">address</span><span class="so">?.</span><span class="sv">city</span> <span class="so">??</span> <span class="ss">"Unknown Location"</span><span class="so">;</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">city</span><span class="so">);</span> <span class="sc">// "Unknown Location"</span></div></div>
+
+            <div class="tip tip-s"><i class="fa-solid fa-thumbs-up"></i><div class="tt"><strong>Rule:</strong> Jab bhi nested property access karo, <code>?.</code> use karo. <code>data?.users?.[0]?.name</code> — short, safe, readable. Before this, <code>data && data.users && data.users[0] && data.users[0].name</span> likhna padta tha!</div></div>
+        </section>
+
+        <!-- ====== OBJECT METHODS ====== -->
+        <section class="section" id="sec-obj-methods">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 15</div>
+            <h2>Object Methods — Built-in Helpers</h2>
+            <p>Object ke andar built-in methods bhi hote hain jo data ko manage karne mein madad karte hain.</p>
+
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sk">const</span> <span class="sv">user</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">name</span><span class="so">:</span> <span class="ss">"Aman"</span><span class="so">,</span>
+    <span class="sv">age</span><span class="so">:</span> <span class="sn">22</span><span class="so">,</span>
+    <span class="sv">city</span><span class="so">:</span> <span class="ss">"Delhi"</span>
+<span class="so">};</span>
+
+<span class="sc">// Object.keys() — keys array</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">keys</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span> <span class="sc">// ["name","age","city"]</span>
+
+<span class="sc">// Object.values() — values array</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">values</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span> <span class="sc">// ["Aman",22,"Delhi"]</span>
+
+<span class="sc">// Object.entries() — [key,value] pairs</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">entries</span><span class="so">(</span><span class="sv">user</span><span class="so">));</span>
+<span class="sc">// [["name","Aman"],["age",22],["city","Delhi"]]</span>
+
+<span class="sc">// Object.assign() — merge objects</span>
+<span class="sk">const</span> <span class="sv">defaults</span> <span class="so">=</span> <span class="so">{</span><span class="sv">theme</span><span class="so">:</span> <span class="ss">"dark"</span><span class="so">,</span> <span class="sv">lang</span><span class="so">:</span> <span class="ss">"en"</span><span class="so">};</span>
+<span class="sk">const</span> <span class="sv">prefs</span> <span class="so">=</span> <span class="so">{</span><span class="sv">lang</span><span class="so">:</span> <span class="ss">"hi"</span><span class="so">};</span>
+<span class="sk">const</span> <span class="sv">finalCfg</span> <span class="so">=</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">assign</span><span class="so">({},</span> <span class="sv">defaults</span><span class="so">,</span> <span class="sv">prefs</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">finalCfg</span><span class="so">);</span> <span class="sc">// {theme:"dark", lang:"hi"}</span>
+
+<span class="sc">// Object.freeze() — object ko read-only bana deta hai</span>
+<span class="sk">const</span> <span class="sv">locked</span> <span class="so">=</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">freeze</span><span class="so">({</span> <span class="sv">x</span><span class="so">:</span> <span class="sn">1</span> <span class="so">});</span>
+<span class="sc">// locked.x = 2; // fail silently in non-strict mode</span>
+
+<span class="sc">// Object.hasOwn() — property ownership check</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">hasOwn</span><span class="so">(</span><span class="sv">user</span><span class="so">,</span> <span class="ss">"name"</span><span class="so">));</span> <span class="sc">// true</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sf">Object</span><span class="so">.</span><span class="sf">hasOwn</span><span class="so">(</span><span class="sv">user</span><span class="so">,</span> <span class="ss">"toString"</span><span class="so">));</span> <span class="sc">// false</span>
+
+<span class="sc">// Object.fromEntries() — entries array → object</span>
+<span class="sk">const</span> <span class="sv">arrOfPairs</span> <span class="so">=</span> <span class="so">[[</span><span class="ss">"name"</span><span class="so">,</span> <span class="ss">"Aman"</span><span class="so">],</span> <span class="so">[</span><span class="ss">"age"</span><span class="so">,</span> <span class="sn">22</span><span class="so">]];</span>
+<span class="sk">const</span> <span class="sv">objBack</span> <span class="so">=</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">fromEntries</span><span class="so">(</span><span class="sv">arrOfPairs</span><span class="so">);</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">objBack</span><span class="so">);</span> <span class="sc">// {name:"Aman", age:22}</span>
+
+<span class="sc">// Object.seal() — new properties add nahi kar sakte, existing update ho sakte hain</span>
+<span class="sk">const</span> <span class="sv">sealed</span> <span class="so">=</span> <span class="sf">Object</span><span class="so">.</span><span class="sf">seal</span><span class="so">({</span> <span class="sv">name</span><span class="so">:</span> <span class="ss">"Rahul"</span> <span class="so">});</span>
+<span class="sv">sealed</span><span class="so">.</span><span class="sv">name</span> <span class="so">=</span> <span class="ss">"Ravi"</span><span class="so">;</span>
+<span class="sc">// sealed.city = "Delhi"; // TypeError in strict mode</span></div></div>
+        </section>
+
+        <!-- ====== THIS KEYWORD ====== -->
+        <section class="section" id="sec-this">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 16</div>
+            <h2>this Keyword — Context Samjho</h2>
+            <p><code>this</code> object ke context par depend karta hai. Kabhi method ke andar, kabhi global, kabhi event callback mein alag value hota hai.</p>
+
+            <div class="cblock"><div class="chead"><div class="cdots"><span></span><span></span><span></span></div><span class="clang">javascript</span><button class="ccopy" onclick="ccpy(this)"><i class="fa-regular fa-copy"></i> Copy</button></div><div class="cbody"><span class="sc">// 1. In object method</span>
+<span class="sk">const</span> <span class="sv">person</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">name</span><span class="so">:</span> <span class="ss">"Aman"</span><span class="so">,</span>
+    <span class="sv">greet</span><span class="so">()</span> <span class="so">{</span>
+        <span class="sk">return</span> <span class="ss">`Hi, ${this.name}`</span><span class="so">;</span>
+    <span class="so">}</span>
+<span class="so">};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">person</span><span class="so">.</span><span class="sf">greet</span><span class="so">());</span> <span class="sc">// Hi, Aman</span>
+
+<span class="sc">// 2. In standalone function</span>
+<span class="sk">function</span> <span class="sf">show</span><span class="so">()</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sk">this</span><span class="so">);</span>
+<span class="so">}</span>
+<span class="sf">show</span><span class="so">();</span> <span class="sc">// In browser: window object</span>
+
+<span class="sc">// 3. In arrow function</span>
+<span class="sk">const</span> <span class="sv">obj</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">name</span><span class="so">:</span> <span class="ss">"Priya"</span><span class="so">,</span>
+    <span class="sv">say</span><span class="so">:</span> <span class="so">()</span> <span class="so">=&gt;</span> <span class="ss">`Hello ${this.name}`</span>
+<span class="so">};</span>
+<span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="sv">obj</span><span class="so">.</span><span class="sf">say</span><span class="so">());</span> <span class="sc">// this arrow function ke lexical scope ko use karta hai</span>
+
+<span class="sc">// 4. In event handlers</span>
+<span class="sk">const</span> <span class="sv">button</span> <span class="so">=</span> <span class="so">{</span>
+    <span class="sv">label</span><span class="so">:</span> <span class="ss">"Click me"</span><span class="so">,</span>
+    <span class="sv">handle</span><span class="so">()</span> <span class="so">{</span>
+        <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">`Button: ${this.label}`</span><span class="so">);</span>
+    <span class="so">}</span>
+<span class="so">};</span>
+<span class="sv">button</span><span class="so">.</span><span class="sf">handle</span><span class="so">();</span> <span class="sc">// Button: Click me</span>
+
+<span class="sc">// 5. bind / call / apply</span>
+<span class="sk">const</span> <span class="sv">user2</span> <span class="so">=</span> <span class="so">{</span><span class="sv">name</span><span class="so">:</span> <span class="ss">"Riya"</span><span class="so">};</span>
+<span class="sk">function</span> <span class="sf">intro</span><span class="so">(</span><span class="sv">city</span><span class="so">)</span> <span class="so">{</span>
+    <span class="sf">console</span><span class="so">.</span><span class="sf">log</span><span class="so">(</span><span class="ss">`${this.name} lives in ${city}`</span><span class="so">);</span>
+<span class="so">}</span>
+<span class="sf">intro</span><span class="so">.</span><span class="sf">call</span><span class="so">(</span><span class="sv">user2</span><span class="so">,</span> <span class="ss">"Mumbai"</span><span class="so">);</span>
+<span class="sf">intro</span><span class="so">.</span><span class="sf">apply</span><span class="so">(</span><span class="sv">user2</span><span class="so">,</span> <span class="so">[</span><span class="ss">"Mumbai"</span><span class="so">]);</span>
+<span class="sk">const</span> <span class="sv">bound</span> <span class="so">=</span> <span class="sf">intro</span><span class="so">.</span><span class="sf">bind</span><span class="so">(</span><span class="sv">user2</span><span class="so">,</span> <span class="ss">"Mumbai"</span><span class="so">);</span>
+<span class="sv">bound</span><span class="so">();</span>
+
+<span class="sc">// Rule: method call => object, function call => global/window, arrow => lexical</span></div></div>
+        </section>
+
+        <!-- ====== OBJECT PLAYGROUND ====== -->
+        <section class="section" id="sec-obj-pg">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Practice 02</div>
+            <h2>Object Playground</h2>
+            <p>Har object transform ko live try karo.</p>
+            <div class="pg" id="pg-obj"><textarea class="pg-ed" spellcheck="false">const team = {
+    name: "JS Squad",
+    members: [
+        { name: "Rahul", role: "Frontend", score: 90 },
+        { name: "Priya", role: "Backend", score: 84 },
+        { name: "Amit", role: "Frontend", score: 76 },
+        { name: "Sneha", role: "Design", score: 96 }
+    ]
+};
+
+const topMembers = team.members.filter(m => m.score >= 85).map(m => ({
+    name: m.name,
+    role: m.role,
+    score: m.score
+}));
+
+const grouped = team.members.reduce((acc, member) => {
+    if (!acc[member.role]) acc[member.role] = [];
+    acc[member.role].push(member.name);
+    return acc;
+}, {});
+
+console.log("Top members:", topMembers);
+console.log("Grouped:", grouped);
+console.log("Keys:", Object.keys(team));
+console.log("Values:", Object.values(team).map(v => Array.isArray(v) ? v.length : v));</textarea><div class="pg-out" id="pg-obj-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div><div class="pg-run"><button class="brun" onclick="rpg('pg-obj')"><i class="fa-solid fa-play"></i> Run</button><button class="breset" onclick="rpgReset('pg-obj')"><i class="fa-solid fa-rotate"></i> Reset</button></div></div>
+        </section>
+
+        <!-- ====== QUIZ ====== -->
+        <section class="section" id="sec-quiz">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Final Challenge</div>
+            <h2>Mega Quiz</h2>
+            <p>Ek baar phir se revise karo — 10 questions, practical concepts.</p>
+            <div id="quizContainer"></div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+  const quizData = [
+    {
+      q: "Array.map() original array ko kya karta hai?",
+      options: ["Mutates original", "Returns new array", "Deletes values", "Breaks loop"],
+      answer: 1
+    },
+    {
+      q: "filter() ka result kya hota hai?",
+      options: ["Same original array", "New filtered array", "Boolean", "Number"],
+      answer: 1
+    },
+    {
+      q: "reduce() ka use main hota hai?",
+      options: ["Only to sort", "Single final value build karne ke liye", "Only numbers ko print karne ke liye", "Only object check karne ke liye"],
+      answer: 1
+    },
+    {
+      q: "Object.keys(obj) kya return karta hai?",
+      options: ["Values array", "Keys array", "Boolean", "Object"],
+      answer: 1
+    },
+    {
+      q: "this keyword method ke andar kaunse object ko refer karta hai?",
+      options: ["Global object", "Caller object", "Method owner object", "Window"],
+      answer: 2
+    },
+    {
+      q: "Spread operator (...) ka use kya nahi hai?",
+      options: ["Array copy", "Object merge", "Function arguments pass", "Break a loop"],
+      answer: 3
+    },
+    {
+      q: "Optional chaining syntax sahi hai?",
+      options: ["user?.address?.city", "user.address?.city?", "user=>address", "user.address.city!"],
+      answer: 0
+    },
+    {
+      q: "sort() by default kya compare karta hai?",
+      options: ["Numeric", "String", "Boolean", "Date"],
+      answer: 1
+    },
+    {
+      q: "Object destructuring ka main use kya hai?",
+      options: ["Memory leak", "Clean property extraction", "Adding properties", "Testing"],
+      answer: 1
+    },
+    {
+      q: "Array.find() pehla match ka kya deta hai?",
+      options: ["Index", "Boolean", "Match value", "Object keys"],
+      answer: 2
+    }
+  ];
+
+  function go(id) {
+    const target = document.getElementById(id);
+    const navLinks = document.querySelectorAll('.nav-link');
+    if (!target) return;
+
+    navLinks.forEach(link => {
+      const isActive = link.getAttribute('data-target') === id;
+      link.classList.toggle('active', isActive);
+    });
+
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('show');
+  }
+
+  function ccpy(button) {
+    const block = button.closest('.cblock') || button.closest('.code-block');
+    if (!block) return;
+
+    const codeEl = block.querySelector('.cbody, .code-body');
+    const text = codeEl ? codeEl.innerText.trim() : '';
+    const original = button.innerHTML;
+
+    navigator.clipboard.writeText(text).then(() => {
+      button.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+      setTimeout(() => button.innerHTML = original, 1200);
+    }).catch(() => {
+      button.innerHTML = '<i class="fa-solid fa-xmark"></i> Failed';
+      setTimeout(() => button.innerHTML = original, 1200);
+    });
+  }
+
+  function rpg(id) {
+    const box = document.getElementById(id);
+    if (!box) return;
+
+    const textarea = box.querySelector('.pg-ed');
+    const out = box.querySelector('.pg-out');
+    if (!textarea || !out) return;
+
+    try {
+      const result = [];
+      const oldLog = console.log;
+      console.log = (...args) => {
+        result.push(args.map(v => typeof v === 'string' ? v : JSON.stringify(v)).join(' '));
+      };
+      Function('"use strict";' + textarea.value)();
+      console.log = oldLog;
+
+      out.innerHTML = result.length
+        ? result.map(v => '<div class="ol"><span class="oa">&gt;</span> <span class="ov">' + v + '</span></div>').join('')
+        : '<span style="color:var(--muted);">No output</span>';
+    } catch (err) {
+      out.innerHTML = '<span class="oe">' + (err.message || err) + '</span>';
+    }
+  }
+
+  function rpgReset(id) {
+    const box = document.getElementById(id);
+    if (!box) return;
+    const textarea = box.querySelector('.pg-ed');
+    const out = box.querySelector('.pg-out');
+    if (!textarea || !out) return;
+    textarea.value = textarea.dataset.initial || textarea.value;
+    out.innerHTML = '<span style="color:var(--muted);">Output yahan dikhega...</span>';
+  }
+
+  function initQuiz() {
+    const quizContainer = document.getElementById('quizContainer');
+    if (!quizContainer) return;
+
+    quizContainer.innerHTML = quizData.map((item, qIndex) => `
+      <div class="mq">
+        <div class="mq-q">${qIndex + 1}. ${item.q}</div>
+        <div class="mq-opts">
+          ${item.options.map((option, oIndex) => `
+            <button class="mq-o" data-index="${qIndex}" data-choice="${oIndex}">
+              <span class="ol">${String.fromCharCode(65 + oIndex)}</span>
+              <span>${option}</span>
+            </button>
+          `).join('')}
+        </div>
+        <div class="mq-fb" data-feedback="${qIndex}"></div>
+      </div>
+    `).join('');
+
+    quizContainer.querySelectorAll('.mq-o').forEach(button => {
+      button.addEventListener('click', () => {
+        const qIndex = Number(button.dataset.index);
+        const choice = Number(button.dataset.choice);
+        const parent = button.closest('.mq');
+        const feedback = parent.querySelector('.mq-fb');
+        const isCorrect = choice === quizData[qIndex].answer;
+
+        parent.querySelectorAll('.mq-o').forEach(o => {
+          o.classList.add('disabled');
+          const isAns = Number(o.dataset.choice) === quizData[qIndex].answer;
+          o.classList.toggle('correct', isAns);
+          o.classList.toggle('wrong', Number(o.dataset.choice) === choice && !isCorrect);
+        });
+
+        feedback.textContent = isCorrect ? '✅ Correct! Great job.' : `❌ Wrong. Correct answer: ${String.fromCharCode(65 + quizData[qIndex].answer)}.`;
+        feedback.classList.add(isCorrect ? 'fok' : 'fno');
+        feedback.classList.add('show');
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.pg-ed').forEach(ta => {
+      ta.dataset.initial = ta.value;
+    });
+
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section, index) => {
+      requestAnimationFrame(() => section.classList.add('visible'));
+    });
+
+    const fill = document.getElementById('pFill');
+    const pct = document.getElementById('pPct');
+
+    function updateProgress() {
+      const visible = [...sections].filter(section => {
+        const rect = section.getBoundingClientRect();
+        return rect.top < window.innerHeight * 0.75;
+      }).length;
+      const value = Math.min(100, Math.round((visible / Math.max(sections.length, 1)) * 100));
+      if (fill) fill.style.width = value + '%';
+      if (pct) pct.textContent = value + '%';
+    }
+
+    updateProgress();
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    initQuiz();
+
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    if (menuToggle) {
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+      });
+    }
+
+    if (overlay) {
+      overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      });
+    }
+  });
+</script>
+</body>
+</html>

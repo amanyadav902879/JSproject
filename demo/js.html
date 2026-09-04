@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JS Forge — Master JavaScript by Building</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script>
+tailwind.config={theme:{extend:{colors:{fg:{bg:'#0A0A0A',surface:'#111111',card:'#181818',border:'#262626',borderL:'#333333',text:'#E8E8E8',muted:'#6B6B6B',accent:'#F59E0B',accentH:'#D97706',ok:'#10B981',err:'#EF4444',warn:'#F97316',info:'#06B6D4'}},fontFamily:{display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk',sans-serif;background:#0A0A0A;color:#E8E8E8;overflow:hidden;height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+.CodeMirror{height:100%!important;font-family:'JetBrains Mono',monospace!important;font-size:13px!important;line-height:1.6!important;background:#141414!important}
+.CodeMirror-gutters{background:#111!important;border-right:1px solid #262626!important}
+.CodeMirror-linenumber{color:#555!important}.CodeMirror-cursor{border-left-color:#F59E0B!important}
+.CodeMirror-selected{background:rgba(245,158,11,0.15)!important}
+.hljs{background:#141414!important;border-radius:8px;padding:14px!important;font-family:'JetBrains Mono',monospace!important;font-size:13px!important;line-height:1.6!important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastOut{from{opacity:1}to{transform:translateX(120%);opacity:0}}
+.af{animation:fadeIn .35s ease-out both}.au{animation:slideUp .45s ease-out both}
+.ti{animation:toastIn .3s ease-out both}.to{animation:toastOut .25s ease-in both}
+.si{transition:all .15s ease}.si:hover{background:rgba(245,158,11,0.07);padding-left:18px}
+.si.on{background:rgba(245,158,11,0.12);border-left:3px solid #F59E0B;padding-left:15px}
+.bp{background:#F59E0B;color:#0A0A0A;font-weight:600;transition:all .15s ease;cursor:pointer;border:none}
+.bp:hover{background:#D97706;transform:translateY(-1px);box-shadow:0 4px 12px rgba(245,158,11,0.3)}
+.bg{border:1px solid #333;color:#E8E8E8;transition:all .15s ease;cursor:pointer;background:transparent}
+.bg:hover{border-color:#555;background:rgba(255,255,255,0.03)}
+.ch{transition:all .2s ease;cursor:pointer}.ch:hover{border-color:#3a3a3a;background:#1E1E1E;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,0.4)}
+.sti{transition:all .2s;cursor:pointer}.sti.on{background:rgba(245,158,11,0.15);border-color:#F59E0B;color:#F59E0B}.sti.done{background:rgba(16,185,129,0.15);border-color:#10B981;color:#10B981}
+.cw{position:relative}.cw .cb{position:absolute;top:8px;right:8px;opacity:0;transition:opacity .2s;cursor:pointer;border:none;background:transparent;color:#6B6B6B;font-size:12px}.cw:hover .cb{opacity:1}.cw .cb:hover{color:#F59E0B}
+.hg{background:radial-gradient(ellipse at 50% 80%,rgba(245,158,11,0.08) 0%,transparent 60%),radial-gradient(ellipse at 20% 50%,rgba(249,115,22,0.05) 0%,transparent 50%)}
+@media(prefers-reduced-motion:reduce){*{animation-duration:0.01ms!important;transition-duration:0.01ms!important}}
+@media(max-width:768px){.sb-d{display:none!important}.mob-btn{display:flex!important}}
+@media(min-width:769px){.mob-btn{display:none!important}}
+</style>
+</head>
+<body>
+<div id="toasts" class="fixed top-4 right-4 z-[100] flex flex-col gap-2 pointer-events-none" style="max-width:360px"></div>
+<div id="app" class="flex h-screen"></div>
+<script>
+var MODS=[
+{id:1,title:'Fundamentals',icon:'fa-cube',desc:'Variables, data types & operators — the bedrock of everything.',clr:'#F59E0B'},
+{id:2,title:'Control Flow',icon:'fa-code-branch',desc:'Conditionals & loops — teach your code to make decisions.',clr:'#10B981'},
+{id:3,title:'Functions',icon:'fa-bolt',desc:'Declarations, arrows & scope — reusable logic blocks.',clr:'#06B6D4'}
+];
+
+var LESSONS={};
+LESSONS[1]=[
+{t:'h1',v:'Variables in JavaScript'},
+{t:'p',v:'JavaScript mein variables declare karne ke 3 tarike hain: <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">var</code>, <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">let</code>, aur <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">const</code>. Har ek ka behavior alag hai.'},
+{t:'h2',v:'const \u2014 Reassign Nahi Hota'},
+{t:'p',v:'<code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">const</code> use karo jab value change nahi honi chahiye. Block-scoped hai.'},
+{t:'code',v:'const PI = 3.14159;\nconst appName = "JS Forge";\n\n// Reassign karna error dega:\n// PI = 3.14; // TypeError'},
+{t:'h2',v:'let \u2014 Reassign Hota Hai'},
+{t:'p',v:'<code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">let</code> use karo jab value badalni ho. Block-scoped hai.'},
+{t:'code',v:'let score = 0;\nscore = 10;        // Allowed\nscore = score + 5;  // Now 15\n\nif (true) {\n  let temp = "hidden";\n}\n// console.log(temp); // ReferenceError'},
+{t:'h2',v:'var \u2014 Purana Tariqa (Avoid Karo)'},
+{t:'p',v:'<code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">var</code> function-scoped hai aur hoisting ke quirks hain. Modern JS mein mat use karo.'},
+{t:'code',v:'console.log(x); // undefined (hoisted!)\nvar x = 5;\n\nif (true) {\n  var x = 10; // Block se bahar leak!\n}\nconsole.log(x); // 10 \u2014 unexpected'},
+{t:'callout',v:'<strong>Rule of Thumb:</strong> Default to <code>const</code>. Use <code>let</code> only when reassignment needed. Never <code>var</code>.',c:'accent'},
+{t:'h1',v:'Data Types'},
+{t:'p',v:'JavaScript mein 8 data types \u2014 7 primitive aur 1 reference type.'},
+{t:'code',v:'typeof "hello"       // "string"\ntypeof 42            // "number"\ntypeof true          // "boolean"\ntypeof undefined     // "undefined"\ntypeof null          // "object" (historical bug!)\ntypeof Symbol("id")  // "symbol"\ntypeof 9007199254740991n  // "bigint"\n\ntypeof { name: "Aman" }  // "object"\ntypeof [1, 2, 3]         // "object"\ntypeof function(){}      // "function"'},
+{t:'callout',v:'<code>typeof null === "object"</code> \u2014 JavaScript ka purana bug, backwards compatibility ke liye kabhi fix nahi hua.',c:'warning'},
+{t:'h1',v:'Operators'},
+{t:'h2',v:'Arithmetic'},
+{t:'code',v:'10 + 3    // 13\n10 - 3    // 7\n10 * 3    // 30\n10 / 3    // 3.333...\n10 % 3    // 1\n2 ** 10   // 1024'},
+{t:'h2',v:'Comparison'},
+{t:'p',v:'<strong>Hamesha <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">===</code> use karo</strong>, kabhi <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-err text-sm font-mono">==</code> nahi.'},
+{t:'code',v:'"5" == 5   // true  (type coercion!)\n"5" === 5  // false (strict)\n\nnull == undefined  // true\nnull === undefined // false\n\nNaN === NaN  // false\nNumber.isNaN(NaN) // true'},
+{t:'h2',v:'Logical & Assignment'},
+{t:'code',v:'true && false   // false\ntrue || false   // true\n!true           // false\n\nlet x = 10;\nx += 5;  // 15\nx -= 3;  // 12\nx *= 2;  // 24\nx /= 4;  // 6'}
+];
+LESSONS[2]=[
+{t:'h1',v:'Conditional Statements'},
+{t:'p',v:'Control flow se aapka code decisions le sakta hai \u2014 different conditions pe different actions.'},
+{t:'h2',v:'if / else if / else'},
+{t:'code',v:'const temperature = 35;\n\nif (temperature > 40) {\n  console.log("Extremely hot!");\n} else if (temperature > 30) {\n  console.log("Hot weather"); // Yeh execute hoga\n} else {\n  console.log("Pleasant weather");\n}'},
+{t:'h2',v:'switch Statement'},
+{t:'p',v:'Jab ek variable ki multiple specific values check karni hon, <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">switch</code> clean rehta hai.'},
+{t:'code',v:'const day = "Monday";\nswitch (day) {\n  case "Monday":\n  case "Tuesday":\n  case "Wednesday":\n  case "Thursday":\n  case "Friday":\n    console.log("Weekday");\n    break;\n  case "Saturday":\n  case "Sunday":\n    console.log("Weekend");\n    break;\n  default:\n    console.log("Invalid");\n}'},
+{t:'h1',v:'Loops'},
+{t:'h2',v:'for Loop'},
+{t:'code',v:'for (let i = 0; i < 5; i++) {\n  console.log("Iteration " + i);\n}\n\nconst fruits = ["Apple", "Mango", "Banana"];\nfor (let i = 0; i < fruits.length; i++) {\n  console.log(fruits[i]);\n}'},
+{t:'h2',v:'while & do...while'},
+{t:'code',v:'let count = 0;\nwhile (count < 3) {\n  console.log(count); // 0, 1, 2\n  count++;\n}\n\nlet num = 0;\ndo {\n  console.log("Once: " + num);\n  num++;\n} while (num < 0); // false, but body ran once!'},
+{t:'h2',v:'break & continue'},
+{t:'code',v:'for (let i = 0; i < 10; i++) {\n  if (i === 5) break;\n  console.log(i); // 0-4\n}\n\nfor (let i = 0; i < 5; i++) {\n  if (i === 2) continue;\n  console.log(i); // 0,1,3,4\n}'},
+{t:'callout',v:'<strong>Pro Tip:</strong> <code>for...of</code> for arrays aur <code>for...in</code> for objects \u2014 Arrays/Objects module mein detail mein.',c:'accent'}
+];
+LESSONS[3]=[
+{t:'h1',v:'Function Declarations'},
+{t:'p',v:'Functions reusable code blocks hain. Declaration se pehle bhi call kar sakte ho (hoisting).'},
+{t:'code',v:'function greet(name) {\n  return "Hello, " + name + "!";\n}\nconsole.log(greet("Aman")); // "Hello, Aman!"\n\n// Hoisting works\ngreet("Early"); // Works before declaration!\nfunction greet(name) {\n  return "Hello, " + name + "!";\n}'},
+{t:'h1',v:'Function Expressions'},
+{t:'p',v:'Function ko variable mein store karo \u2014 hoisting nahi hogi.'},
+{t:'code',v:'const add = function(a, b) {\n  return a + b;\n};\nconsole.log(add(3, 4)); // 7\n// add(1,2); // ReferenceError if before declaration'},
+{t:'h1',v:'Arrow Functions (ES6)'},
+{t:'p',v:'Shorter syntax. <code class="bg-fg-card px-1.5 py-0.5 rounded text-fg-accent text-sm font-mono">this</code> binding alag hai \u2014 <code>this</code> module mein detail.'},
+{t:'code',v:'const double = (n) => n * 2;\nconsole.log(double(5)); // 10\n\nconst calculateArea = (w, h) => {\n  return w * h;\n};\n\nconst square = n => n * n;\nconst getTimestamp = () => Date.now();'},
+{t:'h1',v:'Default Parameters'},
+{t:'code',v:'function greetUser(name) {\n  name = name || "Guest";\n  return "Welcome, " + name + "!";\n}\n\n// ES6 way:\nconst greet = (name = "Guest") => "Hello, " + name + "!";\ngreet();       // "Hello, Guest!"\ngreet("Aman"); // "Hello, Aman!"'},
+{t:'h1',v:'Scope'},
+{t:'p',v:'Scope determine karta hai ki variable kahan accessible hai.'},
+{t:'code',v:'const global = "everywhere";\n\nfunction outer() {\n  const outerVar = "in outer";\n  function inner() {\n    const innerVar = "in inner";\n    console.log(global);   // ok\n    console.log(outerVar); // ok (closure)\n    console.log(innerVar); // ok\n  }\n  inner();\n  // console.log(innerVar); // ReferenceError\n}\nouter();\n// console.log(outerVar); // ReferenceError'},
+{t:'callout',v:'<strong>Key Insight:</strong> Inner functions outer variables ko access kar sakti hain \u2014 isko <strong>Closure</strong> kehte hain. Deep dive alag module mein.',c:'accent'}
+];
+
+var WSHOPS={};
+WSHOPS[1]={
+title:'Your First Variables',desc:'Variables declare karna seekho \u2014 const, let, operators, aur typeof.',
+init:'// Step 1: Declare a const `language` set to "JavaScript"\n\n// Step 2: Declare a let `linesWritten` set to 0\n\n// Step 3: Increment linesWritten by 10\n\n// Step 4: Declare a const `doubleCheck` = linesWritten === 10\n\n// Step 5: Declare a const `languageType` = typeof language\n',
+sol:'const language = "JavaScript";\nlet linesWritten = 0;\nlinesWritten += 10;\nconst doubleCheck = linesWritten === 10;\nconst languageType = typeof language;',
+steps:[
+{ins:'Declare a <code>const</code> called <code>language</code> set to <code>"JavaScript"</code>.',hint:'const language = "JavaScript";'},
+{ins:'Declare a <code>let</code> called <code>linesWritten</code> set to <code>0</code>.',hint:'let linesWritten = 0;'},
+{ins:'Increment <code>linesWritten</code> by <code>10</code> using <code>+=</code>.',hint:'linesWritten += 10;'},
+{ins:'Declare a <code>const</code> <code>doubleCheck</code> equal to <code>linesWritten === 10</code>.',hint:'const doubleCheck = linesWritten === 10;'},
+{ins:'Declare a <code>const</code> <code>languageType</code> = <code>typeof language</code>.',hint:'const languageType = typeof language;'}
+],
+valid:'return [typeof language==="string"&&language==="JavaScript",typeof linesWritten==="number",true,typeof doubleCheck==="boolean"&&doubleCheck===true,typeof languageType==="string"&&languageType==="string"];'
+};
+WSHOPS[2]={
+title:'Number Classifier',desc:'if/else aur loops use karke numbers classify karo.',
+init:'// Step 1: Classify `num` as "positive", "negative", or "zero" \u2014 store in `sign`\nconst num = -7;\n\n// Step 2: Count even numbers in `nums` \u2014 store in `evenCount`\nconst nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\n\n// Step 3: Find first number > 50 in `values` \u2014 store in `firstBig`\nconst values = [10, 20, 35, 55, 60];\n',
+sol:'const num = -7;\nvar sign;\nif (num > 0) sign = "positive";\nelse if (num < 0) sign = "negative";\nelse sign = "zero";\n\nconst nums = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];\nvar evenCount = 0;\nfor (var i = 0; i < nums.length; i++) {\n  if (nums[i] % 2 === 0) evenCount++;\n}\n\nconst values = [10, 20, 35, 55, 60];\nvar firstBig;\nvar idx = 0;\nwhile (idx < values.length) {\n  if (values[idx] > 50) { firstBig = values[idx]; break; }\n  idx++;\n}',
+steps:[
+{ins:'Use if/else if/else to classify <code>num</code>. Store in <code>sign</code>.',hint:'if(num>0) sign="positive"; else if(num<0) sign="negative"; else sign="zero";'},
+{ins:'Loop through <code>nums</code>, count evens (% 2 === 0). Store in <code>evenCount</code>.',hint:'var evenCount=0; for(var i=0;i<nums.length;i++){if(nums[i]%2===0)evenCount++;}'},
+{ins:'While loop to find first value > 50 in <code>values</code>. Store in <code>firstBig</code>.',hint:'var idx=0; while(idx<values.length){if(values[idx]>50){firstBig=values[idx];break;}idx++;}'}
+],
+valid:'return [typeof sign==="string"&&sign==="negative",typeof evenCount==="number"&&evenCount===5,typeof firstBig==="number"&&firstBig===55];'
+};
+WSHOPS[3]={
+title:'Greeting Factory',desc:'Different tarah ke functions banao \u2014 declaration, expression, arrow.',
+init:"// Step 1: Function DECLARATION `formalGreet(name)`\n// Returns \"Hello, [name]. Welcome to JS Forge.\"\n\n// Step 2: Function EXPRESSION `casualGreet` stored in const\n// Returns \"Hey [name]! What's up?\"\n\n// Step 3: ARROW function `shoutGreet(name)`\n// Returns formalGreet result IN UPPERCASE\n\n// Step 4: ARROW function `greetWithDefault(name=\"Coder\")`\n// Returns \"Hello, [name]!\"\n",
+sol:"function formalGreet(name) {\n  return \"Hello, \" + name + \". Welcome to JS Forge.\";\n}\nconst casualGreet = function(name) {\n  return \"Hey \" + name + \"! What's up?\";\n};\nconst shoutGreet = (name) => {\n  return formalGreet(name).toUpperCase();\n};\nconst greetWithDefault = (name) => {\n  if (name === undefined) name = \"Coder\";\n  return \"Hello, \" + name + \"!\";\n};",
+steps:[
+{ins:'Create function <strong>declaration</strong> <code>formalGreet(name)</code>.',hint:'function formalGreet(name){return "Hello, "+name+". Welcome to JS Forge.";}'},
+{ins:'Create function <strong>expression</strong> <code>casualGreet</code>.',hint:"const casualGreet = function(name){return \"Hey \"+name+\"! What's up?\";};"},
+{ins:'Create <strong>arrow</strong> <code>shoutGreet</code> returning UPPERCASE formal greeting.',hint:'const shoutGreet = (name) => formalGreet(name).toUpperCase();'},
+{ins:'Create <strong>arrow</strong> <code>greetWithDefault</code> with default "Coder".',hint:'const greetWithDefault = (name) => {name=name||"Coder";return "Hello, "+name+"!";};'}
+],
+valid:"return [typeof formalGreet==='function'&&formalGreet('Aman')==='Hello, Aman. Welcome to JS Forge.',typeof casualGreet==='function'&&casualGreet('Aman')===\"Hey Aman! What's up?\",typeof shoutGreet==='function'&&shoutGreet('Aman')==='HELLO, AMAN. WELCOME TO JS FORGE.',typeof greetWithDefault==='function'&&greetWithDefault()==='Hello, Coder!'&&greetWithDefault('Ravi')==='Hello, Ravi!'];"
+};
+
+var LABS={};
+LABS[1]={
+title:'Variable Master',desc:'Variables, operators, aur typeof use karke sab test cases pass karo.',
+init:'// Challenge 1: const `PI` = 3.14159\n\n// Challenge 2: let `radius` = 5\n\n// Challenge 3: `area` = PI * radius * radius\n\n// Challenge 4: `isAreaBig` = area > 78\n\n// Challenge 5: `typeOfRadius` = typeof radius\n',
+tests:[
+{n:'PI is 3.14159',f:'return typeof PI==="number"&&PI===3.14159;'},
+{n:'radius is 5',f:'return typeof radius==="number"&&radius===5;'},
+{n:'area is calculated correctly',f:'return typeof area==="number"&&Math.abs(area-78.53975)<0.01;'},
+{n:'isAreaBig is true',f:'return isAreaBig===true;'},
+{n:'typeOfRadius is "number"',f:'return typeOfRadius==="number";'}
+]
+};
+LABS[2]={
+title:'FizzBuzz Classic',desc:'1 se 20 tak: 3 ke multiple pe "Fizz", 5 pe "Buzz", dono pe "FizzBuzz", warna number.',
+init:'function fizzBuzz() {\n  // Return an array from 1 to 20\n  // 3&5 multiple -> "FizzBuzz"\n  // 3 only -> "Fizz"\n  // 5 only -> "Buzz"\n  // else -> the number\n  \n}',
+tests:[
+{n:'Returns an array',f:'return Array.isArray(fizzBuzz());'},
+{n:'Has 20 elements',f:'return fizzBuzz().length===20;'},
+{n:'Index 0 is 1',f:'return fizzBuzz()[0]===1;'},
+{n:'Index 2 is "Fizz"',f:'return fizzBuzz()[2]==="Fizz";'},
+{n:'Index 4 is "Buzz"',f:'return fizzBuzz()[4]==="Buzz";'},
+{n:'Index 14 is "FizzBuzz"',f:'return fizzBuzz()[14]==="FizzBuzz";'},
+{n:'Index 19 is "Buzz"',f:'return fizzBuzz()[19]==="Buzz";'}
+]
+};
+LABS[3]={
+title:'calculateDiscount',desc:'calculateDiscount(price, percent) \u2014 returns discounted price. Negative inputs? Return original. Round to 2 decimals.',
+init:'function calculateDiscount(price, percent) {\n  // price < 0 or percent < 0 -> return price\n  // Otherwise: price - (price * percent / 100)\n  // Round to 2 decimal places\n  \n}',
+tests:[
+{n:'20% off 100 = 80',f:'return calculateDiscount(100,20)===80;'},
+{n:'50% off 50 = 25',f:'return calculateDiscount(50,50)===25;'},
+{n:'0% off 200 = 200',f:'return calculateDiscount(200,0)===200;'},
+{n:'Negative price returns original',f:'return calculateDiscount(-10,20)===-10;'},
+{n:'Negative percent returns original',f:'return calculateDiscount(100,-5)===100;'},
+{n:'33% off 99.99 ~ 66.99',f:'return Math.abs(calculateDiscount(99.99,33)-66.99)<0.01;'},
+{n:'100% off 500 = 0',f:'return calculateDiscount(500,100)===0;'}
+]
+};
+
+// ===== STATE =====
+var S={view:'home',mod:null,sbOpen:window.innerWidth>768,step:0,showSol:false,codeBackup:'',timer:0,timerInt:null,testRes:null,stepRes:null,wsPassed:false};
+
+function loadProg(){try{var p=localStorage.getItem('jsforge-p');return p?JSON.parse(p):{};}catch(e){return {};}}
+function saveProg(){localStorage.setItem('jsforge-p',JSON.stringify(prog));}
+var prog=loadProg();
+function isDone(m,s){return !!(prog[m]&&prog[m][s]);}
+function markDone(m,s){if(!prog[m])prog[m]={};prog[m][s]=true;saveProg();}
+function modProg(m){var p=prog[m]||{};return['lesson','workshop','lab'].filter(function(s){return p[s];}).length;}
+function totalProg(){return MODS.reduce(function(s,m){return s+modProg(m.id);},0);}
+
+// ===== EDITOR =====
+var editor=null;
+function makeEditor(id,code){
+  killEditor();var ta=document.getElementById(id);
+  if(!ta||typeof CodeMirror==='undefined')return null;
+  editor=CodeMirror.fromTextArea(ta,{mode:'javascript',theme:'material-darker',lineNumbers:true,matchBrackets:true,autoCloseBrackets:true,indentUnit:2,tabSize:2});
+  editor.setValue(code);setTimeout(function(){if(editor)editor.refresh();},60);return editor;
+}
+function killEditor(){if(editor){try{editor.toTextArea();}catch(e){}editor=null;}}
+function getCode(){return editor?editor.getValue():'';}
+
+// ===== EXECUTION =====
+function exec(code){
+  var logs=[];var orig=console.log;
+  console.log=function(){var args=[];for(var i=0;i<arguments.length;i++){var a=arguments[i];args.push(typeof a==='object'?JSON.stringify(a,null,2):String(a));}logs.push(args.join(' '));};
+  try{var fn=new Function(code);var result=fn();console.log=orig;return{logs:logs,error:null,result:result};}
+  catch(e){console.log=orig;return{logs:logs,error:e.message,result:null};}
+}
+
+// ===== TOASTS =====
+function toast(msg,type,dur){
+  type=type||'info';dur=dur||3000;var box=document.getElementById('toasts');
+  var cls={success:'border-l-4 border-emerald-500 bg-emerald-500/10',error:'border-l-4 border-red-500 bg-red-500/10',info:'border-l-4 border-cyan-500 bg-cyan-500/10',warning:'border-l-4 border-amber-500 bg-amber-500/10'};
+  var ico={success:'fa-circle-check text-emerald-400',error:'fa-circle-xmark text-red-400',info:'fa-circle-info text-cyan-400',warning:'fa-triangle-exclamation text-amber-400'};
+  var el=document.createElement('div');
+  el.className='ti pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-lg '+cls[type]+' backdrop-blur-sm';
+  el.innerHTML='<i class="fa-solid '+ico[type]+'"></i><span class="text-sm text-fg-text">'+msg+'</span>';
+  box.appendChild(el);
+  setTimeout(function(){el.classList.remove('ti');el.classList.add('to');setTimeout(function(){el.remove();},300);},dur);
+}
+
+// ===== PARTICLES =====
+var pAnim=null;
+function startParticles(cv){
+  if(pAnim)cancelAnimationFrame(pAnim);var ctx=cv.getContext('2d');var ps=[];
+  function resize(){cv.width=cv.parentElement.clientWidth;cv.height=cv.parentElement.clientHeight;}resize();
+  window.addEventListener('resize',resize);
+  for(var i=0;i<35;i++)ps.push({x:Math.random()*cv.width,y:Math.random()*cv.height,sz:Math.random()*2.5+0.5,vy:-(Math.random()*1+0.3),vx:(Math.random()-0.5)*0.3,op:Math.random()*0.5+0.2,h:Math.random()*30+25});
+  function draw(){ctx.clearRect(0,0,cv.width,cv.height);for(var i=0;i<ps.length;i++){var p=ps[i];p.y+=p.vy;p.x+=p.vx;p.op-=0.001;if(p.y<-10||p.op<=0){ps[i]={x:Math.random()*cv.width,y:cv.height+10,sz:Math.random()*2.5+0.5,vy:-(Math.random()*1+0.3),vx:(Math.random()-0.5)*0.3,op:Math.random()*0.5+0.2,h:Math.random()*30+25};continue;}ctx.beginPath();ctx.arc(p.x,p.y,Math.max(0.1,p.sz),0,Math.PI*2);ctx.fillStyle='hsla('+p.h+',90%,58%,'+Math.max(0,p.op)+')';ctx.fill();}pAnim=requestAnimationFrame(draw);}
+  draw();
+}
+function stopParticles(){if(pAnim){cancelAnimationFrame(pAnim);pAnim=null;}}
+
+// ===== ROUTING =====
+function go(view,modId){
+  if(S.timerInt){clearInterval(S.timerInt);S.timerInt=null;}
+  S.view=view;S.mod=modId||null;S.showSol=false;S.codeBackup='';S.testRes=null;S.stepRes=null;S.wsPassed=false;S.step=0;S.timer=0;
+  if(window.innerWidth<769)S.sbOpen=false;
+  render();
+}
+
+// ===== HELPERS =====
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function copyBlock(btn){var code=btn.closest('.cw').querySelector('code').textContent;navigator.clipboard.writeText(code).then(function(){btn.innerHTML='<i class="fa-solid fa-check mr-1"></i>Copied!';setTimeout(function(){btn.innerHTML='<i class="fa-regular fa-copy mr-1"></i>Copy';},1500);});}
+
+// ===== RENDER: SIDEBAR =====
+function rSidebar(){
+  var secs=[{k:'lesson',l:'Lesson',i:'fa-book-open'},{k:'workshop',l:'Workshop',i:'fa-hammer'},{k:'lab',l:'Lab',i:'fa-flask'}];
+  var h='<div class="flex flex-col h-full">';
+  h+='<div class="p-4 border-b border-fg-border"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-lg bg-fg-accent/20 flex items-center justify-center"><i class="fa-solid fa-fire text-fg-accent text-sm"></i></div><div><div class="font-bold text-fg-text text-sm tracking-wide">JS FORGE</div><div class="text-[10px] text-fg-muted tracking-widest uppercase">Learn by Building</div></div></div></div>';
+  h+='<nav class="flex-1 overflow-y-auto py-3">';
+  h+='<button onclick="go(\'home\')" class="si w-full text-left px-4 py-2.5 text-sm flex items-center gap-3 '+(S.view==='home'?'on':'text-fg-muted')+'"><i class="fa-solid fa-house-chimney w-4 text-center"></i> Dashboard</button>';
+  h+='<div class="px-4 pt-4 pb-1"><span class="text-[10px] tracking-widest uppercase text-fg-muted font-semibold">Modules</span></div>';
+  for(var mi=0;mi<MODS.length;mi++){
+    var m=MODS[mi];var mp=modProg(m.id);
+    h+='<div class="px-3 pt-2 pb-1"><div class="flex items-center gap-2 px-1"><i class="fa-solid '+m.icon+' text-xs" style="color:'+m.clr+'"></i><span class="text-xs font-semibold text-fg-text/80">'+m.title+'</span><span class="ml-auto text-[10px] text-fg-muted">'+mp+'/3</span></div></div>';
+    for(var si=0;si<secs.length;si++){
+      var s=secs[si];var act=S.view===s.k&&S.mod===m.id;var dn=isDone(m.id,s.k);
+      h+='<button onclick="go(\''+s.k+'\','+m.id+')" class="si w-full text-left pl-8 pr-4 py-1.5 text-[13px] flex items-center gap-2.5 '+(act?'on':'text-fg-muted')+'"><i class="fa-solid '+s.i+' w-3.5 text-center text-[10px]"></i><span class="flex-1">'+s.l+'</span>';
+      if(dn)h+='<i class="fa-solid fa-circle-check text-emerald-500 text-xs"></i>';
+      h+='</button>';
+    }
+  }
+  h+='</nav>';
+  h+='<div class="p-4 border-t border-fg-border"><div class="flex items-center justify-between text-xs text-fg-muted"><span>Progress</span><span class="text-fg-accent font-semibold">'+totalProg()+' / 9</span></div>';
+  h+='<div class="mt-2 h-1.5 bg-fg-border rounded-full overflow-hidden"><div class="h-full bg-fg-accent rounded-full transition-all duration-500" style="width:'+(totalProg()/9*100)+'%"></div></div></div></div>';
+  return h;
+}
+
+// ===== RENDER: HOME =====
+function rHome(){
+  var total=totalProg();var h='<div class="af">';
+  h+='<div class="hg relative overflow-hidden" style="min-height:320px"><canvas id="pcanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>';
+  h+='<div class="relative z-10 flex flex-col items-center justify-center text-center px-6 py-14">';
+  h+='<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-fg-accent/10 border border-fg-accent/20 text-fg-accent text-xs font-medium mb-5"><i class="fa-solid fa-fire text-[10px]"></i> MVP \u2014 3 Modules Live</div>';
+  h+='<h1 class="font-display text-5xl md:text-6xl font-bold tracking-tight mb-3">JS <span class="text-fg-accent">Forge</span></h1>';
+  h+='<p class="text-fg-muted text-lg max-w-md mb-7 leading-relaxed">Master JavaScript from the ground up. Read lessons, practice in workshops, prove your skills in labs.</p>';
+  h+='<div class="flex gap-3"><button onclick="go(\'lesson\',1)" class="bp px-6 py-2.5 rounded-lg text-sm">Start Learning</button>';
+  h+='<button onclick="document.getElementById(\'hiw\').scrollIntoView({behavior:\'smooth\'})" class="bg px-6 py-2.5 rounded-lg text-sm">How It Works</button></div></div></div>';
+  h+='<div class="border-y border-fg-border bg-fg-surface/50"><div class="max-w-5xl mx-auto px-6 py-4 flex items-center justify-around text-center">';
+  h+='<div><div class="text-2xl font-bold text-fg-accent">'+total+'</div><div class="text-xs text-fg-muted mt-0.5">Completed</div></div><div class="w-px h-8 bg-fg-border"></div>';
+  h+='<div><div class="text-2xl font-bold text-fg-text">'+(9-total)+'</div><div class="text-xs text-fg-muted mt-0.5">Remaining</div></div><div class="w-px h-8 bg-fg-border"></div>';
+  h+='<div><div class="text-2xl font-bold text-fg-text">'+Math.round(total/9*100)+'%</div><div class="text-xs text-fg-muted mt-0.5">Progress</div></div></div></div>';
+  h+='<div class="max-w-5xl mx-auto px-6 py-10"><h2 class="text-2xl font-bold mb-2">Curriculum</h2>';
+  h+='<p class="text-fg-muted text-sm mb-8">Each module: Lesson + Workshop + Lab. Complete all three to master the topic.</p><div class="grid gap-4 md:grid-cols-3">';
+  for(var i=0;i<MODS.length;i++){
+    var m=MODS[i];var mp=modProg(m.id);var done=mp===3;
+    h+='<div class="ch rounded-xl border border-fg-border bg-fg-card p-5 au" style="animation-delay:'+(i*0.1)+'s" onclick="go(\'lesson\','+m.id+')">';
+    h+='<div class="flex items-start justify-between mb-4"><div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background:'+m.clr+'20"><i class="fa-solid '+m.icon+'" style="color:'+m.clr+'"></i></div>';
+    if(done)h+='<span class="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded-full">Complete</span>';
+    else h+='<span class="text-xs text-fg-muted">'+mp+'/3</span>';
+    h+='</div><h3 class="font-bold text-lg mb-1">'+m.title+'</h3><p class="text-fg-muted text-sm leading-relaxed mb-4">'+m.desc+'</p><div class="flex gap-1.5">';
+    var sl=['lesson','workshop','lab'];for(var j=0;j<3;j++)h+='<div class="flex-1 h-1.5 rounded-full '+(isDone(m.id,sl[j])?'bg-emerald-500':'bg-fg-border')+'"></div>';
+    h+='</div><div class="mt-4">';
+    if(!isDone(m.id,'lesson'))h+='<span class="text-xs text-fg-accent font-medium">Start Lesson <i class="fa-solid fa-arrow-right text-[10px]"></i></span>';
+    else if(!isDone(m.id,'workshop'))h+='<span class="text-xs text-fg-accent font-medium">Continue Workshop <i class="fa-solid fa-arrow-right text-[10px]"></i></span>';
+    else if(!isDone(m.id,'lab'))h+='<span class="text-xs text-fg-accent font-medium">Take the Lab <i class="fa-solid fa-arrow-right text-[10px]"></i></span>';
+    else h+='<span class="text-xs text-emerald-400 font-medium">All done! <i class="fa-solid fa-circle-check text-[10px]"></i></span>';
+    h+='</div></div>';
+  }
+  h+='</div></div>';
+  h+='<div id="hiw" class="border-t border-fg-border bg-fg-surface/30"><div class="max-w-5xl mx-auto px-6 py-12"><h2 class="text-2xl font-bold mb-8 text-center">How It Works</h2><div class="grid md:grid-cols-3 gap-8">';
+  var hiw=[{i:'fa-book-open',c:'amber',t:'1. Learn',d:'Read the lesson \u2014 concepts, syntax, and real code examples explained clearly.'},{i:'fa-hammer',c:'emerald',t:'2. Practice',d:'Guided workshop with step-by-step instructions, hints, and solution toggle.'},{i:'fa-flask',c:'cyan',t:'3. Prove It',d:'Independent lab \u2014 no hints, just test cases. Pass them all to complete.'}];
+  for(var k=0;k<hiw.length;k++){var x=hiw[k];h+='<div class="text-center au" style="animation-delay:'+(k*0.1+0.1)+'s"><div class="w-14 h-14 rounded-2xl bg-'+x.c+'-500/10 flex items-center justify-center mx-auto mb-4"><i class="fa-solid '+x.i+' text-'+x.c+'-400 text-xl"></i></div><h3 class="font-bold mb-2">'+x.t+'</h3><p class="text-fg-muted text-sm leading-relaxed">'+x.d+'</p></div>';}
+  h+='</div></div></div>';
+  h+='<div class="border-t border-fg-border py-5 text-center text-xs text-fg-muted">Built with vanilla HTML/CSS/JS + CodeMirror + Tailwind \u2014 the forge itself is a learning project.</div></div>';
+  return h;
+}
+
+// ===== RENDER: LESSON =====
+function rLesson(mid){
+  var blocks=LESSONS[mid];var m=MODS[mid-1];var h='<div class="af">';
+  h+='<div class="border-b border-fg-border bg-fg-surface/50 px-6 py-4 flex items-center gap-3">';
+  h+='<div class="w-8 h-8 rounded-lg flex items-center justify-center" style="background:'+m.clr+'20"><i class="fa-solid '+m.icon+' text-sm" style="color:'+m.clr+'"></i></div>';
+  h+='<div><div class="text-xs text-fg-muted">'+m.title+'</div><div class="font-bold text-sm">Lesson</div></div>';
+  if(isDone(mid,'lesson'))h+='<span class="ml-auto text-xs text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i>Completed</span>';
+  h+='</div><div id="lcontent" class="max-w-3xl mx-auto px-6 py-10">';
+  for(var i=0;i<blocks.length;i++){
+    var b=blocks[i];
+    if(b.t==='h1')h+='<h1 class="text-3xl font-bold mt-10 mb-4'+(i===0?' first:mt-0':'')+'">'+b.v+'</h1>';
+    else if(b.t==='h2')h+='<h2 class="text-xl font-semibold mt-8 mb-3 text-fg-text/90">'+b.v+'</h2>';
+    else if(b.t==='p')h+='<p class="text-fg-muted leading-relaxed mb-4">'+b.v+'</p>';
+    else if(b.t==='code'){h+='<div class="cw mb-5 rounded-lg border border-fg-border overflow-hidden"><div class="flex items-center justify-between px-4 py-2 bg-fg-card border-b border-fg-border"><span class="text-[11px] text-fg-muted font-mono">JavaScript</span><button class="cb" onclick="copyBlock(this)"><i class="fa-regular fa-copy mr-1"></i>Copy</button></div><pre><code class="language-javascript">'+esc(b.v)+'</code></pre></div>';}
+    else if(b.t==='callout'){var cc=b.c==='warning'?'border-orange-500/30 bg-orange-500/5 text-orange-200':'border-amber-500/30 bg-amber-500/5 text-amber-200';h+='<div class="rounded-lg border '+cc+' px-4 py-3 mb-5 text-sm leading-relaxed">'+b.v+'</div>';}
+  }
+  if(!isDone(mid,'lesson')){
+    h+='<div class="mt-10 pt-6 border-t border-fg-border flex items-center justify-between">';
+    h+='<button onclick="markDone('+mid+',\'lesson\');go(\'lesson\','+mid+');toast(\'Lesson marked complete!\',\'success\');" class="bp px-5 py-2.5 rounded-lg text-sm"><i class="fa-solid fa-check mr-2"></i>Mark as Complete</button>';
+    h+='<button onclick="go(\'workshop\','+mid+')" class="bg px-5 py-2.5 rounded-lg text-sm">Next: Workshop <i class="fa-solid fa-arrow-right ml-1"></i></button></div>';
+  }else{h+='<div class="mt-10 pt-6 border-t border-fg-border flex justify-end"><button onclick="go(\'workshop\','+mid+')" class="bp px-5 py-2.5 rounded-lg text-sm">Next: Workshop <i class="fa-solid fa-arrow-right ml-1"></i></button></div>';}
+  h+='</div></div>';return h;
+}
+
+// ===== RENDER: WORKSHOP =====
+function rWorkshop(mid){
+  var ws=WSHOPS[mid];var m=MODS[mid-1];var step=S.step;var h='<div class="af flex flex-col h-full">';
+  h+='<div class="border-b border-fg-border bg-fg-surface/50 px-4 py-3 flex items-center gap-3 shrink-0">';
+  h+='<div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:'+m.clr+'20"><i class="fa-solid '+m.icon+' text-xs" style="color:'+m.clr+'"></i></div>';
+  h+='<div class="flex-1 min-w-0"><div class="text-[11px] text-fg-muted">'+m.title+' \u2014 Workshop</div><div class="font-bold text-sm truncate">'+ws.title+'</div></div>';
+  if(S.wsPassed)h+='<span class="text-xs text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i>Passed</span>';
+  h+='</div><div class="flex-1 flex flex-col lg:flex-row overflow-hidden">';
+  // Left
+  h+='<div class="lg:w-[320px] shrink-0 border-b lg:border-b-0 lg:border-r border-fg-border flex flex-col overflow-hidden">';
+  h+='<div class="p-4 border-b border-fg-border"><p class="text-sm text-fg-muted">'+ws.desc+'</p></div>';
+  h+='<div class="flex-1 overflow-y-auto p-3 space-y-2">';
+  for(var i=0;i<ws.steps.length;i++){
+    var act=i===step;var passed=S.stepRes&&S.stepRes[i];var cls=act?'on':(passed?'done':'');
+    h+='<button onclick="S.step='+i+';render();" class="sti w-full text-left px-3 py-2.5 rounded-lg border border-fg-border text-sm '+cls+'">';
+    h+='<div class="flex items-center gap-2 mb-1"><span class="w-5 h-5 rounded-full border text-[10px] flex items-center justify-center ';
+    if(passed)h+='border-emerald-500 text-emerald-400 bg-emerald-500/10';else if(act)h+='border-fg-accent text-fg-accent bg-fg-accent/10';else h+='border-fg-borderL text-fg-muted';
+    h+='">';if(passed)h+='<i class="fa-solid fa-check"></i>';else h+=(i+1);h+='</span>';
+    h+='<span class="font-medium text-xs '+(act?'text-fg-text':'text-fg-muted')+'">Step '+(i+1)+'</span></div>';
+    h+='<p class="text-xs text-fg-muted leading-relaxed pl-7">'+ws.steps[i].ins+'</p></button>';
+  }
+  h+='</div><div class="p-3 border-t border-fg-border space-y-2 shrink-0">';
+  h+='<button onclick="var p=document.getElementById(\'hpanel\');if(p)p.classList.toggle(\'hidden\');" class="w-full text-left px-3 py-2 rounded-lg border border-fg-border text-xs text-fg-muted hover:text-fg-accent hover:border-fg-accent/30 transition-colors"><i class="fa-solid fa-lightbulb mr-2"></i>Show Hint for Step '+(step+1)+'</button>';
+  h+='<div id="hpanel" class="hidden px-3 py-2 rounded-lg bg-amber-500/5 border border-amber-500/20 text-xs text-amber-200/80 leading-relaxed font-mono">'+esc(ws.steps[step].hint)+'</div>';
+  h+='<button onclick="togSol()" class="w-full text-left px-3 py-2 rounded-lg border border-fg-border text-xs text-fg-muted hover:text-fg-warn hover:border-orange-500/30 transition-colors"><i class="fa-solid fa-eye mr-2"></i>'+(S.showSol?'Restore My Code':'Show Full Solution')+'</button>';
+  h+='</div></div>';
+  // Right
+  h+='<div class="flex-1 flex flex-col overflow-hidden">';
+  h+='<div class="px-4 py-2 border-b border-fg-border bg-fg-card flex items-center justify-between shrink-0"><span class="text-xs text-fg-muted font-mono"><i class="fa-solid fa-code mr-1.5"></i>editor.js</span>';
+  h+='<button onclick="runWs('+mid+')" class="bp px-4 py-1.5 rounded-md text-xs"><i class="fa-solid fa-play mr-1.5"></i>Run Code</button></div>';
+  h+='<div class="flex-1 overflow-hidden" style="min-height:180px"><textarea id="ws-ed">'+esc(S.showSol?ws.sol:ws.init)+'</textarea></div>';
+  h+='<div class="border-t border-fg-border shrink-0" style="height:150px">';
+  h+='<div class="px-4 py-1.5 border-b border-fg-border bg-fg-card flex items-center justify-between"><span class="text-[11px] text-fg-muted font-mono">Output</span>';
+  if(S.stepRes)h+='<span class="text-[11px] '+(S.wsPassed?'text-emerald-400':'text-fg-muted')+'">'+S.stepRes.filter(Boolean).length+'/'+S.stepRes.length+' steps</span>';
+  h+='</div><div id="ws-out" class="p-3 font-mono text-xs overflow-y-auto bg-[#0D0D0D]" style="height:115px"><span class="text-fg-muted">Click "Run Code" to see output...</span></div></div></div></div></div>';
+  return h;
+}
+
+function togSol(){
+  var ws=WSHOPS[S.mod];
+  if(!S.showSol){S.codeBackup=getCode();editor.setValue(ws.sol);S.showSol=true;toast('Solution loaded. Click again to restore your code.','warning');}
+  else{editor.setValue(S.codeBackup||ws.init);S.showSol=false;}
+  render();
+}
+
+function runWs(mid){
+  var ws=WSHOPS[mid];var code=getCode();var out=document.getElementById('ws-out');
+  var r1=exec(code);var html='';
+  if(r1.logs.length>0)for(var i=0;i<r1.logs.length;i++)html+='<div class="text-fg-text/80">'+esc(r1.logs[i])+'</div>';
+  if(r1.error)html+='<div class="text-red-400 mt-1"><i class="fa-solid fa-circle-xmark mr-1"></i>'+esc(r1.error)+'</div>';
+  var r2=exec(code+'\nreturn ('+ws.valid+')()');
+  if(r2.error)S.stepRes=ws.steps.map(function(){return false;});else S.stepRes=r2.result;
+  S.wsPassed=S.stepRes.every(Boolean);
+  html+='<div class="mt-2 pt-2 border-t border-fg-border space-y-1">';
+  for(var j=0;j<ws.steps.length;j++){var ok=S.stepRes[j];html+='<div class="flex items-center gap-2"><i class="fa-solid '+(ok?'fa-circle-check text-emerald-400':'fa-circle-xmark text-red-400')+' text-[10px]"></i><span class="'+(ok?'text-emerald-300':'text-red-300')+' text-[11px]">Step '+(j+1)+'</span></div>';}
+  html+='</div>';
+  if(S.wsPassed){html+='<div class="mt-2 px-3 py-2 bg-emerald-500/10 border border-emerald-500/20 rounded-lg text-emerald-300 text-xs"><i class="fa-solid fa-trophy mr-1.5"></i>All steps passed!</div>';if(!isDone(mid,'workshop')){markDone(mid,'workshop');toast('Workshop completed!','success');}}
+  out.innerHTML=html;render();
+}
+
+// ===== RENDER: LAB =====
+function rLab(mid){
+  var lab=LABS[mid];var m=MODS[mid-1];
+  var mins=String(Math.floor(S.timer/60)).padStart(2,'0');var secs=String(S.timer%60).padStart(2,'0');
+  var allP=S.testRes&&S.testRes.every(function(t){return t.passed;});
+  var h='<div class="af flex flex-col h-full">';
+  h+='<div class="border-b border-fg-border bg-fg-surface/50 px-4 py-3 flex items-center gap-3 shrink-0">';
+  h+='<div class="w-7 h-7 rounded-lg flex items-center justify-center" style="background:'+m.clr+'20"><i class="fa-solid '+m.icon+' text-xs" style="color:'+m.clr+'"></i></div>';
+  h+='<div class="flex-1 min-w-0"><div class="text-[11px] text-fg-muted">'+m.title+' \u2014 Lab</div><div class="font-bold text-sm truncate">'+lab.title+'</div></div>';
+  h+='<div class="flex items-center gap-1.5 text-xs font-mono text-fg-muted bg-fg-card px-3 py-1.5 rounded-lg border border-fg-border"><i class="fa-solid fa-clock text-[10px]"></i><span id="ltimer">'+mins+':'+secs+'</span></div>';
+  if(allP)h+='<span class="text-xs text-emerald-400 bg-emerald-400/10 px-2.5 py-1 rounded-full"><i class="fa-solid fa-check mr-1"></i>All Passed</span>';
+  h+='</div>';
+  h+='<div class="p-4 border-b border-fg-border bg-fg-surface/30 shrink-0"><p class="text-sm text-fg-muted leading-relaxed">'+lab.desc+'</p>';
+  h+='<div class="mt-2 flex items-center gap-3 text-[11px] text-fg-muted"><span><i class="fa-solid fa-list-check mr-1"></i>'+lab.tests.length+' test cases</span><span class="text-amber-400/70"><i class="fa-solid fa-triangle-exclamation mr-1"></i>No hints</span></div></div>';
+  h+='<div class="flex-1 flex flex-col overflow-hidden">';
+  h+='<div class="px-4 py-2 border-b border-fg-border bg-fg-card flex items-center justify-between shrink-0"><span class="text-xs text-fg-muted font-mono"><i class="fa-solid fa-code mr-1.5"></i>solution.js</span>';
+  h+='<button onclick="runLab('+mid+')" class="bp px-4 py-1.5 rounded-md text-xs"><i class="fa-solid fa-flask mr-1.5"></i>Run Tests</button></div>';
+  h+='<div class="flex-1 overflow-hidden" style="min-height:160px"><textarea id="lab-ed">'+esc(lab.init)+'</textarea></div></div>';
+  h+='<div class="border-t border-fg-border shrink-0" style="height:190px">';
+  h+='<div class="px-4 py-1.5 border-b border-fg-border bg-fg-card flex items-center justify-between"><span class="text-[11px] text-fg-muted font-mono">Test Results</span>';
+  if(S.testRes){var pc=S.testRes.filter(function(t){return t.passed;}).length;h+='<span class="text-[11px] '+(pc===S.testRes.length?'text-emerald-400':'text-fg-muted')+'">'+pc+'/'+S.testRes.length+' passed</span>';}
+  h+='</div><div id="lab-res" class="p-3 overflow-y-auto bg-[#0D0D0D]" style="height:155px">';
+  if(S.testRes)h+=rTestRes(S.testRes);else h+='<span class="text-fg-muted text-xs">Click "Run Tests" to validate...</span>';
+  h+='</div></div></div>';return h;
+}
+
+function rTestRes(res){
+  var h='';for(var i=0;i<res.length;i++){var t=res[i];
+  h+='<div class="flex items-start gap-3 py-2 af'+(i<res.length-1?' border-b border-fg-border/50':'')+'" style="animation-delay:'+(i*0.05)+'s">';
+  h+='<div class="mt-0.5">'+(t.passed?'<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i>':'<i class="fa-solid fa-circle-xmark text-red-400 text-sm"></i>')+'</div>';
+  h+='<div class="flex-1 min-w-0"><div class="text-xs '+(t.passed?'text-emerald-300':'text-red-300')+'">'+esc(t.name)+'</div>';
+  if(t.error)h+='<div class="text-[11px] text-red-400/70 mt-0.5 font-mono">'+esc(t.error)+'</div>';
+  h+='</div></div>';}return h;
+}
+
+function runLab(mid){
+  var lab=LABS[mid];var code=getCode();var resEl=document.getElementById('lab-res');
+  var tc='var __tr=[];';
+  for(var i=0;i<lab.tests.length;i++){var sn=lab.tests[i].n.replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+  tc+='try{var __p=(function(){'+lab.tests[i].f+'})();__tr.push({name:"'+sn+'",passed:__p,error:null});}catch(__e){__tr.push({name:"'+sn+'",passed:false,error:__e.message});}';}
+  tc+='return __tr;';
+  var r=exec(code+'\n'+tc);
+  if(r.error){resEl.innerHTML='<div class="text-red-400 text-xs"><i class="fa-solid fa-circle-xmark mr-1"></i>'+esc(r.error)+'</div>';return;}
+  S.testRes=r.result;resEl.innerHTML=rTestRes(S.testRes);
+  var allP=S.testRes.every(function(t){return t.passed;});
+  if(allP){if(!isDone(mid,'lab')){markDone(mid,'lab');toast('Lab completed! All tests passed.','success',4000);}
+  if(S.timerInt){clearInterval(S.timerInt);S.timerInt=null;}
+  if(modProg(mid)===3)setTimeout(function(){toast('Module "'+MODS[mid-1].title+'" fully complete!','success',5000);},1000);}
+  render();
+}
+
+// ===== MAIN RENDER =====
+function render(){
+  var app=document.getElementById('app');
+  var sbCls='sb-d w-[250px] shrink-0 border-r border-fg-border bg-fg-surface h-full overflow-hidden flex flex-col transition-all duration-300'+(S.sbOpen?'':' -ml-[250px]');
+  var sbHtml='<aside id="sidebar" class="'+sbCls+'">'+rSidebar()+'</aside>';
+  var mainHtml='';
+  if(S.view==='home')mainHtml='<main class="flex-1 overflow-y-auto">'+rHome()+'</main>';
+  else if(S.view==='lesson')mainHtml='<main class="flex-1 overflow-y-auto">'+rLesson(S.mod)+'</main>';
+  else if(S.view==='workshop')mainHtml='<main class="flex-1 overflow-hidden">'+rWorkshop(S.mod)+'</main>';
+  else if(S.view==='lab')mainHtml='<main class="flex-1 overflow-hidden">'+rLab(S.mod)+'</main>';
+  var mobHtml='<button onclick="togSB()" class="mob-btn fixed top-3 left-3 z-40 w-9 h-9 rounded-lg bg-fg-card border border-fg-border items-center justify-center text-fg-muted hover:text-fg-text transition-colors"><i class="fa-solid fa-bars text-sm"></i></button>';
+  app.innerHTML=sbHtml+mainHtml+mobHtml;
+
+  if(S.view==='workshop'){var ws=WSHOPS[S.mod];setTimeout(function(){var ed=makeEditor('ws-ed',S.showSol?ws.sol:ws.init);if(ed)ed.setOption('extraKeys',{'Ctrl-Enter':function(){runWs(S.mod);}});},30);}
+  else if(S.view==='lab'){var lab=LABS[S.mod];setTimeout(function(){var ed=makeEditor('lab-ed',lab.init);if(ed)ed.setOption('extraKeys',{'Ctrl-Enter':function(){runLab(S.mod);}});
+  if(!S.timerInt&&!isDone(S.mod,'lab')){S.timerInt=setInterval(function(){S.timer++;var el=document.getElementById('ltimer');if(el)el.textContent=String(Math.floor(S.timer/60)).padStart(2,'0')+':'+String(S.timer%60).padStart(2,'0');},1000);}},30);}
+  else killEditor();
+
+  if(S.view==='home'){setTimeout(function(){var cv=document.getElementById('pcanvas');if(cv)startParticles(cv);},100);}else stopParticles();
+  if(S.view==='lesson'){setTimeout(function(){var blocks=document.querySelectorAll('#lcontent pre code');for(var i=0;i<blocks.length;i++)hljs.highlightElement(blocks[i]);},30);}
+}
+
+function togSB(){S.sbOpen=!S.sbOpen;var sb=document.getElementById('sidebar');if(sb){if(S.sbOpen)sb.classList.remove('-ml-[250px]');else sb.classList.add('-ml-[250px]');}}
+
+go('home');
+</script>
+</body>
+</html>

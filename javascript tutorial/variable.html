@@ -1,0 +1,3011 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Variable Ka Raja 🔥</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: #151d2e;
+            --card2: #1a2540;
+            --border: #1e3a5f;
+            --fg: #e8edf5;
+            --muted: #6b7fa3;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --purple: #a855f7;
+            --pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Background Effect === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 { top: -150px; left: -100px; background: var(--accent); }
+        .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+        .bg-glow-3 { top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--purple); opacity: 0.08; }
+
+        /* === Header === */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        header h1 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 900;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* === Score Bar === */
+        .score-bar {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            padding: 0 20px 30px;
+        }
+
+        .score-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .score-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(0,255,136,0.1);
+            transform: translateY(-2px);
+        }
+
+        .score-item i { font-size: 1.2rem; }
+        .score-item .label { color: var(--muted); font-size: 0.85rem; }
+        .score-item .value { font-weight: 800; font-size: 1.3rem; font-family: 'Fira Code', monospace; }
+        .sc-green i, .sc-green .value { color: var(--accent); }
+        .sc-blue i, .sc-blue .value { color: var(--accent2); }
+        .sc-purple i, .sc-purple .value { color: var(--purple); }
+        .sc-warn i, .sc-warn .value { color: var(--warn); }
+
+        /* === Main Container === */
+        main {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            main { grid-template-columns: 1fr; }
+        }
+
+        /* === Card === */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            transition: all 0.35s;
+        }
+
+        .card:hover {
+            border-color: rgba(0,255,136,0.3);
+            box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+        }
+
+        .card.full-width { grid-column: 1 / -1; }
+
+        .card-title {
+            font-weight: 800;
+            font-size: 1.25rem;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title i {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .t-green i { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .t-blue i { background: rgba(0,212,255,0.12); color: var(--accent2); }
+        .t-purple i { background: rgba(168,85,247,0.12); color: var(--purple); }
+        .t-warn i { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .t-pink i { background: rgba(255,107,157,0.12); color: var(--pink); }
+
+        /* === Variable Creator === */
+        .creator-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .input-group select,
+        .input-group input {
+            width: 100%;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border 0.25s;
+        }
+
+        .input-group select:focus,
+        .input-group input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0,255,136,0.08);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .btn:hover::after { opacity: 1; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #00cc6a);
+            color: #000;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,255,136,0.3); }
+
+        .btn-danger {
+            background: rgba(255,71,87,0.15);
+            color: var(--danger);
+            border: 1px solid rgba(255,71,87,0.25);
+        }
+
+        .btn-danger:hover { background: rgba(255,71,87,0.25); }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.78rem;
+            border-radius: 8px;
+        }
+
+        /* === Variable List === */
+        .var-list {
+            max-height: 280px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding-right: 4px;
+        }
+
+        .var-list::-webkit-scrollbar { width: 4px; }
+        .var-list::-webkit-scrollbar-track { background: transparent; }
+        .var-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .var-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideIn 0.3s ease;
+            transition: all 0.25s;
+        }
+
+        .var-item:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .var-badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-var { background: rgba(255,165,2,0.15); color: var(--warn); }
+        .badge-let { background: rgba(0,212,255,0.15); color: var(--accent2); }
+        .badge-const { background: rgba(168,85,247,0.15); color: var(--purple); }
+
+        .var-name {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .var-eq { color: var(--muted); }
+
+        .var-value {
+            font-family: 'Fira Code', monospace;
+            color: var(--fg);
+            font-size: 0.92rem;
+            flex: 1;
+            word-break: break-all;
+        }
+
+        .var-type {
+            font-size: 0.7rem;
+            color: var(--muted);
+            background: rgba(107,127,163,0.1);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .var-delete {
+            background: none;
+            border: none;
+            color: var(--muted);
+            cursor: pointer;
+            font-size: 0.9rem;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .var-delete:hover { color: var(--danger); background: rgba(255,71,87,0.1); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--muted);
+        }
+
+        .empty-state i { font-size: 2.5rem; margin-bottom: 12px; opacity: 0.3; }
+        .empty-state p { font-size: 0.9rem; }
+
+        /* === Code Preview === */
+        .code-preview {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            min-height: 120px;
+            max-height: 200px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .code-preview .line-num {
+            color: #3a4a6b;
+            user-select: none;
+            display: inline-block;
+            width: 28px;
+            text-align: right;
+            margin-right: 14px;
+        }
+
+        .kw-var { color: var(--warn); }
+        .kw-let { color: var(--accent2); }
+        .kw-const { color: var(--purple); }
+        .str-val { color: var(--accent); }
+        .num-val { color: var(--pink); }
+        .bool-val { color: #fbbf24; }
+        .var-nm { color: #e8edf5; }
+        .punc { color: #4a5e82; }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 6px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover { color: var(--accent); border-color: var(--accent); }
+
+        /* === var vs let vs const Demo === */
+        .demo-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .demo-tab {
+            padding: 8px 18px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .demo-tab.active-tab-var { background: rgba(255,165,2,0.12); color: var(--warn); border-color: var(--warn); }
+        .demo-tab.active-tab-let { background: rgba(0,212,255,0.12); color: var(--accent2); border-color: var(--accent2); }
+        .demo-tab.active-tab-const { background: rgba(168,85,247,0.12); color: var(--purple); border-color: var(--purple); }
+
+        .demo-tab:hover { transform: translateY(-1px); }
+
+        .demo-output {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.8;
+            min-height: 160px;
+        }
+
+        .demo-output .log-line {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .log-arrow { color: var(--accent); user-select: none; }
+        .log-text { color: var(--fg); }
+        .log-error { color: var(--danger); }
+        .log-warn { color: var(--warn); }
+        .log-info { color: var(--accent2); }
+
+        .demo-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+        }
+
+        /* === Type Checker === */
+        .type-input-area {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .type-input-area input {
+            flex: 1;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.92rem;
+            outline: none;
+            transition: border 0.25s;
+        }
+
+        .type-input-area input:focus {
+            border-color: var(--accent2);
+            box-shadow: 0 0 0 3px rgba(0,212,255,0.08);
+        }
+
+        .type-result {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-height: 60px;
+            transition: all 0.3s;
+        }
+
+        .type-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .type-string .type-icon { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .type-number .type-icon { background: rgba(255,107,157,0.12); color: var(--pink); }
+        .type-boolean .type-icon { background: rgba(251,191,36,0.12); color: #fbbf24; }
+        .type-undefined .type-icon { background: rgba(107,127,163,0.12); color: var(--muted); }
+        .type-object .type-icon { background: rgba(0,212,255,0.12); color: var(--accent2); }
+        .type-function .type-icon { background: rgba(168,85,247,0.12); color: var(--purple); }
+        .type-null .type-icon { background: rgba(255,71,87,0.12); color: var(--danger); }
+        .type-NaN .type-icon { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        .type-label { font-size: 0.78rem; color: var(--muted); }
+        .type-value { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 1.1rem; }
+
+        /* === Quiz Section === */
+        .quiz-question {
+            font-size: 1.05rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        .quiz-question code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.08);
+            color: var(--accent);
+            padding: 2px 8px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .quiz-opt {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            text-align: left;
+            color: var(--fg);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-opt:hover { border-color: var(--accent); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: var(--accent); background: rgba(0,255,136,0.08); color: var(--accent); }
+        .quiz-opt.wrong { border-color: var(--danger); background: rgba(255,71,87,0.08); color: var(--danger); }
+        .quiz-opt.disabled { pointer-events: none; opacity: 0.6; }
+        .quiz-opt.disabled.correct { opacity: 1; }
+        .quiz-opt.disabled.wrong { opacity: 1; }
+
+        .opt-letter {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.78rem;
+            flex-shrink: 0;
+        }
+
+        .quiz-feedback {
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+            display: none;
+        }
+
+        .quiz-feedback.show { display: block; animation: fadeIn 0.3s; }
+        .quiz-feedback.fb-correct { background: rgba(0,255,136,0.08); color: var(--accent); border: 1px solid rgba(0,255,136,0.2); }
+        .quiz-feedback.fb-wrong { background: rgba(255,71,87,0.08); color: var(--danger); border: 1px solid rgba(255,71,87,0.2); }
+
+        .quiz-progress {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .prog-dot {
+            width: 100%;
+            height: 4px;
+            border-radius: 4px;
+            background: var(--border);
+            transition: background 0.3s;
+        }
+
+        .prog-dot.done { background: var(--accent); }
+        .prog-dot.wrong-dot { background: var(--danger); }
+        .prog-dot.current { background: var(--accent2); }
+
+        /* === Memory Visualizer === */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            max-height: 340px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .memory-grid::-webkit-scrollbar { width: 4px; }
+        .memory-grid::-webkit-scrollbar-track { background: transparent; }
+        .memory-grid::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .mem-block {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            transition: all 0.3s;
+            animation: memPop 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes memPop {
+            0% { opacity: 0; transform: scale(0.8); }
+            60% { transform: scale(1.05); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .mem-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        .mem-block.mem-var::before { background: var(--warn); }
+        .mem-block.mem-let::before { background: var(--accent2); }
+        .mem-block.mem-const::before { background: var(--purple); }
+
+        .mem-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .mem-addr {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        .mem-name {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--fg);
+            margin-bottom: 4px;
+            word-break: break-all;
+        }
+
+        .mem-val {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--accent);
+            word-break: break-all;
+        }
+
+        .mem-type {
+            font-size: 0.62rem;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* === Toast === */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            animation: toastIn 0.35s ease, toastOut 0.35s ease 2.5s forwards;
+            max-width: 340px;
+        }
+
+        .toast-success { border-left: 3px solid var(--accent); }
+        .toast-success i { color: var(--accent); }
+        .toast-error { border-left: 3px solid var(--danger); }
+        .toast-error i { color: var(--danger); }
+        .toast-info { border-left: 3px solid var(--accent2); }
+        .toast-info i { color: var(--accent2); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* === Floating particles === */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+        }
+
+        .workshop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .workshop-card {
+            background: rgba(17,24,39,0.8);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s ease;
+        }
+
+        .workshop-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+        }
+
+        .workshop-card h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .workshop-card ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .workshop-card li::before {
+            content: '•';
+            color: var(--accent);
+            margin-right: 8px;
+        }
+
+        .mini-projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .mini-project {
+            background: linear-gradient(135deg, rgba(0,255,136,0.06), rgba(0,212,255,0.04));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .mini-project h4 {
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .mini-project p {
+            color: var(--muted);
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        /* === Section Description === */
+        .sec-desc {
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            max-width: 820px;
+        }
+
+        .sec-desc b { color: var(--fg); }
+
+        /* === Code Playground === */
+        .playground-wrap { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+
+        .pg-toolbar { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+
+        .pg-snippets {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .pg-snippets:focus { border-color: var(--accent); }
+        .pg-toolbar .tip { color: var(--muted); font-size: 0.76rem; }
+
+        .pg-editor {
+            width: 100%;
+            min-height: 190px;
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            line-height: 1.75;
+            outline: none;
+            resize: vertical;
+            tab-size: 2;
+        }
+
+        .pg-editor:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,255,136,0.08); }
+
+        .pg-output {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            min-height: 70px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .pg-line { display: flex; gap: 10px; align-items: flex-start; }
+
+        /* === Analogies === */
+        .analogy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 18px; }
+
+        .analogy-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            transition: all 0.25s;
+        }
+
+        .analogy-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+        .analogy-emoji { font-size: 2rem; display: block; margin-bottom: 10px; }
+        .analogy-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .analogy-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.75; margin-bottom: 12px; }
+        .analogy-card p b { color: var(--fg); }
+
+        .analogy-code {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            line-height: 1.8;
+            color: var(--fg);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .analogy-code .cm { color: var(--muted); }
+
+        /* === Examples Gallery === */
+        .ex-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        .ex-tab {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .ex-tab.active { background: rgba(0,212,255,0.12); color: var(--accent2); border-color: var(--accent2); }
+        .ex-tab:hover { transform: translateY(-1px); }
+
+        .ex-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px; margin-top: 16px; }
+
+        .ex-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s;
+        }
+
+        .ex-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+        .ex-card h4 { font-size: 0.95rem; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+
+        .ex-num {
+            width: 26px; height: 26px;
+            border-radius: 8px;
+            background: rgba(0,212,255,0.12);
+            color: var(--accent2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            flex-shrink: 0;
+        }
+
+        .ex-code {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.8;
+            color: var(--fg);
+            overflow-x: auto;
+            white-space: pre;
+            margin-bottom: 10px;
+        }
+
+        .ex-code .cmt { color: var(--muted); }
+        .ex-explain { color: var(--muted); font-size: 0.8rem; line-height: 1.75; }
+        .ex-explain b { color: var(--accent); }
+        .ex-explain code { font-family: 'Fira Code', monospace; background: rgba(0,255,136,0.08); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-size: 0.76rem; }
+
+        /* === Real World === */
+        .rw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; margin-top: 18px; }
+
+        .rw-card {
+            background: linear-gradient(135deg, rgba(0,212,255,0.05), rgba(168,85,247,0.04));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s;
+        }
+
+        .rw-card:hover { transform: translateY(-3px); border-color: var(--accent2); }
+        .rw-card h4 { display: flex; align-items: center; gap: 10px; font-size: 0.98rem; margin-bottom: 8px; }
+        .rw-card h4 i { color: var(--accent2); }
+        .rw-card > p { color: var(--muted); font-size: 0.82rem; line-height: 1.7; margin-bottom: 12px; }
+
+        /* === Interview Accordion === */
+        .iq-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+
+        .iq-filter {
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .iq-filter.active { background: rgba(168,85,247,0.12); color: var(--purple); border-color: var(--purple); }
+
+        .iq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+
+        .iq-item {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border 0.25s;
+        }
+
+        .iq-item.open { border-color: var(--purple); }
+
+        .iq-q {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--fg);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 15px 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .iq-q:hover { background: rgba(168,85,247,0.05); }
+
+        .iq-num {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: rgba(168,85,247,0.12);
+            color: var(--purple);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            flex-shrink: 0;
+        }
+
+        .iq-q-txt { flex: 1; line-height: 1.5; }
+        .iq-q-txt code { font-family: 'Fira Code', monospace; background: rgba(0,255,136,0.08); color: var(--accent); padding: 1px 6px; border-radius: 4px; font-size: 0.78rem; }
+
+        .iq-chev { margin-left: auto; color: var(--muted); transition: transform 0.3s; flex-shrink: 0; }
+        .iq-item.open .iq-chev { transform: rotate(180deg); }
+
+        .iq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+        .iq-item.open .iq-a { max-height: 1400px; }
+
+        .iq-a-inner { padding: 2px 18px 18px 58px; color: var(--muted); font-size: 0.85rem; line-height: 1.8; }
+        .iq-a-inner b { color: var(--fg); }
+        .iq-a-inner code { font-family: 'Fira Code', monospace; background: rgba(0,255,136,0.08); color: var(--accent); padding: 2px 7px; border-radius: 5px; font-size: 0.8rem; }
+        .iq-a-inner pre {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.8;
+            color: var(--fg);
+            overflow-x: auto;
+            margin: 10px 0;
+            white-space: pre;
+        }
+
+        .diff-badge {
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            flex-shrink: 0;
+        }
+
+        .diff-easy { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .diff-medium { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .diff-hard { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        /* === Workshop Expanded === */
+        .ws-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px; margin-top: 18px; }
+
+        .ws-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ws-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+        .ws-card h4 { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; margin-bottom: 8px; flex-wrap: wrap; }
+        .ws-card ol { margin: 8px 0 12px; padding-left: 18px; color: var(--muted); font-size: 0.82rem; line-height: 1.8; display: flex; flex-direction: column; gap: 2px; }
+        .ws-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+
+        .ws-hidden { display: none; margin-top: 10px; }
+        .ws-hidden.show { display: block; animation: fadeIn 0.3s; }
+
+        .ws-hint {
+            background: rgba(255,165,2,0.06);
+            border: 1px dashed var(--warn);
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: var(--warn);
+            font-size: 0.8rem;
+            line-height: 1.7;
+        }
+
+        .ws-sol, .mp-code {
+            background: #080c14;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            line-height: 1.8;
+            color: var(--fg);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* === Mini Projects Expanded === */
+        .mp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 14px; margin-top: 18px; }
+
+        .mp-card {
+            background: linear-gradient(135deg, rgba(0,255,136,0.06), rgba(0,212,255,0.04));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 18px;
+            transition: all 0.25s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mp-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .mp-card h4 { display: flex; align-items: center; gap: 8px; font-size: 1rem; margin-bottom: 8px; }
+        .mp-card > p { color: var(--muted); font-size: 0.82rem; line-height: 1.7; }
+        .mp-steps { margin: 10px 0; padding-left: 18px; color: var(--muted); font-size: 0.82rem; line-height: 1.8; display: flex; flex-direction: column; gap: 2px; }
+
+        .chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0; }
+
+        .chip {
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.66rem;
+            font-weight: 600;
+            font-family: 'Fira Code', monospace;
+        }
+
+        .mp-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 8px; }
+
+        /* === Cheat Sheet === */
+        .cheat-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; margin-top: 18px; }
+
+        .cheat-box { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
+        .cheat-box h4 { font-size: 0.95rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+
+        .cheat-box table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+
+        .cheat-box th {
+            text-align: left;
+            color: var(--muted);
+            font-weight: 600;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 8px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cheat-box td { padding: 9px 10px; border-bottom: 1px solid rgba(30,58,95,0.4); color: var(--fg); line-height: 1.5; vertical-align: top; }
+        .cheat-box tr:last-child td { border-bottom: none; }
+        .cheat-box td code { font-family: 'Fira Code', monospace; color: var(--accent); font-size: 0.74rem; }
+        .cheat-box td .sub { color: var(--muted); font-size: 0.74rem; }
+
+        .cheat-list { list-style: none; display: flex; flex-direction: column; gap: 9px; font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+        .cheat-list li { padding-left: 24px; position: relative; }
+        .cheat-list li::before { content: '✔'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+        .cheat-list.bad li::before { content: '✘'; color: var(--danger); }
+        .cheat-list code { font-family: 'Fira Code', monospace; color: var(--accent); background: rgba(0,255,136,0.06); padding: 1px 6px; border-radius: 4px; font-size: 0.76rem; }
+        .cheat-list b { color: var(--fg); }
+
+        /* === Footer === */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 20px 20px 50px;
+            color: var(--muted);
+            font-size: 0.85rem;
+            line-height: 1.8;
+        }
+
+        footer .heart { color: var(--pink); }
+
+        /* === Responsive === */
+        @media (max-width: 500px) {
+            .card { padding: 20px; }
+            .score-bar { gap: 10px; }
+            .score-item { padding: 10px 16px; }
+            .input-row { flex-direction: column; }
+            .type-input-area { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background -->
+<div class="bg-grid"></div>
+<div class="bg-glow bg-glow-1"></div>
+<div class="bg-glow bg-glow-2"></div>
+<div class="bg-glow bg-glow-3"></div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Header -->
+<header>
+    <h1>Variable Ka Raja</h1>
+    <p>JavaScript Variables ko practically samjho — create karo, dekho, test karo, aur maestro bano!</p>
+</header>
+
+<!-- Score Bar -->
+<div class="score-bar">
+    <div class="score-item sc-green">
+        <i class="fa-solid fa-database"></i>
+        <div>
+            <div class="label">Variables</div>
+            <div class="value" id="varCount">0</div>
+        </div>
+    </div>
+    <div class="score-item sc-blue">
+        <i class="fa-solid fa-bolt"></i>
+        <div>
+            <div class="label">Experiments</div>
+            <div class="value" id="expCount">0</div>
+        </div>
+    </div>
+    <div class="score-item sc-purple">
+        <i class="fa-solid fa-trophy"></i>
+        <div>
+            <div class="label">Quiz Score</div>
+            <div class="value" id="quizScore">0/0</div>
+        </div>
+    </div>
+    <div class="score-item sc-warn">
+        <i class="fa-solid fa-fire"></i>
+        <div>
+            <div class="label">Streak</div>
+            <div class="value" id="streakCount">0</div>
+        </div>
+    </div>
+</div>
+
+<!-- Main -->
+<main>
+    <!-- Variable Creator -->
+    <div class="card">
+        <div class="card-title t-green"><i class="fa-solid fa-plus"></i> Variable Banao</div>
+        <div class="creator-form">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Keyword</label>
+                    <select id="varKeyword">
+                        <option value="let">let</option>
+                        <option value="const">const</option>
+                        <option value="var">var</option>
+                    </select>
+                </div>
+                <div class="input-group" style="flex:2;">
+                    <label>Name</label>
+                    <input type="text" id="varName" placeholder="e.g. age, naam, score" autocomplete="off">
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-group" style="flex:2;">
+                    <label>Value</label>
+                    <input type="text" id="varValue" placeholder='e.g. 25, "Rahul", true' autocomplete="off">
+                </div>
+            </div>
+            <div style="display:flex;gap:8px;">
+                <button class="btn btn-primary" onclick="createVariable()" style="flex:1;">
+                    <i class="fa-solid fa-play"></i> Create Karo
+                </button>
+                <button class="btn btn-danger" onclick="clearAllVars()">
+                    <i class="fa-solid fa-trash"></i> Sab Hatavo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Variable List + Code Preview -->
+    <div class="card">
+        <div class="card-title t-blue"><i class="fa-solid fa-list"></i> Tumhare Variables</div>
+        <div class="var-list" id="varList">
+            <div class="empty-state">
+                <i class="fa-solid fa-ghost"></i>
+                <p>Koi variable nahi bana abhi tak!<br>Upar se create karo</p>
+            </div>
+        </div>
+        <div style="margin-top:16px;">
+            <div style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Generated Code</div>
+            <div class="code-preview" id="codePreview">
+                <button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button>
+                <div style="color:var(--muted);">// Yahan code dikhega</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- var vs let vs const Demo -->
+    <div class="card">
+        <div class="card-title t-warn"><i class="fa-solid fa-flask"></i> var vs let vs const</div>
+        <div class="demo-tabs">
+            <button class="demo-tab active-tab-var" onclick="switchDemo('var')" id="tab-var">var</button>
+            <button class="demo-tab" onclick="switchDemo('let')" id="tab-let">let</button>
+            <button class="demo-tab" onclick="switchDemo('const')" id="tab-const">const</button>
+        </div>
+        <div class="demo-output" id="demoOutput"></div>
+        <div class="demo-actions" id="demoActions"></div>
+    </div>
+
+    <!-- Type Checker -->
+    <div class="card">
+        <div class="card-title t-purple"><i class="fa-solid fa-magnifying-glass"></i> Type Detective</div>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:14px;">Koi bhi value daalo, uska type bataunga!</p>
+        <div class="type-input-area">
+            <input type="text" id="typeInput" placeholder='Try: "hello", 42, true, null, undefined, []' autocomplete="off">
+            <button class="btn btn-primary" onclick="checkType()" style="flex-shrink:0;">
+                <i class="fa-solid fa-search"></i> Check
+            </button>
+        </div>
+        <div class="type-result" id="typeResult">
+            <div class="type-icon" style="background:rgba(107,127,163,0.12);color:var(--muted);">
+                <i class="fa-solid fa-question"></i>
+            </div>
+            <div>
+                <div class="type-label">Kuch daalo toh dikhega</div>
+                <div class="type-value" style="color:var(--muted);">???</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Playground -->
+    <div class="card full-width">
+        <div class="card-title t-green"><i class="fa-solid fa-terminal"></i> Code Playground — Khud Likho, Turant Chalao!</div>
+        <p class="sec-desc">Yeh tumhara apna JavaScript playground hai. Neeche editor mein code likho, <b>Run Karo</b> dabao aur output turant dekho. Error aaye toh ghabrana nahi — error hi sabse fast teacher hai! <b>Ctrl + Enter</b> dabao toh code turant chalega.</p>
+        <div class="playground-wrap">
+            <div class="pg-toolbar">
+                <select class="pg-snippets" id="pgSnippets" onchange="loadSnippet(this.value)">
+                    <option value="">💡 Ready-made Examples — Load Karo...</option>
+                    <option value="greet">1. Greeting — Template Literal</option>
+                    <option value="maths">2. Simple Maths — Numbers</option>
+                    <option value="shop">3. Shopping Bill — Real Life</option>
+                    <option value="swap">4. Variable Swap — Pattern</option>
+                    <option value="types">5. typeof Explorer</option>
+                    <option value="error">6. Error Experiment — const</option>
+                </select>
+                <span class="tip">Tip: console.log() zaroor lagao warna output nahi dikhega!</span>
+            </div>
+            <textarea class="pg-editor" id="pgEditor" spellcheck="false">let naam = "Rahul";
+let age = 20;
+
+console.log("Mera naam " + naam + " hai");
+console.log(`Main ${age} saal ka hoon`);
+console.log("Agale saal meri age hogi:", age + 1);</textarea>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn btn-primary" onclick="runCode()"><i class="fa-solid fa-play"></i> Run Karo</button>
+                <button class="btn btn-danger" onclick="clearPgOutput()"><i class="fa-solid fa-eraser"></i> Output Saaf Karo</button>
+            </div>
+            <div class="pg-output" id="pgOutput">
+                <div class="pg-line"><span class="log-arrow">></span><span class="log-info">Output yahan aayega... Code likho aur Run dabao!</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Real-Life Analogies -->
+    <div class="card full-width">
+        <div class="card-title t-pink"><i class="fa-solid fa-lightbulb"></i> Variables Real Life Mein — Aise Samjho!</div>
+        <p class="sec-desc">Programming variables ko real life cheezo se compare karo, toh kabhi nahi bhoologe. Neeche 6 analogies hain jo variable ke har concept — storage, update, scope, const — mazaak mein samjha dengi. Har card ke saath code bhi hai, so jaisa socha waisa hi likha jata hai!</p>
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="analogy-emoji">📦</span>
+                <h4>Variable = Label Wala Dabba</h4>
+                <p>Ghar ka dabba socho — upar label likha hai "Chini", andar chini hai. Variable bhi waise hi hai: <b>naam</b> (label) aur <b>value</b> (andar ka saman). Dabbe ka label same rehta hai, andar ka saman badal sakte ho — bas yahi <b>reassignment</b> hai!</p>
+                <div class="analogy-code"><span class="cm">// Dabbe mein saman rakha</span>
+let dabba = "Chini";
+
+<span class="cm">// Saman badal diya, label wahi</span>
+dabba = "Namak";</div>
+            </div>
+            <div class="analogy-card">
+                <span class="analogy-emoji">🏷️</span>
+                <h4>var vs let vs const = Hotel Rooms</h4>
+                <p><b>var</b> = purana hostel — ek room do baar allot ho jaye, koi bhi ghus jaye (function scope). <b>let</b> = naya hotel — ek room ek baar, aur apni floor (block) tak hi simit. <b>const</b> = VIP suite — guest change nahi hoga, par suite ke andar ka furniture rearrange kar sakte ho!</p>
+                <div class="analogy-code">const vipSuite = { tv: "Sony" };
+
+vipSuite.tv = "Samsung"; <span class="cm">// Allowed!</span>
+<span class="cm">// vipSuite = {} → TypeError!</span></div>
+            </div>
+            <div class="analogy-card">
+                <span class="analogy-emoji">💰</span>
+                <h4>Bank Balance = let Variable</h4>
+                <p>Tumhara bank balance ek <b>let</b> variable hai. Salary aayi toh badh gaya, shopping ki toh ghat gaya. Value baar-baar update hoti rehti hai — isiliye paisa jaisi changing cheezein <b>let</b> se banti hain, const se nahi.</p>
+                <div class="analogy-code">let balance = 5000;
+
+balance += 20000; <span class="cm">// salary aayi!</span>
+balance -= 1500;   <span class="cm">// shopping kar li</span></div>
+            </div>
+            <div class="analogy-card">
+                <span class="analogy-emoji">🎂</span>
+                <h4>Birthdate = const Variable</h4>
+                <p>Tumhari age har saal badalti hai (let), par birthdate kabhi nahi badalti (const). Jo cheez kabhi change nahi hoti — jaise GST rate, PI, tumhara janam din — uske liye <b>const</b> use karo. Galti se change nahi hoga, code secure rahega.</p>
+                <div class="analogy-code">const BIRTH_YEAR = 2005;
+let age = 2025 - BIRTH_YEAR;
+
+age++; <span class="cm">// birthday mubarak! 🎉</span></div>
+            </div>
+            <div class="analogy-card">
+                <span class="analogy-emoji">📱</span>
+                <h4>Contact List = Object Variable</h4>
+                <p>Phone ka contact ek <b>object</b> variable hai — ek naam ke neeche kai details (number, email). Friend ka number badal sakte ho (property update allowed), par us friend ko dusre se replace nahi kar sakte (const reassign nahi hota).</p>
+                <div class="analogy-code">const dost = {
+  naam: "Amit",
+  phone: "9999-8888"
+};
+
+dost.phone = "7777-6666"; <span class="cm">// OK!</span></div>
+            </div>
+            <div class="analogy-card">
+                <span class="analogy-emoji">🎮</span>
+                <h4>Game Score = Live Update Hota Variable</h4>
+                <p>Subway Surfers khelte waqt score har coin ke saath badalta hai — yehi variable ka kaam hai. Current score <b>let</b> hai, high score bhi <b>let</b> hai (record toot sakta hai), par game ka naam <b>const</b> hai!</p>
+                <div class="analogy-code">let score = 0;
+let highScore = 1250;
+
+score = score + 10;  <span class="cm">// coin mila</span>
+
+if (score > highScore) {
+  highScore = score;
+}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Examples Gallery -->
+    <div class="card full-width">
+        <div class="card-title t-blue"><i class="fa-solid fa-book-open"></i> Examples Ki Dukaan — Dekho, Samjho, Phir Likho</div>
+        <p class="sec-desc">15+ examples — basics se lekar real patterns tak. Har example mein code, output aur explanation hai. <b>Pehle output khud predict karo</b>, phir comment se match karo. Yahi tarika pro banata hai!</p>
+        <div class="ex-tabs" style="margin-top:16px;">
+            <button class="ex-tab active" data-cat="basics" onclick="switchExTab('basics')">🟢 Basics</button>
+            <button class="ex-tab" data-cat="strings" onclick="switchExTab('strings')">🔤 Strings</button>
+            <button class="ex-tab" data-cat="numbers" onclick="switchExTab('numbers')">🔢 Numbers</button>
+            <button class="ex-tab" data-cat="boolean" onclick="switchExTab('boolean')">⚪ Boolean & Null</button>
+            <button class="ex-tab" data-cat="patterns" onclick="switchExTab('patterns')">⚡ Common Patterns</button>
+        </div>
+        <div class="ex-grid" id="exGrid"></div>
+    </div>
+
+    <!-- Real-World Use Cases -->
+    <div class="card full-width">
+        <div class="card-title t-blue"><i class="fa-solid fa-globe"></i> Real Apps Mein Variables — Instagram se Zomato Tak</div>
+        <p class="sec-desc">Jo tum ab seekh rahe ho, wahi code har bade app ke andar chal raha hai — Instagram, Zomato, WhatsApp, YouTube, GPay. Dekho kaise! Har card mein real app ka chhota sa logic hai jo tum abhi samajh sakte ho.</p>
+        <div class="rw-grid">
+            <div class="rw-card">
+                <h4><i class="fa-brands fa-instagram"></i> Instagram — Follower Count</h4>
+                <p>Har baar jab koi follow karta hai, ek variable badhta hai. Unfollow par ghata. Profile par jo number dikhta hai, wo ek live variable hai!</p>
+                <div class="analogy-code">let followers = 1250;
+
+followers++;   <span class="cm">// koi follow kar gaya</span>
+followers--;   <span class="cm">// koi unfollow kar gaya</span>
+
+console.log(followers);</div>
+            </div>
+            <div class="rw-card">
+                <h4><i class="fa-solid fa-utensils"></i> Zomato — Cart Ka Bill</h4>
+                <p>Item ka price menu se aata hai (fixed = const), quantity tum change karte ho (let). Bill = price × quantity + GST. Yehi niche Workshop ka Task 4 hai!</p>
+                <div class="analogy-code">const price = 250;   <span class="cm">// menu ka price</span>
+let qty = 2;         <span class="cm">// tumne badhaya</span>
+
+let total = price * qty;
+total += total * 0.05;   <span class="cm">// GST laga!</span></div>
+            </div>
+            <div class="rw-card">
+                <h4><i class="fa-brands fa-whatsapp"></i> WhatsApp — Unread Badge</h4>
+                <p>Wo laal badge jo unread messages dikhata hai? Ek variable hai. Chat kholte hi 0 ho jata hai, naya message aate hi badh jata hai.</p>
+                <div class="analogy-code">let unread = 5;
+
+unread++;   <span class="cm">// naya message aaya</span>
+unread = 0; <span class="cm">// chat khol li — badge gayab!</span></div>
+            </div>
+            <div class="rw-card">
+                <h4><i class="fa-brands fa-youtube"></i> YouTube — Views & Likes</h4>
+                <p>Har second views badhte hain. Numbers itne bade hote hain ki "1.5M" mein dikhaate hain — wo conversion bhi variables se hi hoti hai.</p>
+                <div class="analogy-code">let views = 1520000;
+let likes = 98000;
+
+views++;   <span class="cm">// tumne video dekhi!</span>
+
+let viewsInM = (views / 1000000).toFixed(1);
+console.log(viewsInM + "M views");</div>
+            </div>
+            <div class="rw-card">
+                <h4><i class="fa-solid fa-indian-rupee-sign"></i> GPay — Balance Update</h4>
+                <p>Payment karte hi balance ghata, paisa aaya toh badha. Banking apps ka core yehi let variable hai — bas upar se security ki chhat!</p>
+                <div class="analogy-code">let balance = 8000;
+
+balance -= 450;    <span class="cm">// chai-paani pi liya</span>
+balance += 25000;  <span class="cm">// salary aa gayi 😎</span>
+
+console.log("Balance: Rs." + balance);</div>
+            </div>
+            <div class="rw-card">
+                <h4><i class="fa-solid fa-gamepad"></i> Games — High Score Logic</h4>
+                <p>"NEW HIGH SCORE!" tabhi dikhta hai jab current score, high score se bada ho. Ye comparison do variables ke beech hota hai.</p>
+                <div class="analogy-code">let currentScore = 0;
+let highScore = 1250;
+
+currentScore = 1400;   <span class="cm">// game khela!</span>
+
+if (currentScore > highScore) {
+  highScore = currentScore;
+}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="card full-width">
+        <div class="card-title t-pink"><i class="fa-solid fa-brain"></i> Variable Quiz</div>
+        <div class="quiz-progress" id="quizProgress"></div>
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div style="display:flex;gap:8px;">
+            <button class="btn btn-primary" id="nextQuizBtn" onclick="nextQuestion()" style="display:none;">
+                <i class="fa-solid fa-arrow-right"></i> Agla Sawal
+            </button>
+            <button class="btn btn-danger" id="resetQuizBtn" onclick="resetQuiz()" style="display:none;">
+                <i class="fa-solid fa-rotate"></i> Phir Se
+            </button>
+        </div>
+    </div>
+
+    <!-- Interview Questions -->
+    <div class="card full-width">
+        <div class="card-title t-purple"><i class="fa-solid fa-briefcase"></i> Interview Questions — Job Ke Liye Ready Ho Jao</div>
+        <p class="sec-desc">Yeh woh sawaal hain jo interviews mein variables par sach mein pooche jaate hain — easy se lekar hard tak. <b>Pehle khud jawab socho</b>, phir card khol ke apne answer se compare karo. Ye 16 sawaal strong hain toh variable topic interview ke liye pakka!</p>
+        <div class="iq-filters" style="margin-top:16px;">
+            <button class="iq-filter active" data-level="all" onclick="switchIqFilter('all')">📋 Sab (16)</button>
+            <button class="iq-filter" data-level="easy" onclick="switchIqFilter('easy')">🟢 Easy</button>
+            <button class="iq-filter" data-level="medium" onclick="switchIqFilter('medium')">🟡 Medium</button>
+            <button class="iq-filter" data-level="hard" onclick="switchIqFilter('hard')">🔴 Hard</button>
+        </div>
+        <div class="iq-list" id="iqList"></div>
+    </div>
+
+    <!-- Workshop & Practice (Expanded) -->
+    <div class="card full-width">
+        <div class="card-title t-pink"><i class="fa-solid fa-dumbbell"></i> Workshop — Apne Haath Se Code Karo</div>
+        <p class="sec-desc">Yeh tasks sirf padhne ke liye nahi hain — <b>karne ke liye hain!</b> Har task upar wale Code Playground mein ya apne browser ke console mein karo (F12 dabao → Console tab). Atka toh pehle <b>Hint</b> kholo, phir bhi na ho toh <b>Solution</b> dekh kar dobara khud se likho. Ek task complete karo, tabhi agle par jao!</p>
+        <div class="ws-grid">
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-id-card" style="color:var(--accent);"></i> Task 1: Identity Card <span class="diff-badge diff-easy">Easy</span></h4>
+                <ol>
+                    <li>apnaNaam, age, city, hobby variables banao</li>
+                    <li>Soch kar decide karo — kaunsa const, kaunsa let?</li>
+                    <li>Template literal se 1-2 intro lines banao</li>
+                    <li>console.log() se print karo</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws1-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws1-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws1-hint"><div class="ws-hint">Jo value kabhi nahi badlegi (naam, city, hobby) usse const rakho. Age badh sakti hai — let rakho. Confusion ho toh const se shuru karo, error aaye toh let karna!</div></div>
+                <div class="ws-hidden" id="ws1-sol"><div class="ws-sol">const fullName = "Rahul Sharma";
+let age = 20;
+const city = "Delhi";
+const hobby = "Cricket";
+
+console.log(`Mera naam ${fullName} hai.`);
+console.log(`Main ${city} mein rehta hoon.`);
+console.log(`Meri age ${age} saal hai aur mujhe ${hobby} khelna pasand hai.`);</div></div>
+            </div>
+
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-magnifying-glass-chart" style="color:var(--accent);"></i> Task 2: Reassignment Detective <span class="diff-badge diff-easy">Easy</span></h4>
+                <ol>
+                    <li>let score = 5 banao, har step par console.log karo</li>
+                    <li>score = 10 karo, phir score = score + 5</li>
+                    <li>Ab score *= 2 try karo (shorthand!)</li>
+                    <li>const level = 1 banao aur use change karne ki koshish karo</li>
+                    <li>Error message dhyan se padho aur note karo</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws2-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws2-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws2-hint"><div class="ws-hint">const par error aayega: "TypeError: Assignment to constant variable" — yahi expected hai, ye galti nahi! Error ka message copy karke rakh lo — interview mein poocha jata hai.</div></div>
+                <div class="ws-hidden" id="ws2-sol"><div class="ws-sol">let score = 5;
+console.log(score);   // 5
+
+score = 10;
+console.log(score);   // 10
+
+score = score + 5;
+console.log(score);   // 15
+
+score *= 2;
+console.log(score);   // 30
+
+const level = 1;
+level = 2;   // ❌ TypeError:
+// Assignment to constant variable</div></div>
+            </div>
+
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-plus-minus" style="color:var(--accent);"></i> Task 3: Counter Machine <span class="diff-badge diff-easy">Easy</span></h4>
+                <ol>
+                    <li>let count = 0 banao</li>
+                    <li>3 baar count++ likho (haath se, copy-paste nahi!)</li>
+                    <li>1 baar count-- karo</li>
+                    <li>Final print: "Final count: X"</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws3-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws3-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws3-hint"><div class="ws-hint">count++ ka matlab hai count = count + 1. Har line ke baad console.log(count) lagao toh value kaise badal rahi hai dikhega. Ye like button ka basic logic hai!</div></div>
+                <div class="ws-hidden" id="ws3-sol"><div class="ws-sol">let count = 0;
+
+count++;
+count++;
+count++;
+console.log(count);   // 3
+
+count--;
+console.log("Final count: " + count);
+// Final count: 2</div></div>
+            </div>
+
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-cart-shopping" style="color:var(--warn);"></i> Task 4: Shopping Bill <span class="diff-badge diff-medium">Medium</span></h4>
+                <ol>
+                    <li>const price = 250, let qty = 3 banao</li>
+                    <li>Subtotal nikalo = price × qty</li>
+                    <li>GST 18% nikalo = subtotal × 0.18</li>
+                    <li>Grand total print karo — "Total: Rs.XXX (GST samet)"</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws4-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws4-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws4-hint"><div class="ws-hint">Pehle subtotal = price * qty. Phir gst = subtotal * 0.18. Phir grandTotal = subtotal + gst. Har value alag variable mein rakho — chhote steps bade formula se better hain!</div></div>
+                <div class="ws-hidden" id="ws4-sol"><div class="ws-sol">const price = 250;
+let qty = 3;
+
+let subtotal = price * qty;
+let gst = subtotal * 0.18;
+let grandTotal = subtotal + gst;
+
+console.log("Subtotal: Rs." + subtotal);
+// Subtotal: Rs.750
+
+console.log("GST (18%): Rs." + gst);
+// GST (18%): Rs.135
+
+console.log("Total: Rs." + grandTotal + " (GST samet)");
+// Total: Rs.885 (GST samet)</div></div>
+            </div>
+
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-temperature-half" style="color:var(--warn);"></i> Task 5: Temperature Converter <span class="diff-badge diff-medium">Medium</span></h4>
+                <ol>
+                    <li>let celsius = 40 banao</li>
+                    <li>Formula use karo: fahrenheit = (celsius × 9/5) + 32</li>
+                    <li>Dono values print karo</li>
+                    <li>Bonus: celsius = 0 aur 100 karke check karo (paani ka freezing/boiling point!)</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws5-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws5-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws5-hint"><div class="ws-hint">Formula seedha JS mein likho — (celsius * 9) / 5 + 32. JS maths khud karega. Template literal se `40°C = 104°F` jaisa sundar output banao!</div></div>
+                <div class="ws-hidden" id="ws5-sol"><div class="ws-sol">let celsius = 40;
+let fahrenheit = (celsius * 9) / 5 + 32;
+
+console.log(`${celsius}°C = ${fahrenheit}°F`);
+// 40°C = 104°F
+
+celsius = 100;
+fahrenheit = (celsius * 9) / 5 + 32;
+console.log(`${celsius}°C = ${fahrenheit}°F`);
+// 100°C = 212°F</div></div>
+            </div>
+
+            <div class="ws-card">
+                <h4><i class="fa-solid fa-shuffle" style="color:var(--warn);"></i> Task 6: Swap Challenge <span class="diff-badge diff-hard">Hard</span></h4>
+                <ol>
+                    <li>drink1 = "Chai", drink2 = "Coffee" banao</li>
+                    <li>temp variable ki madad se values swap karo</li>
+                    <li>Bonus: bina teesre variable ke swap karo — [drink1, drink2] = [drink2, drink1]</li>
+                    <li>Dono tariko ke output compare karo</li>
+                </ol>
+                <div class="ws-actions">
+                    <button class="btn btn-sm" style="background:rgba(255,165,2,0.1);color:var(--warn);border:1px solid rgba(255,165,2,0.25);" onclick="toggleWs('ws6-hint', this, 'Hint Dekho', 'Hint Chhupao')"><i class="fa-regular fa-lightbulb"></i> Hint Dekho</button>
+                    <button class="btn btn-sm" style="background:rgba(168,85,247,0.1);color:var(--purple);border:1px solid rgba(168,85,247,0.25);" onclick="toggleWs('ws6-sol', this, 'Solution Dekho', 'Solution Chhupao')"><i class="fa-solid fa-code"></i> Solution Dekho</button>
+                </div>
+                <div class="ws-hidden" id="ws6-hint"><div class="ws-hint">Order matter karta hai! Pehle temp = drink1 (safe rakho), phir drink1 = drink2, phir drink2 = temp. Order galat hua toh value kho jayegi. Destructuring wala tarika ekdum modern hai — interview mein bonus point!</div></div>
+                <div class="ws-hidden" id="ws6-sol"><div class="ws-sol">let drink1 = "Chai";
+let drink2 = "Coffee";
+
+// Tarika 1: temp variable
+let temp = drink1;
+drink1 = drink2;
+drink2 = temp;
+
+console.log(drink1, drink2);
+// Coffee Chai
+
+// Tarika 2: destructuring (modern!)
+let a = 1, b = 2;
+[a, b] = [b, a];
+console.log(a, b);   // 2 1</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini Projects -->
+    <div class="card full-width">
+        <div class="card-title t-warn"><i class="fa-solid fa-rocket"></i> Mini Projects — Ab Kuch Bada Banao</div>
+        <p class="sec-desc">Yeh 6 projects variables ka <b>real use</b> sikhate hain — waise jaise actual apps mein hota hai. Har project ki requirements, concepts aur starter code diya hai. Starter code Playground mein load karo ya console mein likho, chalao, phir <b>Challenge</b> wala kaam khud karo. Har project ke baad tumhara concept aur strong ho jayega!</p>
+        <div class="mp-grid">
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-user" style="color:var(--accent);"></i> Project 1: Profile Card App</h4>
+                <p>Apna digital visiting card banao — naam, age, city, job sab kuch styled output mein.</p>
+                <div class="chips">
+                    <span class="chip">const</span><span class="chip">let</span><span class="chip">string</span><span class="chip">template literal</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp1-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp1-code"><div class="mp-code">const name = "Rahul Sharma";
+let age = 20;
+const city = "Delhi";
+const job = "Student";
+let hobby = "Cricket";
+
+console.log("===== PROFILE CARD =====");
+console.log(`Naam  : ${name}`);
+console.log(`Age   : ${age}`);
+console.log(`City  : ${city}`);
+console.log(`Job   : ${job}`);
+console.log(`Hobby : ${hobby}`);
+console.log("========================");
+
+// CHALLENGE: ek "bio" variable banao jisme
+// template literal se sab kuch ek line mein ho</div></div>
+            </div>
+
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-cart-shopping" style="color:var(--accent);"></i> Project 2: Shopping Cart Total</h4>
+                <p>Zomato jaise app ka bill engine — 3 items, quantity, GST aur grand total.</p>
+                <div class="chips">
+                    <span class="chip">const</span><span class="chip">numbers</span><span class="chip">arithmetic</span><span class="chip">shorthand</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp2-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp2-code"><div class="mp-code">const samosa = 15;
+const chai = 10;
+const jalebi = 40;
+
+let samosaQty = 4;
+let chaiQty = 2;
+let jalebiQty = 1;
+
+let total = (samosa * samosaQty) +
+            (chai * chaiQty) +
+            (jalebi * jalebiQty);
+
+console.log("Items Total: Rs." + total);
+
+let gst = total * 0.18;
+let grandTotal = total + gst;
+
+console.log("GST: Rs." + gst);
+console.log("Pay karo: Rs." + grandTotal);
+
+// CHALLENGE: discount variable banao (10%)
+// aur final price nikalo</div></div>
+            </div>
+
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-building-columns" style="color:var(--accent);"></i> Project 3: Bank Account Simulator</h4>
+                <p>GPay jaisa mini bank — deposit karo, withdraw karo, balance track karo.</p>
+                <div class="chips">
+                    <span class="chip">let</span><span class="chip">shorthand operators</span><span class="chip">real-world</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp3-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp3-code"><div class="mp-code">let balance = 1000;
+
+console.log("Start: Rs." + balance);
+
+balance += 2000;   // salary aa gayi!
+console.log("Deposit ke baad: Rs." + balance);
+
+balance -= 500;    // recharge kar liya
+console.log("Withdraw ke baad: Rs." + balance);
+
+console.log("Final: Rs." + balance);
+
+// CHALLENGE: agar withdraw amount balance
+// se zyada ho toh "Insufficient balance"
+// print karo — if/else use karke</div></div>
+            </div>
+
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-chart-simple" style="color:var(--accent);"></i> Project 4: Student Report Card</h4>
+                <p>School wala report card — 5 subjects, total, percentage aur result.</p>
+                <div class="chips">
+                    <span class="chip">numbers</span><span class="chip">arithmetic</span><span class="chip">comparison</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp4-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp4-code"><div class="mp-code">let hindi = 85;
+let english = 78;
+let maths = 92;
+let science = 88;
+let computer = 95;
+
+let total = hindi + english + maths +
+            science + computer;
+let percentage = total / 5;
+
+console.log("Total Marks : " + total + "/500");
+console.log("Percentage  : " + percentage + "%");
+
+// CHALLENGE: percentage >= 33 ho toh
+// "Pass" warna "Fail" print karo
+// (comparison + if/else lagao)</div></div>
+            </div>
+
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-film" style="color:var(--accent);"></i> Project 5: Movie Ticket Booking</h4>
+                <p>BookMyShow ka core logic — seats book karo, bache hue seats update karo.</p>
+                <div class="chips">
+                    <span class="chip">const</span><span class="chip">let</span><span class="chip">decrement</span><span class="chip">real-world</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp5-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp5-code"><div class="mp-code">const totalSeats = 60;
+let availableSeats = 60;
+let seatsBooked = 0;
+
+console.log("Total seats: " + totalSeats);
+
+availableSeats -= 2;   // Rajesh ne 2 li
+seatsBooked += 2;
+
+availableSeats -= 4;   // Priya ki family
+seatsBooked += 4;
+
+availableSeats -= 1;   // Akash akela
+seatsBooked += 1;
+
+console.log("Booked: " + seatsBooked);
+console.log("Seats left: " + availableSeats);
+
+// CHALLENGE: agar seats khatam ho jaye
+// toh "House Full" print karo</div></div>
+            </div>
+
+            <div class="mp-card">
+                <h4><i class="fa-solid fa-weight-scale" style="color:var(--accent);"></i> Project 6: BMI Calculator</h4>
+                <p>Fitness app ka engine — weight aur height se Body Mass Index nikalo.</p>
+                <div class="chips">
+                    <span class="chip">numbers</span><span class="chip">formula</span><span class="chip">template literal</span>
+                </div>
+                <div class="mp-actions">
+                    <button class="btn btn-sm" style="background:rgba(0,255,136,0.1);color:var(--accent);border:1px solid rgba(0,255,136,0.25);" onclick="toggleWs('mp6-code', this, 'Starter Code Dekho', 'Code Chhupao')"><i class="fa-solid fa-code"></i> Starter Code Dekho</button>
+                </div>
+                <div class="ws-hidden" id="mp6-code"><div class="mp-code">let weight = 65;    // kg mein
+let height = 1.7;   // meters mein
+
+let bmi = weight / (height * height);
+
+console.log(`Weight: ${weight} kg`);
+console.log(`Height: ${height} m`);
+console.log(`BMI: ${bmi}`);
+
+// CHALLENGE: category bhi print karo
+// bmi < 18.5        → "Underweight"
+// 18.5 se 24.9      → "Normal"
+// 25 ya zyada       → "Overweight"</div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cheat Sheet -->
+    <div class="card full-width">
+        <div class="card-title t-green"><i class="fa-solid fa-scroll"></i> Cheat Sheet — Ek Nazar Mein Sab Kuch</div>
+        <p class="sec-desc">Interview se pehle ya code likhte waqt jab bhi atko, yahan 30 second ka nazar daalo. var/let/const ka comparison, naming rules, errors ke matlab aur wo facts jo har interview mein kaam aate hain — sab ek jagah!</p>
+        <div class="cheat-tables">
+            <div class="cheat-box">
+                <h4><i class="fa-solid fa-table" style="color:var(--accent);"></i> var vs let vs const</h4>
+                <table>
+                    <tr><th>Feature</th><th>var</th><th>let</th><th>const</th></tr>
+                    <tr><td>Scope</td><td>Function</td><td>Block</td><td>Block</td></tr>
+                    <tr><td>Re-declare</td><td>✔ Chalta hai</td><td>✘ Error</td><td>✘ Error</td></tr>
+                    <tr><td>Re-assign</td><td>✔ Chalta hai</td><td>✔ Chalta hai</td><td>✘ Error</td></tr>
+                    <tr><td>Value bina di?</td><td>Chalega</td><td>Chalega</td><td>Error</td></tr>
+                    <tr><td>Declare se pehle access</td><td>undefined</td><td>Error (TDZ)</td><td>Error (TDZ)</td></tr>
+                    <tr><td>Kab use karo?</td><td class="sub">Kabhi nahi 😅</td><td>Value badlegi</td><td>Value fix hai</td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fa-solid fa-signature" style="color:var(--accent2);"></i> Naming Rules — Kya Karo, Kya Na Karo</h4>
+                <ul class="cheat-list">
+                    <li>camelCase use karo — <code>userAge</code>, <code>totalPrice</code></li>
+                    <li>Meaningful naam do — <code>studentCount</code> sahi hai, <code>x</code> galat</li>
+                    <li>Constant UPPERCASE likho — <code>const MAX_SPEED = 120</code></li>
+                    <li>Naam letter, <code>_</code> ya <code>$</code> se start hona chahiye</li>
+                </ul>
+                <ul class="cheat-list bad" style="margin-top:14px;">
+                    <li>Number se start mat karo — <code>let 1name</code> ❌</li>
+                    <li>Space wala naam nahi — <code>let my name</code> ❌</li>
+                    <li>Reserved words nahi — <code>let, class, if, new</code> ❌</li>
+                    <li>Dhyan rakho: <code>age</code> aur <code>Age</code> alag hain — case-sensitive!</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fa-solid fa-bug" style="color:var(--danger);"></i> Common Errors Aur Unka Matlab</h4>
+                <table>
+                    <tr><th>Error</th><th>Kab Aata Hai</th></tr>
+                    <tr><td><code>SyntaxError: Identifier "x" has already been declared</code></td><td><span class="sub">let/const se same naam do baar banaya</span></td></tr>
+                    <tr><td><code>TypeError: Assignment to constant variable</code></td><td><span class="sub">const ki value change karne ki koshish ki</span></td></tr>
+                    <tr><td><code>ReferenceError: x is not defined</code></td><td><span class="sub">Variable exist hi nahi karta — naam galat ya scope ke bahar</span></td></tr>
+                    <tr><td><code>ReferenceError: Cannot access before initialization</code></td><td><span class="sub">TDZ — let/const ko declare hone se pehle chhua</span></td></tr>
+                    <tr><td><code>SyntaxError: Missing initializer in const</code></td><td><span class="sub">const banaya par value nahi di</span></td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fa-solid fa-star" style="color:var(--warn);"></i> Interview Facts — Ratta Nahi, Samajh Lo</h4>
+                <ul class="cheat-list">
+                    <li>Falsy values sirf 6 hain: <code>false</code>, <code>0</code>, <code>""</code>, <code>null</code>, <code>undefined</code>, <code>NaN</code></li>
+                    <li><code>typeof null === "object"</code> — 1995 ka historic bug</li>
+                    <li><code>typeof NaN === "number"</code> — irony hai bhai 😅</li>
+                    <li><code>NaN === NaN</code> → false — NaN kisi ke barabar nahi</li>
+                    <li>const object/array ke <b>andar</b> ka change allowed hai — reference lock hota hai</li>
+                    <li><code>=</code> assign karta hai, <code>==</code> loose compare, <code>===</code> strict compare</li>
+                    <li>JS <b>dynamically typed</b> hai — ek variable koi bhi type rakh sakta hai</li>
+                    <li>Default choice <b>const</b>, change ho toh <b>let</b>, <b>var</b> kabhi nahi</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Memory Visualizer -->
+    <div class="card full-width">
+        <div class="card-title t-green"><i class="fa-solid fa-microchip"></i> Memory Visualizer</div>
+        <p style="color:var(--muted);font-size:0.88rem;margin-bottom:16px;">Dekho variables memory mein kaise store hote hain — har ek ka apna address hai!</p>
+        <div class="memory-grid" id="memoryGrid">
+            <div class="empty-state" style="grid-column:1/-1;">
+                <i class="fa-solid fa-memory"></i>
+                <p>Memory khaali hai! Pehle variables banao</p>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>Made with <i class="fa-solid fa-heart heart"></i> for JavaScript Learners — Variable Ka Raja</p>
+    <p style="margin-top:4px;font-size:0.75rem;opacity:0.7;">Tip: Roz 30 minute code likho. Padhne se nahi, likhne se aata hai! 💪</p>
+</footer>
+
+<script>
+    // ============ State ============
+    let variables = []; // { keyword, name, value, type, id }
+    let expCount = 0;
+    let quizIndex = 0;
+    let quizCorrect = 0;
+    let quizAnswered = 0;
+    let streak = 0;
+    let varIdCounter = 0;
+
+    // ============ Toast System ============
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+        toast.innerHTML = `<i class="fa-solid ${icons[type] || icons.info}"></i> ${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
+    // ============ Variable Creator ============
+    function createVariable() {
+        const keyword = document.getElementById('varKeyword').value;
+        const name = document.getElementById('varName').value.trim();
+        const rawValue = document.getElementById('varValue').value.trim();
+
+        // Validation
+        if (!name) { showToast('Variable ka naam daalo!', 'error'); return; }
+        if (!/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(name)) {
+            showToast('Galat naam! Sirf letters, numbers, _, $ allowed. Number se start nahi ho sakta.', 'error');
+            return;
+        }
+        if (variables.find(v => v.name === name)) {
+            showToast(`"${name}" pehle se hai! Dusra naam use karo.`, 'error');
+            return;
+        }
+        
+        // Parse value
+        let value, type;
+        if (rawValue === '') {
+            value = undefined;
+            type = 'undefined';
+        } else if (rawValue === 'true' || rawValue === 'false') {
+            value = rawValue === 'true';
+            type = 'boolean';
+        } else if (rawValue === 'null') {
+            value = null;
+            type = 'null'; // typeof null === 'object' but hum logically 'null' dikhayenge
+        } else if (rawValue === 'undefined') {
+            value = undefined;
+            type = 'undefined';
+        } else if (!isNaN(rawValue) && rawValue !== '') {
+            value = Number(rawValue);
+            type = 'number';
+        } else if ((rawValue.startsWith('"') && rawValue.endsWith('"')) || (rawValue.startsWith("'") && rawValue.endsWith("'"))) {
+            value = rawValue.slice(1, -1);
+            type = 'string';
+        } else if (rawValue.startsWith('[') && rawValue.endsWith(']')) {
+            try { value = JSON.parse(rawValue); type = 'object'; }
+            catch { value = rawValue; type = 'string'; }
+        } else if (rawValue.startsWith('{') && rawValue.endsWith('}')) {
+            try { value = JSON.parse(rawValue); type = 'object'; }
+            catch { value = rawValue; type = 'string'; }
+        } else {
+            value = rawValue;
+            type = 'string';
+        }
+
+        const id = ++varIdCounter;
+        variables.push({ keyword, name, value, type, id });
+
+        // Clear inputs
+        document.getElementById('varName').value = '';
+        document.getElementById('varValue').value = '';
+
+        updateUI();
+        showToast(`Variable "${name}" ban gaya!`, 'success');
+    }
+
+    function deleteVariable(id) {
+        const v = variables.find(v => v.id === id);
+        variables = variables.filter(v => v.id !== id);
+        updateUI();
+        if (v) showToast(`"${v.name}" delete ho gaya`, 'info');
+    }
+
+    function clearAllVars() {
+        if (variables.length === 0) { showToast('Pehle se khaali hai!', 'info'); return; }
+        variables = [];
+        updateUI();
+        showToast('Sab variables hat gaye!', 'info');
+    }
+
+    // ============ Update UI ============
+    function updateUI() {
+        updateVarList();
+        updateCodePreview();
+        updateScoreBar();
+        updateMemoryGrid();
+    }
+
+    function updateScoreBar() {
+        document.getElementById('varCount').textContent = variables.length;
+        document.getElementById('expCount').textContent = expCount;
+        document.getElementById('quizScore').textContent = `${quizCorrect}/${quizAnswered}`;
+        document.getElementById('streakCount').textContent = streak;
+    }
+
+    function updateVarList() {
+        const list = document.getElementById('varList');
+        if (variables.length === 0) {
+            list.innerHTML = `<div class="empty-state"><i class="fa-solid fa-ghost"></i><p>Koi variable nahi bana abhi tak!<br>Upar se create karo</p></div>`;
+            return;
+        }
+        list.innerHTML = variables.map(v => {
+            const badgeClass = `badge-${v.keyword}`;
+            const displayVal = v.value === null ? 'null' : v.value === undefined ? 'undefined' : typeof v.value === 'string' ? `"${v.value}"` : JSON.stringify(v.value);
+            return `<div class="var-item">
+                <span class="var-badge ${badgeClass}">${v.keyword}</span>
+                <span class="var-name">${v.name}</span>
+                <span class="var-eq">=</span>
+                <span class="var-value">${escapeHtml(displayVal)}</span>
+                <span class="var-type">${v.type}</span>
+                <button class="var-delete" onclick="deleteVariable(${v.id})" title="Delete"><i class="fa-solid fa-xmark"></i></button>
+            </div>`;
+        }).join('');
+    }
+
+    function updateCodePreview() {
+        const preview = document.getElementById('codePreview');
+        if (variables.length === 0) {
+            preview.innerHTML = `<button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button><div style="color:var(--muted);">// Yahan code dikhega</div>`;
+            return;
+        }
+        const lines = variables.map((v, i) => {
+            const kwClass = `kw-${v.keyword}`;
+            const displayVal = v.value === null ? 'null' : v.value === undefined ? 'undefined' : typeof v.value === 'string' ? `"${v.value}"` : JSON.stringify(v.value);
+            let valClass = 'var-nm';
+            if (typeof v.value === 'string') valClass = 'str-val';
+            else if (typeof v.value === 'number') valClass = 'num-val';
+            else if (typeof v.value === 'boolean') valClass = 'bool-val';
+            return `<div><span class="line-num">${i + 1}</span><span class="${kwClass}">${v.keyword}</span> <span class="var-nm">${v.name}</span> <span class="punc">=</span> <span class="${valClass}">${escapeHtml(displayVal)}</span><span class="punc">;</span></div>`;
+        });
+        preview.innerHTML = `<button class="copy-btn" onclick="copyCode()"><i class="fa-regular fa-copy"></i> Copy</button>${lines.join('')}`;
+    }
+
+    function updateMemoryGrid() {
+        const grid = document.getElementById('memoryGrid');
+        if (variables.length === 0) {
+            grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fa-solid fa-memory"></i><p>Memory khaali hai! Pehle variables banao</p></div>`;
+            return;
+        }
+        grid.innerHTML = variables.map(v => {
+            const memClass = `mem-${v.keyword}`;
+            const addr = '0x' + (v.id * 0x10F + 0x7A00).toString(16).toUpperCase().padStart(4, '0');
+            const displayVal = v.value === null ? 'null' : v.value === undefined ? 'undefined' : typeof v.value === 'string' ? `"${v.value}"` : JSON.stringify(v.value);
+            return `<div class="mem-block ${memClass}">
+                <div class="mem-addr">${addr}</div>
+                <div class="mem-name">${escapeHtml(v.name)}</div>
+                <div class="mem-val">${escapeHtml(displayVal)}</div>
+                <div class="mem-type">${v.type} | ${v.keyword}</div>
+            </div>`;
+        }).join('');
+    }
+
+    function copyCode() {
+        if (variables.length === 0) { showToast('Copy karne ke liye koi variable banao!', 'info'); return; }
+        const code = variables.map(v => {
+            const displayVal = v.value === null ? 'null' : v.value === undefined ? 'undefined' : typeof v.value === 'string' ? `"${v.value}"` : JSON.stringify(v.value);
+            return `${v.keyword} ${v.name} = ${displayVal};`;
+        }).join('\n');
+        navigator.clipboard.writeText(code).then(() => showToast('Code copy ho gaya!', 'success'));
+    }
+
+    function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = String(str);
+        return div.innerHTML;
+    }
+
+    // ============ var vs let vs const Demo ============
+    const demos = {
+        var: {
+            steps: [
+                { label: 'Declare & Assign', code: 'var x = 10;', logs: ['> x = 10'] },
+                { label: 'Reassign', code: 'x = 20;', logs: ['> x = 20', 'var allow karta hai reassign!'] },
+                { label: 'Re-declare', code: 'var x = 30;', logs: ['> x = 30', 'var allow karta hai re-declare bhi!'] },
+                { label: 'Hoisting Test', code: 'console.log(y); var y = 5;', logs: ['> undefined', 'Hoisting! var ko upar le jaata hai par value nahi deta'] },
+                { label: 'Block Scope Test', code: '{ var z = 99; } console.log(z);', logs: ['> 99', 'var block scope nahi follow karta! Function scope hai.'] },
+            ]
+        },
+        let: {
+            steps: [
+                { label: 'Declare & Assign', code: 'let a = 10;', logs: ['> a = 10'] },
+                { label: 'Reassign', code: 'a = 20;', logs: ['> a = 20', 'let allow karta hai reassign!'] },
+                { label: 'Re-declare (Error)', code: 'let a = 30;', logs: ['x SyntaxError: Identifier "a" has already been declared', 'let re-declare NAHI karta!'] },
+                { label: 'Block Scope Test', code: '{ let b = 99; } console.log(b);', logs: ['x ReferenceError: b is not defined', 'let block scope follow karta hai! Bahar access nahi hoga.'] },
+                { label: 'Hoisting Test', code: 'console.log(c); let c = 5;', logs: ['x ReferenceError: Cannot access "c" before initialization', 'let hoisted hota hai par "Temporal Dead Zone" mein rehta hai!'] },
+            ]
+        },
+        const: {
+            steps: [
+                { label: 'Declare & Assign', code: 'const PI = 3.14;', logs: ['> PI = 3.14'] },
+                { label: 'Reassign (Error)', code: 'PI = 3.14159;', logs: ['x TypeError: Assignment to constant variable', 'const reassign NAHI karta!'] },
+                { label: 'Without Value (Error)', code: 'const x;', logs: ['x SyntaxError: Missing initializer in const declaration', 'const ke saath value dena ZARURI hai!'] },
+                { label: 'Object Reassign', code: 'const obj = {a:1}; obj.a = 2;', logs: ['> obj = {a: 2}', 'Object ke andar change KAR SAKTE ho! Reference same hai.'] },
+                { label: 'Block Scope', code: '{ const secret = "hidden"; } console.log(secret);', logs: ['x ReferenceError: secret is not defined', 'const bhi block scope follow karta hai!'] },
+            ]
+        }
+    };
+
+    let currentDemo = 'var';
+    let demoStep = 0;
+
+    function switchDemo(type) {
+        currentDemo = type;
+        demoStep = 0;
+        // Update tabs
+        document.querySelectorAll('.demo-tab').forEach(t => t.className = 'demo-tab');
+        document.getElementById(`tab-${type}`).classList.add(`active-tab-${type}`);
+        renderDemo();
+    }
+
+    function renderDemo() {
+        const demo = demos[currentDemo];
+        const output = document.getElementById('demoOutput');
+        const actions = document.getElementById('demoActions');
+
+        if (demoStep === 0) {
+            output.innerHTML = `<div class="log-line"><span class="log-arrow">></span><span class="log-info">"${currentDemo}" ke experiments start karo! Neeche buttons dabaao.</span></div>`;
+        }
+
+        actions.innerHTML = '';
+        if (demoStep < demo.steps.length) {
+            const step = demo.steps[demoStep];
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-primary btn-sm';
+            btn.innerHTML = `<i class="fa-solid fa-play"></i> ${step.label}`;
+            btn.onclick = () => runDemoStep();
+            actions.appendChild(btn);
+        }
+        if (demoStep > 0) {
+            const resetBtn = document.createElement('button');
+            resetBtn.className = 'btn btn-danger btn-sm';
+            resetBtn.innerHTML = `<i class="fa-solid fa-rotate"></i> Reset`;
+            resetBtn.onclick = () => { demoStep = 0; renderDemo(); };
+            actions.appendChild(resetBtn);
+        }
+    }
+
+    function runDemoStep() {
+        const demo = demos[currentDemo];
+        const step = demo.steps[demoStep];
+        const output = document.getElementById('demoOutput');
+
+        // Add code line
+        output.innerHTML += `<div class="log-line" style="margin-top:8px;"><span class="log-arrow">></span><span class="log-info" style="opacity:0.6;">// ${step.label}</span></div>`;
+        output.innerHTML += `<div class="log-line"><span class="log-arrow" style="opacity:0.4;">></span><span style="color:var(--fg);opacity:0.7;">${escapeHtml(step.code)}</span></div>`;
+
+        // Add logs
+        step.logs.forEach(log => {
+            const isError = log.startsWith('x');
+            const cls = isError ? 'log-error' : log.startsWith('!') ? 'log-warn' : 'log-text';
+            const prefix = isError ? '<span class="log-error">x</span>' : '<span class="log-arrow">></span>';
+            const text = isError ? log.slice(1).trim() : log.startsWith('>') ? log.slice(1).trim() : log;
+            output.innerHTML += `<div class="log-line">${prefix} <span class="${cls}">${escapeHtml(text)}</span></div>`;
+        });
+
+        demoStep++;
+        expCount++;
+        updateScoreBar();
+        output.scrollTop = output.scrollHeight;
+        renderDemo();
+    }
+
+    // ============ Type Checker ============
+    function checkType() {
+        const input = document.getElementById('typeInput').value.trim();
+        if (!input) { showToast('Kuch value daalo pehle!', 'error'); return; }
+
+        let value;
+        // Smart parsing
+        if (input === 'true') value = true;
+        else if (input === 'false') value = false;
+        else if (input === 'null') value = null;
+        else if (input === 'undefined') value = undefined;
+        else if (!isNaN(input) && input !== '') value = Number(input);
+        else if ((input.startsWith('"') && input.endsWith('"')) || (input.startsWith("'") && input.endsWith("'"))) value = input.slice(1, -1);
+        else if (input.startsWith('[') || input.startsWith('{')) {
+            try { value = JSON.parse(input); } catch { value = input; }
+        }
+        else value = input;
+
+        const type = typeof value;
+        // Special: null ka typeof "object" aata hai
+        const displayType = value === null ? 'null' : type;
+        const result = document.getElementById('typeResult');
+
+        const typeConfig = {
+            string: { icon: 'fa-font', cls: 'type-string', color: 'var(--accent)' },
+            number: { icon: 'fa-hashtag', cls: 'type-number', color: 'var(--pink)' },
+            boolean: { icon: 'fa-toggle-on', cls: 'type-boolean', color: '#fbbf24' },
+            undefined: { icon: 'fa-ban', cls: 'type-undefined', color: 'var(--muted)' },
+            object: { icon: 'fa-cube', cls: 'type-object', color: 'var(--accent2)' },
+            function: { icon: 'fa-code', cls: 'type-function', color: 'var(--purple)' },
+            null: { icon: 'fa-circle-xmark', cls: 'type-null', color: 'var(--danger)' },
+        };
+
+        const config = typeConfig[displayType] || typeConfig.object;
+        const displayVal = value === null ? 'null' : value === undefined ? 'undefined' : typeof value === 'string' ? `"${value}"` : JSON.stringify(value);
+
+        result.className = `type-result ${config.cls}`;
+        result.innerHTML = `
+            <div class="type-icon"><i class="fa-solid ${config.icon}"></i></div>
+            <div>
+                <div class="type-label">typeof value</div>
+                <div class="type-value" style="color:${config.color};">${displayType}</div>
+                <div style="font-size:0.78rem;color:var(--muted);margin-top:2px;font-family:'Fira Code',monospace;">Value: ${escapeHtml(displayVal)}</div>
+                ${value === null ? '<div style="font-size:0.72rem;color:var(--warn);margin-top:4px;">Fun Fact: typeof null === "object" — ye JS ka historic bug hai!</div>' : ''}
+                ${typeof value === 'number' && (value === Infinity || value === -Infinity || Number.isNaN(value)) ? `<div style="font-size:0.72rem;color:var(--warn);margin-top:4px;">Special Number Value!</div>` : ''}
+            </div>
+        `;
+
+        expCount++;
+        updateScoreBar();
+    }
+
+    // Type input pe Enter
+    document.getElementById('typeInput').addEventListener('keydown', e => { if (e.key === 'Enter') checkType(); });
+
+    // Variable inputs pe Enter
+    document.getElementById('varName').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('varValue').focus(); });
+    document.getElementById('varValue').addEventListener('keydown', e => { if (e.key === 'Enter') createVariable(); });
+
+    // ============ Quiz ============
+    const quizQuestions = [
+        {
+            q: '<code>let x = 5;</code> ke baad <code>x = 10;</code> karenge toh kya hoga?',
+            opts: ['Error aayega', 'x = 10 ho jayega', 'x undefined ho jayega', 'Kuch nahi hoga'],
+            correct: 1,
+            explain: 'let mein reassign allowed hai! x ab 10 ho jayega.'
+        },
+        {
+            q: '<code>const PI = 3.14;</code> ke baad <code>PI = 3.14159;</code> karenge toh?',
+            opts: ['PI update ho jayega', 'TypeError aayega', 'undefined milega', 'Chupchap ignore hoga'],
+            correct: 1,
+            explain: 'const se banane ke baad value change nahi hoti — TypeError aata hai!'
+        },
+        {
+            q: '<code>console.log(typeof null);</code> ka output kya hoga?',
+            opts: ['"null"', '"undefined"', '"object"', '"boolean"'],
+            correct: 2,
+            explain: 'JavaScript ka famous bug! typeof null === "object" — ye 1995 se hai.'
+        },
+        {
+            q: '<code>var a = 1;</code> aur <code>let b = 2;</code> dono <code>{ }</code> block ke andar hain. Block ke bahar kya access hoga?',
+            opts: ['Dono accessible hain', 'Sirf a accessible hai', 'Sirf b accessible hai', 'Dono nahi milenge'],
+            correct: 1,
+            explain: 'var function scope hai (block nahi), let block scope hai. Bahar sirf "a" milega.'
+        },
+        {
+            q: '<code>let x;</code> ke baad <code>console.log(x);</code> kya dega?',
+            opts: ['ReferenceError', 'undefined', 'null', 'NaN'],
+            correct: 1,
+            explain: 'let/const bina value declare karne par undefined milta hai, error nahi aata.'
+        },
+        {
+            q: '<code>const arr = [1,2,3]; arr.push(4);</code> kya hoga?',
+            opts: ['TypeError', 'arr = [1,2,3,4]', 'Error nahi aayega, arr mein 4 add ho jayega', 'ReferenceError'],
+            correct: 2,
+            explain: 'const reference change nahi hota, par array/object ke andar modify KAR SAKTE ho!'
+        },
+        {
+            q: '<code>console.log(y); var y = 10;</code> kya output dega?',
+            opts: ['ReferenceError', '10', 'undefined', 'NaN'],
+            correct: 2,
+            explain: 'Hoisting! var y upar declare ho jata hai par value assign nahi hoti — isliye undefined.'
+        },
+        {
+            q: '<code>typeof "42"</code> kya dega?',
+            opts: ['"number"', '"string"', '"object"', '"NaN"'],
+            correct: 1,
+            explain: 'Quotes ke andar kuch bhi ho, woh STRING hai! "42" number nahi hai.'
+        },
+        {
+            q: '<code>let 1name = "Rahul";</code> ye valid hai?',
+            opts: ['Haan, bilkul', 'Nahi, number se start nahi ho sakta', 'Sirf strict mode mein error', 'Haan, par value nahi hogi'],
+            correct: 1,
+            explain: 'Variable name kabhi bhi number se start nahi ho sakta! Letter, _, ya $ se start hona chahiye.'
+        },
+        {
+            q: '<code>let a = 5; let a = 10;</code> kya hoga?',
+            opts: ['a = 10 ho jayega', 'SyntaxError', 'a = 5 rahega', 'Runtime Error'],
+            correct: 1,
+            explain: 'let se same naam se doosra variable declare nahi kar sakte — SyntaxError aata hai!'
+        }
+    ];
+
+    function renderQuiz() {
+        const q = quizQuestions[quizIndex];
+        const letters = ['A', 'B', 'C', 'D'];
+
+        // Progress
+        const prog = document.getElementById('quizProgress');
+        prog.innerHTML = quizQuestions.map((_, i) => {
+            let cls = 'prog-dot';
+            if (i < quizIndex) {
+                // Check if this was answered correctly (we store this)
+                cls += answeredCorrectly[i] ? ' done' : ' wrong-dot';
+            } else if (i === quizIndex) {
+                cls += ' current';
+            }
+            return `<div class="${cls}"></div>`;
+        }).join('');
+
+        // Question
+        document.getElementById('quizQuestion').innerHTML = `<span style="color:var(--muted);font-size:0.85rem;">Sawal ${quizIndex + 1}/${quizQuestions.length}</span><br>${q.q}`;
+
+        // Options
+        document.getElementById('quizOptions').innerHTML = q.opts.map((opt, i) =>
+            `<button class="quiz-opt" onclick="answerQuiz(${i})" id="qopt-${i}">
+                <span class="opt-letter">${letters[i]}</span>
+                ${escapeHtml(opt)}
+            </button>`
+        ).join('');
+
+        // Hide feedback & next
+        document.getElementById('quizFeedback').className = 'quiz-feedback';
+        document.getElementById('nextQuizBtn').style.display = 'none';
+        document.getElementById('resetQuizBtn').style.display = 'none';
+    }
+
+    let answeredCorrectly = {};
+
+    function answerQuiz(idx) {
+        const q = quizQuestions[quizIndex];
+        const correct = q.correct;
+        const isCorrect = idx === correct;
+
+        // Disable all options
+        q.opts.forEach((_, i) => {
+            const el = document.getElementById(`qopt-${i}`);
+            el.classList.add('disabled');
+            if (i === correct) el.classList.add('correct');
+            if (i === idx && !isCorrect) el.classList.add('wrong');
+        });
+
+        // Feedback
+        const fb = document.getElementById('quizFeedback');
+        fb.className = `quiz-feedback show ${isCorrect ? 'fb-correct' : 'fb-wrong'}`;
+        fb.innerHTML = isCorrect
+            ? `<i class="fa-solid fa-check-circle"></i> Sahi jawab! ${q.explain}`
+            : `<i class="fa-solid fa-times-circle"></i> Galat! Sahi jawab: "${q.opts[correct]}". ${q.explain}`;
+
+        // Score
+        quizAnswered++;
+        if (isCorrect) {
+            quizCorrect++;
+            streak++;
+            answeredCorrectly[quizIndex] = true;
+        } else {
+            streak = 0;
+            answeredCorrectly[quizIndex] = false;
+        }
+        updateScoreBar();
+
+        // Show next/reset
+        if (quizIndex < quizQuestions.length - 1) {
+            document.getElementById('nextQuizBtn').style.display = 'inline-flex';
+        } else {
+            document.getElementById('resetQuizBtn').style.display = 'inline-flex';
+        }
+    }
+
+    function nextQuestion() {
+        quizIndex++;
+        renderQuiz();
+    }
+
+    function resetQuiz() {
+        quizIndex = 0;
+        quizCorrect = 0;
+        quizAnswered = 0;
+        streak = 0;
+        answeredCorrectly = {};
+        updateScoreBar();
+        renderQuiz();
+        showToast('Quiz reset ho gaya! Phir se try karo!', 'info');
+    }
+
+    // ============ Code Playground ============
+    const pgSnippets = {
+        greet: 'let naam = "Priya";\nlet city = "Delhi";\n\nconsole.log(`Namaste ${naam}!`);\nconsole.log(`${naam} ${city} mein rehti hai.`);\nconsole.log(`Naam mein letters: ${naam.length}`);',
+        maths: 'let a = 10;\nlet b = 3;\n\nconsole.log("Jod:", a + b);\nconsole.log("Ghata:", a - b);\nconsole.log("Guna:", a * b);\nconsole.log("Bhag:", a / b);\nconsole.log("Remainder:", a % b);\nconsole.log("Power:", a ** b);',
+        shop: 'const price = 250;\nlet qty = 3;\n\nlet subtotal = price * qty;\nlet gst = subtotal * 0.18;\nlet total = subtotal + gst;\n\nconsole.log("Subtotal: Rs." + subtotal);\nconsole.log("GST 18%: Rs." + gst);\nconsole.log("Grand Total: Rs." + total);',
+        swap: 'let chai = "Chai ki pyaali";\nlet coffee = "Coffee ka cup";\n\nconsole.log("Pehle:", chai, "|", coffee);\n\nlet temp = chai;\nchai = coffee;\ncoffee = temp;\n\nconsole.log("Baad mein:", chai, "|", coffee);',
+        types: 'console.log(typeof "Rahul");\nconsole.log(typeof 42);\nconsole.log(typeof true);\nconsole.log(typeof undefined);\nconsole.log(typeof null);\nconsole.log(typeof [1, 2, 3]);\nconsole.log(typeof { naam: "Rahul" });',
+        error: 'const PIN = 1234;\n\nconsole.log("PIN hai:", PIN);\n\n// Neeche wali line ka // hatao aur\n// error ka darshan karo:\n// PIN = 9999;\n\n// TypeError: Assignment to constant variable!\n// const ko change nahi kar sakte —\n// yehi uska kaam hai.'
+    };
+
+    function loadSnippet(key) {
+        if (!key) return;
+        document.getElementById('pgEditor').value = pgSnippets[key];
+        showToast('Example load ho gaya! Ab Run dabao.', 'info');
+    }
+
+    function runCode() {
+        const code = document.getElementById('pgEditor').value;
+        const output = document.getElementById('pgOutput');
+        output.innerHTML = '';
+
+        const lines = [];
+        const fmt = v => {
+            if (typeof v === 'object' && v !== null) { try { return JSON.stringify(v); } catch (e) { return String(v); } }
+            return String(v);
+        };
+        const fakeConsole = {
+            log: (...args) => lines.push({ text: args.map(fmt).join(' '), cls: 'log-text' }),
+            info: (...args) => lines.push({ text: args.map(fmt).join(' '), cls: 'log-info' }),
+            warn: (...args) => lines.push({ text: args.map(fmt).join(' '), cls: 'log-warn' }),
+            error: (...args) => lines.push({ text: args.map(fmt).join(' '), cls: 'log-error' })
+        };
+
+        try {
+            new Function('console', code)(fakeConsole);
+        } catch (err) {
+            lines.push({ text: 'ERROR: ' + err.name + ': ' + err.message, cls: 'log-error' });
+        }
+
+        if (lines.length === 0) {
+            lines.push({ text: '(koi output nahi aaya — console.log() lagana mat bhoolna!)', cls: 'log-info' });
+        }
+
+        output.innerHTML = lines.map(l =>
+            `<div class="pg-line"><span class="log-arrow">></span><span class="${l.cls}">${escapeHtml(l.text)}</span></div>`
+        ).join('');
+
+        expCount++;
+        updateScoreBar();
+    }
+
+    function clearPgOutput() {
+        document.getElementById('pgOutput').innerHTML = '<div class="pg-line"><span class="log-arrow">></span><span class="log-info">Output saaf ho gaya. Naya code likho!</span></div>';
+    }
+
+    // Playground mein Ctrl+Enter = Run
+    document.getElementById('pgEditor').addEventListener('keydown', e => {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); runCode(); }
+    });
+
+    // ============ Workshop / Project Toggles ============
+    function toggleWs(id, btn, showTxt, hideTxt) {
+        const el = document.getElementById(id);
+        el.classList.toggle('show');
+        const open = el.classList.contains('show');
+        btn.innerHTML = open
+            ? '<i class="fa-solid fa-eye-slash"></i> ' + hideTxt
+            : '<i class="fa-regular fa-lightbulb"></i> ' + showTxt;
+    }
+
+    // ============ Examples Gallery ============
+    const examplesData = {
+        basics: [
+            {
+                title: 'Pehla Variable — Hello World of Variables',
+                code: `let naam = "Rahul";
+let age = 20;
+let isStudent = true;
+
+console.log(naam);
+console.log(age);
+console.log(isStudent);
+// Output: Rahul
+//         20
+//         true`,
+                explain: 'Variable banane ko <b>declaration</b> aur value daalne ko <b>assignment</b> kehte hain. Dono ek saath karne ko <b>initialization</b>.'
+            },
+            {
+                title: 'Value Update Karna — Reassignment',
+                code: `let score = 0;
+console.log(score);   // 0
+
+score = 50;
+console.log(score);   // 50
+
+score = score + 25;   // pehle right side solve, phir save
+console.log(score);   // 75`,
+                explain: '<code>=</code> ka matlab "barabar" nahi, <b>"right ki value left mein daalo"</b> hota hai. Isiliye <code>score = score + 25</code> bilkul valid hai!'
+            },
+            {
+                title: 'Ek Hi Line Mein Kai Variables',
+                code: `let x = 5, y = 10, z = 15;
+console.log(x + y + z);   // 30
+
+// Par professional style alag lines hai:
+let a = 5;
+let b = 10;
+let c = 15;`,
+                explain: 'Comma se ek line mein bhi declare hota hai, par <b>alag-alag lines</b> zyada readable hoti hain. Bade projects mein yahi style dikhega.'
+            }
+        ],
+        strings: [
+            {
+                title: 'String Ke Superpowers (Methods)',
+                code: `let msg = "Hello JavaScript";
+
+console.log(msg.length);         // 16
+console.log(msg.toUpperCase());  // HELLO JAVASCRIPT
+console.log(msg.toLowerCase());  // hello javascript
+console.log(msg[0]);             // H (pehla letter)
+console.log(msg.indexOf("J"));   // 6 (position)`,
+                explain: 'Har string ke paas ready-made tools hote hain. <code>length</code> property hai (brackets nahi lagte), baaki sab <b>methods</b> hain.'
+            },
+            {
+                title: 'Strings Jodna (Concatenation)',
+                code: `let firstName = "Rahul";
+let lastName = "Sharma";
+
+let fullName = firstName + " " + lastName;
+console.log(fullName);   // Rahul Sharma
+
+// Bina space ke kya hoga?
+console.log(firstName + lastName);   // RahulSharma 😅`,
+                explain: '<code>+</code> strings ko jodta hai. Beech ka space <code>" "</code> dena mat bhoolna, warna naam chipak jayega!'
+            },
+            {
+                title: 'Template Literal — Modern Style',
+                code: `let item = "Chai";
+let price = 20;
+
+console.log(\`Ek \${item} ki keemat \${price} rupees hai.\`);
+// Output: Ek Chai ki keemat 20 rupees hai.
+
+console.log(\`Double kar do: \${price * 2}\`);
+// Double kar do: 40`,
+                explain: 'Backtick (`) + <code>${variable}</code> — andar <b>expression bhi chal jaata hai</b>. Ye example upar Playground mein chala ke dekho!'
+            }
+        ],
+        numbers: [
+            {
+                title: 'Saare Maths Operators',
+                code: `let a = 10;
+let b = 3;
+
+console.log(a + b);    // 13
+console.log(a - b);    // 7
+console.log(a * b);    // 30
+console.log(a / b);    // 3.3333...
+console.log(a % b);    // 1  ← remainder (bacha hua)
+console.log(a ** b);   // 1000 ← 10 ki power 3`,
+                explain: '<code>%</code> (modulo) = bhaag dene par jo bacha. Even/odd check ka best dost: <code>n % 2</code> 0 aaya toh even!'
+            },
+            {
+                title: 'Shorthand Operators — Lazy Genius',
+                code: `let pocketMoney = 100;
+
+pocketMoney += 50;    // 150 — 50 jod diye
+pocketMoney -= 30;    // 120
+pocketMoney *= 2;     // 240
+pocketMoney++;        // 241 — bas 1 badhaya
+pocketMoney--;        // 240
+
+console.log(pocketMoney);   // 240`,
+                explain: '<code>x = x + 5</code> ka short form <code>x += 5</code>. <code>++</code> counters ki jaan hai — likes, views, lives sab isi se badhte hain.'
+            },
+            {
+                title: 'NaN — Not a Number',
+                code: `let result = "hello" * 5;
+console.log(result);        // NaN
+
+console.log(typeof NaN);    // "number" 😅
+console.log(NaN === NaN);   // false! 😱
+
+console.log(Number("42"));   // 42 — string se number
+console.log(Number("abc"));  // NaN — impossible hai`,
+                explain: 'NaN tab aata hai jab maths impossible ho. Yaad rakho: <b>NaN apne aap ke bhi barabar nahi</b> — check ke liye <code>Number.isNaN()</code> use karo.'
+            }
+        ],
+        boolean: [
+            {
+                title: 'Comparisons — Har Jawab true ya false',
+                code: `let age = 20;
+
+console.log(age >= 18);   // true — vote de sakta hai
+console.log(age === 21);  // false
+console.log(age !== 18);  // true
+console.log(age < 100);   // true`,
+                explain: 'Har comparison ka result <b>boolean</b> hota hai. <code>if/else</code> ke saare decisions inhi par chalte hain.'
+            },
+            {
+                title: 'null vs undefined — Clear Cut',
+                code: `let a;            // banaya, value nahi di
+console.log(a);   // undefined
+
+let b = null;     // jaan-boojh ke khaali
+console.log(b);   // null
+
+console.log(typeof undefined);   // "undefined"
+console.log(typeof null);        // "object" — historic bug!`,
+                explain: '<code>undefined</code> = JS bolta hai "tune di hi nahi". <code>null</code> = tum bolte ho "khaali hi rakhna hai". Ek galti hai, ek <b>intention</b>.'
+            },
+            {
+                title: 'Logical Operators — && || !',
+                code: `let hasID = true;
+let hasTicket = false;
+
+console.log(hasID && hasTicket);   // false — dono chahiye
+console.log(hasID || hasTicket);   // true — koi ek kaafi
+console.log(!hasID);               // false — ulta kar diya`,
+                explain: '<code>&&</code> = AUR (sab true hon), <code>||</code> = YA (koi ek), <code>!</code> = NOT (ulta). Club entry ka logic yahi hai: <b>ID honi chahiye AND age 18+!</b>'
+            }
+        ],
+        patterns: [
+            {
+                title: 'Variable Swap — Glasso Wala Jugaad',
+                code: `let glass1 = "Chai";
+let glass2 = "Coffee";
+
+let temp = glass1;   // Chai pehle temp mein safe
+glass1 = glass2;     // glass1 = Coffee
+glass2 = temp;       // glass2 = Chai
+
+console.log(glass1, glass2);   // Coffee Chai`,
+                explain: 'Do glasso mein sharbat exchange karne ke liye <b>teesra glass</b> chahiye hota hai — <code>temp</code> wahi hai. Interview ka favourite warm-up!'
+            },
+            {
+                title: 'Running Total — Cart Pattern',
+                code: `let total = 0;
+
+total += 250;   // samosa packet
+total += 120;   // chai
+total += 60;    // paani
+
+console.log("Total: Rs." + total);   // Total: Rs.430`,
+                explain: 'Shopping app ka bill engine yehi hai — har item add par total update. Isse <b>accumulator pattern</b> kehte hain, bade data par bhi yahi chalta hai.'
+            },
+            {
+                title: 'Counter Pattern — Like Button Ka Raaz',
+                code: `let likes = 0;
+
+likes++;   // koi like kar gaya
+likes++;   // phir se
+likes++;   // aur se!
+
+console.log("Likes: " + likes);   // Likes: 3`,
+                explain: 'Instagram ke likes, WhatsApp unread badge, game ki lives — sab <b>counter pattern</b> par chalte hain: value pakdo, ek badhao.'
+            }
+        ]
+    };
+
+    const exLabels = { basics: 'Basics', strings: 'Strings', numbers: 'Numbers', boolean: 'Boolean & Null', patterns: 'Common Patterns' };
+    let currentExTab = 'basics';
+
+    function switchExTab(cat) {
+        currentExTab = cat;
+        document.querySelectorAll('.ex-tab').forEach(t => t.classList.toggle('active', t.dataset.cat === cat));
+        renderExamples();
+    }
+
+    function highlightCode(code) {
+        return escapeHtml(code).split('\n').map(line => {
+            const idx = line.indexOf('//');
+            if (idx >= 0) {
+                return line.slice(0, idx) + '<span class="cmt">' + line.slice(idx) + '</span>';
+            }
+            return line;
+        }).join('\n');
+    }
+
+    function renderExamples() {
+        const grid = document.getElementById('exGrid');
+        const list = examplesData[currentExTab] || [];
+        grid.innerHTML = list.map((ex, i) => `
+            <div class="ex-card">
+                <h4><span class="ex-num">${String(i + 1).padStart(2, '0')}</span> ${ex.title}</h4>
+                <div class="ex-code">${highlightCode(ex.code)}</div>
+                <div class="ex-explain">${ex.explain}</div>
+            </div>`).join('');
+    }
+
+    // ============ Interview Questions ============
+    const interviewQuestions = [
+        {
+            level: 'easy',
+            q: 'Variable kya hota hai? Apne shabdon mein samjhao.',
+            a: `<b>Variable ek naam hai jiske peeche data store hota hai</b> — ek dabba socho jispe label laga hai. Jab bhi us naam ko use karte ho, JavaScript andar rakhi value utha kar la deta hai. Isse value ek baar store karke baar-baar use karte ho, aur zaroorat par badal bhi sakte ho.<pre>let naam = "Rahul";   // "naam" dabbe mein "Rahul" rakha
+console.log(naam);    // Rahul — JS ne dabba khol kar diya</pre><b>Interview tip:</b> English mein bol do — "A variable is a named container in memory that stores a value which can be used and changed later." Impression pakka banega!`
+        },
+        {
+            level: 'easy',
+            q: 'var, let aur const mein kya difference hai?',
+            a: `Yeh sabse zyada poocha jaane wala sawal hai! Teeno variables banate hain, par rules alag hain:<pre>Feature      | var          | let          | const
+-------------|--------------|--------------|------------------
+Scope        | Function     | Block        | Block
+Re-declare   | Allowed      | Not allowed  | Not allowed
+Re-assign    | Allowed      | Allowed      | Not allowed
+Value dena   | Optional     | Optional     | Zaruri hai</pre><b>Simple rule:</b> Default hamesha <code>const</code> lo. Value change honi hai toh <code>let</code> lo. <code>var</code> aaj kal practically use nahi hota — sirf purani codebases mein milega.`
+        },
+        {
+            level: 'easy',
+            q: 'JavaScript ke data types kaunse hain?',
+            a: `JS mein <b>7 primitive</b> types aur <b>1 non-primitive</b> type hai:<pre>string    → "Rahul"          number    → 42, 3.14
+boolean   → true / false     undefined → value di hi nahi
+null      → jaan-boojh ke khaali        bigint    → bahut bade numbers
+symbol    → unique keys      object    → { naam: "Rahul" }</pre>Yaad rakhne wali baat: <code>typeof []</code> bhi <code>"object"</code> deta hai — array bhi object hi hai. Primitive ki value direct copy hoti hai, object ka sirf <b>reference (address)</b> copy hota hai.`
+        },
+        {
+            level: 'easy',
+            q: 'Variable ka valid naam kaise hota hai? Kya rules hain?',
+            a: `<b>Allowed:</b> letters, numbers, <code>_</code> aur <code>$</code> — par naam number se start nahi ho sakta.<pre>let userName   ✅      let _count   ✅      let $price   ✅
+let 1name      ❌      let my name  ❌      let class    ❌ (reserved word)</pre>Convention: <b>camelCase</b> use karo — <code>userAge</code>, <code>totalPrice</code>. Constants ko UPPERCASE likho — <code>const MAX_SPEED = 120</code>. Aur yaad rakho: JS case-sensitive hai — <code>age</code> aur <code>Age</code> do alag variables hain!`
+        },
+        {
+            level: 'easy',
+            q: 'null aur undefined mein kya farak hai?',
+            a: `<code>undefined</code> = JavaScript bol raha hai "value di hi nahi gayi". <code>null</code> = tum keh rahe ho "value khaali rakhni hai". Ek galti hai, ek intention hai!<pre>let a;
+console.log(a);            // undefined — banaya, value nahi di
+
+let b = null;
+console.log(b);            // null — jaan-boojh ke khaali
+
+console.log(typeof undefined);  // "undefined"
+console.log(typeof null);       // "object" — historic bug!</pre><b>Interview mein ye last line zaroor bolo:</b> <code>typeof null === "object"</code> JS ka famous 1995 bug hai jo backwards compatibility ke liye ab tak rakha gaya hai.`
+        },
+        {
+            level: 'medium',
+            q: 'Hoisting kya hai? Har keyword ke saath kaise kaam karta hai?',
+            a: `<b>Hoisting matlab JS declarations ko scope ke sabse upar utha leta hai</b> — code chalne se pehle hi memory mein declare ho jaate hain. Par har keyword ka behaviour alag hai:<pre>console.log(a);   // undefined — error nahi! var upar uth gaya
+var a = 10;
+
+console.log(b);   // ReferenceError! let bhi utha, par TDZ mein hai
+let b = 20;</pre><code>var</code> utha toh value <code>undefined</code> milti hai; <code>let/const</code> uthe toh unhe access karne par error aata hai (Temporal Dead Zone). <b>Interview tip:</b> "Declarations are hoisted, initializations are not" — ye line bol do, badhiya lagega!`
+        },
+        {
+            level: 'medium',
+            q: 'Temporal Dead Zone (TDZ) kya hai?',
+            a: `TDZ woh zone hai <b>let/const variable ke scope ke shuru aur uski value aane ke beech</b>, jahan usse touch karne par error aata hai.<pre>console.log(x);   // ReferenceError: Cannot access "x" before initialization
+let x = 5;</pre>Yahan <code>x</code> exist karta hai (hoisted hai), par initialize hone tak wo "dead zone" mein hai. Isiliye let/const var se zyada safe hain — galti chhupti nahi, turant error milti hai. var mein aisi galti chupchap <code>undefined</code> de deti hai, jo aage ja kar bugs banati hai.`
+        },
+        {
+            level: 'medium',
+            q: 'const se banaye array mein push() kyun chalta hai? Ye toh change ho gaya na?',
+            a: `Nahi! <b>const reference (memory address) ko lock karta hai, andar ki values ko nahi.</b><pre>const arr = [1, 2, 3];
+arr.push(4);       // ✅ Chala! Array ke andar ka change hai
+arr[0] = 100;      // ✅ Ye bhi chala
+
+arr = [9, 9];      // ❌ TypeError! Naya address dena mana hai</pre>Samjho ghar ka example: const ghar ka address fix hai — andar furniture lagao ya hatao, sab chalega. Par ghar hi naya nahi de sakte. Yehi cheez objects ke saath bhi hai — property change allowed, reassign nahi.`
+        },
+        {
+            level: 'medium',
+            q: 'typeof null ka result "object" kyun hota hai?',
+            a: `Yeh <b>JavaScript ke pehle version ka historic bug</b> hai (1995). Us zamaane mein values memory mein type tags ke saath rakhi jaati thi — object ka tag <code>0</code> tha, aur <code>null</code> ko "empty value" maan kar uska bhi tag 0 rakh diya gaya. Isiliye <code>typeof null === "object"</code> aa jaata hai.<pre>console.log(typeof null);   // "object" — bug jo 30 saal se zinda hai!</pre>Ab ise fix karna impossible hai — duniya ki lakhs purani websites toot jayengi. <b>Interview mein ye story sunana bada plus point hai</b> — isse pata chalta hai tumne depth mein padha hai, sirf ratta nahi maara.`
+        },
+        {
+            level: 'medium',
+            q: '== aur === mein kya difference hai?',
+            a: `<code>==</code> (loose equality) sirf <b>value</b> compare karta hai — type convert kar ke. <code>===</code> (strict equality) <b>value + type dono</b> check karta hai.<pre>"5" == 5     // true  — "5" ko number banaya, phir compare
+"5" === 5    // false — type alag hai (string vs number)
+
+0 == false    // true   😱
+0 === false   // false  ✅</pre><b>Golden rule:</b> Hamesha <code>===</code> use karo. <code>==</code> chhupi hui type conversion (implicit coercion) karta hai jisse weird bugs aate hain jo debug karna nightmare hai.`
+        },
+        {
+            level: 'medium',
+            q: 'Template literal kya hai? String concatenation se better kyun?',
+            a: `Template literal backticks ( \` ) se bani string hai jisme <code>\${}</code> ke andar directly variable ya expression likh sakte ho.<pre>// Purana tarika — messy
+let msg = "Mera naam " + naam + " hai aur main " + city + " mein rehta hoon";
+
+// Naya tarika — clean
+let msg2 = \`Mera naam \${naam} hai aur main \${city} mein rehta hoon\`;</pre><b>Better isliye:</b> (1) padhne aur likhne mein aasaan, (2) quotes ka jhanjhat nahi, (3) multi-line strings directly likh sakte ho, (4) <code>\${total * 2}</code> jaise expressions bhi andar chal jaate hain.`
+        },
+        {
+            level: 'medium',
+            q: 'Global scope aur block scope kya hai? Ek example do.',
+            a: `<b>Global scope</b> = poora program, har jagah accessible. <b>Block scope</b> = sirf <code>{ }</code> ke andar, bahar nahi.<pre>let globalVar = "Sab jagah milunga";
+
+{
+  let blockVar = "Sirf andar hoon";
+  console.log(globalVar);   // ✅ Bahar wala andar dikhta hai
+}
+console.log(blockVar);   // ❌ ReferenceError! Bahar nahi milega</pre><code>var</code> yahan alag hai — wo block ko ignore karta hai aur function scope maanta hai. Isiliye modern JS mein var se bachna chahiye — chain se block scope tod deta hai.`
+        },
+        {
+            level: 'hard',
+            q: 'Variable shadowing kya hai? Example se samjhao.',
+            a: `Jab andar wale scope mein <b>bahar wale variable ke same naam</b> ka variable ban jaaye, toh andar wala bahar wale ko "shadow" (chhaa) leta hai — us jagah par bahar wala dikhna band ho jaata hai.<pre>let name = "Bahar wala";
+
+{
+  let name = "Andar wala";
+  console.log(name);   // "Andar wala" — shadow ho gaya
+}
+
+console.log(name);   // "Bahar wala" — wapas apni jagah</pre>Dono alag variables hain — memory mein alag jagah. Same scope mein same naam banana error hai (let ke saath), par alag scopes mein allowed hai. Interview mein ye tricky follow-up ban jaata hai — "shadowing hoisting se kaise relate hoti hai?" soch ke jao!`
+        },
+        {
+            level: 'hard',
+            q: 'NaN kya hai? Isse kaise check karte hain?',
+            a: `<b>NaN = Not a Number</b> — jab galat maths hota hai tab aata hai, jaise string se multiplication.<pre>let result = "hello" * 5;
+console.log(result);       // NaN
+console.log(typeof NaN);   // "number" 😅 — irony!
+
+console.log(NaN === NaN);  // false! NaN apne aap ke barabar nahi</pre>Isi wajah se <code>result === NaN</code> likh kar check nahi kar sakte. <code>isNaN()</code> ya better <code>Number.isNaN()</code> use karo:<pre>Number.isNaN("hello" * 5);   // true
+Number.isNaN(42);            // false</pre><b>Bonus point:</b> <code>isNaN("42")</code> false deta hai kyunki "42" number mein convert ho jaata hai — isiliye <code>Number.isNaN()</code> zyada safe hai.`
+        },
+        {
+            level: 'hard',
+            q: 'Dynamic typing kya hai? Iske fayde aur nuksan kya hain?',
+            a: `<b>Dynamic typing matlab ek variable kisi bhi type ki value rakh sakta hai</b> — declare karte waqt type batana nahi padta.<pre>let x = 42;       // number
+x = "hello";      // string — koi error nahi!
+x = true;         // boolean — chal gaya</pre><b>Fayde:</b> fast development, kam boilerplate, beginners ke liye aasaan.<br><b>Nuksan:</b> bade projects mein galtiyan chupchap ho jaati hain — number ki jagah string ghus gaya toh pata hi nahi chalega, aur bug door-milega. Yehi wajah hai ki badi companies <b>TypeScript</b> use karti hain — jo variables ko type pakadne par majboor karta hai.`
+        },
+        {
+            level: 'hard',
+            q: 'Ye code kya output dega? Aur kyun? <code>let a = 10; { let a = 20; console.log(a); } console.log(a);</code>',
+            a: `Output hoga: <b>20, phir 10</b>.<br>Block ke andar <code>let a = 20</code> ek <b>naya</b> variable banata hai jo bahar wale <code>a</code> ko shadow kar deta hai — isliye pehla log 20. Block khatam hote hi andar wala a gayab, aur bahar wala wapas dikhta hai — isliye doosra log 10.<pre>let a = 10;        // variable #1
+{
+  let a = 20;      // variable #2 — bilkul alag!
+  console.log(a);  // 20
+}
+console.log(a);    // 10 — #1 zinda hai</pre><b>Twist:</b> Agar dono jagah <code>var</code> hota toh output <b>20, 20</b> aata — kyunki var block scope nahi maanta, dono ek hi variable hote!`
+        }
+    ];
+
+    let iqFilter = 'all';
+
+    function switchIqFilter(level) {
+        iqFilter = level;
+        document.querySelectorAll('.iq-filter').forEach(t => t.classList.toggle('active', t.dataset.level === level));
+        renderInterview();
+    }
+
+    function renderInterview() {
+        const list = document.getElementById('iqList');
+        const filtered = iqFilter === 'all' ? interviewQuestions : interviewQuestions.filter(item => item.level === iqFilter);
+        list.innerHTML = filtered.map((item, i) => `
+            <div class="iq-item" id="iq-${i}">
+                <button class="iq-q" onclick="toggleIq(${i})">
+                    <span class="iq-num">${String(i + 1).padStart(2, '0')}</span>
+                    <span class="iq-q-txt">${item.q}</span>
+                    <span class="diff-badge diff-${item.level}">${item.level}</span>
+                    <i class="fa-solid fa-chevron-down iq-chev"></i>
+                </button>
+                <div class="iq-a"><div class="iq-a-inner">${item.a}</div></div>
+            </div>`).join('');
+    }
+
+    function toggleIq(i) {
+        document.getElementById('iq-' + i).classList.toggle('open');
+    }
+
+    // ============ Floating Particles ============
+    function createParticles() {
+        const colors = ['var(--accent)', 'var(--accent2)', 'var(--purple)', 'var(--warn)'];
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.animationDuration = (8 + Math.random() * 12) + 's';
+            p.style.animationDelay = (Math.random() * 10) + 's';
+            p.style.width = (2 + Math.random() * 3) + 'px';
+            p.style.height = p.style.width;
+            p.style.opacity = 0.3 + Math.random() * 0.4;
+            document.body.appendChild(p);
+        }
+    }
+
+    // ============ Init ============
+    function init() {
+        createParticles();
+        switchDemo('var');
+        renderQuiz();
+        renderExamples();
+        renderInterview();
+        updateUI();
+        showToast('Naye sections load ho gaye! Neeche scroll karo 🔥', 'info');
+    }
+
+    init();
+</script>
+</body>
+</html>

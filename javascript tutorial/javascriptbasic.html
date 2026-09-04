@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Basics — Complete Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0c0f16;
+            --bg2: #111620;
+            --card: #151c2a;
+            --card2: #1a2236;
+            --border: #1f2e47;
+            --border2: #2a3d5e;
+            --fg: #e4eaf4;
+            --fg2: #c4cfdf;
+            --muted: #5e7290;
+            --accent: #00e87b;
+            --accent2: #00c9ff;
+            --amber: #ffb020;
+            --red: #ff4d6a;
+            --purple: #b46eff;
+            --pink: #ff6eb4;
+            --orange: #ff8c42;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 6px; }
+
+        /* ===== Background ===== */
+        .bg-dots {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none;
+            background-image: radial-gradient(rgba(0,232,123,0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        .bg-blob {
+            position: fixed; border-radius: 50%; filter: blur(140px);
+            pointer-events: none; z-index: 0;
+        }
+        .blob1 { width: 600px; height: 600px; top: -200px; left: -150px; background: rgba(0,232,123,0.08); }
+        .blob2 { width: 500px; height: 500px; bottom: -200px; right: -100px; background: rgba(0,201,255,0.07); }
+        .blob3 { width: 400px; height: 400px; top: 40%; left: 50%; background: rgba(180,110,255,0.05); }
+
+        /* ===== Sidebar Nav ===== */
+        .sidebar {
+            position: fixed; left: 0; top: 0; bottom: 0; width: 260px;
+            background: rgba(12,15,22,0.92); backdrop-filter: blur(20px);
+            border-right: 1px solid var(--border); z-index: 100;
+            padding: 24px 0; overflow-y: auto; transition: transform 0.35s;
+        }
+
+        .sidebar-logo {
+            padding: 0 20px 20px; border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 1.05rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .sidebar-logo span { font-size: 0.72rem; color: var(--muted); display: block; margin-top: 2px; }
+
+        .nav-section {
+            padding: 0 12px; margin-bottom: 8px;
+        }
+
+        .nav-section-title {
+            font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--muted); padding: 8px 8px 4px; font-weight: 700;
+        }
+
+        .nav-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 12px; border-radius: 9px; color: var(--fg2);
+            text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            transition: all 0.2s; cursor: pointer; position: relative;
+        }
+
+        .nav-link:hover { background: rgba(0,232,123,0.06); color: var(--fg); }
+        .nav-link.active {
+            background: rgba(0,232,123,0.1); color: var(--accent);
+            font-weight: 600;
+        }
+        .nav-link.active::before {
+            content: ''; position: absolute; left: 0; top: 50%;
+            transform: translateY(-50%); width: 3px; height: 20px;
+            background: var(--accent); border-radius: 0 3px 3px 0;
+        }
+
+        .nav-link i { width: 18px; text-align: center; font-size: 0.8rem; opacity: 0.7; }
+        .nav-link.active i { opacity: 1; }
+
+        .nav-done {
+            margin-left: auto; width: 18px; height: 18px; border-radius: 50%;
+            background: var(--accent); color: #000; font-size: 0.6rem;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; opacity: 0; transition: opacity 0.3s;
+        }
+        .nav-link.seen .nav-done { opacity: 1; }
+
+        /* ===== Mobile Menu Toggle ===== */
+        .menu-toggle {
+            display: none; position: fixed; top: 16px; left: 16px; z-index: 200;
+            width: 44px; height: 44px; border-radius: 12px;
+            background: var(--card); border: 1px solid var(--border);
+            color: var(--fg); font-size: 1.1rem; cursor: pointer;
+            align-items: center; justify-content: center;
+        }
+
+        .sidebar-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+            z-index: 99;
+        }
+
+        /* ===== Main Content ===== */
+        .main {
+            margin-left: 260px; position: relative; z-index: 1;
+            min-height: 100vh;
+        }
+
+        .content-wrap {
+            max-width: 860px; margin: 0 auto; padding: 40px 40px 80px;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            text-align: center; padding: 60px 20px 50px;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,232,123,0.08); border: 1px solid rgba(0,232,123,0.2);
+            padding: 6px 16px; border-radius: 50px; font-size: 0.78rem;
+            color: var(--accent); font-weight: 600; margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.4rem, 5vw, 3.6rem); font-weight: 900;
+            line-height: 1.15; margin-bottom: 16px;
+        }
+
+        .hero h1 .grad {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted); font-size: 1.05rem; max-width: 560px;
+            margin: 0 auto 28px;
+        }
+
+        .hero-stats {
+            display: flex; justify-content: center; gap: 32px; flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat .num {
+            font-family: 'Fira Code', monospace; font-weight: 700;
+            font-size: 1.6rem; color: var(--accent);
+        }
+
+        .hero-stat .lbl { font-size: 0.75rem; color: var(--muted); }
+
+        /* ===== Progress Bar ===== */
+        .progress-bar-wrap {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(12,15,22,0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border); padding: 12px 40px;
+        }
+
+        .progress-info {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .progress-info span { font-size: 0.75rem; color: var(--muted); font-weight: 600; }
+        .progress-info .pct { color: var(--accent); font-family: 'Fira Code', monospace; }
+
+        .progress-track {
+            height: 4px; background: var(--border); border-radius: 4px; overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%; width: 0%; border-radius: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            transition: width 0.5s ease;
+        }
+
+        /* ===== Section Styles ===== */
+        .section {
+            margin-bottom: 56px; scroll-margin-top: 70px;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .section.visible { opacity: 1; transform: translateY(0); }
+
+        .section-label {
+            display: inline-flex; align-items: center; gap: 6px;
+            font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px;
+            color: var(--muted); font-weight: 700; margin-bottom: 8px;
+        }
+
+        .section h2 {
+            font-size: 1.8rem; font-weight: 800; margin-bottom: 16px;
+            line-height: 1.3;
+        }
+
+        .section h3 {
+            font-size: 1.15rem; font-weight: 700; margin: 24px 0 10px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .section h3 .h3-icon {
+            width: 30px; height: 30px; border-radius: 8px; display: inline-flex;
+            align-items: center; justify-content: center; font-size: 0.8rem;
+        }
+
+        .section p {
+            color: var(--fg2); margin-bottom: 14px; font-size: 0.95rem;
+        }
+
+        .section ul, .section ol {
+            padding-left: 20px; margin-bottom: 14px;
+        }
+
+        .section li {
+            color: var(--fg2); margin-bottom: 6px; font-size: 0.93rem;
+        }
+
+        .section li::marker { color: var(--accent); }
+
+        /* ===== Info Cards ===== */
+        .info-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 22px; margin-bottom: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .info-card:hover { border-color: var(--border2); }
+
+        .info-card.accent-border { border-left: 3px solid var(--accent); }
+        .info-card.amber-border { border-left: 3px solid var(--amber); }
+        .info-card.red-border { border-left: 3px solid var(--red); }
+        .info-card.blue-border { border-left: 3px solid var(--accent2); }
+        .info-card.purple-border { border-left: 3px solid var(--purple); }
+
+        /* ===== Code Blocks ===== */
+        .code-block {
+            background: #080b12; border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+        }
+
+        .code-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 16px; background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-dots {
+            display: flex; gap: 6px;
+        }
+
+        .code-dots span {
+            width: 10px; height: 10px; border-radius: 50%;
+        }
+
+        .code-dots span:nth-child(1) { background: var(--red); }
+        .code-dots span:nth-child(2) { background: var(--amber); }
+        .code-dots span:nth-child(3) { background: var(--accent); }
+
+        .code-lang {
+            font-size: 0.7rem; color: var(--muted); font-family: 'Fira Code', monospace;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .code-copy {
+            background: none; border: 1px solid var(--border); color: var(--muted);
+            padding: 4px 10px; border-radius: 6px; cursor: pointer;
+            font-size: 0.7rem; font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .code-copy:hover { color: var(--accent); border-color: var(--accent); }
+
+        .code-body {
+            padding: 16px 20px; font-family: 'Fira Code', monospace;
+            font-size: 0.82rem; line-height: 1.9; overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Syntax colors */
+        .syn-kw { color: var(--purple); font-weight: 600; }
+        .syn-str { color: var(--accent); }
+        .syn-num { color: var(--orange); }
+        .syn-bool { color: var(--amber); }
+        .syn-null { color: var(--red); }
+        .syn-cmt { color: #3d5070; font-style: italic; }
+        .syn-fn { color: var(--accent2); }
+        .syn-var { color: var(--fg); }
+        .syn-op { color: #5e7290; }
+        .syn-type { color: var(--pink); }
+
+        /* ===== Live Playground ===== */
+        .playground {
+            background: #080b12; border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden; margin-bottom: 16px;
+        }
+
+        .playground-editor {
+            width: 100%; min-height: 80px; padding: 16px 20px;
+            background: transparent; border: none; color: var(--fg);
+            font-family: 'Fira Code', monospace; font-size: 0.85rem;
+            line-height: 1.8; resize: vertical; outline: none;
+        }
+
+        .playground-output {
+            border-top: 1px solid var(--border);
+            padding: 12px 20px; font-family: 'Fira Code', monospace;
+            font-size: 0.82rem; line-height: 1.7; min-height: 36px;
+            color: var(--muted);
+        }
+
+        .playground-output .out-line { display: flex; gap: 8px; }
+        .playground-output .out-arrow { color: var(--accent); user-select: none; }
+        .playground-output .out-val { color: var(--fg); }
+        .playground-output .out-err { color: var(--red); }
+
+        .playground-run {
+            display: flex; gap: 8px; padding: 8px 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn-run {
+            padding: 7px 18px; border: none; border-radius: 8px;
+            background: var(--accent); color: #000; font-weight: 700;
+            font-size: 0.8rem; cursor: pointer; font-family: 'Poppins', sans-serif;
+            display: flex; align-items: center; gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-run:hover { box-shadow: 0 4px 16px rgba(0,232,123,0.3); transform: translateY(-1px); }
+
+        .btn-reset {
+            padding: 7px 14px; border: 1px solid var(--border); border-radius: 8px;
+            background: transparent; color: var(--muted); font-weight: 600;
+            font-size: 0.78rem; cursor: pointer; font-family: 'Poppins', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover { color: var(--fg); border-color: var(--border2); }
+
+        /* ===== Comparison Table ===== */
+        .comp-table {
+            width: 100%; border-collapse: separate; border-spacing: 0;
+            margin-bottom: 16px; font-size: 0.88rem;
+        }
+
+        .comp-table thead th {
+            background: var(--card2); padding: 12px 16px; text-align: left;
+            font-weight: 700; font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--muted);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comp-table thead th:first-child { border-radius: 10px 0 0 0; }
+        .comp-table thead th:last-child { border-radius: 0 10px 0 0; }
+
+        .comp-table tbody td {
+            padding: 12px 16px; border-bottom: 1px solid var(--border);
+            color: var(--fg2); vertical-align: top;
+        }
+
+        .comp-table tbody tr:last-child td { border-bottom: none; }
+        .comp-table tbody tr:last-child td:first-child { border-radius: 0 0 0 10px; }
+        .comp-table tbody tr:last-child td:last-child { border-radius: 0 0 10px 0; }
+
+        .comp-table tbody tr { transition: background 0.2s; }
+        .comp-table tbody tr:hover { background: rgba(255,255,255,0.015); }
+
+        .badge-sm {
+            display: inline-block; padding: 2px 10px; border-radius: 6px;
+            font-family: 'Fira Code', monospace; font-size: 0.72rem; font-weight: 700;
+        }
+
+        .badge-var { background: rgba(255,176,32,0.12); color: var(--amber); }
+        .badge-let { background: rgba(0,201,255,0.12); color: var(--accent2); }
+        .badge-const { background: rgba(180,110,255,0.12); color: var(--purple); }
+        .badge-yes { background: rgba(0,232,123,0.1); color: var(--accent); }
+        .badge-no { background: rgba(255,77,106,0.1); color: var(--red); }
+
+        /* ===== Type Cards Grid ===== */
+        .type-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px; margin-bottom: 24px;
+        }
+
+        .type-card {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 22px; cursor: pointer;
+            transition: all 0.3s; position: relative; overflow: hidden;
+        }
+
+        .type-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0;
+            height: 3px; transition: height 0.3s;
+        }
+
+        .type-card:hover { transform: translateY(-4px); border-color: var(--border2);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.3); }
+        .type-card:hover::before { height: 4px; }
+
+        .type-card .tc-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; margin-bottom: 14px;
+        }
+
+        .type-card .tc-name {
+            font-family: 'Fira Code', monospace; font-weight: 700;
+            font-size: 1rem; margin-bottom: 6px;
+        }
+
+        .type-card .tc-desc {
+            font-size: 0.8rem; color: var(--muted); line-height: 1.5;
+        }
+
+        .type-card .tc-example {
+            margin-top: 12px; font-family: 'Fira Code', monospace;
+            font-size: 0.75rem; padding: 8px 12px; border-radius: 8px;
+            background: rgba(0,0,0,0.3);
+        }
+
+        /* Type-specific colors */
+        .tc-string::before { background: var(--accent); }
+        .tc-string .tc-icon { background: rgba(0,232,123,0.1); color: var(--accent); }
+        .tc-string .tc-name { color: var(--accent); }
+        .tc-string .tc-example { color: var(--accent); }
+
+        .tc-number::before { background: var(--orange); }
+        .tc-number .tc-icon { background: rgba(255,140,66,0.1); color: var(--orange); }
+        .tc-number .tc-name { color: var(--orange); }
+        .tc-number .tc-example { color: var(--orange); }
+
+        .tc-boolean::before { background: var(--amber); }
+        .tc-boolean .tc-icon { background: rgba(255,176,32,0.1); color: var(--amber); }
+        .tc-boolean .tc-name { color: var(--amber); }
+        .tc-boolean .tc-example { color: var(--amber); }
+
+        .tc-null::before { background: var(--red); }
+        .tc-null .tc-icon { background: rgba(255,77,106,0.1); color: var(--red); }
+        .tc-null .tc-name { color: var(--red); }
+        .tc-null .tc-example { color: var(--red); }
+
+        .tc-undefined::before { background: var(--muted); }
+        .tc-undefined .tc-icon { background: rgba(94,114,144,0.15); color: var(--muted); }
+        .tc-undefined .tc-name { color: var(--muted); }
+        .tc-undefined .tc-example { color: var(--muted); }
+
+        .tc-object::before { background: var(--accent2); }
+        .tc-object .tc-icon { background: rgba(0,201,255,0.1); color: var(--accent2); }
+        .tc-object .tc-name { color: var(--accent2); }
+        .tc-object .tc-example { color: var(--accent2); }
+
+        .tc-symbol::before { background: var(--pink); }
+        .tc-symbol .tc-icon { background: rgba(255,110,180,0.1); color: var(--pink); }
+        .tc-symbol .tc-name { color: var(--pink); }
+        .tc-symbol .tc-example { color: var(--pink); }
+
+        .tc-bigint::before { background: var(--purple); }
+        .tc-bigint .tc-icon { background: rgba(180,110,255,0.1); color: var(--purple); }
+        .tc-bigint .tc-name { color: var(--purple); }
+        .tc-bigint .tc-example { color: var(--purple); }
+
+        /* ===== Interactive Type Tester ===== */
+        .type-tester {
+            background: var(--card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 24px; margin-bottom: 16px;
+        }
+
+        .type-tester input {
+            width: 100%; background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 12px 16px; color: var(--fg);
+            font-family: 'Fira Code', monospace; font-size: 0.9rem;
+            outline: none; transition: border 0.2s; margin-bottom: 14px;
+        }
+
+        .type-tester input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,232,123,0.06); }
+
+        .type-result-grid {
+            display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+        }
+
+        .tr-item {
+            background: var(--bg); border: 1px solid var(--border);
+            border-radius: 10px; padding: 14px; text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tr-item .tr-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .tr-item .tr-value { font-family: 'Fira Code', monospace; font-weight: 700; font-size: 0.95rem; }
+
+        /* ===== Quiz Inline ===== */
+        .mini-quiz {
+            background: var(--card2); border: 1px solid var(--border2);
+            border-radius: 14px; padding: 24px; margin: 24px 0;
+        }
+
+        .mq-question {
+            font-weight: 700; font-size: 0.95rem; margin-bottom: 14px;
+            line-height: 1.6;
+        }
+
+        .mq-question code {
+            font-family: 'Fira Code', monospace; background: rgba(0,232,123,0.08);
+            color: var(--accent); padding: 1px 7px; border-radius: 4px; font-size: 0.85rem;
+        }
+
+        .mq-opts { display: flex; flex-direction: column; gap: 7px; margin-bottom: 14px; }
+
+        .mq-opt {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 14px; border-radius: 9px; cursor: pointer;
+            border: 1px solid var(--border); background: var(--bg);
+            color: var(--fg2); font-size: 0.85rem; font-family: 'Fira Code', monospace;
+            transition: all 0.2s; text-align: left;
+        }
+
+        .mq-opt:hover { border-color: var(--accent); transform: translateX(4px); }
+        .mq-opt.correct { border-color: var(--accent); background: rgba(0,232,123,0.08); color: var(--accent); }
+        .mq-opt.wrong { border-color: var(--red); background: rgba(255,77,106,0.08); color: var(--red); }
+        .mq-opt.disabled { pointer-events: none; opacity: 0.5; }
+        .mq-opt.disabled.correct, .mq-opt.disabled.wrong { opacity: 1; }
+
+        .mq-opt .opt-l {
+            width: 24px; height: 24px; border-radius: 6px;
+            background: rgba(255,255,255,0.04); display: flex;
+            align-items: center; justify-content: center;
+            font-weight: 700; font-size: 0.72rem; flex-shrink: 0;
+        }
+
+        .mq-fb {
+            padding: 10px 14px; border-radius: 9px; font-size: 0.83rem;
+            font-weight: 600; display: none; margin-bottom: 10px;
+        }
+
+        .mq-fb.show { display: block; animation: fadeIn 0.3s; }
+        .mq-fb.fb-ok { background: rgba(0,232,123,0.06); color: var(--accent); border: 1px solid rgba(0,232,123,0.15); }
+        .mq-fb.fb-no { background: rgba(255,77,106,0.06); color: var(--red); border: 1px solid rgba(255,77,106,0.15); }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* ===== Warning/Tip Boxes ===== */
+        .tip-box {
+            display: flex; gap: 14px; padding: 18px 20px; border-radius: 12px;
+            margin-bottom: 16px; font-size: 0.88rem;
+        }
+
+        .tip-box i { margin-top: 2px; font-size: 1rem; flex-shrink: 0; }
+        .tip-box .tip-text { flex: 1; color: var(--fg2); line-height: 1.6; }
+        .tip-box .tip-text strong { color: var(--fg); }
+
+        .tip-warn { background: rgba(255,176,32,0.06); border: 1px solid rgba(255,176,32,0.15); }
+        .tip-warn i { color: var(--amber); }
+        .tip-danger { background: rgba(255,77,106,0.06); border: 1px solid rgba(255,77,106,0.15); }
+        .tip-danger i { color: var(--red); }
+        .tip-info { background: rgba(0,201,255,0.06); border: 1px solid rgba(0,201,255,0.15); }
+        .tip-info i { color: var(--accent2); }
+        .tip-success { background: rgba(0,232,123,0.06); border: 1px solid rgba(0,232,123,0.15); }
+        .tip-success i { color: var(--accent); }
+
+        /* ===== Divider ===== */
+        .divider {
+            height: 1px; background: var(--border); margin: 40px 0;
+        }
+
+        /* ===== Toast ===== */
+        .toast-wrap { position: fixed; top: 16px; right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+
+        .toast-msg {
+            background: var(--card2); border: 1px solid var(--border);
+            border-radius: 10px; padding: 12px 18px;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.85rem; font-weight: 600;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+            animation: tIn 0.3s ease, tOut 0.3s ease 2.4s forwards;
+        }
+
+        .toast-msg.t-ok { border-left: 3px solid var(--accent); }
+        .toast-msg.t-ok i { color: var(--accent); }
+        .toast-msg.t-err { border-left: 3px solid var(--red); }
+        .toast-msg.t-err i { color: var(--red); }
+
+        @keyframes tIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes tOut { from { opacity: 1; } to { opacity: 0; transform: translateX(30px); } }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px) {
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.open { transform: translateX(0); }
+            .menu-toggle { display: flex; }
+            .sidebar-overlay.show { display: block; }
+            .main { margin-left: 0; }
+            .content-wrap { padding: 70px 20px 60px; }
+            .progress-bar-wrap { padding: 12px 20px; }
+            .type-result-grid { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2rem; }
+        }
+
+        @media (max-width: 500px) {
+            .type-grid { grid-template-columns: 1fr; }
+            .comp-table { font-size: 0.78rem; }
+            .comp-table thead th, .comp-table tbody td { padding: 8px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-dots"></div>
+<div class="bg-blob blob1"></div>
+<div class="bg-blob blob2"></div>
+<div class="bg-blob blob3"></div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<button class="menu-toggle" id="menuToggle" aria-label="Menu">
+    <i class="fa-solid fa-bars"></i>
+</button>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar Navigation -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+        <h2><i class="fa-brands fa-js"></i> JS Basics</h2>
+        <span>Complete Learning Guide</span>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Shuruwaat</div>
+        <a class="nav-link" data-target="sec-intro" onclick="scrollTo_(`sec-intro`)">
+            <i class="fa-solid fa-rocket"></i> JavaScript Kya Hai
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Variables</div>
+        <a class="nav-link" data-target="sec-var-intro" onclick="scrollTo_(`sec-var-intro`)">
+            <i class="fa-solid fa-box"></i> Variables Kya Hain
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-var-compare" onclick="scrollTo_(`sec-var-compare`)">
+            <i class="fa-solid fa-code-compare"></i> var vs let vs const
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-var-scope" onclick="scrollTo_(`sec-var-scope`)">
+            <i class="fa-solid fa-layer-group"></i> Scope Samjho
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-var-quiz" onclick="scrollTo_(`sec-var-quiz`)">
+            <i class="fa-solid fa-brain"></i> Variable Quiz
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+    </div>
+
+    <div class="nav-section">
+        <div class="nav-section-title">Data Types</div>
+        <a class="nav-link" data-target="sec-dt-overview" onclick="scrollTo_(`sec-dt-overview`)">
+            <i class="fa-solid fa-sitemap"></i> Overview
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-workshop" onclick="scrollTo_(`sec-dt-workshop`)">
+            <i class="fa-solid fa-person-chalkboard"></i> Workshop
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-string" onclick="scrollTo_(`sec-dt-string`)">
+            <i class="fa-solid fa-font"></i> String
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-number" onclick="scrollTo_(`sec-dt-number`)">
+            <i class="fa-solid fa-hashtag"></i> Number
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-boolean" onclick="scrollTo_(`sec-dt-boolean`)">
+            <i class="fa-solid fa-toggle-on"></i> Boolean
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-null-undef" onclick="scrollTo_(`sec-dt-null-undef`)">
+            <i class="fa-solid fa-ghost"></i> Null & Undefined
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-object" onclick="scrollTo_(`sec-dt-object`)">
+            <i class="fa-solid fa-cube"></i> Object
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-symbol" onclick="scrollTo_(`sec-dt-symbol`)">
+            <i class="fa-solid fa-fingerprint"></i> Symbol
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-bigint" onclick="scrollTo_(`sec-dt-bigint`)">
+            <i class="fa-solid fa-infinity"></i> BigInt
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-tester" onclick="scrollTo_(`sec-dt-tester`)">
+            <i class="fa-solid fa-flask-vial"></i> Type Tester
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+        <a class="nav-link" data-target="sec-dt-quiz" onclick="scrollTo_(`sec-dt-quiz`)">
+            <i class="fa-solid fa-trophy"></i> Data Type Quiz
+            <span class="nav-done"><i class="fa-solid fa-check"></i></span>
+        </a>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="main">
+    <!-- Progress Bar -->
+    <div class="progress-bar-wrap">
+        <div class="progress-info">
+            <span>Progress</span>
+            <span class="pct" id="progressPct">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+    </div>
+
+    <div class="content-wrap">
+
+        <!-- ===== HERO ===== -->
+        <div class="hero">
+            <div class="hero-badge"><i class="fa-solid fa-book-open"></i> Chapter 1 — Fundamentals</div>
+            <h1>JavaScript <span class="grad">Basics</span></h1>
+            <p>Variables, Data Types — sab kuch zero se, practical examples ke saath. Har concept chakh ke samjho, sirf padh mat.</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="num">15</div>
+                    <div class="lbl">Topics</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">8</div>
+                    <div class="lbl">Data Types</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">5+</div>
+                    <div class="lbl">Playgrounds</div>
+                </div>
+                <div class="hero-stat">
+                    <div class="num">2</div>
+                    <div class="lbl">Quizzes</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: JavaScript Kya Hai ===== -->
+        <section class="section" id="sec-intro">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 01</div>
+            <h2>JavaScript Kya Hai?</h2>
+
+            <p>JavaScript ek <strong>high-level, interpreted programming language</strong> hai jo web pages ko interactive banati hai. Browser mein hi chalti hai — koi separate installation ki zarurat nahi.</p>
+
+            <div class="info-card accent-border">
+                <h3 style="margin-top:0;"><span class="h3-icon" style="background:rgba(0,232,123,0.1);color:var(--accent);"><i class="fa-solid fa-lightbulb"></i></span> Simple Si Baat</h3>
+                <p style="margin-bottom:0;">HTML = Web page ka <strong>skeleton</strong> (structure)<br>CSS = Web page ka <strong>makeup</strong> (style)<br>JavaScript = Web page ka <strong>brain</strong> (behavior, logic)</p>
+            </div>
+
+            <h3><span class="h3-icon" style="background:rgba(0,201,255,0.1);color:var(--accent2);"><i class="fa-solid fa-globe"></i></span> Kahan Kahan Chalti Hai?</h3>
+            <ul>
+                <li><strong>Browser mein</strong> — Websites, web apps (React, Vue, Angular)</li>
+                <li><strong>Server par</strong> — Node.js ke through backend bana sakte ho</li>
+                <li><strong>Mobile mein</strong> — React Native se Android/iOS apps</li>
+                <li><strong>Desktop mein</strong> — Electron se desktop apps (VS Code bhi Electron se bana hai!)</li>
+                <li><strong>IoT / Robotics</strong> — Johnny-Five library se hardware control</li>
+            </ul>
+
+            <div class="tip-box tip-info">
+                <i class="fa-solid fa-circle-info"></i>
+                <div class="tip-text"><strong>Fun Fact:</strong> JavaScript ka naam "Java" se milta hai, par dono bilkul alag languages hain. JavaScript ka creator Brendan Eich ne sirf 10 din mein uska first version bana diya tha — 1995 mein!</div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Pehla JavaScript program — Console mein hello likho</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello, Duniya!"</span><span class="syn-op">);</span>
+
+<span class="syn-cmt">// Browser mein popup dikhao</span>
+<span class="syn-fn">alert</span><span class="syn-op">(</span><span class="syn-str">"Welcome to JavaScript!"</span><span class="syn-op">);</span>
+
+<span class="syn-cmt">// Web page ka content change karo</span>
+<span class="syn-var">document</span><span class="syn-op">.</span><span class="syn-fn">getElementById</span><span class="syn-op">(</span><span class="syn-str">"title"</span><span class="syn-op">).</span><span class="syn-var">textContent</span> <span class="syn-op">=</span> <span class="syn-str">"Naya Title!"</span><span class="syn-op">;</span></div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Variables Kya Hain ===== -->
+        <section class="section" id="sec-var-intro">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 02</div>
+            <h2>Variables Kya Hain?</h2>
+
+            <p>Variable ek <strong>dabba (container)</strong> hai jismein tum koi value store kar sakte ho. Baad mein us value ko naam se access kar sakte ho, change bhi kar sakte ho.</p>
+
+            <div class="info-card accent-border">
+                <p style="margin-bottom:0;"><strong>Real Life Example:</strong> Socho ek dabba hai jiske upar "UMAR" likha hai. Andar tumne <code style="font-family:'Fira Code',monospace;background:rgba(0,232,123,0.08);color:var(--accent);padding:1px 6px;border-radius:4px;">25</code> likha. Jab bhi "UMAR" bologo, 25 milega. Kal agar badalna ho toh 26 kar do — dabba same rahega, value badli.</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Variable banana = Dabba bana + Naam likh + Value daal</span>
+
+<span class="syn-kw">let</span> <span class="syn-var">naam</span> <span class="syn-op">=</span> <span class="syn-str">"Rahul"</span><span class="syn-op">;</span>       <span class="syn-cmt">// String dabba</span>
+<span class="syn-kw">let</span> <span class="syn-var">umar</span> <span class="syn-op">=</span> <span class="syn-num">25</span><span class="syn-op">;</span>            <span class="syn-cmt">// Number dabba</span>
+<span class="syn-kw">let</span> <span class="syn-var">studentHai</span> <span class="syn-op">=</span> <span class="syn-bool">true</span><span class="syn-op">;</span>     <span class="syn-cmt">// Boolean dabba</span>
+
+<span class="syn-cmt">// Value access karo</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">naam</span><span class="syn-op">);</span>          <span class="syn-cmt">// "Rahul"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">umar</span><span class="syn-op">);</span>          <span class="syn-cmt">// 25</span>
+
+<span class="syn-cmt">// Value change karo</span>
+<span class="syn-var">umar</span> <span class="syn-op">=</span> <span class="syn-num">26</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">umar</span><span class="syn-op">);</span>          <span class="syn-cmt">// 26</span></div>
+            </div>
+
+            <h3><span class="h3-icon" style="background:rgba(255,176,32,0.1);color:var(--amber);"><i class="fa-solid fa-triangle-exclamation"></i></span> Variable Naming Rules</h3>
+            <ul>
+                <li><strong>Letters, digits, _, $</strong> use kar sakte ho</li>
+                <li><strong>Number se start</strong> nahi ho sakta — <code style="font-family:'Fira Code',monospace;background:rgba(255,77,106,0.08);color:var(--red);padding:1px 6px;border-radius:4px;">1name</code> galat hai</li>
+                <li><strong>Spaces nahi</strong> — <code style="font-family:'Fira Code',monospace;background:rgba(255,77,106,0.08);color:var(--red);padding:1px 6px;border-radius:4px;">my name</code> galat, <code style="font-family:'Fira Code',monospace;background:rgba(0,232,123,0.08);color:var(--accent);padding:1px 6px;border-radius:4px;">myName</code> sahi</li>
+                <li><strong>Reserved words</strong> nahi use kar sakte — <code style="font-family:'Fira Code',monospace;background:rgba(255,77,106,0.08);color:var(--red);padding:1px 6px;border-radius:4px;">let, for, if, return</code> etc.</li>
+                <li><strong>Case sensitive</strong> hai — <code style="font-family:'Fira Code',monospace;background:rgba(0,232,123,0.08);color:var(--accent);padding:1px 6px;border-radius:4px;">Naam</code> aur <code style="font-family:'Fira Code',monospace;background:rgba(0,232,123,0.08);color:var(--accent);padding:1px 6px;border-radius:4px;">naam</code> alag hain</li>
+            </ul>
+
+            <div class="tip-box tip-success">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <div class="tip-text"><strong>Best Practice:</strong> camelCase use karo — <code style="font-family:'Fira Code',monospace;color:var(--accent);">myFirstName</code>, <code style="font-family:'Fira Code',monospace;color:var(--accent);">totalPrice</code>, <code style="font-family:'Fira Code',monospace;color:var(--accent);">isActive</code>. Meaningful naam rakho, <code style="font-family:'Fira Code',monospace;color:var(--red);">x</code> <code style="font-family:'Fira Code',monospace;color:var(--red);">a</code> <code style="font-family:'Fira Code',monospace;color:var(--red);">temp</code> avoid karo.</div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: var vs let vs const ===== -->
+        <section class="section" id="sec-var-compare">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 03</div>
+            <h2>var vs let vs const — Full Comparison</h2>
+
+            <p>JavaScript mein variable banane ke 3 tarike hain. Har ek ka apna behavior hai. Samjho, yaad karo, phir kabhi bhulna nahi.</p>
+
+            <table class="comp-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th><span class="badge-sm badge-var">var</span></th>
+                        <th><span class="badge-sm badge-let">let</span></th>
+                        <th><span class="badge-sm badge-const">const</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Scope</strong></td>
+                        <td>Function scope</td>
+                        <td>Block scope <span class="badge-sm badge-yes">Better</span></td>
+                        <td>Block scope <span class="badge-sm badge-yes">Better</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reassign</strong></td>
+                        <td><span class="badge-sm badge-yes">Yes</span></td>
+                        <td><span class="badge-sm badge-yes">Yes</span></td>
+                        <td><span class="badge-sm badge-no">No</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Re-declare</strong></td>
+                        <td><span class="badge-sm badge-yes">Yes</span> <span style="color:var(--red);font-size:0.75rem;">Dangerous</span></td>
+                        <td><span class="badge-sm badge-no">No</span></td>
+                        <td><span class="badge-sm badge-no">No</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Hoisting</strong></td>
+                        <td>Hoisted (undefined)</td>
+                        <td>Hoisted (TDZ error)</td>
+                        <td>Hoisted (TDZ error)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Value without init</strong></td>
+                        <td><code style="color:var(--muted);">undefined</code></td>
+                        <td><code style="color:var(--muted);">undefined</code></td>
+                        <td><span style="color:var(--red);">Error!</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>When to use</strong></td>
+                        <td><span style="color:var(--red);">Mat use karo</span></td>
+                        <td>Value badlegi toh</td>
+                        <td>Default choice</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="tip-box tip-danger">
+                <i class="fa-solid fa-skull-crossbones"></i>
+                <div class="tip-text"><strong>Golden Rule:</strong> <code style="font-family:'Fira Code',monospace;color:var(--red);">var</code> ko <strong>bhool jao</strong>. 2015 (ES6) se <code style="font-family:'Fira Code',monospace;color:var(--purple);">let</code> aur <code style="font-family:'Fira Code',monospace;color:var(--amber);">const</code> aaye hain. Hamesha <code style="font-family:'Fira Code',monospace;color:var(--amber);">const</code> se start karo, agar reassign karna ho tab <code style="font-family:'Fira Code',monospace;color:var(--purple);">let</code> use karo.</div>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// ✅ SAHI TARIKA — Modern JavaScript</span>
+<span class="syn-kw">const</span> <span class="syn-var">PI</span> <span class="syn-op">=</span> <span class="syn-num">3.14</span><span class="syn-op">;</span>           <span class="syn-cmt">// Kabhi nahi badlega</span>
+<span class="syn-kw">const</span> <span class="syn-var">naam</span> <span class="syn-op">=</span> <span class="syn-str">"Rahul"</span><span class="syn-op">;</span>       <span class="syn-cmt">// Naam badlega nahi</span>
+<span class="syn-kw">let</span> <span class="syn-var">score</span> <span class="syn-op">=</span> <span class="syn-num">0</span><span class="syn-op">;</span>             <span class="syn-cmt">// Score badlega — let use karo</span>
+<span class="syn-kw">let</span> <span class="syn-var">isLoggedIn</span> <span class="syn-op">=</span> <span class="syn-bool">false</span><span class="syn-op">;</span>   <span class="syn-cmt">// Status badlega — let</span>
+
+<span class="syn-var">score</span> <span class="syn-op">=</span> <span class="syn-num">100</span><span class="syn-op">;</span>                  <span class="syn-cmt">// ✅ let se banaya, reassign OK</span>
+<span class="syn-cmt">// PI = 3.14159;             // ❌ Error! const ko reassign nahi</span>
+
+<span class="syn-cmt">// ❌ GALAT TARIKA — Purana style</span>
+<span class="syn-kw">var</span> <span class="syn-var">x</span> <span class="syn-op">=</span> <span class="syn-num">10</span><span class="syn-op">;</span>                <span class="syn-cmt">// Mat use karo!</span>
+<span class="syn-kw">var</span> <span class="syn-var">x</span> <span class="syn-op">=</span> <span class="syn-num">20</span><span class="syn-op">;</span>                <span class="syn-cmt">// Re-declare bhi ho gaya! Bug ka source</span></div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION: Scope ===== -->
+        <section class="section" id="sec-var-scope">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 04</div>
+            <h2>Scope Samjho — Block vs Function</h2>
+
+            <p>Scope matlab <strong>"kahan tak visible hai"</strong>. Variable kahin bana, par woh sirf usi area mein kaam karega jahan woh belong karta hai.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// ===== BLOCK SCOPE (let & const) =====</span>
+<span class="syn-op">{</span>
+    <span class="syn-kw">let</span> <span class="syn-var">a</span> <span class="syn-op">=</span> <span class="syn-num">10</span><span class="syn-op">;</span>
+    <span class="syn-kw">const</span> <span class="syn-var">b</span> <span class="syn-op">=</span> <span class="syn-num">20</span><span class="syn-op">;</span>
+    <span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">a</span><span class="syn-op">,</span> <span class="syn-var">b</span><span class="syn-op">);</span>  <span class="syn-cmt">// ✅ 10, 20</span>
+<span class="syn-op">}</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">a</span><span class="syn-op">);</span>  <span class="syn-cmt">// ❌ ReferenceError! Block ke bahar nahi milta</span>
+
+<span class="syn-cmt">// ===== FUNCTION SCOPE (var) =====</span>
+<span class="syn-kw">function</span> <span class="syn-fn">test</span><span class="syn-op">()</span> <span class="syn-op">{</span>
+    <span class="syn-kw">var</span> <span class="syn-var">c</span> <span class="syn-op">=</span> <span class="syn-num">30</span><span class="syn-op">;</span>
+<span class="syn-op">}</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">c</span><span class="syn-op">);</span>  <span class="syn-cmt">// ❌ ReferenceError! Function ke bahar nahi milta</span>
+
+<span class="syn-cmt">// PAR var BLOCK scope follow nahi karta!</span>
+<span class="syn-kw">if</span> <span class="syn-op">(</span><span class="syn-bool">true</span><span class="syn-op">)</span> <span class="syn-op">{</span>
+    <span class="syn-kw">var</span> <span class="syn-var">d</span> <span class="syn-op">=</span> <span class="syn-num">40</span><span class="syn-op">;</span>  <span class="syn-cmt">// if block hai, par var ko farak nahi padta</span>
+<span class="syn-op">}</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">d</span><span class="syn-op">);</span>  <span class="syn-cmt">// ✅ 40 — Ye hi problem hai var mein!</span></div>
+            </div>
+
+            <!-- Live Scope Demo -->
+            <h3><span class="h3-icon" style="background:rgba(0,232,123,0.1);color:var(--accent);"><i class="fa-solid fa-play"></i></span> Khud Try Karo</h3>
+            <div class="playground" id="pg-scope">
+                <textarea class="playground-editor" spellcheck="false">let x = 10;
+{
+    let x = 20;
+    console.log("Block ke andar:", x);
+}
+console.log("Block ke bahar:", x);</textarea>
+                <div class="playground-output" id="pg-scope-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div>
+                <div class="playground-run">
+                    <button class="btn-run" onclick="runPlayground('pg-scope')"><i class="fa-solid fa-play"></i> Run</button>
+                    <button class="btn-reset" onclick="resetPlayground('pg-scope')"><i class="fa-solid fa-rotate"></i> Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECTION: Variable Quiz ===== -->
+        <section class="section" id="sec-var-quiz">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Practice 01</div>
+            <h2>Variable Quiz</h2>
+            <p>Neeche 5 questions hain. Dimag lagao, answer do, aur check karo kitne sahi hue!</p>
+
+            <div id="varQuizContainer"></div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Data Types Overview ===== -->
+        <section class="section" id="sec-dt-overview">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 05</div>
+            <h2>Data Types — Overview</h2>
+
+            <p>JavaScript mein <strong>8 data types</strong> hain. Inhe 2 categories mein baanta jaata hai:</p>
+
+            <div class="info-card blue-border">
+                <h3 style="margin-top:0;font-size:1rem;"><span class="h3-icon" style="background:rgba(0,201,255,0.1);color:var(--accent2);"><i class="fa-solid fa-diamond"></i></span> Primitive Types (7)</h3>
+                <p style="margin-bottom:0;font-size:0.88rem;">Ye single value store karte hain. Immutable hain (direct change nahi ho sakti). <strong>String, Number, Boolean, Null, Undefined, Symbol, BigInt</strong></p>
+            </div>
+
+            <div class="info-card purple-border">
+                <h3 style="margin-top:0;font-size:1rem;"><span class="h3-icon" style="background:rgba(180,110,255,0.1);color:var(--purple);"><i class="fa-solid fa-cubes"></i></span> Reference Type (1)</h3>
+                <p style="margin-bottom:0;font-size:0.88rem;">Ye memory mein reference store karte hain. Mutable hain. <strong>Object</strong> (Arrays, Functions, Dates sab Objects hain internally)</p>
+            </div>
+
+            <div class="type-grid" style="margin-top:20px;">
+                <div class="type-card tc-string" onclick="scrollTo_('sec-dt-string')">
+                    <div class="tc-icon"><i class="fa-solid fa-font"></i></div>
+                    <div class="tc-name">String</div>
+                    <div class="tc-desc">Text data — letters, words, sentences</div>
+                    <div class="tc-example">"Hello World"</div>
+                </div>
+                <div class="type-card tc-number" onclick="scrollTo_('sec-dt-number')">
+                    <div class="tc-icon"><i class="fa-solid fa-hashtag"></i></div>
+                    <div class="tc-name">Number</div>
+                    <div class="tc-desc">Integers aur decimals — sirf ek type</div>
+                    <div class="tc-example">42, 3.14, -7</div>
+                </div>
+                <div class="type-card tc-boolean" onclick="scrollTo_('sec-dt-boolean')">
+                    <div class="tc-icon"><i class="fa-solid fa-toggle-on"></i></div>
+                    <div class="tc-name">Boolean</div>
+                    <div class="tc-desc">Sirf 2 values — true ya false</div>
+                    <div class="tc-example">true / false</div>
+                </div>
+                <div class="type-card tc-null" onclick="scrollTo_('sec-dt-null-undef')">
+                    <div class="tc-icon"><i class="fa-solid fa-ban"></i></div>
+                    <div class="tc-name">Null</div>
+                    <div class="tc-desc">Intentionally empty — "kuch nahi"</div>
+                    <div class="tc-example">null</div>
+                </div>
+                <div class="type-card tc-undefined" onclick="scrollTo_('sec-dt-null-undef')">
+                    <div class="tc-icon"><i class="fa-solid fa-question"></i></div>
+                    <div class="tc-name">Undefined</div>
+                    <div class="tc-desc">Value nahi mili — "abhi pata nahi"</div>
+                    <div class="tc-example">undefined</div>
+                </div>
+                <div class="type-card tc-object" onclick="scrollTo_('sec-dt-object')">
+                    <div class="tc-icon"><i class="fa-solid fa-cube"></i></div>
+                    <div class="tc-name">Object</div>
+                    <div class="tc-desc">Key-value pairs — reference type</div>
+                    <div class="tc-example">{name: "Rahul"}</div>
+                </div>
+                <div class="type-card tc-symbol" onclick="scrollTo_('sec-dt-symbol')">
+                    <div class="tc-icon"><i class="fa-solid fa-fingerprint"></i></div>
+                    <div class="tc-name">Symbol</div>
+                    <div class="tc-desc">Unique identifier — ES6 mein aaya</div>
+                    <div class="tc-example">Symbol("id")</div>
+                </div>
+                <div class="type-card tc-bigint" onclick="scrollTo_('sec-dt-bigint')">
+                    <div class="tc-icon"><i class="fa-solid fa-infinity"></i></div>
+                    <div class="tc-name">BigInt</div>
+                    <div class="tc-desc">Badi numbers — limit nahi hai</div>
+                    <div class="tc-example">9007199254740991n</div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Workshop ===== -->
+        <section class="section" id="sec-dt-workshop">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 06</div>
+            <h2>Workshop — Variables + Data Types Ka Real-Life Use</h2>
+
+            <p>Abhi tak tumne basic theory dekha. Ab real world ke examples se samjho ki variables aur data types ek app kaise banate hain.</p>
+
+            <div class="info-card accent-border">
+                <h3 style="margin-top:0; font-size:1rem;"><span class="h3-icon" style="background:rgba(0,232,123,0.1);color:var(--accent);"><i class="fa-solid fa-user"></i></span> Example: Profile Card</h3>
+                <p style="margin-bottom:0;">Ek user profile ke liye variable aur data types ka use hota hai. Naam string, age number, isStudent boolean, address object, skills array.</p>
+            </div>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Profile data</span>
+<span class="syn-kw">const</span> <span class="syn-var">user</span> <span class="syn-op">=</span> <span class="syn-op">{</span>
+    <span class="syn-var">name</span><span class="syn-op">:</span> <span class="syn-str">"Aisha Khan"</span><span class="syn-op">,</span>
+    <span class="syn-var">age</span><span class="syn-op">:</span> <span class="syn-num">22</span><span class="syn-op">,</span>
+    <span class="syn-var">city</span><span class="syn-op">:</span> <span class="syn-str">"Lucknow"</span><span class="syn-op">,</span>
+    <span class="syn-var">isStudent</span><span class="syn-op">:</span> <span class="syn-bool">true</span><span class="syn-op">,</span>
+    <span class="syn-var">skills</span><span class="syn-op">:</span> <span class="syn-op">[</span><span class="syn-str">"HTML"</span><span class="syn-op">,</span> <span class="syn-str">"CSS"</span><span class="syn-op">,</span> <span class="syn-str">"JS"</span><span class="syn-op">]</span>
+<span class="syn-op">};</span>
+
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">`Welcome ${user.name}!`</span><span class="syn-op">);</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">user</span><span class="syn-op">.</span><span class="syn-var">skills</span><span class="syn-op">.</span><span class="syn-fn">length</span><span class="syn-op">);</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">user</span><span class="syn-op">.</span><span class="syn-var">isStudent</span> <span class="syn-op">?</span> <span class="syn-str">"Student hai"</span> <span class="syn-op">:</span> <span class="syn-str">"Working professional"</span><span class="syn-op">);</span></div>
+            </div>
+
+            <div class="type-grid" style="margin-top:20px;">
+                <div class="type-card tc-string">
+                    <div class="tc-icon"><i class="fa-solid fa-font"></i></div>
+                    <div class="tc-name">String</div>
+                    <div class="tc-desc">Name, city, email, bio text</div>
+                    <div class="tc-example">"Aisha Khan"</div>
+                </div>
+                <div class="type-card tc-number">
+                    <div class="tc-icon"><i class="fa-solid fa-hashtag"></i></div>
+                    <div class="tc-name">Number</div>
+                    <div class="tc-desc">Age, marks, price, balance</div>
+                    <div class="tc-example">22, 95, 1500</div>
+                </div>
+                <div class="type-card tc-boolean">
+                    <div class="tc-icon"><i class="fa-solid fa-toggle-on"></i></div>
+                    <div class="tc-name">Boolean</div>
+                    <div class="tc-desc">Logged in, active, isStudent</div>
+                    <div class="tc-example">true / false</div>
+                </div>
+                <div class="type-card tc-object">
+                    <div class="tc-icon"><i class="fa-solid fa-cube"></i></div>
+                    <div class="tc-name">Object</div>
+                    <div class="tc-desc">User details, order, settings</div>
+                    <div class="tc-example">{ name: "Aisha" }</div>
+                </div>
+            </div>
+
+            <h3><span class="h3-icon" style="background:rgba(255,176,32,0.1);color:var(--amber);"><i class="fa-solid fa-list-check"></i></span> Mini Tasks</h3>
+            <ul>
+                <li>Ek <strong>const product</strong> object banao jisme name, price, inStock, rating ho.</li>
+                <li>Ek <strong>const student</strong> object banao, usme name, grade, totalMarks, passed boolean rakho.</li>
+                <li>Ek <strong>const cart</strong> array banao jisme 3 item names store hon.</li>
+                <li>String methods use karke user ka email lowercase/uppercase/trim kar ke print karo.</li>
+            </ul>
+
+            <div class="tip-box tip-success">
+                <i class="fa-solid fa-thumbs-up"></i>
+                <div class="tip-text"><strong>Mini Project Ideas:</strong> Profile Card, Shopping List, Expense Tracker, Student Record, Product Catalog. In sab mein variable aur data types hi core logic hote hain.</div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: String ===== -->
+        <section class="section" id="sec-dt-string">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 07</div>
+            <h2>String — Text Ka Data Type</h2>
+
+            <p>String matlab <strong>text</strong> — koi bhi character sequence. Single quotes, double quotes, ya backticks se banta hai.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Teen tarike se string bana sakte ho</span>
+<span class="syn-kw">const</span> <span class="syn-var">s1</span> <span class="syn-op">=</span> <span class="syn-str">'Hello'</span><span class="syn-op">;</span>         <span class="syn-cmt">// Single quotes</span>
+<span class="syn-kw">const</span> <span class="syn-var">s2</span> <span class="syn-op">=</span> <span class="syn-str">"World"</span><span class="syn-op">;</span>         <span class="syn-cmt">// Double quotes</span>
+<span class="syn-kw">const</span> <span class="syn-var">s3</span> <span class="syn-op">=</span> <span class="syn-str">`Hello ${s2}`</span><span class="syn-op">;</span>    <span class="syn-cmt">// Backticks (Template Literal)</span>
+
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">s3</span><span class="syn-op">);</span>  <span class="syn-cmt">// "Hello World"</span>
+
+<span class="syn-cmt">// Template Literal mein expression bhi daal sakte ho</span>
+<span class="syn-kw">const</span> <span class="syn-var">umar</span> <span class="syn-op">=</span> <span class="syn-num">25</span><span class="syn-op">;</span>
+<span class="syn-kw">const</span> <span class="syn-var">msg</span> <span class="syn-op">=</span> <span class="syn-str">`Mera naam ${s1} hai aur umar ${umar} saal hai.`</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">msg</span><span class="syn-op">);</span>
+
+<span class="syn-cmt">// Multi-line string — sirf backticks se</span>
+<span class="syn-kw">const</span> <span class="syn-var">poem</span> <span class="syn-op">=</span> <span class="syn-str">`
+Yeh pehli line hai
+Yeh doosri line hai
+Template literals amazing hain!
+`</span><span class="syn-op">;</span>
+
+<span class="syn-cmt">// String properties & methods</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-var">length</span><span class="syn-op">);</span>        <span class="syn-cmt">// 5</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-fn">toUpperCase</span><span class="syn-op">());</span>   <span class="syn-cmt">// "HELLO"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-fn">toLowerCase</span><span class="syn-op">());</span>   <span class="syn-cmt">// "hello"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-fn">slice</span><span class="syn-op">(</span><span class="syn-num">1</span><span class="syn-op">,</span> <span class="syn-num">4</span><span class="syn-op">));</span>       <span class="syn-cmt">// "ell"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"a,b,c"</span><span class="syn-op">.</span><span class="syn-fn">split</span><span class="syn-op">(</span><span class="syn-str">","</span><span class="syn-op">));</span>       <span class="syn-cmt">// ["a", "b", "c"]</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"  hello  "</span><span class="syn-op">.</span><span class="syn-fn">trim</span><span class="syn-op">());</span>       <span class="syn-cmt">// "hello"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-fn">includes</span><span class="syn-op">(</span><span class="syn-str">"ell"</span><span class="syn-op">));</span>    <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">.</span><span class="syn-fn">replace</span><span class="syn-op">(</span><span class="syn-str">"H"</span><span class="syn-op">,</span> <span class="syn-str">"J"</span><span class="syn-op">));</span>  <span class="syn-cmt">// "Jello"</span></div>
+            </div>
+
+            <div class="tip-box tip-warn">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="tip-text"><strong>Important:</strong> String <strong>immutable</strong> hai. Matlab <code style="font-family:'Fira Code',monospace;">"Hello"[0] = "J"</code> kaam nahi karega. String methods naya string return karte hain, original change nahi hota.</div>
+            </div>
+
+            <div class="playground" id="pg-string">
+                <textarea class="playground-editor" spellcheck="false">const name = "Rahul Sharma";
+console.log("Length:", name.length);
+console.log("Upper:", name.toUpperCase());
+console.log("Slice:", name.slice(0, 5));
+console.log("Split:", name.split(" "));
+console.log("Replace:", name.replace("Sharma", "Verma"));
+console.log("Index of 'a':", name.indexOf("a"));</textarea>
+                <div class="playground-output" id="pg-string-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div>
+                <div class="playground-run">
+                    <button class="btn-run" onclick="runPlayground('pg-string')"><i class="fa-solid fa-play"></i> Run</button>
+                    <button class="btn-reset" onclick="resetPlayground('pg-string')"><i class="fa-solid fa-rotate"></i> Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Number ===== -->
+        <section class="section" id="sec-dt-number">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 08</div>
+            <h2>Number — Sab Tarah Ke Numbers</h2>
+
+            <p>JavaScript mein <strong>sirf ek Number type</strong> hai — integer ho ya decimal, sab Number hai. Dusri languages jaise int, float, double alag nahi hain.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Integer</span>
+<span class="syn-kw">const</span> <span class="syn-var">age</span> <span class="syn-op">=</span> <span class="syn-num">25</span><span class="syn-op">;</span>
+
+<span class="syn-cmt">// Decimal (Floating Point)</span>
+<span class="syn-kw">const</span> <span class="syn-var">price</span> <span class="syn-op">=</span> <span class="syn-num">99.99</span><span class="syn-op">;</span>
+
+<span class="syn-cmt">// Negative</span>
+<span class="syn-kw">const</span> <span class="syn-var">temp</span> <span class="syn-op">=</span> <span class="syn-op">-</span><span class="syn-num">5.5</span><span class="syn-op">;</span>
+
+<span class="syn-cmt">// Special Values</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Infinity</span><span class="syn-op">);</span>       <span class="syn-cmt">// Infinity</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-op">-</span><span class="syn-fn">Infinity</span><span class="syn-op">);</span>      <span class="syn-cmt">// -Infinity</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">NaN</span><span class="syn-op">);</span>            <span class="syn-cmt">// NaN (Not a Number)</span>
+
+<span class="syn-cmt">// NaN aata hai jab number operation fail ho</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"abc"</span> <span class="syn-op">*</span> <span class="syn-num">5</span><span class="syn-op">);</span>    <span class="syn-cmt">// NaN</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">NaN</span> <span class="syn-op">===</span> <span class="syn-fn">NaN</span><span class="syn-op">);</span>   <span class="syn-cmt">// false! NaN khud se barabar nahi</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Number</span><span class="syn-op">.</span><span class="syn-fn">isNaN</span><span class="syn-op">(</span><span class="syn-fn">NaN</span><span class="syn-op">));</span> <span class="syn-cmt">// true — ye sahi tarika hai check karne ka</span>
+
+<span class="syn-cmt">// Number methods</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">((</span><span class="syn-num">3.14159</span><span class="syn-op">).</span><span class="syn-fn">toFixed</span><span class="syn-op">(</span><span class="syn-num">2</span><span class="syn-op">));</span>   <span class="syn-cmt">// "3.14"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">parseInt</span><span class="syn-op">(</span><span class="syn-str">"42px"</span><span class="syn-op">));</span>      <span class="syn-cmt">// 42</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">parseFloat</span><span class="syn-op">(</span><span class="syn-str">"3.14abc"</span><span class="syn-op">));</span>  <span class="syn-cmt">// 3.14</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Number</span><span class="syn-op">.</span><span class="syn-fn">isInteger</span><span class="syn-op">(</span><span class="syn-num">42</span><span class="syn-op">));</span>   <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Number</span><span class="syn-op">.</span><span class="syn-fn">MAX_SAFE_INTEGER</span><span class="syn-op">);</span> <span class="syn-cmt">// 9007199254740991</span></div>
+            </div>
+
+            <div class="tip-box tip-danger">
+                <i class="fa-solid fa-bug"></i>
+                <div class="tip-text"><strong>Floating Point Bug:</strong> <code style="font-family:'Fira Code',monospace;">0.1 + 0.2 === 0.30000000000000004</code> — ye JavaScript ka bug nahi, IEEE 754 standard ki limitation hai. Financial calculations ke liye <code style="font-family:'Fira Code',monospace;">toFixed()</code> ya libraries use karo.</div>
+            </div>
+
+            <div class="playground" id="pg-number">
+                <textarea class="playground-editor" spellcheck="false">console.log("0.1 + 0.2 =", 0.1 + 0.2);
+console.log("Fixed:", (0.1 + 0.2).toFixed(2));
+console.log("MAX_SAFE:", Number.MAX_SAFE_INTEGER);
+console.log("Parse int:", parseInt("42 years"));
+console.log("Is NaN?:", Number.isNaN("hello" * 2));
+console.log("Is Finite?:", Number.isFinite(999));</textarea>
+                <div class="playground-output" id="pg-number-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div>
+                <div class="playground-run">
+                    <button class="btn-run" onclick="runPlayground('pg-number')"><i class="fa-solid fa-play"></i> Run</button>
+                    <button class="btn-reset" onclick="resetPlayground('pg-number')"><i class="fa-solid fa-rotate"></i> Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Boolean ===== -->
+        <section class="section" id="sec-dt-boolean">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 09</div>
+            <h2>Boolean — True ya False</h2>
+
+            <p>Boolean sirf <strong>2 values</strong> rakhta hai: <code style="font-family:'Fira Code',monospace;color:var(--accent);">true</code> aur <code style="font-family:'Fira Code',monospace;color:var(--red);">false</code>. Conditions, flags, switches mein use hota hai.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Direct values</span>
+<span class="syn-kw">const</span> <span class="syn-var">isLoggedIn</span> <span class="syn-op">=</span> <span class="syn-bool">true</span><span class="syn-op">;</span>
+<span class="syn-kw">const</span> <span class="syn-var">isDeleted</span> <span class="syn-op">=</span> <span class="syn-bool">false</span><span class="syn-op">;</span>
+
+<span class="syn-cmt">// Comparison se bhi boolean milta hai</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-num">10</span> <span class="syn-op">></span> <span class="syn-num">5</span><span class="syn-op">);</span>    <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-num">10</span> <span class="syn-op">===</span> <span class="syn-str">"10"</span><span class="syn-op">);</span> <span class="syn-cmt">// false (type alag hai)</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-num">10</span> <span class="syn-op">==</span> <span class="syn-str">"10"</span><span class="syn-op">);</span>  <span class="syn-cmt">// true (type convert hua)</span>
+
+<span class="syn-cmt">// Boolean() function — kisi bhi value ko true/false mein convert karo</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-num">1</span><span class="syn-op">));</span>         <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-num">0</span><span class="syn-op">));</span>         <span class="syn-cmt">// false</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-str">"hello"</span><span class="syn-op">));</span>    <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-str">""</span><span class="syn-op">));</span>       <span class="syn-cmt">// false</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-null">null</span><span class="syn-op">));</span>      <span class="syn-cmt">// false</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Boolean</span><span class="syn-op">(</span><span class="syn-bool">undefined</span><span class="syn-op">));</span> <span class="syn-cmt">// false</span></div>
+            </div>
+
+            <div class="info-card amber-border">
+                <h3 style="margin-top:0;font-size:0.95rem;"><i class="fa-solid fa-memory" style="color:var(--amber);margin-right:6px;"></i> Falsy Values — Ye 8 values false ban jaati hain:</h3>
+                <p style="margin-bottom:0;font-family:'Fira Code',monospace;font-size:0.82rem;line-height:2;">false, 0, -0, 0n, "", null, undefined, NaN</p>
+            </div>
+            <p style="margin-top:8px;">Baaki <strong>sab kuch truthy</strong> hai — empty array <code style="font-family:'Fira Code',monospace;color:var(--accent);">[]</code>, empty object <code style="font-family:'Fira Code',monospace;color:var(--accent);">{}</code>, "false" string — sab true!</p>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Null & Undefined ===== -->
+        <section class="section" id="sec-dt-null-undef">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 10</div>
+            <h2>Null vs Undefined — Dono "Kuch Nahi" Par Alag Hain</h2>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// UNDEFINED — value assign nahi hui</span>
+<span class="syn-kw">let</span> <span class="syn-var">x</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">x</span><span class="syn-op">);</span>              <span class="syn-cmt">// undefined</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-kw">typeof</span> <span class="syn-var">x</span><span class="syn-op">);</span>       <span class="syn-cmt">// "undefined"</span>
+
+<span class="syn-cmt">// Function bina return ke undefined deta hai</span>
+<span class="syn-kw">function</span> <span class="syn-fn">greet</span><span class="syn-op">()</span> <span class="syn-op">{</span>
+    <span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"Hello"</span><span class="syn-op">);</span>
+<span class="syn-op">}</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">greet</span><span class="syn-op">());</span>        <span class="syn-cmt">// "Hello" then undefined</span>
+
+<span class="syn-cmt">// Object mein nonexistent property</span>
+<span class="syn-kw">const</span> <span class="syn-var">obj</span> <span class="syn-op">=</span> <span class="syn-op">{</span> <span class="syn-var">name</span><span class="syn-op">:</span> <span class="syn-str">"Rahul"</span> <span class="syn-op">};</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">obj</span><span class="syn-op">.</span><span class="syn-var">age</span><span class="syn-op">);</span>     <span class="syn-cmt">// undefined</span>
+
+<span class="syn-cmt">// NULL — intentionally "kuch nahi" set kiya</span>
+<span class="syn-kw">let</span> <span class="syn-var">data</span> <span class="syn-op">=</span> <span class="syn-null">null</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">data</span><span class="syn-op">);</span>           <span class="syn-cmt">// null</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-kw">typeof</span> <span class="syn-var">data</span><span class="syn-op">);</span>     <span class="syn-cmt">// "object" ← JS KA FAMOUS BUG!</span>
+
+<span class="syn-cmt">// null vs undefined comparison</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-null">null</span> <span class="syn-op">==</span> <span class="syn-bool">undefined</span><span class="syn-op">);</span>  <span class="syn-cmt">// true (loose equality)</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-null">null</span> <span class="syn-op">===</span> <span class="syn-bool">undefined</span><span class="syn-op">);</span> <span class="syn-cmt">// false (strict — type alag)</span></div>
+            </div>
+
+            <table class="comp-table">
+                <thead>
+                    <tr><th>Feature</th><th>undefined</th><th>null</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><strong>Matlab</strong></td><td>Value nahi mili (accidental)</td><td>Intentionally empty (planned)</td></tr>
+                    <tr><td><strong>typeof</strong></td><td><code style="color:var(--muted);">"undefined"</code></td><td><code style="color:var(--red);">"object"</code> <span style="font-size:0.75rem;">(Bug!)</span></td></tr>
+                    <tr><td><strong>Kab aata hai</strong></td><td>Variable bina value, missing property, no return</td><td>API se empty data, reset karna, intentionally clear</td></tr>
+                    <tr><td><strong>=== comparison</strong></td><td><code style="color:var(--muted);">null === undefined → false</code></td><td><code style="color:var(--muted);">null === undefined → false</code></td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Object ===== -->
+        <section class="section" id="sec-dt-object">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 11</div>
+            <h2>Object — King of Data Types</h2>
+
+            <p>Object JavaScript ka <strong>sabse powerful data type</strong> hai. Key-value pairs store karta hai. Aur interesting baat — <strong>Array, Function, Date, RegExp, Map, Set — sab Objects hain!</strong></p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Object create karo — curly braces se</span>
+<span class="syn-kw">const</span> <span class="syn-var">student</span> <span class="syn-op">=</span> <span class="syn-op">{</span>
+    <span class="syn-var">name</span><span class="syn-op">:</span> <span class="syn-str">"Rahul"</span><span class="syn-op">,</span>
+    <span class="syn-var">age</span><span class="syn-op">:</span> <span class="syn-num">25</span><span class="syn-op">,</span>
+    <span class="syn-var">courses</span><span class="syn-op">:</span> <span class="syn-op">[</span><span class="syn-str">"Math"</span><span class="syn-op">,</span> <span class="syn-str">"Science"</span><span class="syn-op">],</span>
+    <span class="syn-var">address</span><span class="syn-op">:</span> <span class="syn-op">{</span>
+        <span class="syn-var">city</span><span class="syn-op">:</span> <span class="syn-str">"Delhi"</span><span class="syn-op">,</span>
+        <span class="syn-var">pin</span><span class="syn-op">:</span> <span class="syn-num">110001</span>
+    <span class="syn-op">},</span>
+    <span class="syn-fn">greet</span><span class="syn-op">:</span> <span class="syn-kw">function</span><span class="syn-op">()</span> <span class="syn-op">{</span>
+        <span class="syn-kw">return</span> <span class="syn-str">`Namaste, main ${<span class="syn-kw">this</span>.name} hun!`</span><span class="syn-op">;</span>
+    <span class="syn-op">}</span>
+<span class="syn-op">};</span>
+
+<span class="syn-cmt">// Access karo — dot notation</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-var">name</span><span class="syn-op">);</span>         <span class="syn-cmt">// "Rahul"</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-var">address</span><span class="syn-op">.</span><span class="syn-var">city</span><span class="syn-op">);</span> <span class="syn-cmt">// "Delhi"</span>
+
+<span class="syn-cmt">// Access karo — bracket notation (dynamic key ke liye)</span>
+<span class="syn-kw">const</span> <span class="syn-var">key</span> <span class="syn-op">=</span> <span class="syn-str">"age"</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">[</span><span class="syn-var">key</span><span class="syn-op">]);</span>            <span class="syn-cmt">// 25</span>
+
+<span class="syn-cmt">// Modify karo (Object mutable hai!)</span>
+<span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-var">age</span> <span class="syn-op">=</span> <span class="syn-num">26</span><span class="syn-op">;</span>
+<span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-var">marks</span> <span class="syn-op">=</span> <span class="syn-num">95</span><span class="syn-op">;</span>  <span class="syn-cmt">// Naya property add!</span>
+
+<span class="syn-cmt">// Method call karo</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-fn">greet</span><span class="syn-op">());</span>
+
+<span class="syn-cmt">// Check karo property hai ya nahi</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-str">"name"</span> <span class="syn-kw">in</span> <span class="syn-var">student</span><span class="syn-op">);</span>   <span class="syn-cmt">// true</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">.</span><span class="syn-fn">hasOwnProperty</span><span class="syn-op">(</span><span class="syn-str">"age"</span><span class="syn-op">));</span> <span class="syn-cmt">// true</span>
+
+<span class="syn-cmt">// Keys & Values nikalo</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Object</span><span class="syn-op">.</span><span class="syn-fn">keys</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">));</span>   <span class="syn-cmt">// ["name", "age", "courses", ...]</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Object</span><span class="syn-op">.</span><span class="syn-fn">values</span><span class="syn-op">(</span><span class="syn-var">student</span><span class="syn-op">));</span> <span class="syn-cmt">// ["Rahul", 26, [...], ...]</span></div>
+            </div>
+
+            <div class="tip-box tip-info">
+                <i class="fa-solid fa-circle-info"></i>
+                <div class="tip-text"><strong>Array bhi Object hai!</strong> <code style="font-family:'Fira Code',monospace;">typeof []</code> dega <code style="font-family:'Fira Code',monospace;">"object"</code>. Array check karne ke liye <code style="font-family:'Fira Code',monospace;">Array.isArray([])</code> use karo.</div>
+            </div>
+
+            <div class="playground" id="pg-object">
+                <textarea class="playground-editor" spellcheck="false">const car = {
+    brand: "Tesla",
+    model: "Model 3",
+    electric: true,
+    features: ["Autopilot", "Fast Charging"]
+};
+
+console.log("Car:", car.brand, car.model);
+console.log("Electric?", car.electric);
+car.price = "50 Lakh";
+car.features.push("Summon");
+console.log("Keys:", Object.keys(car));
+console.log("Full car:", JSON.stringify(car, null, 2));</textarea>
+                <div class="playground-output" id="pg-object-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div>
+                <div class="playground-run">
+                    <button class="btn-run" onclick="runPlayground('pg-object')"><i class="fa-solid fa-play"></i> Run</button>
+                    <button class="btn-reset" onclick="resetPlayground('pg-object')"><i class="fa-solid fa-rotate"></i> Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Symbol ===== -->
+        <section class="section" id="sec-dt-symbol">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 12</div>
+            <h2>Symbol — Unique Identity</h2>
+
+            <p>Symbol ES6 (2015) mein aaya. Har <code style="font-family:'Fira Code',monospace;color:var(--pink);">Symbol()</code> call se ek <strong>completely unique</strong> value banti hai. Do Symbols kabhi equal nahi hote.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Symbol banana — har baar naya unique id</span>
+<span class="syn-kw">const</span> <span class="syn-var">id1</span> <span class="syn-op">=</span> <span class="syn-fn">Symbol</span><span class="syn-op">();</span>
+<span class="syn-kw">const</span> <span class="syn-var">id2</span> <span class="syn-op">=</span> <span class="syn-fn">Symbol</span><span class="syn-op">();</span>
+
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">id1</span> <span class="syn-op">===</span> <span class="syn-var">id2</span><span class="syn-op">);</span>  <span class="syn-cmt">// false — dono alag hain!</span>
+
+<span class="syn-cmt">// Description de sakte ho (debugging ke liye)</span>
+<span class="syn-kw">const</span> <span class="syn-var">userId</span> <span class="syn-op">=</span> <span class="syn-fn">Symbol</span><span class="syn-op">(</span><span class="syn-str">"user id"</span><span class="syn-op">);</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">userId</span><span class="syn-op">.</span><span class="syn-var">description</span><span class="syn-op">);</span> <span class="syn-cmt">// "user id"</span>
+
+<span class="syn-cmt">// Object mein Symbol key — hidden property ban jaata hai</span>
+<span class="syn-kw">const</span> <span class="syn-var">person</span> <span class="syn-op">=</span> <span class="syn-op">{</span>
+    <span class="syn-var">name</span><span class="syn-op">:</span> <span class="syn-str">"Rahul"</span><span class="syn-op">,</span>
+    <span class="syn-op">[</span><span class="syn-fn">Symbol</span><span class="syn-op">(</span><span class="syn-str">"secret"</span><span class="syn-op">)]:</span> <span class="syn-str">"hidden password"</span>
+<span class="syn-op">};</span>
+
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Object</span><span class="syn-op">.</span><span class="syn-fn">keys</span><span class="syn-op">(</span><span class="syn-var">person</span><span class="syn-op">));</span>  <span class="syn-cmt">// ["name"] — Symbol key nahi dikha!</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-fn">Object</span><span class="syn-op">.</span><span class="syn-fn">getOwnPropertySymbols</span><span class="syn-op">(</span><span class="syn-var">person</span><span class="syn-op">));</span> <span class="syn-cmt">// [Symbol(secret)]</span>
+
+<span class="syn-cmt">// Global Symbol — kahin bhi access kar sakte ho</span>
+<span class="syn-kw">const</span> <span class="syn-var">s1</span> <span class="syn-op">=</span> <span class="syn-fn">Symbol</span><span class="syn-op">.</span><span class="syn-fn">for</span><span class="syn-op">(</span><span class="syn-str">"appKey"</span><span class="syn-op">);</span>
+<span class="syn-kw">const</span> <span class="syn-var">s2</span> <span class="syn-op">=</span> <span class="syn-fn">Symbol</span><span class="syn-op">.</span><span class="syn-fn">for</span><span class="syn-op">(</span><span class="syn-str">"appKey"</span><span class="syn-op">);</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">s1</span> <span class="syn-op">===</span> <span class="syn-var">s2</span><span class="syn-op">);</span>  <span class="syn-cmt">// true — same description = same symbol</span></div>
+            </div>
+
+            <div class="tip-box tip-warn">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                <div class="tip-text"><strong>Kab use karein?</strong> Symbol mostly libraries/frameworks mein internally use hota hai. Well-known symbols jaise <code style="font-family:'Fira Code',monospace;">Symbol.iterator</code>, <code style="font-family:'Fira Code',monospace;">Symbol.toStringTag</code> se objects ka behavior customize hota hai. Beginners ko zyada use karne ki zarurat nahi.</div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: BigInt ===== -->
+        <section class="section" id="sec-dt-bigint">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 13</div>
+            <h2>BigInt — Bade Numbers Ka Raja</h2>
+
+            <p>JavaScript Number ki limit hai: <code style="font-family:'Fira Code',monospace;color:var(--orange);">9,007,199,254,740,991</code> (2^53 - 1). Isse bade numbers ke liye <code style="font-family:'Fira Code',monospace;color:var(--purple);">BigInt</code> use karo.</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="code-dots"><span></span><span></span><span></span></div>
+                    <span class="code-lang">javascript</span>
+                    <button class="code-copy" onclick="copyCode(this)"><i class="fa-regular fa-copy"></i> Copy</button>
+                </div>
+                <div class="code-body"><span class="syn-cmt">// Number ki limit cross karo</span>
+<span class="syn-kw">const</span> <span class="syn-var">max</span> <span class="syn-op">=</span> <span class="syn-fn">Number</span><span class="syn-op">.</span><span class="syn-var">MAX_SAFE_INTEGER</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">max</span><span class="syn-op">);</span>            <span class="syn-cmt">// 9007199254740991</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">max</span> <span class="syn-op">+</span> <span class="syn-num">1</span><span class="syn-op">);</span>      <span class="syn-cmt">// 9007199254740992 ✅</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">max</span> <span class="syn-op">+</span> <span class="syn-num">2</span><span class="syn-op">);</span>      <span class="syn-cmt">// 9007199254740992 ❌ Galat! Precision loss</span>
+
+<span class="syn-cmt">// BigInt banana — number ke baad 'n' lagao</span>
+<span class="syn-kw">const</span> <span class="syn-var">big</span> <span class="syn-op">=</span> <span class="syn-num">9007199254740991n</span><span class="syn-op">;</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">big</span> <span class="syn-op">+</span> <span class="syn-num">1n</span><span class="syn-op">);</span>   <span class="syn-cmt">// 9007199254740992n ✅ Sahi!</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">big</span> <span class="syn-op">+</span> <span class="syn-num">2n</span><span class="syn-op">);</span>   <span class="syn-cmt">// 9007199254740993n ✅ Sahi!</span>
+
+<span class="syn-cmt">// BigInt() function se bhi bana sakte ho</span>
+<span class="syn-kw">const</span> <span class="syn-var">huge</span> <span class="syn-op">=</span> <span class="syn-fn">BigInt</span><span class="syn-op">(</span><span class="syn-str">"9999999999999999999999999"</span><span class="syn-op">);</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-var">huge</span><span class="syn-op">);</span>
+
+<span class="syn-cmt">// typeof</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-kw">typeof</span> <span class="syn-num">10n</span><span class="syn-op">);</span>  <span class="syn-cmt">// "bigint"</span>
+
+<span class="syn-cmt">// ⚠️ BigInt aur Number mix nahi ho sakte</span>
+<span class="syn-cmt">// console.log(10n + 5);  // ❌ TypeError!</span>
+<span class="syn-fn">console</span><span class="syn-op">.</span><span class="syn-fn">log</span><span class="syn-op">(</span><span class="syn-num">10n</span> <span class="syn-op">+</span> <span class="syn-fn">BigInt</span><span class="syn-op">(</span><span class="syn-num">5</span><span class="syn-op">));</span>  <span class="syn-cmt">// ✅ 15n</span></div>
+            </div>
+
+            <div class="tip-box tip-danger">
+                <i class="fa-solid fa-ban"></i>
+                <div class="tip-text"><strong>BigInt Limitations:</strong> BigInt ke saath <code style="font-family:'Fira Code',monospace;">Math</code> methods nahi chalte. Number ke saath directly math nahi kar sakte. Decimal BigInt nahi bana sakte — <code style="font-family:'Fira Code',monospace;">10.5n</code> error dega.</div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Type Tester ===== -->
+        <section class="section" id="sec-dt-tester">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Topic 14</div>
+            <h2>Type Tester — Live typeof Explorer</h2>
+            <p>Koi bhi value daalo, instantly dekho uska <code style="font-family:'Fira Code',monospace;color:var(--accent);">typeof</code>, actual value, aur truthy/falsy status.</p>
+
+            <div class="type-tester">
+                <input type="text" id="typeTestInput" placeholder='Try: "hello", 42, true, null, undefined, [], {}, Symbol(), 10n' autocomplete="off">
+                <div class="type-result-grid" id="typeTestResult">
+                    <div class="tr-item">
+                        <div class="tr-label">typeof</div>
+                        <div class="tr-value" style="color:var(--muted);">---</div>
+                    </div>
+                    <div class="tr-item">
+                        <div class="tr-label">Value</div>
+                        <div class="tr-value" style="color:var(--muted);">---</div>
+                    </div>
+                    <div class="tr-item">
+                        <div class="tr-label">Truthy / Falsy</div>
+                        <div class="tr-value" style="color:var(--muted);">---</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="playground" id="pg-typeof">
+                <textarea class="playground-editor" spellcheck="false">// Sab ka typeof check karo
+console.log(typeof "Hello");      // ?
+console.log(typeof 42);          // ?
+console.log(typeof true);        // ?
+console.log(typeof null);        // ? (Surprise!)
+console.log(typeof undefined);   // ?
+console.log(typeof {});          // ?
+console.log(typeof []);          // ? (Surprise!)
+console.log(typeof function(){});// ?
+console.log(typeof Symbol());    // ?
+console.log(typeof 10n);         // ?</textarea>
+                <div class="playground-output" id="pg-typeof-out"><span style="color:var(--muted);">Output yahan dikhega...</span></div>
+                <div class="playground-run">
+                    <button class="btn-run" onclick="runPlayground('pg-typeof')"><i class="fa-solid fa-play"></i> Run</button>
+                    <button class="btn-reset" onclick="resetPlayground('pg-typeof')"><i class="fa-solid fa-rotate"></i> Reset</button>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <!-- ===== SECTION: Data Type Quiz ===== -->
+        <section class="section" id="sec-dt-quiz">
+            <div class="section-label"><i class="fa-solid fa-circle"></i> Practice 02</div>
+            <h2>Data Type Quiz</h2>
+            <p>Ab test karo kitna samajha! 10 questions, dimag lagao.</p>
+            <div id="dtQuizContainer"></div>
+        </section>
+
+    </div>
+</div>
+
+<script>
+    // ============ Sidebar Navigation ============
+    const sidebar = document.getElementById('sidebar');
+    const menuToggle = document.getElementById('menuToggle');
+    const overlay = document.getElementById('sidebarOverlay');
+
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        overlay.classList.toggle('show');
+    });
+
+    overlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+    });
+
+    function scrollTo_(id) {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+        }
+    }
+
+    // ============ Scroll Tracking ============
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const seenSections = new Set();
+    const totalSections = sections.length;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Visibility animation
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+
+            // Track seen
+            if (entry.isIntersecting && entry.intersectionRatio > 0.2) {
+                seenSections.add(entry.target.id);
+                updateNav();
+                updateProgress();
+            }
+        });
+    }, { threshold: 0.2 });
+
+    sections.forEach(s => observer.observe(s));
+
+    function updateNav() {
+        navLinks.forEach(link => {
+            const target = link.getAttribute('data-target');
+            if (seenSections.has(target)) {
+                link.classList.add('seen');
+            }
+            // Active state
+            const top = window.scrollY + 120;
+            const el = document.getElementById(target);
+            if (el) {
+                const bottom = el.offsetTop + el.offsetHeight;
+                if (top >= el.offsetTop && top < bottom) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                }
+            }
+        });
+    }
+
+    function updateProgress() {
+        const pct = Math.round((seenSections.size / totalSections) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+        document.getElementById('progressPct').textContent = pct + '%';
+    }
+
+    window.addEventListener('scroll', updateNav);
+
+    // ============ Toast ============
+    function toast(msg, type = 'ok') {
+        const wrap = document.getElementById('toastWrap');
+        const t = document.createElement('div');
+        t.className = `toast-msg t-${type}`;
+        const icons = { ok: 'fa-check-circle', err: 'fa-times-circle' };
+        t.innerHTML = `<i class="fa-solid ${icons[type] || icons.ok}"></i> ${msg}`;
+        wrap.appendChild(t);
+        setTimeout(() => t.remove(), 3000);
+    }
+
+    // ============ Copy Code ============
+    function copyCode(btn) {
+        const codeBody = btn.closest('.code-block').querySelector('.code-body');
+        const text = codeBody.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => { btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy'; }, 1500);
+        });
+    }
+
+    // ============ Playground Runner ============
+    const pgDefaults = {};
+    document.querySelectorAll('.playground').forEach(pg => {
+        const id = pg.id;
+        const ta = pg.querySelector('.playground-editor');
+        pgDefaults[id] = ta.value;
+    });
+
+    function runPlayground(id) {
+        const pg = document.getElementById(id);
+        const code = pg.querySelector('.playground-editor').value;
+        const outEl = pg.querySelector('.playground-output');
+
+        let output = '';
+        const origLog = console.log;
+        const origError = console.error;
+        const origWarn = console.warn;
+
+        console.log = (...args) => {
+            output += `<div class="out-line"><span class="out-arrow">></span><span class="out-val">${escHtml(args.map(formatVal).join(' '))}</span></div>`;
+        };
+        console.error = (...args) => {
+            output += `<div class="out-line"><span class="out-arrow" style="color:var(--red);">x</span><span class="out-err">${escHtml(args.join(' '))}</span></div>`;
+        };
+        console.warn = (...args) => {
+            output += `<div class="out-line"><span class="out-arrow" style="color:var(--amber);">!</span><span style="color:var(--amber);">${escHtml(args.join(' '))}</span></div>`;
+        };
+
+        try {
+            const result = new Function(code)();
+            if (result !== undefined) {
+                output += `<div class="out-line"><span class="out-arrow" style="color:var(--purple);">←</span><span style="color:var(--purple);">${escHtml(formatVal(result))}</span></div>`;
+            }
+        } catch (e) {
+            output += `<div class="out-line"><span class="out-arrow" style="color:var(--red);">x</span><span class="out-err">${escHtml(e.message)}</span></div>`;
+        }
+
+        console.log = origLog;
+        console.error = origError;
+        console.warn = origWarn;
+
+        outEl.innerHTML = output || '<span style="color:var(--muted);">(No output)</span>';
+    }
+
+    function resetPlayground(id) {
+        const pg = document.getElementById(id);
+        pg.querySelector('.playground-editor').value = pgDefaults[id];
+        pg.querySelector('.playground-output').innerHTML = '<span style="color:var(--muted);">Output yahan dikhega...</span>';
+    }
+
+    function formatVal(v) {
+        if (v === null) return 'null';
+        if (v === undefined) return 'undefined';
+        if (typeof v === 'object') {
+            try { return JSON.stringify(v, null, 2); } catch { return String(v); }
+        }
+        return String(v);
+    }
+
+    function escHtml(s) {
+        const d = document.createElement('div');
+        d.textContent = s;
+        return d.innerHTML;
+    }
+
+    // ============ Type Tester ============
+    const typeInput = document.getElementById('typeTestInput');
+    typeInput.addEventListener('input', runTypeTest);
+    typeInput.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); });
+
+    function runTypeTest() {
+        const raw = typeInput.value.trim();
+        const grid = document.getElementById('typeTestResult');
+
+        if (!raw) {
+            grid.innerHTML = `<div class="tr-item"><div class="tr-label">typeof</div><div class="tr-value" style="color:var(--muted);">---</div></div>
+                <div class="tr-item"><div class="tr-label">Value</div><div class="tr-value" style="color:var(--muted);">---</div></div>
+                <div class="tr-item"><div class="tr-label">Truthy / Falsy</div><div class="tr-value" style="color:var(--muted);">---</div></div>`;
+            return;
+        }
+
+        let value;
+        try {
+            if (raw === 'true') value = true;
+            else if (raw === 'false') value = false;
+            else if (raw === 'null') value = null;
+            else if (raw === 'undefined') value = undefined;
+            else if (raw.endsWith('n') && !isNaN(raw.slice(0, -1))) value = BigInt(raw.slice(0, -1));
+            else if (raw === 'Symbol()' || raw === 'Symbol') value = Symbol();
+            else if (raw.startsWith('[') || raw.startsWith('{')) { value = (0, eval)('(' + raw + ')'); }
+            else if (raw === 'Infinity') value = Infinity;
+            else if (raw === '-Infinity') value = -Infinity;
+            else if (raw === 'NaN') value = NaN;
+            else if (!isNaN(raw) && raw !== '') value = Number(raw);
+            else if ((raw.startsWith('"') && raw.endsWith('"')) || (raw.startsWith("'") && raw.endsWith("'"))) value = raw.slice(1, -1);
+            else if (raw.startsWith('`') && raw.endsWith('`')) value = raw.slice(1, -1);
+            else value = (0, eval)('(' + raw + ')');
+        } catch {
+            value = raw;
+        }
+
+        const type = typeof value;
+        const displayType = value === null ? 'null' : type;
+        const isTruthy = Boolean(value);
+        let displayVal = formatVal(value);
+        if (typeof value === 'symbol') displayVal = 'Symbol()';
+
+        const typeColors = {
+            string: 'var(--accent)', number: 'var(--orange)', boolean: 'var(--amber)',
+            undefined: 'var(--muted)', object: 'var(--accent2)', function: 'var(--purple)',
+            symbol: 'var(--pink)', bigint: 'var(--purple)', null: 'var(--red)'
+        };
+
+        const col = typeColors[displayType] || 'var(--fg)';
+
+        grid.innerHTML = `
+            <div class="tr-item">
+                <div class="tr-label">typeof</div>
+                <div class="tr-value" style="color:${col};">"${displayType}"</div>
+            </div>
+            <div class="tr-item">
+                <div class="tr-label">Value</div>
+                <div class="tr-value" style="color:var(--fg);font-size:0.8rem;word-break:break-all;">${escHtml(displayVal)}</div>
+            </div>
+            <div class="tr-item">
+                <div class="tr-label">Truthy / Falsy</div>
+                <div class="tr-value" style="color:${isTruthy ? 'var(--accent)' : 'var(--red)'};">${isTruthy ? 'Truthy' : 'Falsy'}</div>
+            </div>
+        `;
+    }
+
+    // ============ Quiz System ============
+    const varQuizData = [
+        { q: '<code>const x = 5; x = 10;</code> kya hoga?', opts: ['x = 10', 'TypeError', 'undefined', 'Kuch nahi'], correct: 1, explain: 'const ko reassign nahi kar sakte — TypeError aata hai!' },
+        { q: '<code>var a = 1; { var a = 2; } console.log(a);</code> output?', opts: ['1', '2', 'undefined', 'Error'], correct: 1, explain: 'var block scope follow nahi karta, isliye andar wala a bahar wala override kar deta hai.' },
+        { q: '<code>let b = 1; { let b = 2; } console.log(b);</code> output?', opts: ['1', '2', 'undefined', 'Error'], correct: 0, explain: 'let block scope hai — andar wala b sirf block tak hai. Bahar wala 1 rahta hai.' },
+        { q: '<code>console.log(c); var c = 5;</code> output?', opts: ['5', 'ReferenceError', 'undefined', 'null'], correct: 2, explain: 'Hoisting! var c upar declare ho jata hai par value assign nahi hoti — undefined.' },
+        { q: 'Kabhi bhi <code>var</code> use karna chahiye?', opts: ['Haan, simple programs mein', 'Nahi, kabhi nahi', 'Sirf loops mein', 'Sirf functions mein'], correct: 1, explain: 'var outdated hai — let aur const always better hain. Kabhi var mat use karo.' }
+    ];
+
+    const dtQuizData = [
+        { q: '<code>typeof null</code> kya dega?', opts: ['"null"', '"undefined"', '"object"', '"boolean"'], correct: 2, explain: 'JavaScript ka famous bug! typeof null === "object" — 1995 se hai aur kabhi fix nahi hua.' },
+        { q: '<code>typeof []</code> kya dega?', opts: ['"array"', '"object"', '"list"', '"undefined"'], correct: 1, explain: 'Array bhi Object hai JavaScript mein. Array.isArray() se check karo.' },
+        { q: '<code>"0" == false</code> kya hoga?', opts: ['true', 'false', 'Error', 'undefined'], correct: 0, explain: 'Loose equality (==) type convert karta hai. "0" → 0, false → 0, dono barabar!' },
+        { q: '<code>Boolean("")</code> kya dega?', opts: ['true', 'false', 'undefined', '""'], correct: 1, explain: 'Empty string falsy hai — ye 8 falsy values mein se ek hai.' },
+        { q: '<code>Boolean([])</code> kya dega?', opts: ['false', 'true', 'undefined', 'Error'], correct: 1, explain: 'Empty array TRUTHY hai! Ye sabse common confusion hai. [] sirf empty hai, falsy nahi.' },
+        { q: '<code>10n + 5</code> kya hoga?', opts: ['15n', '15', 'TypeError', 'NaN'], correct: 2, explain: 'BigInt aur Number directly mix nahi ho sakte. BigInt(5) karna padega.' },
+        { q: '<code>Symbol("x") === Symbol("x")</code>?', opts: ['true', 'false', 'Error', 'undefined'], correct: 1, explain: 'Har Symbol() call ek FRESH unique value banata hai, same description ho ke bhi.' },
+        { q: '<code>0.1 + 0.2 === 0.3</code>?', opts: ['true', 'false', 'NaN', 'Error'], correct: 1, explain: 'IEEE 754 floating point bug — 0.1 + 0.2 = 0.30000000000000004!' },
+        { q: '<code>NaN === NaN</code> kya hoga?', opts: ['true', 'false', 'Error', 'undefined'], correct: 1, explain: 'NaN khud se barabar nahi! Ye JavaScript ki sabse weird property hai.' },
+        { q: '<code>const arr = [1,2]; arr.push(3);</code> kya hoga?', opts: ['TypeError', 'arr = [1,2,3]', 'Error nahi, array modify ho jayega', 'ReferenceError'], correct: 2, explain: 'const reference change nahi hota, par array ke andar push/pop KAR SAKTE ho!' }
+    ];
+
+    function renderQuiz(containerId, data) {
+        const container = document.getElementById(containerId);
+        const letters = ['A', 'B', 'C', 'D'];
+        let html = '';
+        let correctCount = 0;
+
+        data.forEach((q, qi) => {
+            html += `<div class="mini-quiz" id="${containerId}-q${qi}">
+                <div class="mq-question"><span style="color:var(--muted);font-size:0.78rem;">Q${qi + 1}.</span> ${q.q}</div>
+                <div class="mq-opts">`;
+            q.opts.forEach((opt, oi) => {
+                html += `<button class="mq-opt" onclick="answerMQ('${containerId}',${qi},${oi})" id="${containerId}-q${qi}-o${oi}">
+                    <span class="opt-l">${letters[oi]}</span>${escHtml(opt)}
+                </button>`;
+            });
+            html += `</div>
+                <div class="mq-fb" id="${containerId}-q${qi}-fb"></div>
+            </div>`;
+        });
+
+        container.innerHTML = html;
+    }
+
+    function answerMQ(containerId, qi, oi) {
+        const data = containerId === 'varQuizContainer' ? varQuizData : dtQuizData;
+        const q = data[qi];
+        const correct = q.correct;
+        const isCorrect = oi === correct;
+
+        // Disable all
+        q.opts.forEach((_, i) => {
+            const el = document.getElementById(`${containerId}-q${qi}-o${i}`);
+            el.classList.add('disabled');
+            if (i === correct) el.classList.add('correct');
+            if (i === oi && !isCorrect) el.classList.add('wrong');
+        });
+
+        // Feedback
+        const fb = document.getElementById(`${containerId}-q${qi}-fb`);
+        fb.className = `mq-fb show ${isCorrect ? 'fb-ok' : 'fb-no'}`;
+        fb.innerHTML = isCorrect
+            ? `<i class="fa-solid fa-check-circle"></i> Sahi! ${q.explain}`
+            : `<i class="fa-solid fa-times-circle"></i> Galat! ${q.explain}`;
+    }
+
+    // ============ Init ============
+    renderQuiz('varQuizContainer', varQuizData);
+    renderQuiz('dtQuizContainer', dtQuizData);
+    // Initial visibility check
+    setTimeout(() => {
+        sections.forEach(s => {
+            const rect = s.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+                s.classList.add('visible');
+            }
+        });
+    }, 100);
+</script>
+</body>
+</html>
