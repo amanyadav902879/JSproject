@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DOM Manipulation — Complete Guide</title>
+<link rel="stylesheet" href="quiz.css">
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -134,10 +135,77 @@
 <a class="nl" data-t="s13" onclick="go('s13')"><i class="fa-solid fa-calculator"></i> Calculator<span class="nd"><i class="fa-solid fa-check"></i></span></a>
 <a class="nl" data-t="s14" onclick="go('s14')"><i class="fa-solid fa-question-circle"></i> Quiz App<span class="nd"><i class="fa-solid fa-check"></i></span></a>
 <a class="nl" data-t="s15" onclick="go('s15')"><i class="fa-solid fa-clipboard-check"></i> Form Validation<span class="nd"><i class="fa-solid fa-check"></i></span></a>
+<a class="nl" data-t="s16" onclick="go('s16')"><i class="fa-solid fa-dumbbell"></i> Workshop<span class="nd"><i class="fa-solid fa-check"></i></span></a>
 </div>
 </nav>
 
 <div class="mn">
+
+<!-- WORKSHOP -->
+<section class="s" id="s16">
+<div class="st"><i class="fa-solid fa-circle"></i> Workshop</div>
+<h2>Real-Life DOM Workshop</h2>
+<p>Ab concepts ko mini product features mein badlo. Har task pehle khud likho, phir solution kholo aur browser Console mein run karke dekho.</p>
+
+<div class="proj">
+<div class="proj-h"><i class="fa-solid fa-ticket" style="background:rgba(0,232,123,.1);color:var(--ac)"></i><div><h3>Task 1: Movie Ticket Booking</h3><span>Button click, input value aur textContent</span></div></div>
+<div class="proj-b">
+<ol>
+<li>Movie name aur seats ke liye input banao.</li>
+<li>Book button par click hone par total price calculate karo.</li>
+<li>Result area mein booking confirmation show karo.</li>
+</ol>
+<details>
+<summary class="p-btn p-btn-ghost">Solution Dekho</summary>
+<div class="cb" style="margin-top:12px"><div class="cy">const movie = document.querySelector('#movie').value;
+const seats = Number(document.querySelector('#seats').value);
+const total = seats * 180;
+document.querySelector('#bookingResult').textContent =
+    `${movie} booked: ${seats} seat(s), Total: Rs.${total}`;</div></div>
+</details>
+</div>
+</div>
+
+<div class="proj">
+<div class="proj-h"><i class="fa-solid fa-heart" style="background:rgba(255,107,180,.1);color:var(--pk)"></i><div><h3>Task 2: Product Like Button</h3><span>classList.toggle aur live counter</span></div></div>
+<div class="proj-b">
+<ol>
+<li>Like button aur count element select karo.</li>
+<li>Click par <code>liked</code> class toggle karo.</li>
+<li>Liked hone par count badhao, unlike par ghatao.</li>
+</ol>
+<details>
+<summary class="p-btn p-btn-ghost">Solution Dekho</summary>
+<div class="cb" style="margin-top:12px"><div class="cy">let likes = 0;
+likeButton.addEventListener('click', () =&gt; {
+    const liked = likeButton.classList.toggle('liked');
+    likes += liked ? 1 : -1;
+    likeCount.textContent = likes;
+});</div></div>
+</details>
+</div>
+</div>
+
+<div class="proj">
+<div class="proj-h"><i class="fa-solid fa-magnifying-glass" style="background:rgba(0,201,255,.1);color:var(--ac2)"></i><div><h3>Task 3: Live Product Search</h3><span>input event aur dynamic filtering</span></div></div>
+<div class="proj-b">
+<ol>
+<li>Products ka array banao: phone, laptop, headphones.</li>
+<li>Search input ke <code>input</code> event par text read karo.</li>
+<li>Matching products ko list mein render karo; result na mile toh message dikhao.</li>
+</ol>
+<details>
+<summary class="p-btn p-btn-ghost">Solution Dekho</summary>
+<div class="cb" style="margin-top:12px"><div class="cy">const products = ['Phone', 'Laptop', 'Headphones'];
+searchInput.addEventListener('input', (event) =&gt; {
+    const word = event.target.value.toLowerCase();
+    const matches = products.filter(item =&gt; item.toLowerCase().includes(word));
+    productList.innerHTML = matches.map(item =&gt; `&lt;li&gt;${item}&lt;/li&gt;`).join('');
+});</div></div>
+</details>
+</div>
+</div>
+</section>
 <div class="pb"><div class="pi"><span>Progress</span><span class="pc" id="pP">0%</span></div><div class="pt"><div class="pf" id="pF"></div></div></div>
 <div class="cw">
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Items Ki Line 📦</title>
+    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -2459,12 +2460,12 @@ console.log(bag);</pre>
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Arrays Ka Exam — 5 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Array Master ho. Chalo!</p>
+        <h2>Arrays Ka Exam — 15 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 15/15 aaye toh tum Array Master ho. Chalo!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -2957,7 +2958,17 @@ console.log(bag);</pre>
             { q: '<code>basket.push("🍇")</code> kya RETURN karta hai?', opts: ['Naya array', 'Nikla hua item', 'Nayi LENGTH (number!)', 'undefined'], correct: 2, exp: 'push END mein item jodta hai aur NAYI LENGTH return karta hai — array nahi! Isliye arr = arr.push(x) likhna bada bada bug hai — arr mein sirf number reh jayega! (Nikla hua item pop() deta hai.)' },
             { q: '<code>["a","b","c","d","e"].slice(1, 3)</code> kya dega?', opts: ['[ "b", "c" ]', '[ "b", "c", "d" ]', '[ "c", "d" ]', '[ "a", "b" ]'], correct: 0, exp: 'slice(start, end) mein end EXCLUDE hota hai — index 1 se leke 3 se PEHLE tak: [b, c]. Aur asli array bilkul SAFE rehta hai — slice copy deta hai! Kaatna ho toh splice (start, count)!' },
             { q: '<code>const arr = [1, 2]; arr.push(3);</code> — kya hoga?', opts: ['Error aayega — const change nahi hota!', 'arr = [3] ho jayega', 'Chal gaya! arr = [1, 2, 3]', 'undefined'], correct: 2, exp: 'const BINDING fix karta hai (arr naam usi array pe rahega), CONTENT nahi! Push se content badla — allowed. Error sirf arr = [9, 9] (dobara assign) pe aayega. Isliye arrays hamesha const se banate hai!' },
-            { q: '<code>typeof []</code> kya deta hai?', opts: ['"array"', '"object"', '"list"', '"undefined"'], correct: 1, exp: 'JS mein array bhi object hi hai — typeof [] = "object"! Array check karne ke liye Array.isArray(arr) use karo — sirf asli array pe true. Ye typeof ki limitation interviews ka favourite sawal hai!' }
+            { q: '<code>typeof []</code> kya deta hai?', opts: ['"array"', '"object"', '"list"', '"undefined"'], correct: 1, exp: 'JS mein array bhi object hi hai — typeof [] = "object"! Array check karne ke liye Array.isArray(arr) use karo — sirf asli array pe true. Ye typeof ki limitation interviews ka favourite sawal hai!' },
+            { q: '<code>arr.pop()</code> kya karta hai?', opts: ['Start mein item jodta hai', 'Last item hata kar return karta hai', 'Array ko sort karta hai', 'Array ko empty karta hai'], correct: 1, exp: 'pop() array ke END se ek item hata kar wahi item return karta hai.' },
+            { q: '<code>arr.shift()</code> ka kaam kya hai?', opts: ['Pehla item remove karna', 'Last item remove karna', 'Pehla item duplicate karna', 'Array reverse karna'], correct: 0, exp: 'shift() array ke START se pehla item remove karke return karta hai.' },
+            { q: '<code>arr.unshift("x")</code> item kahan add karega?', opts: ['End mein', 'Beech mein', 'Start mein', 'Kahin nahi'], correct: 2, exp: 'unshift() array ke beginning mein item add karta hai aur new length return karta hai.' },
+            { q: '<code>[1, 2, 3].includes(2)</code> ka result?', opts: ['true', 'false', '2', 'undefined'], correct: 0, exp: 'includes() check karta hai ki value array mein hai ya nahi, isliye true milta hai.' },
+            { q: '<code>[3, 1, 2].sort()</code> ka result kya hoga?', opts: ['[1, 2, 3]', '[3, 2, 1]', '[1, 3, 2]', 'Error'], correct: 0, exp: 'Numbers ke simple case mein sort ascending order deta hai. Complex numbers ke liye compare function use karo.' },
+            { q: '<code>arr.forEach(fn)</code> kya return karta hai?', opts: ['Naya array', 'Original array', 'undefined', 'Array ki length'], correct: 2, exp: 'forEach callback chalata hai, lekin khud undefined return karta hai. Naya array chahiye toh map use karo.' },
+            { q: '<code>[1, 2, 3].map(x =&gt; x * 2)</code> kya dega?', opts: ['[1, 2, 3]', '[2, 4, 6]', '6', 'undefined'], correct: 1, exp: 'map har item ko transform karke naya array banata hai: [2, 4, 6].' },
+            { q: '<code>[1, 2, 3, 4].filter(x =&gt; x % 2 === 0)</code> kya dega?', opts: ['[1, 3]', '[2, 4]', 'true', '2'], correct: 1, exp: 'filter sirf un items ka naya array deta hai jo condition pass karte hain: [2, 4].' },
+            { q: '<code>const a = [1, 2]; const b = a;</code> ke baad <code>b.push(3)</code> par?', opts: ['Sirf b badlega', 'Sirf a badlega', 'a aur b dono [1,2,3] honge', 'Error aayega'], correct: 2, exp: 'a aur b same array reference ko point karte hain, isliye mutation dono mein dikhta hai.' },
+            { q: '<code>arr.length = 0</code> ka effect kya hai?', opts: ['Pehla item remove hoga', 'Array empty ho jayega', 'Length double hogi', 'Error aayega'], correct: 1, exp: 'Array ki length zero set karne se uske saare items remove ho jate hain.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -3018,7 +3029,7 @@ console.log(bag);</pre>
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 5) { msg = 'PERFECT! Tum Array Master ho — Items Ki Line ke Boss! 📦'; emoji = '🏆'; }
+            if (quizScore === 15) { msg = 'PERFECT! Tum Array Master ho — Items Ki Line ke Boss! 📦'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho, Array Machine se khelo!'; emoji = '📚'; }
 

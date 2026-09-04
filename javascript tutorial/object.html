@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cheezon Ka Pitara 🎒</title>
+    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -2558,12 +2559,12 @@ console.log("Food total: ₹" + totalByCategory("food"));</pre>
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Objects Ka Exam — 5 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Object Master ho. Chalo!</p>
+        <h2>Objects Ka Exam — 15 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 15/15 aaye toh tum Object Master ho. Chalo!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -3132,7 +3133,17 @@ console.log("Food total: ₹" + totalByCategory("food"));</pre>
             { q: '<code>o.city</code> jab object mein city property EXIST hi nahi karti — kya milega?', opts: ['Error aayega!', 'undefined', 'null', '"city"'], correct: 1, exp: 'Missing property = undefined — error NAHI aata! JS chup-chaap undefined deta hai (silent failure). Isliye use karne se pehle "city" in o se check karna safe hai.' },
             { q: '<code>student.marks = 95</code> — jab marks pehle se 92 hai. Kya hoga?', opts: ['Error — dobara assign nahi kar sakte', 'Nayi property ban gayi', 'marks UPDATE ho gaya — ab 95', 'undefined ho gaya'], correct: 2, exp: 'Pehle se property hai toh sirf value UPDATE hoti hai — naya slot nahi banta. Nayi property tabhi banti hai jab key pehle se na ho. Ek syntax, do kaam — JS khud decide karta hai!' },
             { q: '<code>Object.keys({ a: 1, b: 2 })</code> kya RETURN karta hai?', opts: ['[ 1, 2 ]', '[ "a", "b" ]', '2', '{ "a", "b" }'], correct: 1, exp: 'Object.keys LABELS ka ARRAY deta hai — ["a", "b"] (strings!). Values chahiye toh Object.values(), dono chahiye toh Object.entries(). Aur array mila = length se count bhi ho gaya!' },
-            { q: '<code>typeof {}</code> kya deta hai?', opts: ['"object"', '"dictionary"', '"array"', '"undefined"'], correct: 0, exp: 'typeof {} = "object" — object hi hai! Twist: typeof [] bhi "object" deta hai (array bhi object hai!) — array check karne ke liye Array.isArray() use karte hai. Aur typeof null bhi "object" — JS ka historical bug!' }
+            { q: '<code>typeof {}</code> kya deta hai?', opts: ['"object"', '"dictionary"', '"array"', '"undefined"'], correct: 0, exp: 'typeof {} = "object" — object hi hai! Twist: typeof [] bhi "object" deta hai (array bhi object hai!) — array check karne ke liye Array.isArray() use karte hai. Aur typeof null bhi "object" — JS ka historical bug!' },
+            { q: '<code>const user = { name: "Asha" };</code> mein name kya hai?', opts: ['Value', 'Key', 'Method call', 'Array index'], correct: 1, exp: 'Object mein name property key hai aur Asha uski value hai.' },
+            { q: '<code>user["name"]</code> aur <code>user.name</code> ka result?', opts: ['Alag hoga', 'Dono Asha denge', 'Dono error denge', 'undefined'], correct: 1, exp: 'Bracket aur dot notation dono same name property ko access karte hain.' },
+            { q: '<code>Object.values({ a: 1, b: 2 })</code> kya dega?', opts: ['["a", "b"]', '[1, 2]', '2', 'Object'], correct: 1, exp: 'Object.values() object ki property values ka array deta hai.' },
+            { q: '<code>Object.entries({ a: 1 })</code> kya return karta hai?', opts: ['[["a", 1]]', '["a", 1]', '{a:1}', '1'], correct: 0, exp: 'entries key-value pairs ke nested arrays deta hai: [["a", 1]].' },
+            { q: '<code>delete user.age</code> kya karega?', opts: ['Age ko 0 karega', 'age property remove karega', 'User remove karega', 'Error hamesha'], correct: 1, exp: 'delete object ki specified property ko remove karta hai.' },
+            { q: '<code>"name" in user</code> ka result?', opts: ['true agar property ho', 'Property value', 'Key count', 'undefined'], correct: 0, exp: 'in operator check karta hai ki property object mein exist karti hai ya nahi.' },
+            { q: 'Object ke andar function ko aam taur par kya kehte hain?', opts: ['Index', 'Method', 'Selector', 'Loop'], correct: 1, exp: 'Object property ke roop mein function ko method kehte hain.' },
+            { q: '<code>const a = { x: 1 }; const b = { x: 1 }; a === b</code>?', opts: ['true', 'false', '1', 'Error'], correct: 1, exp: 'Dono alag object references hain, isliye strict equality false hoti hai.' },
+            { q: '<code>const user = { name: "Asha" }; user.city = "Delhi";</code> ke baad?', opts: ['Error', 'city property add hogi', 'user replace hoga', 'name delete hoga'], correct: 1, exp: 'const object reference ko lock karta hai, object ki properties add ya update karna allowed hai.' },
+            { q: '<code>Object.hasOwn({ a: 1 }, "a")</code> ka result?', opts: ['true', 'false', '1', 'undefined'], correct: 0, exp: 'Object.hasOwn() check karta hai ki given property object ki apni property hai ya nahi.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -3193,7 +3204,7 @@ console.log("Food total: ₹" + totalByCategory("food"));</pre>
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 5) { msg = 'PERFECT! Tum Object Master ho — Cheezon Ka Pitara ke Boss! 🎒'; emoji = '🏆'; }
+            if (quizScore === 15) { msg = 'PERFECT! Tum Object Master ho — Cheezon Ka Pitara ke Boss! 🎒'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho, Object Machine se khelo!'; emoji = '📚'; }
 

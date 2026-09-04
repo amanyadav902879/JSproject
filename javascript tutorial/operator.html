@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Operators Ka Jadugar 🔮</title>
+    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -2327,12 +2328,12 @@ console.log(`Grade: ${grade}`);
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Operators Ka Exam — 5 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka last test! 5 sawaal, 5 sahi = Operators Master certificate (self-declared 😄). Chalo dekhein kitna aaya samajh!</p>
+        <h2>Operators Ka Exam — 15 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka last test! 15 sawaal, 15 sahi = Operators Master certificate (self-declared 😄). Chalo dekhein kitna aaya samajh!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -2628,7 +2629,17 @@ console.log(`Grade: ${grade}`);
             { q: '<code>"5" + 3</code> ka output kya hoga?', opts: ['8', '"53"', '"8"', 'Error'], correct: 1, exp: 'String + Number = Concatenation! Ek bhi string ho toh JS sab chipka deta hai → "53"' },
             { q: '<code>5 === "5"</code> ka result kya hoga?', opts: ['true', 'false', 'Error', '"true"'], correct: 1, exp: '=== strict hai — value barabar hai par type alag (number vs string) → false. == hota toh true deta!' },
             { q: '<code>!true</code> ka result kya hoga?', opts: ['true', 'false', '0', 'Error'], correct: 1, exp: '! (NOT) value ko ulta karta hai — true ka ulta false!' },
-            { q: '<code>0 == false</code> ka result kya hoga?', opts: ['true', 'false', 'Error', '0'], correct: 0, exp: '== loose hai — false ko 0 bana ke compare karta hai → true! === hota toh false (type alag). Yahi trap hai!' }
+            { q: '<code>0 == false</code> ka result kya hoga?', opts: ['true', 'false', 'Error', '0'], correct: 0, exp: '== loose hai — false ko 0 bana ke compare karta hai → true! === hota toh false (type alag). Yahi trap hai!' },
+            { q: '<code>10 &gt; 5 &amp;&amp; 3 &lt; 4</code> ka result?', opts: ['true', 'false', '3', 'Error'], correct: 0, exp: '&& tab true deta hai jab dono conditions true hon. Yahan dono true hain.' },
+            { q: '<code>true || false</code> ka result?', opts: ['true', 'false', 'undefined', 'Error'], correct: 0, exp: '|| mein ek bhi operand true ho toh result true hota hai.' },
+            { q: '<code>!false</code> ka result?', opts: ['true', 'false', '0', 'null'], correct: 0, exp: 'Logical NOT value ko ulta karta hai, isliye !false true hai.' },
+            { q: '<code>let x = null; x ?? "Guest"</code> kya dega?', opts: ['null', 'Guest', 'undefined', 'Error'], correct: 1, exp: 'Nullish coalescing ?? null ya undefined par fallback value deta hai.' },
+            { q: '<code>let name = ""; name || "Guest"</code> kya dega?', opts: ['""', '"Guest"', 'true', 'Error'], correct: 1, exp: 'Empty string falsy hoti hai, isliye || fallback "Guest" return karta hai.' },
+            { q: '<code>2 ** 3</code> ka output?', opts: ['6', '8', '9', '5'], correct: 1, exp: '** exponentiation operator hai: 2 ki power 3 = 8.' },
+            { q: '<code>7 / 2</code> ka output?', opts: ['3', '3.5', '1', '4'], correct: 1, exp: 'JavaScript division decimal result de sakta hai: 7 / 2 = 3.5.' },
+            { q: '<code>let x = 5; x += 2;</code> ke baad x?', opts: ['5', '2', '7', '52'], correct: 2, exp: '+= current value mein right side add karke assign karta hai: x = x + 2.' },
+            { q: '<code>3 &lt;= 3</code> ka result?', opts: ['true', 'false', '3', 'Error'], correct: 0, exp: '<= less than ya equal check karta hai, aur 3 apne barabar hai.' },
+            { q: '<code>typeof (5 &gt; 2)</code> kya dega?', opts: ['"number"', '"boolean"', '"comparison"', '"string"'], correct: 1, exp: 'Comparison operators true ya false dete hain, aur unka type boolean hota hai.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -2689,7 +2700,7 @@ console.log(`Grade: ${grade}`);
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 5) { msg = 'PERFECT SCORE! Tum Operators ke asli Jadugar ho! 🧙‍♂️'; emoji = '🏆'; }
+            if (quizScore === 15) { msg = 'PERFECT SCORE! Tum Operators ke asli Jadugar ho! 🧙‍♂️'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Bahut badhiya! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho aur Playground mein khelo!'; emoji = '📚'; }
 

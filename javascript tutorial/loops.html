@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghoomo Phiro Loop 🔄</title>
+    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -2327,12 +2328,12 @@ if (rev === original) {
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Loops Ka Exam — 5 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Loops ke Boss ho. Chalo!</p>
+        <h2>Loops Ka Exam — 15 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 15/15 aaye toh tum Loops ke Boss ho. Chalo!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -2690,7 +2691,17 @@ if (rev === original) {
             { q: 'while aur do-while mein sabse bada farak kya hai?', opts: ['do-while fast hota hai', 'do-while kam se kam 1 baar pakka chalta hai', 'while 1 baar pakka chalta hai', 'Koi farak nahi hai'], correct: 1, exp: 'do-while PEHLE body chalata hai, PHIR check karta hai — isliye condition false ho tab bhi 1 baar chalta hai! while pehle check karta hai — false hua toh 0 baar chala.' },
             { q: '<code>break</code> aur <code>continue</code> mein kya farak hai?', opts: ['Dono loop band karte hai', 'continue loop band karta hai, break round skip karta hai', 'break poora loop khatam karta hai, continue sirf current round skip karta hai', 'Dono bilkul same hai'], correct: 2, exp: 'break = loop se turant BAHAR (aage ka code chalta hai). continue = sirf ye round skip, loop chalta rehta hai. Movie beech mein chhodna vs karela side mein rakh dena!' },
             { q: '<code>let i = 10; while (i < 5) { console.log(i); i++; }</code> — kitni baar chalega?', opts: ['10 baar', '5 baar', '0 baar — body kabhi nahi chali', 'Infinite'], correct: 2, exp: 'Pehli check hi fail (10 < 5 ✗)! while PEHLE check karta hai, chalana baad mein — isliye body ek baar bhi nahi chali. do-while hota toh 1 baar pakka chal jata!' },
-            { q: 'Infinite loop KAB banta hai?', opts: ['Jab i++ (update) likhna bhool jao', 'Jab condition kabhi false na ho', 'Dono wajah se!', 'JS mein infinite loop banta hi nahi'], correct: 2, exp: 'Dono! Update bhool gaye toh i wahi atka rahega; condition kabhi false na ho toh loop kabhi nahi rukega. Browser hang, laptop garam! Emergency exit: break lagao.' }
+            { q: 'Infinite loop KAB banta hai?', opts: ['Jab i++ (update) likhna bhool jao', 'Jab condition kabhi false na ho', 'Dono wajah se!', 'JS mein infinite loop banta hi nahi'], correct: 2, exp: 'Dono! Update bhool gaye toh i wahi atka rahega; condition kabhi false na ho toh loop kabhi nahi rukega. Browser hang, laptop garam! Emergency exit: break lagao.' },
+            { q: '<code>for (let i = 1; i &lt;= 3; i++)</code> kitni baar chalega?', opts: ['2', '3', '4', 'Infinite'], correct: 1, exp: 'i ki values 1, 2, 3 hongi. 4 par condition false ho jayegi, isliye 3 baar.' },
+            { q: '<code>for (const item of ["a", "b"])</code> mein item kya hota hai?', opts: ['Index', 'Value', 'Array length', 'Loop condition'], correct: 1, exp: 'for...of iterable ki values deta hai. Index chahiye toh for...in ya entries use kar sakte ho.' },
+            { q: '<code>for (const key in obj)</code> mein key kya hoti hai?', opts: ['Property name', 'Property value', 'Object ka size', 'Function'], correct: 0, exp: 'for...in object ki enumerable property names ya keys par iterate karta hai.' },
+            { q: '<code>let i = 0; do { i++; } while (i &lt; 0);</code> ke baad i?', opts: ['0', '1', '-1', 'Error'], correct: 1, exp: 'do-while body pehle ek baar chalti hai, isliye i 0 se 1 ho jata hai.' },
+            { q: 'Nested loop mein <code>break</code> aam taur par kya karta hai?', opts: ['Sabhi loops rokta hai', 'Current loop rokta hai', 'Next page kholta hai', 'Kuch nahi'], correct: 1, exp: 'break jis loop ke andar likha ho, aam taur par sirf wahi current loop rokta hai.' },
+            { q: '<code>continue</code> statement kya skip karta hai?', opts: ['Poora program', 'Current iteration', 'Function definition', 'Loop condition hamesha'], correct: 1, exp: 'continue current iteration ka baaki body skip karke next iteration par chala jata hai.' },
+            { q: '<code>forEach</code> se loop ko <code>break</code> kar sakte hain?', opts: ['Haan', 'Nahi', 'Sirf strings par', 'Sirf numbers par'], correct: 1, exp: 'forEach callback ke andar break valid nahi hota. Early stop ke liye for...of ya normal for loop use karo.' },
+            { q: '<code>let total = 0; for (const n of [1,2,3]) total += n;</code> total?', opts: ['3', '5', '6', '123'], correct: 2, exp: 'Loop values ko add karta hai: 0 + 1 + 2 + 3 = 6.' },
+            { q: '<code>while (false) { console.log("hi"); }</code> mein output?', opts: ['hi', 'false', 'Kuch nahi', 'Error'], correct: 2, exp: 'while pehle condition check karta hai. false hone par body zero times chalti hai.' },
+            { q: '<code>for (let i = 0; i &lt; 3; i++)</code> mein update kab hota hai?', opts: ['Body se pehle', 'Har body ke baad', 'Sirf end par', 'Kabhi nahi'], correct: 1, exp: 'for loop ka update expression har iteration ki body ke baad run hota hai.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -2751,7 +2762,7 @@ if (rev === original) {
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 5) { msg = 'PERFECT! Tum Loops ke Boss ho — Ghoomo Phiro Master! 🔄'; emoji = '🏆'; }
+            if (quizScore === 15) { msg = 'PERFECT! Tum Loops ke Boss ho — Ghoomo Phiro Master! 🔄'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho, Loop Machine se khelo!'; emoji = '📚'; }
 

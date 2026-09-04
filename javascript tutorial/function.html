@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apni Khud Ki Machine 🔧</title>
+    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -2323,12 +2324,12 @@ console.log(makePassword(10));</pre>
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Functions Ka Exam — 5 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Machine Master ho. Chalo!</p>
+        <h2>Functions Ka Exam — 15 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 15/15 aaye toh tum Machine Master ho. Chalo!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -2726,7 +2727,17 @@ console.log(makePassword(10));</pre>
             { q: '<code>function add(a, b) { return a + b; }</code> — <code>console.log(add(2, 3));</code> ka output?', opts: ['23', '5', 'undefined', 'NaN'], correct: 1, exp: 'add(2, 3) ne 2 + 3 = 5 RETURN kiya, console.log ne wo value dikha di. (2, 3 arguments hai, a, b parameters — a + b mathematical addition hai, string nahi!)' },
             { q: 'Function mein return nahi likha toh call kya dega?', opts: ['0', 'null', 'undefined', 'Error aayega'], correct: 2, exp: 'JS khud return undefined; kar deta hai! Machine ne kaam kiya par kuch wapas nahi bheja — isliye "return bhool gaye = undefined milega" — top beginner bug!' },
             { q: '<code>const double = x =&gt; x * 2;</code> — <code>double(5)</code> kya dega?', opts: ['10', '25', 'undefined', 'Error'], correct: 0, exp: 'One-liner arrow mein return CHHUPA hota hai — x => x * 2 automatically x * 2 return karta hai! 5 × 2 = 10. ({} lagate toh return likhna padta — warna undefined!)' },
-            { q: '<code>greet("Rahul")</code> — yaha "Rahul" ko kya kehte hai?', opts: ['Parameter', 'Argument', 'Return value', 'Variable'], correct: 1, exp: 'Call karte waqt di gayi ASLI value = argument. Define karte waqt ki khaali jagah (name) = parameter. P = Placeholder, A = Asli value!' }
+            { q: '<code>greet("Rahul")</code> — yaha "Rahul" ko kya kehte hai?', opts: ['Parameter', 'Argument', 'Return value', 'Variable'], correct: 1, exp: 'Call karte waqt di gayi ASLI value = argument. Define karte waqt ki khaali jagah (name) = parameter. P = Placeholder, A = Asli value!' },
+            { q: '<code>function add(a, b = 0) { return a + b; }</code> — <code>add(5)</code> ka output?', opts: ['5', 'undefined', 'NaN', 'Error'], correct: 0, exp: 'b ka default parameter 0 hai, isliye 5 + 0 = 5.' },
+            { q: '<code>function test() { return; }</code> kya return karega?', opts: ['0', 'null', 'undefined', 'Error'], correct: 2, exp: 'return ke baad value na ho toh function undefined return karta hai.' },
+            { q: '<code>const square = (n) =&gt; ({ value: n * n });</code> ka return?', opts: ['Object', 'Number', 'undefined', 'SyntaxError'], correct: 0, exp: 'Arrow function mein parentheses ke andar object literal implicit return ho sakta hai.' },
+            { q: 'Function ke andar bana <code>let secret</code> bahar access karne par?', opts: ['Value milegi', 'undefined milega', 'ReferenceError aayega', 'null milega'], correct: 2, exp: 'Local let function scope ke andar hota hai. Bahar uska naam available nahi hota.' },
+            { q: '<code>function welcome(name) { console.log(name); }</code> mein <code>name</code> kya hai?', opts: ['Argument', 'Parameter', 'Object', 'Return value'], correct: 1, exp: 'Function definition mein name parameter hai; call ke waqt di gayi value argument hoti hai.' },
+            { q: '<code>function f() { return 1; return 2; }</code> ka result?', opts: ['1', '2', '3', 'Error'], correct: 0, exp: 'Pehle return par function turant khatam ho jata hai, isliye result 1 hai.' },
+            { q: '<code>Math.max(2, 8, 4)</code> kya return karta hai?', opts: ['2', '4', '8', 'undefined'], correct: 2, exp: 'Math.max multiple arguments mein sabse badi value return karta hai.' },
+            { q: 'Callback function ka matlab kya hai?', opts: ['Jo function delete ho', 'Jo function kisi doosre function ko diya jaye', 'Jo function return na ho', 'Jo sirf loop mein chale'], correct: 1, exp: 'Callback ek function hota hai jo doosre function ko argument ke roop mein diya jata hai.' },
+            { q: '<code>const fn = function () { return "ok"; };</code> ko kaise call karenge?', opts: ['fn', 'fn()', 'call(fn)', 'function(fn)'], correct: 1, exp: 'Function expression ko execute karne ke liye variable ke baad parentheses lagate hain: fn().' },
+            { q: '<code>function add(...nums) { return nums.length; }</code> — <code>add(2, 4, 6)</code>?', opts: ['2', '3', '6', 'undefined'], correct: 1, exp: 'Rest parameter ...nums saare arguments ko array mein collect karta hai, jiska length 3 hai.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -2787,7 +2798,7 @@ console.log(makePassword(10));</pre>
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 5) { msg = 'PERFECT! Tum Machine Master ho — Functions ka Boss! 🔧'; emoji = '🏆'; }
+            if (quizScore === 15) { msg = 'PERFECT! Tum Machine Master ho — Functions ka Boss! 🔧'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho, Function Machine se khelo!'; emoji = '📚'; }
 

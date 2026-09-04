@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Variable Ka Raja 🔥</title>
+    <link rel="stylesheet" href="quiz.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap"
       rel="stylesheet"
@@ -4081,6 +4082,36 @@ console.log("Agale saal meri age hogi:", age + 1);</textarea
           correct: 1,
           explain:
             "let se same naam se doosra variable declare nahi kar sakte — SyntaxError aata hai!",
+        },
+        {
+          q: "<code>let x = 1, y = 2;</code> ke baad <code>[x, y] = [y, x]</code> par?",
+          opts: ["Dono 1 ho jayenge", "x = 2 aur y = 1", "SyntaxError", "undefined"],
+          correct: 1,
+          explain: "Destructuring assignment se temporary variable ke bina values swap ho sakti hain.",
+        },
+        {
+          q: "<code>const user = { name: \"Asha\" };</code> mein <code>user.name = \"Riya\"</code> par?",
+          opts: ["TypeError", "Name update ho jayega", "user undefined ho jayega", "Kuch nahi hoga"],
+          correct: 1,
+          explain: "const reference ko lock karta hai, object ki property update karna allowed hai.",
+        },
+        {
+          q: "<code>let score = 10;</code> ko <code>score += 5;</code> ke baad?",
+          opts: ["5", "10", "15", "105"],
+          correct: 2,
+          explain: "+= ka matlab score = score + 5 hota hai, isliye value 15 ho jati hai.",
+        },
+        {
+          q: "<code>const name = \"Asha\";</code> ko dobara <code>const name = \"Riya\";</code> likhne par?",
+          opts: ["Value update hogi", "SyntaxError", "undefined", "null"],
+          correct: 1,
+          explain: "Same scope mein const ko same naam se redeclare nahi kar sakte.",
+        },
+        {
+          q: "<code>let value = null;</code> ke liye <code>typeof value</code> kya dega?",
+          opts: ["null", "object", "undefined", "string"],
+          correct: 1,
+          explain: "typeof null JavaScript ka historical oddity hai aur \"object\" return karta hai.",
         },
       ];
 
