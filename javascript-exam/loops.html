@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ghoomo Phiro Loop 🔄</title>
-    <link rel="stylesheet" href="quiz.css">
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
@@ -1392,9 +1391,96 @@
             .lsm { padding: 20px 16px; }
             .roadmap-track { justify-content: flex-start; }
         }
+    
+        /* ==================== SERIES NAVBAR (JS Ka Safar) ==================== */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 56px;
+            padding: 0 18px;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+        }
+        .tn-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .tn-brand i { filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7)); }
+        .tn-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tn-links::-webkit-scrollbar { display: none; }
+        .tn-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .tn-link i { font-size: 11px; }
+        .tn-link:hover { color: var(--accent2); background: rgba(0, 212, 255, 0.08); }
+        .tn-link.active {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.35);
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.18);
+        }
+        .tn-link.active i { filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.8)); }
+        .tn-soon { opacity: 0.45; cursor: not-allowed; }
+        .tn-soon:hover { color: var(--muted); background: transparent; }
+        body { padding-top: 56px; }
+        @media (max-width: 720px) {
+            .topnav { padding: 0 10px; gap: 8px; }
+            .tn-brand span { display: none; }
+            .tn-link { padding: 6px 9px; font-size: 11.5px; }
+        }
     </style>
 </head>
 <body>
+
+    <!-- ============ SERIES NAVBAR ============ -->
+    <nav class="topnav">
+        <a class="tn-brand" href="variables.html" title="JavaScript Ka Safar — Home"><i class="fas fa-bolt"></i><span>JS Ka Safar</span></a>
+        <div class="tn-links">
+        <a href="variables.html" class="tn-link"><i class="fas fa-crown"></i> 1. Variables</a>
+        <a href="operators.html" class="tn-link"><i class="fas fa-wand-magic-sparkles"></i> 2. Operators</a>
+        <a href="conditionals.html" class="tn-link"><i class="fas fa-gamepad"></i> 3. Conditionals</a>
+        <a href="loops.html" class="tn-link active"><i class="fas fa-rotate"></i> 4. Loops</a>
+        <a href="functions.html" class="tn-link"><i class="fas fa-gears"></i> 5. Functions</a>
+        <a href="arrays.html" class="tn-link"><i class="fas fa-bars-staggered"></i> 6. Arrays</a>
+        <a href="objects.html" class="tn-link"><i class="fas fa-box-open"></i> 7. Objects</a>
+        <a href="dom.html" class="tn-link"><i class="fas fa-desktop"></i> 8. DOM</a>
+        </div>
+    </nav>
+
     <div class="bg-grid"></div>
     <div class="bg-glow bg-glow-1"></div>
     <div class="bg-glow bg-glow-2"></div>
@@ -1839,7 +1925,7 @@ console.log(<span class="st">"Pet bhara! Ab sona 😴"</span>);
     <!-- ============ EXAMPLES GALLERY ============ -->
     <section class="section" id="examples">
         <span class="section-tag"><i class="fas fa-code"></i> Examples Gallery</span>
-        <h2>15 Examples — Har Loop Ke Pakke Udaharan 📚</h2>
+        <h2>20 Examples — Har Loop Ke Pakke Udaharan 📚</h2>
         <p class="section-desc">Tabs se category badlo, examples padho, output <b>pehle khud predict karo</b> — phir Playground mein chala ke match karo. Prediction karne se logic muscle banti hai!</p>
 
         <div class="ex-tabs" id="exTabs">
@@ -1929,7 +2015,7 @@ if (!ok) blockCard();</div>
     <!-- ============ PLAYGROUND ============ -->
     <section class="section" id="playground">
         <span class="section-tag"><i class="fas fa-terminal"></i> Code Playground</span>
-        <h2>Khud Chala Ke Dekho! 🧪</h2>
+        <h2>Code Playground — Khud Likho, Turant Chalao!</h2>
         <p class="section-desc">6 ready-made snippets — load karo, run karo (ya <b>Ctrl+Enter</b> dabao), phir values badal ke experiment karo. Yahi se asli samajh aati hai!</p>
 
         <div class="playground">
@@ -2328,12 +2414,12 @@ if (rev === original) {
     <!-- ============ QUIZ ============ -->
     <section class="section" id="quiz">
         <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
-        <h2>Loops Ka Exam — 15 Sawaal! 🏆</h2>
-        <p class="section-desc">Journey ka agla test! 15/15 aaye toh tum Loops ke Boss ho. Chalo!</p>
+        <h2>Loops Ka Exam — 5 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Loops ke Boss ho. Chalo!</p>
 
         <div class="quiz-box">
             <div class="quiz-progress">
-                <span class="q-count" id="quizCount">Sawaal 1 / 15</span>
+                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
                 <span class="q-score" id="quizScore">Score: 0</span>
             </div>
             <div class="quiz-q" id="quizQ">Loading...</div>
@@ -2356,27 +2442,32 @@ if (rev === original) {
             [ // for
                 { t: 'Counting 1 se 5', c: 'for (let i = 1; i <= 5; i++) {\n  console.log("Round", i);\n}', o: 'Round 1\nRound 2\nRound 3\nRound 4\nRound 5' },
                 { t: 'Table of 3', c: 'let n = 3;\n\nfor (let i = 1; i <= 10; i++) {\n  console.log(n + " x " + i + " = " + (n * i));\n}', o: '3 x 1 = 3\n3 x 2 = 6\n...\n3 x 10 = 30' },
-                { t: 'Sum 1 se 100 (Accumulator)', c: 'let total = 0;\n\nfor (let i = 1; i <= 100; i++) {\n  total += i;\n}\nconsole.log("Total:", total);', o: 'Total: 5050' }
+                { t: 'Sum 1 se 100 (Accumulator)', c: 'let total = 0;\n\nfor (let i = 1; i <= 100; i++) {\n  total += i;\n}\nconsole.log("Total:", total);', o: 'Total: 5050' },
+            { t: 'Table of 3 — For Ka Classic', c: 'for (let i = 1; i <= 3; i++) {\n  console.log("3 x " + i + " = " + 3 * i);\n}', o: '3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9' }
             ],
             [ // while
                 { t: 'Countdown 5 se 1', c: 'let t = 5;\n\nwhile (t >= 1) {\n  console.log(t);\n  t--;\n}\nconsole.log("GO! 🚀");', o: '5\n4\n3\n2\n1\nGO! 🚀' },
                 { t: 'Paisa Double Jab Tak 100 Na Ho', c: 'let paisa = 1;\nlet din = 0;\n\nwhile (paisa < 100) {\n  paisa = paisa * 2;\n  din++;\n}\nconsole.log(din + " din mein ₹" + paisa);', o: '7 din mein ₹128' },
-                { t: 'Array Print (while se)', c: 'let items = ["chai", "coffee", "lassi"];\nlet i = 0;\n\nwhile (i < items.length) {\n  console.log(items[i]);\n  i++;\n}', o: 'chai\ncoffee\nlassi' }
+                { t: 'Array Print (while se)', c: 'let items = ["chai", "coffee", "lassi"];\nlet i = 0;\n\nwhile (i < items.length) {\n  console.log(items[i]);\n  i++;\n}', o: 'chai\ncoffee\nlassi' },
+            { t: 'Rocket Countdown — While Se', c: 'let count = 3;\n\nwhile (count > 0) {\n  console.log(count);\n  count--;\n}\n\nconsole.log("LIFTOFF!");', o: '3\n2\n1\nLIFTOFF!' }
             ],
             [ // do-while
                 { t: 'Menu 3 Baar Dikhana', c: 'let visits = 0;\n\ndo {\n  visits++;\n  console.log("Menu dikha #" + visits);\n} while (visits < 3);\n\nconsole.log("Ab order karo! 🍽️");', o: 'Menu dikha #1\nMenu dikha #2\nMenu dikha #3\nAb order karo! 🍽️' },
                 { t: 'MAGIC: False Condition — Phir Bhi Chala!', c: 'let x = 100;\n\ndo {\n  console.log("Chala! x =", x);\n  x++;\n} while (x < 5);\n\n// 100 < 5 false hai — phir bhi 1 baar chala!', o: 'Chala! x = 100' },
-                { t: 'Dice — 6 Aane Tak Ghoomo 🎲', c: 'let count = 0;\nlet roll;\n\ndo {\n  roll = Math.ceil(Math.random() * 6);\n  count++;\n  console.log("Roll " + count + ": " + roll);\n} while (roll !== 6);\n\nconsole.log("6 mila! 🎲");', o: 'Roll 1: 4\nRoll 2: 6\n6 mila! 🎲 (har run alag!)' }
+                { t: 'Dice — 6 Aane Tak Ghoomo 🎲', c: 'let count = 0;\nlet roll;\n\ndo {\n  roll = Math.ceil(Math.random() * 6);\n  count++;\n  console.log("Roll " + count + ": " + roll);\n} while (roll !== 6);\n\nconsole.log("6 mila! 🎲");', o: 'Roll 1: 4\nRoll 2: 6\n6 mila! 🎲 (har run alag!)' },
+            { t: 'Do-While Magic — False Par Bhi Ek Baar', c: 'let mood = "sad";\n\ndo {\n  console.log("Ek chai toh banti hai!");\n  mood = "happy";\n} while (mood === "sad");\n\nconsole.log("Ab mood happy, loop khatam");', o: 'Ek chai toh banti hai!\nAb mood happy, loop khatam' }
             ],
             [ // break/continue
                 { t: 'break — 7 Pe STOP', c: 'for (let i = 1; i <= 10; i++) {\n  if (i === 7) {\n    console.log("STOP! 🛑");\n    break;\n  }\n  console.log(i);\n}', o: '1\n2\n3\n4\n5\n6\nSTOP! 🛑' },
                 { t: 'continue — Even Skip Karo', c: 'for (let i = 1; i <= 6; i++) {\n  if (i % 2 === 0) continue;\n  console.log(i);\n}', o: '1\n3\n5' },
-                { t: 'Menu Mein Dhundo (break se fast exit)', c: 'let menu = ["samosa", "dosa", "idli", "vada"];\nlet found = -1;\n\nfor (let i = 0; i < menu.length; i++) {\n  if (menu[i] === "idli") {\n    found = i;\n    break;\n  }\n}\nconsole.log(found > -1 ? "Index " + found + " pe mila! 🎯" : "Nahi mila 😢");', o: 'Index 2 pe mila! 🎯' }
+                { t: 'Menu Mein Dhundo (break se fast exit)', c: 'let menu = ["samosa", "dosa", "idli", "vada"];\nlet found = -1;\n\nfor (let i = 0; i < menu.length; i++) {\n  if (menu[i] === "idli") {\n    found = i;\n    break;\n  }\n}\nconsole.log(found > -1 ? "Index " + found + " pe mila! 🎯" : "Nahi mila 😢");', o: 'Index 2 pe mila! 🎯' },
+            { t: 'Continue — 3 Ka Bhai Skip', c: 'for (let i = 1; i <= 5; i++) {\n  if (i === 3) continue;\n  console.log(i);\n}', o: '1\n2\n4\n5' }
             ],
             [ // for...of / for...in
                 { t: 'for...of — Fruits', c: 'let fruits = ["🍎", "🍌", "🥭"];\n\nfor (let fruit of fruits) {\n  console.log("Khao:", fruit);\n}', o: 'Khao: 🍎\nKhao: 🍌\nKhao: 🥭' },
                 { t: 'for...in — Object Ki Keys', c: 'let student = {\n  naam: "Rahul",\n  marks: 92,\n  city: "Delhi"\n};\n\nfor (let key in student) {\n  console.log(key + " → " + student[key]);\n}', o: 'naam → Rahul\nmarks → 92\ncity → Delhi' },
-                { t: 'String Pe for...of', c: 'let word = "JS";\nlet count = 0;\n\nfor (let ch of word) {\n  console.log(ch);\n  count++;\n}\nconsole.log(count + " letters");', o: 'J\nS\n2 letters' }
+                { t: 'String Pe for...of', c: 'let word = "JS";\nlet count = 0;\n\nfor (let ch of word) {\n  console.log(ch);\n  count++;\n}\nconsole.log(count + " letters");', o: 'J\nS\n2 letters' },
+            { t: 'Shopping List — For...of Se', c: 'let items = ["doodh", "anday", "paratha"];\n\nfor (let item of items) {\n  console.log("Lena hai: " + item);\n}', o: 'Lena hai: doodh\nLena hai: anday\nLena hai: paratha' }
             ]
         ];
 
@@ -2396,7 +2487,7 @@ if (rev === original) {
             for (var i = 0; i < list.length; i++) {
                 var ex = list[i];
                 html += '<div class="ex-card">'
-                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 3 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
+                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 4 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
                     + '<pre>' + hl(ex.c) + '</pre>'
                     + '<div class="ex-out">' + ex.o.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' &nbsp;|&nbsp; ') + '</div>'
                     + '</div>';
@@ -2691,17 +2782,7 @@ if (rev === original) {
             { q: 'while aur do-while mein sabse bada farak kya hai?', opts: ['do-while fast hota hai', 'do-while kam se kam 1 baar pakka chalta hai', 'while 1 baar pakka chalta hai', 'Koi farak nahi hai'], correct: 1, exp: 'do-while PEHLE body chalata hai, PHIR check karta hai — isliye condition false ho tab bhi 1 baar chalta hai! while pehle check karta hai — false hua toh 0 baar chala.' },
             { q: '<code>break</code> aur <code>continue</code> mein kya farak hai?', opts: ['Dono loop band karte hai', 'continue loop band karta hai, break round skip karta hai', 'break poora loop khatam karta hai, continue sirf current round skip karta hai', 'Dono bilkul same hai'], correct: 2, exp: 'break = loop se turant BAHAR (aage ka code chalta hai). continue = sirf ye round skip, loop chalta rehta hai. Movie beech mein chhodna vs karela side mein rakh dena!' },
             { q: '<code>let i = 10; while (i < 5) { console.log(i); i++; }</code> — kitni baar chalega?', opts: ['10 baar', '5 baar', '0 baar — body kabhi nahi chali', 'Infinite'], correct: 2, exp: 'Pehli check hi fail (10 < 5 ✗)! while PEHLE check karta hai, chalana baad mein — isliye body ek baar bhi nahi chali. do-while hota toh 1 baar pakka chal jata!' },
-            { q: 'Infinite loop KAB banta hai?', opts: ['Jab i++ (update) likhna bhool jao', 'Jab condition kabhi false na ho', 'Dono wajah se!', 'JS mein infinite loop banta hi nahi'], correct: 2, exp: 'Dono! Update bhool gaye toh i wahi atka rahega; condition kabhi false na ho toh loop kabhi nahi rukega. Browser hang, laptop garam! Emergency exit: break lagao.' },
-            { q: '<code>for (let i = 1; i &lt;= 3; i++)</code> kitni baar chalega?', opts: ['2', '3', '4', 'Infinite'], correct: 1, exp: 'i ki values 1, 2, 3 hongi. 4 par condition false ho jayegi, isliye 3 baar.' },
-            { q: '<code>for (const item of ["a", "b"])</code> mein item kya hota hai?', opts: ['Index', 'Value', 'Array length', 'Loop condition'], correct: 1, exp: 'for...of iterable ki values deta hai. Index chahiye toh for...in ya entries use kar sakte ho.' },
-            { q: '<code>for (const key in obj)</code> mein key kya hoti hai?', opts: ['Property name', 'Property value', 'Object ka size', 'Function'], correct: 0, exp: 'for...in object ki enumerable property names ya keys par iterate karta hai.' },
-            { q: '<code>let i = 0; do { i++; } while (i &lt; 0);</code> ke baad i?', opts: ['0', '1', '-1', 'Error'], correct: 1, exp: 'do-while body pehle ek baar chalti hai, isliye i 0 se 1 ho jata hai.' },
-            { q: 'Nested loop mein <code>break</code> aam taur par kya karta hai?', opts: ['Sabhi loops rokta hai', 'Current loop rokta hai', 'Next page kholta hai', 'Kuch nahi'], correct: 1, exp: 'break jis loop ke andar likha ho, aam taur par sirf wahi current loop rokta hai.' },
-            { q: '<code>continue</code> statement kya skip karta hai?', opts: ['Poora program', 'Current iteration', 'Function definition', 'Loop condition hamesha'], correct: 1, exp: 'continue current iteration ka baaki body skip karke next iteration par chala jata hai.' },
-            { q: '<code>forEach</code> se loop ko <code>break</code> kar sakte hain?', opts: ['Haan', 'Nahi', 'Sirf strings par', 'Sirf numbers par'], correct: 1, exp: 'forEach callback ke andar break valid nahi hota. Early stop ke liye for...of ya normal for loop use karo.' },
-            { q: '<code>let total = 0; for (const n of [1,2,3]) total += n;</code> total?', opts: ['3', '5', '6', '123'], correct: 2, exp: 'Loop values ko add karta hai: 0 + 1 + 2 + 3 = 6.' },
-            { q: '<code>while (false) { console.log("hi"); }</code> mein output?', opts: ['hi', 'false', 'Kuch nahi', 'Error'], correct: 2, exp: 'while pehle condition check karta hai. false hone par body zero times chalti hai.' },
-            { q: '<code>for (let i = 0; i &lt; 3; i++)</code> mein update kab hota hai?', opts: ['Body se pehle', 'Har body ke baad', 'Sirf end par', 'Kabhi nahi'], correct: 1, exp: 'for loop ka update expression har iteration ki body ke baad run hota hai.' }
+            { q: 'Infinite loop KAB banta hai?', opts: ['Jab i++ (update) likhna bhool jao', 'Jab condition kabhi false na ho', 'Dono wajah se!', 'JS mein infinite loop banta hi nahi'], correct: 2, exp: 'Dono! Update bhool gaye toh i wahi atka rahega; condition kabhi false na ho toh loop kabhi nahi rukega. Browser hang, laptop garam! Emergency exit: break lagao.' }
         ];
 
         var quizIdx = 0, quizScore = 0, quizLock = false;
@@ -2762,10 +2843,10 @@ if (rev === original) {
 
         function showFinal() {
             var msg, emoji;
-            if (quizScore === 15) { msg = 'PERFECT! Tum Loops ke Boss ho — Ghoomo Phiro Master! 🔄'; emoji = '🏆'; }
+            if (quizScore === 5) { msg = 'PERFECT! Tum Loops ke Boss ho — Ghoomo Phiro Master! 🔄'; emoji = '🏆'; }
             else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
             else { msg = 'Koi baat nahi — upar sections dobara padho, Loop Machine se khelo!'; emoji = '📚'; }
-            
+
             document.getElementById('quizCount').textContent = 'Quiz Complete!';
             document.getElementById('quizQ').innerHTML = '';
             document.getElementById('quizFb').textContent = '';
@@ -2799,5 +2880,3 @@ if (rev === original) {
     </script>
 </body>
 </html>
-
-

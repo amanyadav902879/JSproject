@@ -1,0 +1,2837 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agar-Warna Ka Khel 🎮</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: #151d2e;
+            --card2: #1a2540;
+            --border: #1e3a5f;
+            --fg: #e8edf5;
+            --muted: #6b7fa3;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --purple: #a855f7;
+            --pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Background Effect === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 { top: -150px; left: -100px; background: var(--accent); }
+        .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+        .bg-glow-3 { top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--purple); opacity: 0.08; }
+
+        /* === Header === */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        header h1 {
+            font-weight: 900;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header .badge-chapter {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* === Roadmap === */
+        .roadmap-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
+        }
+
+        .roadmap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .roadmap h3 {
+            font-size: 1rem;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roadmap-track {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .rm-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .rm-chip.done { border-color: var(--accent); color: var(--accent); }
+        .rm-chip.now {
+            background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.15));
+            border-color: var(--accent2);
+            color: var(--accent2);
+            box-shadow: 0 0 18px rgba(0,212,255,0.25);
+            animation: pulseChip 2s infinite;
+        }
+        .rm-chip.future { opacity: 0.55; }
+
+        @keyframes pulseChip {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+            50% { box-shadow: 0 0 22px rgba(0,212,255,0.45); }
+        }
+
+        /* === Sections === */
+        .section {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .section > p.section-desc {
+            color: var(--muted);
+            max-width: 760px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        /* === Intro Concept Box === */
+        .concept-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .concept-box h4 {
+            color: var(--accent);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-box p {
+            color: var(--fg);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .concept-box code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        /* === Operator Family Cards === */
+        .op-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .op-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .op-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.12);
+        }
+
+        .op-card .op-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+        }
+
+        .op-card:nth-child(2) .op-icon { background: rgba(0,212,255,0.1); color: var(--accent2); }
+        .op-card:nth-child(3) .op-icon { background: rgba(168,85,247,0.1); color: var(--purple); }
+        .op-card:nth-child(4) .op-icon { background: rgba(255,107,157,0.1); color: var(--pink); }
+        .op-card:nth-child(5) .op-icon { background: rgba(255,165,2,0.1); color: var(--warn); }
+        .op-card:nth-child(6) .op-icon { background: rgba(255,71,87,0.1); color: var(--danger); }
+
+        .op-card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+        .op-card .op-symbols {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .op-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* === Operator Tables === */
+        .op-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        table.op-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 0.9rem;
+            min-width: 560px;
+        }
+
+        .op-table th {
+            background: var(--bg2);
+            color: var(--accent2);
+            text-align: left;
+            padding: 13px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .op-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(30,58,95,0.5);
+            vertical-align: middle;
+        }
+
+        .op-table tr:last-child td { border-bottom: none; }
+        .op-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+        .op-table .sym {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .op-table .ex {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.85rem;
+        }
+
+        .op-table .res {
+            font-family: 'Fira Code', monospace;
+            color: var(--warn);
+            font-weight: 600;
+        }
+
+        .op-table .desc { color: var(--muted); }
+
+        /* === Code Blocks === */
+        .code-block {
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.75;
+            overflow-x: auto;
+            white-space: pre;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .code-block .cm { color: var(--muted); }
+        .code-block .kw { color: var(--purple); }
+        .code-block .st { color: var(--accent); }
+        .code-block .nm { color: var(--accent2); }
+        .code-block .op { color: var(--warn); }
+        .code-block .out { color: var(--pink); }
+
+        /* === Gotcha / Warning Box === */
+        .gotcha {
+            background: rgba(255,71,87,0.07);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-left: 4px solid var(--danger);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .gotcha h5 {
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .gotcha p, .gotcha li { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .gotcha ul { padding-left: 20px; margin-top: 6px; }
+        .gotcha code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255,71,87,0.12);
+            color: var(--pink);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Tip Box === */
+        .tipbox {
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.25);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .tipbox h5 {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .tipbox p { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .tipbox code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Two Column Split === */
+        .split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 780px) {
+            .split-2 { grid-template-columns: 1fr; }
+        }
+
+        .split-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .split-card h5 { margin-bottom: 10px; font-size: 1rem; }
+        .split-card.vs-lose { border-top: 3px solid var(--warn); }
+        .split-card.vs-strict { border-top: 3px solid var(--accent); }
+
+        .split-card ul { list-style: none; }
+        .split-card li {
+            padding: 7px 0;
+            color: var(--fg);
+            font-size: 0.87rem;
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .split-card li:last-child { border-bottom: none; }
+        .split-card li i { margin-right: 8px; }
+        .split-card .li-ok i { color: var(--accent); }
+        .split-card .li-bad i { color: var(--danger); }
+    </style>
+<style>
+        /* === Flow Demo (Concept) === */
+        .flow {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: stretch;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-cond {
+            background: var(--bg2);
+            border: 2px dashed var(--accent2);
+            border-radius: 12px;
+            padding: 16px 22px;
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .flow-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: center;
+            min-width: 150px;
+            font-size: 0.88rem;
+        }
+
+        .flow-box .f-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .flow-box.true-path { border-top: 3px solid var(--accent); }
+        .flow-box.true-path .f-tag { color: var(--accent); }
+        .flow-box.false-path { border-top: 3px solid var(--danger); }
+        .flow-box.false-path .f-tag { color: var(--danger); }
+        .flow-arrow {
+            align-self: center;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        /* === Decision Ladder Simulator === */
+        .ladder-sim {
+            background: linear-gradient(135deg, rgba(0,212,255,0.07), rgba(0,255,136,0.07));
+            border: 1px solid var(--accent2);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 26px 0;
+        }
+
+        .ladder-sim h4 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .ladder-sim h4 i { color: var(--accent2); margin-right: 8px; }
+
+        .ladder-sim p.ls-desc {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.87rem;
+            margin-bottom: 20px;
+        }
+
+        .ladder-scenarios {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .ladder-scenarios button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .ladder-scenarios button:hover { border-color: var(--accent2); color: var(--accent2); }
+
+        .ladder-scenarios button.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .ladder-input-row {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
+        }
+
+        .ladder-input-row label {
+            color: var(--muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .ladder-input-row input {
+            width: 160px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            text-align: center;
+        }
+
+        .ladder-input-row input:focus { border-color: var(--accent2); box-shadow: 0 0 15px rgba(0,212,255,0.2); }
+
+        .ladder-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            color: #0a0e17;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 12px 30px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .ladder-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,255,136,0.3); }
+
+        .ladder {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 660px;
+            margin: 0 auto;
+        }
+
+        .rung {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 13px 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            transition: all 0.45s;
+        }
+
+        .rung .r-label { color: var(--muted); font-size: 0.72rem; margin-right: 8px; }
+        .rung .r-cond { color: var(--accent2); }
+        .rung .r-out { color: var(--muted); font-size: 0.8rem; margin-left: auto; }
+
+        .rung.checked {
+            border-color: rgba(255,71,87,0.5);
+            opacity: 0.65;
+        }
+
+        .rung.checked .r-res::after { content: ' ✗'; color: var(--danger); font-weight: 700; }
+
+        .rung.hit {
+            border-color: var(--accent);
+            background: rgba(0,255,136,0.1);
+            box-shadow: 0 0 25px rgba(0,255,136,0.25);
+        }
+
+        .rung.hit .r-res { color: var(--accent); }
+        .rung.hit .r-res::after { content: ' ✓'; color: var(--accent); font-weight: 700; }
+
+        .rung .r-res { font-weight: 700; min-width: 30px; text-align: right; }
+
+        .ladder-trace {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            min-height: 24px;
+        }
+
+        .ladder-trace code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        /* === Analogies === */
+        .analogy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .analogy-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analogy-card:hover {
+            border-color: var(--accent2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.12);
+        }
+
+        .analogy-card .a-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .analogy-card h4 { margin-bottom: 8px; font-size: 1.02rem; }
+        .analogy-card h4 span { color: var(--accent2); }
+        .analogy-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+        .analogy-card .a-code {
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: rgba(0,255,136,0.07);
+            border-radius: 8px;
+            padding: 9px 12px;
+            line-height: 1.6;
+        }
+
+        /* === Examples Gallery === */
+        .ex-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .ex-tab {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .ex-tab:hover { border-color: var(--accent2); color: var(--accent2); }
+
+        .ex-tab.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .ex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .ex-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .ex-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .ex-card .ex-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ex-card .ex-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(0,255,136,0.12);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ex-card .ex-title { font-size: 0.92rem; font-weight: 600; }
+
+        .ex-card pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            padding: 16px 18px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .ex-card .ex-out {
+            padding: 12px 18px;
+            border-top: 1px dashed var(--border);
+            color: var(--warn);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .ex-card .ex-out::before { content: '▶ Output: '; color: var(--muted); }
+
+        /* === Use Cases === */
+        .use-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .use-card {
+            background: linear-gradient(145deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+
+        .use-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+
+        .use-card .u-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .use-card .u-logo { font-size: 1.8rem; }
+        .use-card h4 { font-size: 1rem; }
+        .use-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px; }
+        .use-card .u-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .u-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.12);
+            color: var(--purple);
+            border: 1px solid rgba(168,85,247,0.3);
+        }
+
+        .use-card .u-snippet {
+            margin-top: 12px;
+            background: #0d1321;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--accent2);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* === Playground === */
+        .playground {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .pg-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pg-top .pg-title { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .pg-top .pg-title i { color: var(--accent); }
+
+        .pg-snippets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .pg-snippets button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 7px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pg-snippets button:hover { border-color: var(--accent); color: var(--accent); }
+
+        .pg-body { display: grid; grid-template-columns: 1fr 1fr; }
+        @media (max-width: 820px) { .pg-body { grid-template-columns: 1fr; } }
+
+        .pg-body textarea {
+            width: 100%;
+            height: 320px;
+            background: #0d1321;
+            border: none;
+            resize: vertical;
+            padding: 18px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            outline: none;
+            border-right: 1px solid var(--border);
+        }
+
+        @media (max-width: 820px) { .pg-body textarea { border-right: none; border-bottom: 1px solid var(--border); } }
+
+        .pg-console {
+            height: 320px;
+            overflow-y: auto;
+            padding: 18px;
+            background: var(--bg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        .pg-console .cl { padding: 3px 0; color: var(--fg); word-break: break-word; }
+        .pg-console .cl-err { color: var(--danger); }
+        .pg-console .cl-info { color: var(--accent2); }
+        .pg-console .cl-warn { color: var(--warn); }
+
+        .pg-runbar {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 10px 26px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-run:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,255,136,0.3); }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+        .pg-hint { color: var(--muted); font-size: 0.75rem; margin-left: auto; }
+        @media (max-width: 640px) { .pg-hint { margin-left: 0; } }
+    </style>
+<style>
+        /* === Workshop === */
+        .ws-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .ws-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .ws-item:hover { border-color: var(--accent); }
+
+        .ws-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ws-head:hover { background: rgba(0,255,136,0.03); }
+
+        .ws-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 11px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ws-badge.easy { background: rgba(0,255,136,0.12); color: var(--accent); border: 1px solid rgba(0,255,136,0.3); }
+        .ws-badge.medium { background: rgba(255,165,2,0.12); color: var(--warn); border: 1px solid rgba(255,165,2,0.3); }
+        .ws-badge.hard { background: rgba(255,71,87,0.12); color: var(--danger); border: 1px solid rgba(255,71,87,0.3); }
+
+        .ws-head .ws-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+        .ws-head .ws-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.8rem; }
+        .ws-item.open .ws-arrow { transform: rotate(180deg); }
+
+        .ws-body { display: none; padding: 0 20px 20px; }
+        .ws-item.open .ws-body { display: block; }
+
+        .ws-body .ws-task {
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .ws-body .ws-task code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .ws-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent2);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            transition: all 0.25s;
+        }
+
+        .ws-toggle-btn:hover { border-color: var(--accent2); }
+
+        .ws-hint, .ws-sol {
+            display: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.84rem;
+            line-height: 1.7;
+        }
+
+        .ws-hint.show, .ws-sol.show { display: block; }
+
+        .ws-hint {
+            background: rgba(255,165,2,0.07);
+            border: 1px dashed rgba(255,165,2,0.4);
+            color: var(--fg);
+        }
+
+        .ws-hint strong { color: var(--warn); }
+
+        .ws-sol {
+            background: #0d1321;
+            border: 1px solid var(--border);
+        }
+
+        .ws-sol pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+        }
+
+        /* === Projects === */
+        .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+
+        .proj-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .proj-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+
+        .proj-card .p-emoji { font-size: 2rem; margin-bottom: 10px; }
+        .proj-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .proj-card .p-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 12px; }
+
+        .proj-card .p-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+
+        .p-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .proj-card .p-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+            align-self: flex-start;
+        }
+
+        .proj-card .p-btn:hover { background: rgba(0,255,136,0.1); }
+
+        .proj-card .p-starter {
+            display: none;
+            margin-top: 14px;
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .proj-card .p-starter.show { display: block; }
+
+        .proj-card .p-starter pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+            margin-bottom: 10px;
+        }
+
+        .proj-card .p-challenge {
+            color: var(--warn);
+            font-size: 0.78rem;
+            line-height: 1.65;
+        }
+
+        .proj-card .p-challenge strong { color: var(--warn); }
+
+        /* === Interview Accordion === */
+        .iq-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+
+        .iq-filter {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 9px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .iq-filter:hover { border-color: var(--accent2); color: var(--accent2); }
+        .iq-filter.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+        }
+
+        .iq-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .iq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .iq-q {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .iq-q:hover { background: rgba(0,255,136,0.03); }
+
+        .iq-level {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .iq-level.easy { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .iq-level.medium { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .iq-level.hard { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        .iq-q .iq-text { font-size: 0.9rem; font-weight: 600; flex: 1; line-height: 1.5; }
+        .iq-q .iq-arrow { color: var(--muted); font-size: 0.78rem; transition: transform 0.3s; }
+        .iq-item.open .iq-arrow { transform: rotate(180deg); }
+
+        .iq-a { display: none; padding: 0 18px 18px; }
+        .iq-item.open .iq-a { display: block; }
+
+        .iq-a .iq-answer {
+            background: var(--bg2);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: var(--fg);
+            font-size: 0.86rem;
+            line-height: 1.75;
+        }
+
+        .iq-a .iq-answer code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .iq-a .iq-answer pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            background: #0d1321;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.65;
+        }
+
+        /* === Cheat Sheet === */
+        .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+        .cheat-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .cheat-box h4 {
+            color: var(--accent2);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cheat-box table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .cheat-box td { padding: 6px 4px; border-bottom: 1px dashed rgba(30,58,95,0.6); }
+        .cheat-box td:first-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .cheat-box tr:last-child td { border-bottom: none; }
+
+        .cheat-box ul { list-style: none; }
+        .cheat-box li {
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: var(--fg);
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .cheat-box li:last-child { border-bottom: none; }
+        .cheat-box li i { color: var(--accent); margin-right: 7px; }
+        .cheat-box li code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            background: rgba(0,212,255,0.08);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* === Quiz === */
+        .quiz-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-progress .q-count { color: var(--muted); font-size: 0.85rem; }
+        .quiz-progress .q-score { font-family: 'Fira Code', monospace; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+        .quiz-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 18px; line-height: 1.6; }
+        .quiz-q code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+
+        .quiz-opt {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 18px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: var(--fg);
+            text-align: left;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .quiz-opt:hover { border-color: var(--accent2); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: var(--accent); background: rgba(0,255,136,0.1); color: var(--accent); }
+        .quiz-opt.wrong { border-color: var(--danger); background: rgba(255,71,87,0.1); color: var(--danger); }
+        .quiz-opt:disabled { cursor: default; }
+
+        .quiz-feedback { margin-top: 14px; font-size: 0.88rem; line-height: 1.6; min-height: 22px; }
+        .quiz-feedback.good { color: var(--accent); }
+        .quiz-feedback.bad { color: var(--danger); }
+
+        .quiz-next {
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 11px 28px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .quiz-next.show { display: inline-block; }
+
+        .quiz-final { text-align: center; padding: 20px 0; }
+        .quiz-final .qf-emoji { font-size: 3rem; margin-bottom: 12px; }
+        .quiz-final h4 { font-size: 1.3rem; margin-bottom: 8px; }
+        .quiz-final p { color: var(--muted); margin-bottom: 18px; font-size: 0.92rem; }
+
+        /* === Footer === */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer .f-next {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+        footer p { color: var(--muted); font-size: 0.82rem; line-height: 1.8; }
+        footer .f-heart { color: var(--danger); }
+
+        /* === Responsive === */
+        @media (max-width: 640px) {
+            .section { padding: 32px 16px; }
+            .battle-arena { padding: 20px 16px; }
+            .roadmap-track { justify-content: flex-start; }
+        }
+    
+        /* ==================== SERIES NAVBAR (JS Ka Safar) ==================== */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 56px;
+            padding: 0 18px;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+        }
+        .tn-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .tn-brand i { filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7)); }
+        .tn-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tn-links::-webkit-scrollbar { display: none; }
+        .tn-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .tn-link i { font-size: 11px; }
+        .tn-link:hover { color: var(--accent2); background: rgba(0, 212, 255, 0.08); }
+        .tn-link.active {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.35);
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.18);
+        }
+        .tn-link.active i { filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.8)); }
+        .tn-soon { opacity: 0.45; cursor: not-allowed; }
+        .tn-soon:hover { color: var(--muted); background: transparent; }
+        body { padding-top: 56px; }
+        @media (max-width: 720px) {
+            .topnav { padding: 0 10px; gap: 8px; }
+            .tn-brand span { display: none; }
+            .tn-link { padding: 6px 9px; font-size: 11.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ SERIES NAVBAR ============ -->
+    <nav class="topnav">
+        <a class="tn-brand" href="variables.html" title="JavaScript Ka Safar — Home"><i class="fas fa-bolt"></i><span>JS Ka Safar</span></a>
+        <div class="tn-links">
+        <a href="variables.html" class="tn-link"><i class="fas fa-crown"></i> 1. Variables</a>
+        <a href="operators.html" class="tn-link"><i class="fas fa-wand-magic-sparkles"></i> 2. Operators</a>
+        <a href="conditionals.html" class="tn-link active"><i class="fas fa-gamepad"></i> 3. Conditionals</a>
+        <a href="loops.html" class="tn-link"><i class="fas fa-rotate"></i> 4. Loops</a>
+        <a href="functions.html" class="tn-link"><i class="fas fa-gears"></i> 5. Functions</a>
+        <a href="arrays.html" class="tn-link"><i class="fas fa-bars-staggered"></i> 6. Arrays</a>
+        <a href="objects.html" class="tn-link"><i class="fas fa-box-open"></i> 7. Objects</a>
+        <a href="dom.html" class="tn-link"><i class="fas fa-desktop"></i> 8. DOM</a>
+        </div>
+    </nav>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- ============ HERO ============ -->
+    <header>
+        <span class="badge-chapter">⚡ Chapter 3 — JavaScript Journey</span>
+        <h1>Agar-Warna Ka Khel 🎮</h1>
+        <p>Operators se conditions banani seekh li... ab unse <b>DECISIONS</b> lenge! Code ko banayenge SMART — jo khud sochta hai: <b>AGAR</b> ye sahi hai toh ye karo, <b>WARNA</b> wo karo. Chalo shuru karein! 🕹️</p>
+    </header>
+
+    <!-- ============ ROADMAP ============ -->
+    <div class="roadmap-wrap">
+        <div class="roadmap">
+            <h3><i class="fas fa-map-signs"></i> Tumhara JavaScript Journey</h3>
+            <div class="roadmap-track">
+                <span class="rm-chip done"><i class="fas fa-check"></i> 1. Variables</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 2. Operators</span>
+                <span class="rm-chip now"><i class="fas fa-location-arrow"></i> 3. Conditionals (TUM YAHIN HO)</span>
+                <span class="rm-chip future">4. Loops</span>
+                <span class="rm-chip future">5. Functions</span>
+                <span class="rm-chip future">6. Arrays</span>
+                <span class="rm-chip future">7. Objects</span>
+                <span class="rm-chip future">8. DOM + Projects</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INTRO: CONDITIONAL KYA HAI ============ -->
+    <section class="section" id="intro">
+        <span class="section-tag"><i class="fas fa-lightbulb"></i> Concept</span>
+        <h2>Conditional Kya Hota Hai? 🤔</h2>
+        <p class="section-desc">Conditional statements ka kaam hai <b>decisions lena</b>. Tum roz life mein yahi karte ho: "<b>AGAR</b> baarish ho rahi hai → chhata le jao, <b>WARNA</b> chashma le jao." Bas yahi if-else hai! Code ab khud soch sakta hai — kab kya karna hai.</p>
+
+        <div class="concept-box">
+            <h4><i class="fas fa-traffic-light"></i> Traffic Signal Analogy</h4>
+            <p>Traffic signal ek <b>live conditional</b> hai! Signal <b>green</b> hai? → Chalo. <b>Red</b> hai? → Ruko. <b>Yellow</b> hai? → Ready ho jao. Signal condition check karta hai aur uske hisaab se action hota hai.<br><br>
+            Programming mein bhi same: <code>if (light === "green")</code> → chalne wala code chalta hai, warna rukne wala. Pichle chapter ke <b>comparison operators</b> (<code>&gt;</code>, <code>===</code>) aur <b>logical operators</b> (<code>&amp;&amp;</code>, <code>||</code>) se hi yeh conditions banti hain — ab unka asli game shuru!</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-cond">condition? (age &gt;= 18)</div>
+            <div class="flow-arrow"><i class="fas fa-code-branch"></i></div>
+            <div class="flow-box true-path"><span class="f-tag">TRUE ✅</span>Voting allowed 🗳️</div>
+            <div class="flow-box false-path"><span class="f-tag">FALSE ❌</span>Abhi ruko ⏳</div>
+        </div>
+
+        <div class="code-block"><span class="cm">// Decision ka formula:</span>
+<span class="cm">// 1. Condition likho (jo true/false ho)</span>
+<span class="cm">// 2. TRUE wala rasta → if block</span>
+<span class="cm">// 3. FALSE wala rasta → else block</span>
+
+<span class="kw">let</span> age = <span class="nm">20</span>;
+
+<span class="kw">if</span> (age <span class="op">&gt;=</span> <span class="nm">18</span>) {          <span class="cm">// condition check hui</span>
+  console.log(<span class="st">"Voting allowed 🗳️"</span>);  <span class="cm">// TRUE → ye chalega</span>
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Abhi ruk ja ⏳"</span>);       <span class="cm">// FALSE → ye hota</span>
+}</div>
+
+        <p class="section-desc" style="margin-bottom:12px;">JavaScript mein <b>4 decision tools</b> hain — har ek ka apna mazaaur (use case). Sab cards dekho, phir ek-ek karke detail mein 👇</p>
+        <div class="op-grid">
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-door-open"></i></div>
+                <h4>1. if</h4>
+                <div class="op-symbols">if (condition) { ... }</div>
+                <p>Sabse basic — "agar ye <b>true</b> hai toh ye kaam karo". False hua toh kuch nahi hota, seedha aage.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-arrows-alt-h"></i></div>
+                <h4>2. if-else</h4>
+                <div class="op-symbols">if (...) { A } else { B }</div>
+                <p>Do raste — condition <b>true → A</b>, <b>false → B</b>. Hamesha dono mein se EK pakka chalega.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-layer-group"></i></div>
+                <h4>3. else-if Ladder</h4>
+                <div class="op-symbols">if ... else if ... else if ... else</div>
+                <p>2 se zyada options ho toh — upar se neeche check hota hai, <b>pehla true wala</b> chalta hai.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-list-ol"></i></div>
+                <h4>4. switch</h4>
+                <div class="op-symbols">switch (x) { case 1: ... break; }</div>
+                <p><b>Ek variable</b> ke <b>fixed values</b> check karne ka clean tarika — jaise remote ke buttons ya menu.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-sitemap"></i></div>
+                <h4>5. Nested if</h4>
+                <div class="op-symbols">if () { if () { ... } }</div>
+                <p>Condition ke <b>andar hi condition</b> — jaise ATM: pehle PIN check, phir balance, phir cash.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-ghost"></i></div>
+                <h4>6. Truthy / Falsy</h4>
+                <div class="op-symbols">if (value) — bina comparison!</div>
+                <p>JS har value ko <b>true ya false jaisa</b> maan leta hai. <b>6 falsy values</b> yaad rakhna — interview ka favourite!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ IF ============ -->
+    <section class="section" id="if">
+        <span class="section-tag"><i class="fas fa-door-open"></i> Tool #1</span>
+        <h2>if Statement — Pehla Darwaza 🚪</h2>
+        <p class="section-desc"><code>if</code> kehta hai: "<b>Agar</b> yeh condition true hai, toh mere andar wala code chalao. Nahi hai? Koi baat nahi — mujhe skip karo, aage badho."</p>
+
+        <div class="code-block"><span class="cm">// Syntax:</span>
+<span class="kw">if</span> (condition) {
+  <span class="cm">// yeh code SIRF tab chalta hai</span>
+  <span class="cm">// jab condition true ho</span>
+}
+
+<span class="cm">// Example 1: Speed alert 🚗</span>
+<span class="kw">let</span> speed = <span class="nm">95</span>;
+
+<span class="kw">if</span> (speed <span class="op">&gt;</span> <span class="nm">80</span>) {
+  console.log(<span class="st">"Bhai slow karo! Chall katega 🚨"</span>);
+}
+
+<span class="cm">// Example 2: Chhata check ☂️</span>
+<span class="kw">let</span> isRaining = <span class="kw">true</span>;
+
+<span class="kw">if</span> (isRaining) {
+  console.log(<span class="st">"Chhata le jao!"</span>);
+}
+
+console.log(<span class="st">"Ghar pahunche ✅"</span>); <span class="cm">// ye HAMESHA chalega</span></div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> 3 Rules Jo Kabhi Mat Bhoolna</h5>
+            <p><b>1.</b> Condition <b>round brackets</b> <code>( )</code> mein, code <b>curly brackets</b> <code>{ }</code> mein.<br>
+            <b>2.</b> <code>if</code> ke baad <b>semicolon (;) nahi</b> lagta — <code>if (x &gt; 5);</code> likha toh bug!<br>
+            <b>3.</b> Condition ki value <b>boolean</b> hoti hai — true ya false. (Truthy/falsy ka khel aage dekhoge 👀)</p>
+        </div>
+    </section>
+
+    <!-- ============ IF-ELSE ============ -->
+    <section class="section" id="ifelse">
+        <span class="section-tag"><i class="fas fa-arrows-alt-h"></i> Tool #2</span>
+        <h2>if-else — Do Raste Wala Game ⚖️</h2>
+        <p class="section-desc">Kabhi-kabhi dono taraf ka plan hona chahiye: "<b>pass</b> hue toh party, <b>fail</b> hue toh padhai." <code>else</code> bhai kaam aate hai — condition true toh <code>if</code> block, false toh <code>else</code> block. <b>Hamesha ek pakka chalega!</b></p>
+
+        <div class="code-block"><span class="cm">// Result ka faisla 📋</span>
+<span class="kw">let</span> marks = <span class="nm">82</span>;
+
+<span class="kw">if</span> (marks <span class="op">&gt;=</span> <span class="nm">35</span>) {
+  console.log(<span class="st">"PASS! Party kab? 🎉"</span>);
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Fail... agle saal isi din 📚"</span>);
+}
+<span class="out">// "PASS! Party kab? 🎉"</span>
+
+<span class="cm">// Instagram login ka core logic 📸</span>
+<span class="kw">let</span> enteredPass = <span class="st">"rahu@123"</span>;
+<span class="kw">let</span> savedPass = <span class="st">"rahu@123"</span>;
+
+<span class="kw">if</span> (enteredPass <span class="op">===</span> savedPass) {
+  console.log(<span class="st">"Login successful! Feed dikha do 📱"</span>);
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Galat password! Dobara try karo ❌"</span>);
+}</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: = vs === Condition Mein!</h5>
+            <p>Interview ka sabse bada trap: <code>if (x = 5)</code> mein <code>=</code> likh diya toh <b>comparison nahi, ASSIGNMENT</b> ho jayegi! x mein 5 chala jayega, aur 5 toh truthy hai — toh block <b>hamesha</b> chalega, chahe condition kuch bhi ho. 😱 Hamesha <code>===</code> ya <code>&gt;=</code> jaise comparison operators hi use karo conditions mein!</p>
+        </div>
+    </section>
+
+    <!-- ============ ELSE-IF LADDER ============ -->
+    <section class="section" id="elseif">
+        <span class="section-tag"><i class="fas fa-layer-group"></i> Tool #3</span>
+        <h2>else-if Ladder — Seedhi Ki Tarah 👣</h2>
+        <p class="section-desc">2 se zyada options ho toh? Jaise grades: A+, B, C, Fail. Ya traffic light: green/yellow/red. Tab <code>else if</code> ki seedhi banao — JS <b>upar se neeche</b> check karta hai aur <b>PEHLA true wala</b> rung chalata hai. Neeche wale sab skip!</p>
+
+        <div class="code-block"><span class="cm">// Grade machine 📊</span>
+<span class="kw">let</span> marks = <span class="nm">82</span>;
+
+<span class="kw">if</span> (marks <span class="op">&gt;=</span> <span class="nm">90</span>) {
+  console.log(<span class="st">"Grade A+ 🏆"</span>);       <span class="cm">// 82 &gt;= 90? Nahi.</span>
+} <span class="kw">else if</span> (marks <span class="op">&gt;=</span> <span class="nm">75</span>) {
+  console.log(<span class="st">"Grade B 👍"</span>);       <span class="cm">// 82 &gt;= 75? HAAN! → ye chalega</span>
+} <span class="kw">else if</span> (marks <span class="op">&gt;=</span> <span class="nm">60</span>) {
+  console.log(<span class="st">"Grade C 😊"</span>);       <span class="cm">// yaha tak pahunchega hi nahi</span>
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Padhai karo bhai 📚"</span>);
+}
+
+<span class="cm">// Traffic light 🚦</span>
+<span class="kw">let</span> light = <span class="st">"yellow"</span>;
+
+<span class="kw">if</span> (light <span class="op">===</span> <span class="st">"red"</span>) {
+  console.log(<span class="st">"RUKO 🛑"</span>);
+} <span class="kw">else if</span> (light <span class="op">===</span> <span class="st">"yellow"</span>) {
+  console.log(<span class="st">"READY ho jao 🟡"</span>);
+} <span class="kw">else if</span> (light <span class="op">===</span> <span class="st">"green"</span>) {
+  console.log(<span class="st">"CHALO 🟢"</span>);
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Signal kharab hai! 😅"</span>);
+}</div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-sort-amount-up"></i> Order Ka Khel — Bahut Important!</h5>
+            <p>Ladder mein <b>sabse strict condition sabse UPAR</b> rakho. Agar <code>marks &gt;= 60</code> pehle likh diya aur <code>&gt;= 90</code> baad mein — toh 95 marks wala bhi Grade C pa lega! Kyunki <code>95 &gt;= 60</code> pehle hi true ho gaya aur pehla true hi chalta hai. Order galat = logic disaster!</p>
+        </div>
+    </section>
+
+    <!-- ============ SWITCH ============ -->
+    <section class="section" id="switch">
+        <span class="section-tag"><i class="fas fa-list-ol"></i> Tool #4</span>
+        <h2>switch Statement — Menu Se Order Karo 🍽️</h2>
+        <p class="section-desc">Jab <b>ek hi variable</b> ke <b>kai fixed values</b> check karni ho (jaise hafta ka din, menu ka item, remote ka button), toh lambi else-if ladder ki jagah <code>switch</code> clean lagta hai. switch kehta hai: "Jo case match hua, wahi order banao!"</p>
+
+        <div class="code-block"><span class="cm">// Syntax:</span>
+<span class="kw">switch</span> (variable) {
+  <span class="kw">case</span> value1:  <span class="cm">// variable === value1?</span>
+    <span class="cm">// kaam karo</span>
+    <span class="kw">break</span>;        <span class="cm">// phir switch se bahar!</span>
+  <span class="kw">case</span> value2:
+    <span class="cm">// dusra kaam</span>
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:      <span class="cm">// koi case match nahi hua</span>
+    <span class="cm">// default kaam</span>
+}
+
+<span class="cm">// Restaurant menu 🍽️</span>
+<span class="kw">let</span> order = <span class="st">"pizza"</span>;
+
+<span class="kw">switch</span> (order) {
+  <span class="kw">case</span> <span class="st">"burger"</span>:
+    console.log(<span class="st">"Burger banao 🍔 — ₹99"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="st">"pizza"</span>:
+    console.log(<span class="st">"Pizza banao 🍕 — ₹299"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">case</span> <span class="st">"momos"</span>:
+    console.log(<span class="st">"Momos banao 🥟 — ₹79"</span>);
+    <span class="kw">break</span>;
+  <span class="kw">default</span>:
+    console.log(<span class="st">"Ye humari menu mein nahi hai! 🙃"</span>);
+}
+<span class="out">// "Pizza banao 🍕 — ₹299"</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: break Bhool Gaye Toh? (Fall-Through)</h5>
+            <p><code>break</code> likhna bhool gaye toh JS matching case se <b>aage ke SAARE cases</b> bhi chala deta hai — bina kisi check ke! Isko <b>fall-through</b> kehte hai:</p>
+            <ul>
+                <li>Case "pizza" match hua, par break nahi tha → burger AUR momos wala code bhi chal gaya 😱</li>
+                <li>Fix: har case ke end mein <code>break;</code> lagao</li>
+                <li>Exception: intentionally group karna ho — <code>case "Sat": case "Sun": → "Weekend!"</code> (yeh feature hai, bug nahi!)</li>
+            </ul>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-balance-scale"></i> switch ya else-if? Kab Kya?</h5>
+            <p><b>switch:</b> EK variable ke <b>fixed values</b> check karna ho (day === "Monday", choice === 3). Readable aur clean.<br>
+            <b>else-if:</b> <b>ranges</b> check karni ho (<code>marks &gt;= 90</code>) ya <b>complex conditions</b> ho (<code>age &gt; 18 &amp;&amp; hasID</code>).<br>
+            Note: switch internally <code>===</code> (strict comparison) use karta hai!</p>
+        </div>
+    </section>
+
+    <!-- ============ NESTED IF ============ -->
+    <section class="section" id="nested">
+        <span class="section-tag"><i class="fas fa-sitemap"></i> Tool #5</span>
+        <h2>Nested if — Andar Wali Condition 🔐</h2>
+        <p class="section-desc">Ek <code>if</code> ke <b>andar dusra if</b> = nested if. Logic: "<b>pehle</b> yeh check karo — <b>agar wo pass hua, TAB</b> aage ki condition check karo." Jaise ATM: pehle card valid? → phir PIN sahi? → phir balance hai? → tab cash milega!</p>
+
+        <div class="code-block"><span class="cm">// ATM ka nested logic 🏧</span>
+<span class="kw">let</span> cardValid = <span class="kw">true</span>;
+<span class="kw">let</span> pin = <span class="nm">1234</span>;
+<span class="kw">let</span> enteredPin = <span class="nm">1234</span>;
+<span class="kw">let</span> balance = <span class="nm">5000</span>;
+<span class="kw">let</span> amount = <span class="nm">2000</span>;
+
+<span class="kw">if</span> (cardValid) {
+  <span class="cm">// card theek hai, TAB PIN check karo</span>
+  <span class="kw">if</span> (enteredPin <span class="op">===</span> pin) {
+    <span class="cm">// PIN sahi hai, TAB balance check karo</span>
+    <span class="kw">if</span> (amount <span class="op">&lt;=</span> balance) {
+      console.log(<span class="st">"Le lo paise 💵 — bache:"</span>, balance <span class="op">-</span> amount);
+    } <span class="kw">else</span> {
+      console.log(<span class="st">"Balance kam hai! ❌"</span>);
+    }
+  } <span class="kw">else</span> {
+    console.log(<span class="st">"Galat PIN! 🔴"</span>);
+  }
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Card invalid hai ❌"</span>);
+}</div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-tools"></i> Nested Zyada Gehra Ho Toh? && Use Karo!</h5>
+            <p>2-3 level se zyada nested code padhna mushkil ho jata hai (isko <b>"pyramid of doom"</b> bhi kehte hai 😄). Jab conditions independent ho, <code>&amp;&amp;</code> se jodo: <code>if (cardValid &amp;&amp; enteredPin === pin &amp;&amp; amount &lt;= balance)</code> — ek hi line mein! Nested sirf tab use karo jab har level pe <b>alag-alag error message</b> dikhana ho.</p>
+        </div>
+    </section>
+
+    <!-- ============ TRUTHY / FALSY ============ -->
+    <section class="section" id="truthy">
+        <span class="section-tag"><i class="fas fa-ghost"></i> Tool #6</span>
+        <h2>Truthy / Falsy — Bina Comparison Ke Conditions! 👻</h2>
+        <p class="section-desc">Sabse mazedaar cheez: JS mein condition mein <b>koi bhi value</b> daal sakte ho — number, string, null, kuch bhi! JS khud decide karta hai ki wo value "true jaisi" (truthy) hai ya "false jaisi" (falsy). Comparison likhe bina conditions!</p>
+
+        <div class="concept-box">
+            <h4><i class="fas fa-list"></i> 6 Falsy Values — YAAD KAR LO RATTA MAAR KE!</h4>
+            <p><code>false</code>, <code>0</code>, <code>""</code> (empty string), <code>null</code>, <code>undefined</code>, <code>NaN</code> — bas yeh 6 values falsy hai. <b>Inke alawa SAB KUCH truthy!</b> 😄<br><br>
+            Trick: "6 falsy" ko yaise yaad karo — <b>0</b> (paisa nahi), <b>""</b> (khaali), <b>false</b> (jhooth), <b>null</b> (khaali dabba), <b>undefined</b> (dabba hi nahi), <b>NaN</b> (galat maths).</p>
+        </div>
+
+        <div class="code-block"><span class="cm">// Falsy examples — block NAHI chalega</span>
+<span class="kw">if</span> (<span class="nm">0</span>) { console.log(<span class="st">"chalega?"</span>); }        <span class="cm">// 0 falsy → skip</span>
+<span class="kw">if</span> (<span class="st">""</span>) { console.log(<span class="st">"chalega?"</span>); }       <span class="cm">// khaali string → skip</span>
+<span class="kw">if</span> (<span class="kw">null</span>) { console.log(<span class="st">"chalega?"</span>); }     <span class="cm">// null → skip</span>
+<span class="kw">if</span> (<span class="kw">undefined</span>) { console.log(<span class="st">"?"</span>); }      <span class="cm">// undefined → skip</span>
+
+<span class="cm">// Truthy examples — block CHALEGA</span>
+<span class="kw">if</span> (<span class="st">"hello"</span>) { console.log(<span class="st">"chala ✅"</span>); }  <span class="cm">// non-empty string</span>
+<span class="kw">if</span> (<span class="nm">100</span>) { console.log(<span class="st">"chala ✅"</span>); }      <span class="cm">// non-zero number</span>
+<span class="kw">if</span> (<span class="st">"0"</span>) { console.log(<span class="st">"bhi chala!"</span>); }  <span class="cm">// "0" STRING hai → truthy! 😱</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: "0" aur "false" — TRUTHY Hai!</h5>
+            <ul>
+                <li><code>"0"</code> → yeh <b>number nahi, ek non-empty STRING</b> hai → truthy! Block chalega!</li>
+                <li><code>"false"</code> → string hai, khaali nahi → truthy!</li>
+                <li><code>[]</code> (khaali array) → truthy! 🤯 (JS mein arrays hamesha truthy, chahe khaali ho)</li>
+                <li><code>{}</code> (khaali object) → truthy!</li>
+                <li><code>" "</code> (sirf space) → non-empty string → truthy!</li>
+            </ul>
+            <p style="margin-top:8px;">Yeh "0" wala trap interview mein 100% poocha jata hai!</p>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-wand-magic-sparkles"></i> Practical Use — Empty Check Pattern</h5>
+            <p>Real code mein sabse common pattern — "value hai ya nahi?":</p>
+            <p style="margin-top:10px;"><code>if (username) { ... }</code> — username hai (non-empty) toh welcome, <code>undefined/""/null</code> hai toh login bhejo. <code>if (!error) { ... }</code> — koi error nahi hai toh aage badho. Short-circuit <code>||</code> wala fallback bhi isi pe based tha — Chapter 2 yaad hai na! 😉</p>
+        </div>
+    </section>
+
+    <!-- ============ DECISION LADDER SIMULATOR ============ -->
+    <section class="section" id="ladder">
+        <span class="section-tag"><i class="fas fa-gamepad"></i> Live Simulator</span>
+        <h2>Decision Ladder — Dekho Code Ka Dimaag! 🧠</h2>
+        <p class="section-desc">Value daalo aur dekho — else-if ladder <b>kaise upar se neeche check karti hai</b>, kaunsa rung fail hua, aur kaunsa chala! Ye hi process har if-else ke andar chalta hai.</p>
+
+        <div class="ladder-sim">
+            <h4><i class="fas fa-stairs"></i> Ladder Simulator</h4>
+            <p class="ls-desc">Scenario chuno → value daalo → "CHALAO" dabao → har rung ka live hisaab dekho!</p>
+            <div class="ladder-scenarios" id="ladderScenarios">
+                <button class="active" onclick="loadScenario(0)">🌡️ Temperature</button>
+                <button onclick="loadScenario(1)">🎬 Movie Rating</button>
+                <button onclick="loadScenario(2)">📊 Marks Grade</button>
+            </div>
+            <div class="ladder-input-row">
+                <label id="ladderLabel">Temperature (°C):</label>
+                <input type="number" id="ladderInput" value="25" placeholder="Value likho...">
+                <button class="ladder-btn" onclick="runLadder()"><i class="fas fa-play"></i> CHALAO!</button>
+            </div>
+            <div class="ladder" id="ladderBox"></div>
+            <div class="ladder-trace" id="ladderTrace">Value daalo aur CHALAO dabao — live trace yaha dikhega! 👆</div>
+        </div>
+    </section>
+
+    <!-- ============ REAL LIFE ANALOGIES ============ -->
+    <section class="section" id="analogies">
+        <span class="section-tag"><i class="fas fa-home"></i> Real-Life Connection</span>
+        <h2>Conditions Tumhari Life Mein Roz Chal Rahe Hai! 🏠</h2>
+        <p class="section-desc">Tum developer banne se pehle hi conditions ke master the — bas JS syntax nahi pata tha! Yeh 6 cards dekho, samajh pakka ho jayegi:</p>
+
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="a-emoji">🚦</span>
+                <h4>Traffic Signal = <span>else-if Ladder</span></h4>
+                <p>Green? Chalo. Nahi toh Yellow? Ready. Nahi toh Red? Ruko. Upar se neeche — pehla match hi chalta hai. Ladder ka sabse famous example!</p>
+                <div class="a-code">if (light === "green") chalo();
+else if (light === "red") ruko();</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🌂</span>
+                <h4>Chhata = <span>if</span></h4>
+                <p>Ghar se nikalte waqt sirf EK soch: "baarish ho rahi hai?" Haan → chhata le jao. Nahi → kuch mat lo, seedha niklo. Bina else ke pure if!</p>
+                <div class="a-code">if (isRaining) {
+  carryUmbrella();
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🍽️</span>
+                <h4>Menu Order = <span>switch</span></h4>
+                <p>Waiter poochta hai "kya laun?" — tum bolte ho "pizza". Jo case match hua, wahi order kitchen mein gaya. Baaki 50 dishes skip!</p>
+                <div class="a-code">switch (order) {
+  case "pizza": bakePizza(); break;
+  default: "menu dekho!";
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎟️</span>
+                <h4>Cinema Seat = <span>else-if</span></h4>
+                <p>Balcony khaali hai? Wahi lo. Nahi? RDC dekho. WOH bhi nahi? LDC le lo. Har option pehle wale fail hone pe check hota hai!</p>
+                <div class="a-code">if (balconyFree) book("balcony");
+else if (rdcFree) book("rdc");
+else book("ldc");</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🔐</span>
+                <h4>ATM = <span>Nested if</span></h4>
+                <p>Card daala → TAB PIN poochta hai → PIN sahi → TAB amount poochta hai → TAB cash. Ek ke andar ek — jab tak pehla pass na ho, agla check hi nahi!</p>
+                <div class="a-code">if (cardOk) {
+  if (pinOk) {
+    if (amountOk) giveCash();
+  }
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">📱</span>
+                <h4>Phone Unlock = <span>Truthy/Falsy</span></h4>
+                <p>Fingerprint scan hua? Value mili → truthy → unlock! Scan fail ya khaali? → falsy → PIN maango. Bina "=== true" likhe hi decision!</p>
+                <div class="a-code">if (fingerprint) unlock();
+else askForPin();</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXAMPLES GALLERY ============ -->
+    <section class="section" id="examples">
+        <span class="section-tag"><i class="fas fa-code"></i> Examples Gallery</span>
+        <h2>20 Examples — Har Tool Ke Pakke Udaharan 📚</h2>
+        <p class="section-desc">Tabs se category badlo, examples padho, output <b>pehle khud predict karo</b> — phir Playground mein chala ke match karo. Prediction karne se logic muscle banti hai!</p>
+
+        <div class="ex-tabs" id="exTabs">
+            <button class="ex-tab active" onclick="switchExTab(0)"><i class="fas fa-door-open"></i> if</button>
+            <button class="ex-tab" onclick="switchExTab(1)"><i class="fas fa-arrows-alt-h"></i> if-else</button>
+            <button class="ex-tab" onclick="switchExTab(2)"><i class="fas fa-layer-group"></i> else-if</button>
+            <button class="ex-tab" onclick="switchExTab(3)"><i class="fas fa-list-ol"></i> switch</button>
+            <button class="ex-tab" onclick="switchExTab(4)"><i class="fas fa-ghost"></i> Truthy/Falsy</button>
+        </div>
+
+        <div class="ex-grid" id="exGrid"></div>
+    </section>
+
+    <!-- ============ USE CASES ============ -->
+    <section class="section" id="usecases">
+        <span class="section-tag"><i class="fas fa-rocket"></i> Real-World Use Cases</span>
+        <h2>Bade Apps Ke Decisions Kaise Hote Hai? 🌍</h2>
+        <p class="section-desc">Instagram se lekar GPay tak — har app ki har action ke peeche conditions chal rahe hai. Dekho kaise:</p>
+
+        <div class="use-grid">
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📸</span><h4>Instagram — Login &amp; Privacy</h4></div>
+                <p>Credentials match? → Feed dikhao, warna error. Private account + follow nahi karte? → Request bhejo, photos mat dikhao!</p>
+                <div class="u-chips"><span class="u-chip">if-else</span><span class="u-chip">&&</span><span class="u-chip">===</span></div>
+                <div class="u-snippet">if (pass === savedPass) {
+  showFeed();
+} else {
+  showError("Galat password!");
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">💸</span><h4>GPay — Payment &amp; Security</h4></div>
+                <p>PIN galat hua? Wrong count badhao. 3 ho gaye? Card block! Balance kaafi? Pay karo, warna insufficient.</p>
+                <div class="u-chips"><span class="u-chip">nested if</span><span class="u-chip">else-if</span></div>
+                <div class="u-snippet">if (pin === savedPin) {
+  if (balance >= amount) pay();
+  else alert("Paise kam!");
+} else if (wrongCount >= 3) blockCard();</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🚕</span><h4>Uber — Surge Pricing</h4></div>
+                <p>Barsaat + office time + kamm cabs? Fare 2x! Warna normal. Demand-supply ka poora decision tree!</p>
+                <div class="u-chips"><span class="u-chip">if</span><span class="u-chip">&&</span><span class="u-chip">||</span></div>
+                <div class="u-snippet">if (isRaining && demand > supply) {
+  fare = base * 2;  // surge!
+} else {
+  fare = base;
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🎮</span><h4>Games — Health &amp; Levels</h4></div>
+                <p>Health 0? Game over screen. 30 se kam? Warning flash! Boss ka health alag logic — sab conditions!</p>
+                <div class="u-chips"><span class="u-chip">else-if</span><span class="u-chip">&lt;=</span></div>
+                <div class="u-snippet">if (health <= 0) gameOver();
+else if (health < 30) warnPlayer();
+else continueGame();</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🛒</span><h4>Amazon — Shipping &amp; Coupons</h4></div>
+                <p>₹499+? Free delivery, warna ₹40 charge. Coupon code? switch se discount rate decide hota hai!</p>
+                <div class="u-chips"><span class="u-chip">if-else</span><span class="u-chip">switch</span></div>
+                <div class="u-snippet">if (cart >= 499) shipping = 0;
+else shipping = 40;
+
+switch (coupon) {
+  case "SAVE10": off = 0.10; break;
+  case "BIG50": off = 0.50; break;
+  default: off = 0;
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📺</span><h4>YouTube — Ads &amp; Autoplay</h4></div>
+                <p>Premium member? Ads skip! Warna har video pe ad. Autoplay on? Agla video khud chala do — truthy check!</p>
+                <div class="u-chips"><span class="u-chip">if</span><span class="u-chip">truthy</span><span class="u-chip">switch</span></div>
+                <div class="u-snippet">if (isPremium) {
+  skipAds();
+} else {
+  playAd();
+}
+
+if (autoplay) playNext();  // truthy!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PLAYGROUND ============ -->
+    <section class="section" id="playground">
+        <span class="section-tag"><i class="fas fa-terminal"></i> Code Playground</span>
+        <h2>Code Playground — Khud Likho, Turant Chalao!</h2>
+        <p class="section-desc">6 ready-made snippets — load karo, run karo (ya <b>Ctrl+Enter</b> dabao), phir values badal ke experiment karo. Yahi se asli samajh aati hai!</p>
+
+        <div class="playground">
+            <div class="pg-top">
+                <span class="pg-title"><i class="fas fa-flask"></i> Experiment Zone</span>
+                <div class="pg-snippets">
+                    <button onclick="loadSnippet(0)">🚦 Traffic Signal</button>
+                    <button onclick="loadSnippet(1)">🎬 Movie Entry</button>
+                    <button onclick="loadSnippet(2)">📊 Grade Machine</button>
+                    <button onclick="loadSnippet(3)">🍽️ Menu Switch</button>
+                    <button onclick="loadSnippet(4)">👻 Truthy Detective</button>
+                    <button onclick="loadSnippet(5)">🏧 ATM Simulator</button>
+                </div>
+            </div>
+            <div class="pg-body">
+                <textarea id="pgCode" spellcheck="false" placeholder="// Yaha apna JavaScript likho..."></textarea>
+                <div class="pg-console" id="pgConsole"><div class="cl-info">▸ Console ready. Code likho aur Run dabao!</div></div>
+            </div>
+            <div class="pg-runbar">
+                <button class="btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run (Ctrl+Enter)</button>
+                <button class="btn-clear" onclick="clearConsole()"><i class="fas fa-broom"></i> Clear Console</button>
+                <span class="pg-hint">Tip: conditions badal ke dekho — red ko green karo, marks badlo!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORKSHOP ============ -->
+    <section class="section" id="workshop">
+        <span class="section-tag"><i class="fas fa-dumbbell"></i> Workshop — Khud Karo!</span>
+        <h2>6 Workshop Tasks 💪</h2>
+        <p class="section-desc">Pehle khud likho, phir hint dekho, phir solution match karo. Yaad hai na — dekhne se 20%, karne se 100% seekhte hai! 🔥</p>
+
+        <div class="ws-list">
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 1: Even Ya Odd (if-else se)</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>num = 7</code> lo. if-else aur modulo ka use karke print karo: "Even hai" ya "Odd hai". Operators chapter se yaad karo — <code>%</code> ka use!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Condition banao: <code>num % 2 === 0</code>. True → Even, false (else) → Odd.</div>
+                    <div class="ws-sol"><pre>let num = 7;
+
+if (num % 2 === 0) {
+  console.log("Even hai ✅");
+} else {
+  console.log("Odd hai 🤔");
+}
+// Odd hai 🤔
+
+// num = 8 karo → Even hai ✅</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 2: Positive, Negative Ya Zero?</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>n = -5</code> lo. else-if ladder se check karo number positive hai, negative hai ya zero — teeno cases print karo. Fir n = 0 aur n = 10 se bhi test karo!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Teen conditions hai: <code>n &gt; 0</code>, <code>n &lt; 0</code>, aur bacha hua case zero — wo else mein aayega.</div>
+                    <div class="ws-sol"><pre>let n = -5;
+
+if (n > 0) {
+  console.log("Positive ✅");
+} else if (n < 0) {
+  console.log("Negative ⚠️");
+} else {
+  console.log("Zero! 🎯");
+}
+// Negative ⚠️</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 3: Dono Mein Se Bada Kaun?</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>a = 15</code>, <code>b = 15</code> lo. Print karo kaunsa bada hai. <b>Trick:</b> equal hone ka case bhi handle karna hai! (a &gt; b, b &gt; a, warna barabar)</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Teen raste: pehla <code>a &gt; b</code>, dusra <code>b &gt; a</code>, aur last mein <code>else</code> — jo tab chalega jab dono barabar hai.</div>
+                    <div class="ws-sol"><pre>let a = 15;
+let b = 15;
+
+if (a > b) {
+  console.log("a bada hai:", a);
+} else if (b > a) {
+  console.log("b bada hai:", b);
+} else {
+  console.log("Dono barabar! 🤝");
+}
+// Dono barabar! 🤝</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 4: Switch Calculator</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task"><code>a = 10</code>, <code>b = 3</code>, <code>op = "*"</code> lo. switch se calculate karo: "+", "-", "*", "/" ke cases banao. Default mein "Galat operator" dikhao. Divide karte waqt <b>zero se divide ka bhi dhyan rakho!</b></p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Har case mein <code>break</code> mat bhoolna! "/" case mein pehle check karo <code>b !== 0</code> — nested condition ka use hoga.</div>
+                    <div class="ws-sol"><pre>let a = 10, b = 3, op = "*";
+
+switch (op) {
+  case "+": console.log(a + b); break;
+  case "-": console.log(a - b); break;
+  case "*": console.log(a * b); break;
+  case "/":
+    if (b !== 0) console.log(a / b);
+    else console.log("Zero se divide nahi!");
+    break;
+  default: console.log("Galat operator!");
+}
+// 30</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 5: Leap Year Checker</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Ek saal leap year hai agar: <b>4 se divide hota hai</b>, LEKIN 100 se divide hota hai toh NAHI, LEKIN 400 se divide hota hai toh HAAN! <code>year = 2024</code> se shuru karo, phir 1900 aur 2000 test karo (1900 = not leap, 2000 = leap!).</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Order matter karta hai! Pehle 400 check karo (leap), phir 100 (not leap), phir 4 (leap), warna not leap. Modulo ka use: <code>year % 400 === 0</code></div>
+                    <div class="ws-sol"><pre>let year = 2024;
+
+if (year % 400 === 0) {
+  console.log("Leap year! 🎉");
+} else if (year % 100 === 0) {
+  console.log("Leap year NAHI hai ❌");
+} else if (year % 4 === 0) {
+  console.log("Leap year! 🎉");
+} else {
+  console.log("Leap year NAHI hai ❌");
+}
+// 2024 → Leap 🎉 | 1900 → Nahi ❌ | 2000 → Leap 🎉</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 6: ATM Full Simulation</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Nested if se pura ATM flow banao: 1) PIN check karo (galat → "Galat PIN"), 2) amount &lt;= balance check karo (zyada → "Insufficient"), 3) amount 100 ka multiple check karo (nahi → "100 ke multiple do"), sab pass → "Paise nikle 💵". Har level ka alag error message ho!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Teen level ki nesting: <code>if (pin sahi) { if (amount &lt;= balance) { if (amount % 100 === 0) { success } else { ... } } else { ... } } else { ... }</code></div>
+                    <div class="ws-sol"><pre>let pin = 1234, enteredPin = 1234;
+let balance = 5000, amount = 250;
+
+if (enteredPin === pin) {
+  if (amount <= balance) {
+    if (amount % 100 === 0) {
+      console.log("Paise nikle 💵 bache:", balance - amount);
+    } else {
+      console.log("100 ke multiple do! 🙏");
+    }
+  } else {
+    console.log("Insufficient balance ❌");
+  }
+} else {
+  console.log("Galat PIN! 🔴");
+}
+// amount = 250 → "100 ke multiple do! 🙏"
+// amount = 500 → "Paise nikle 💵 bache: 4500"</pre></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section class="section" id="projects">
+        <span class="section-tag"><i class="fas fa-rocket"></i> Mini Projects</span>
+        <h2>6 Mini Projects — Banake Dikha Do! 🏗️</h2>
+        <p class="section-desc">Har project conditions ka practical use hai. Starter code chalao, samjho, phir challenges se upgrade karo. Yeh projects portfolio mein bhi daal sakte ho!</p>
+
+        <div class="proj-grid">
+            <div class="proj-card">
+                <span class="p-emoji">🎬</span>
+                <h4>1. Movie Ticket System</h4>
+                <p>Age ke hisaab se certificate aur price: 18+ → "A" (₹250), 13+ → "UA" (₹200), warna "U" (₹150). Else-if ladder ka perfect use!</p>
+                <div class="p-chips"><span class="p-chip">else-if</span><span class="p-chip">&gt;=</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let age = 16;
+
+if (age >= 18) {
+  console.log("A Certificate — ₹250");
+} else if (age >= 13) {
+  console.log("UA Certificate — ₹200");
+} else {
+  console.log("U Certificate — ₹150");
+}
+// UA Certificate — ₹200</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) Weekend ho toh ₹50 extra 2) 60+ senior citizen ko 20% discount 3) Wednesday ho toh ₹100 flat (BOGO!) 4) seatType switch bhi add karo</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🌡️</span>
+                <h4>2. Weather Outfit Advisor</h4>
+                <p>Temperature batao, app outfit bole: 30+ → "A/C aur thanda drink", 20+ → "T-shirt mausam", 10+ → "Jacket pehno", warna "Garam chai + sweater!"</p>
+                <div class="p-chips"><span class="p-chip">else-if</span><span class="p-chip">ladder</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let temp = 32;
+
+if (temp >= 30) {
+  console.log("Garmi! ❄️ A/C + ice cream 🍦");
+} else if (temp >= 20) {
+  console.log("Mausam mast hai 👕 T-shirt chalengi");
+} else if (temp >= 10) {
+  console.log("Thand hai 🧥 Jacket pehno");
+} else {
+  console.log("Brrr! ☕ Chai + blanket 🧣");
+}
+// Garmi! ❄️ A/C + ice cream 🍦</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) isRaining variable add karo — baarish ho toh "chhata" override kare 2) humidity bhi consider karo (&amp;&amp;) 3) Apne sheher ki weather daalo!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🏧</span>
+                <h4>3. ATM Machine</h4>
+                <p>Pura ATM flow: PIN check → balance check → amount validation → cash. Workshop Task 6 ka advanced version — 3 galat PIN pe card block!</p>
+                <div class="p-chips"><span class="p-chip">nested if</span><span class="p-chip">attempts</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let pin = 1234, entered = 1111;
+let attempts = 0, balance = 5000, amount = 2000;
+
+if (entered === pin) {
+  if (amount <= balance && amount % 100 === 0) {
+    console.log("Le lo 💵 bache:", balance - amount);
+  } else {
+    console.log("Amount invalid ya balance kam!");
+  }
+} else {
+  attempts++;
+  if (attempts >= 3) {
+    console.log("Card BLOCKED! 🚫");
+  } else {
+    console.log("Galat PIN! Baaki:", 3 - attempts);
+  }
+}</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) entered ko 1234 karke test karo 2) attempts = 3 karke block test karo 3) receipt print karne ka switch add karo (yes/no)</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🎮</span>
+                <h4>4. Boss Battle Simulator</h4>
+                <p>Game ka combat logic: health ke hisaab se status — 0 → "GAME OVER", 30 se kam → "⚠️ HEALTH KHATRE MEIN", 100 → "FULL HEALTH BOSS!", warna "Ladte raho!"</p>
+                <div class="p-chips"><span class="p-chip">else-if</span><span class="p-chip">&lt;=</span><span class="p-chip">===</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let health = 25;
+let hasArmor = false;
+
+if (health <= 0) {
+  console.log("GAME OVER! 💀");
+} else if (health <= 30 && !hasArmor) {
+  console.log("⚠️ Health khatre mein — bhaago!");
+} else if (health === 100) {
+  console.log("FULL POWER! 👊 Boss ko maaro!");
+} else {
+  console.log("Ladte raho! ❤️ Health:", health);
+}
+// ⚠️ Health khatre mein — bhaago!</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) health = 100 aur 50 test karo 2) armor ho toh warning na aaye (!hasArmor ko samjho) 3) level switch add karo: easy/normal/hard damage</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🍽️</span>
+                <h4>5. Restaurant Ordering</h4>
+                <p>switch se menu: pizza ₹299, burger ₹99, momos ₹79. Quantity se bill banao. Total 500+ ho toh free cold drink — dono tools ek saath!</p>
+                <div class="p-chips"><span class="p-chip">switch</span><span class="p-chip">break</span><span class="p-chip">if</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let item = "pizza", qty = 2;
+let price = 0;
+
+switch (item) {
+  case "pizza": price = 299; break;
+  case "burger": price = 99; break;
+  case "momos": price = 79; break;
+  default: console.log("Menu mein nahi hai!");
+}
+
+let total = price * qty;
+console.log("Total:", total);
+
+if (total >= 500) {
+  console.log("FREE cold drink! 🥤");
+} else {
+  console.log("500+ karo, cold drink free!");
+}</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) item = "burger", qty = 6 test karo 2) invalid item pe price print na ho (if price &gt; 0) 3) GST 5% add karo bill mein</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🚗</span>
+                <h4>6. Smart Car Dashboard</h4>
+                <p>Speed monitor: 100+ → "🚨 OVERSPEEDING — CHALL HOGI!", 80+ → "⚠️ Slow karo", 40-80 → "Smooth drive ✅", warna "Highway pe itni slow? 🐢"</p>
+                <div class="p-chips"><span class="p-chip">else-if</span><span class="p-chip">nested</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+                    <pre>let speed = 85;
+let isHighway = true;
+
+if (speed > 100) {
+  console.log("🚨 OVERSPEEDING! Chall pakka!");
+} else if (speed > 80) {
+  console.log("⚠️ Slow karo bhai!");
+} else if (speed >= 40) {
+  console.log("Smooth drive ✅");
+} else {
+  if (isHighway) {
+    console.log("Highway pe itna slow? 🐢");
+  } else {
+    console.log("City traffic hai, theek hai 😌");
+  }
+}</pre>
+                    <p class="p-challenge"><strong>🔥 Challenges:</strong> 1) speed = 120, 60, 20 test karo 2) seatbelt variable add karo — fast pe bina seatbelt = double warning 3) fuel &lt; 10 → "Petrol pump dhundo ⛽" alert</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INTERVIEW QUESTIONS ============ -->
+    <section class="section" id="interview">
+        <span class="section-tag"><i class="fas fa-briefcase"></i> Interview Prep</span>
+        <h2>16 Interview Questions — Conditionals Edition 💼</h2>
+        <p class="section-desc">Conditionals se interviews mein yahi poocha jata hai — filters laga ke level-wise practice karo. Har answer mein "kyu" bhi hai, sirf "kya" nahi!</p>
+
+        <div class="iq-filters" id="iqFilters">
+            <button class="iq-filter active" onclick="switchIqFilter('all')">Sab (16)</button>
+            <button class="iq-filter" onclick="switchIqFilter('easy')">🟢 Easy</button>
+            <button class="iq-filter" onclick="switchIqFilter('medium')">🟡 Medium</button>
+            <button class="iq-filter" onclick="switchIqFilter('hard')">🔴 Hard</button>
+        </div>
+
+        <div class="iq-list" id="iqList"></div>
+    </section>
+
+    <!-- ============ CHEAT SHEET ============ -->
+    <section class="section" id="cheatsheet">
+        <span class="section-tag"><i class="fas fa-scroll"></i> Cheat Sheet</span>
+        <h2>Ek Nazar Mein Sab Kuch 📋</h2>
+        <p class="section-desc">Interview/exam se ek ghanta pehle — bas yeh 4 boxes revise kar lo!</p>
+
+        <div class="cheat-grid">
+            <div class="cheat-box">
+                <h4><i class="fas fa-code"></i> Syntax Reference</h4>
+                <table>
+                    <tr><td>if</td><td>if (cond) { ... }</td></tr>
+                    <tr><td>if-else</td><td>if (cond) { A } else { B }</td></tr>
+                    <tr><td>else-if</td><td>else if (cond2) { C }</td></tr>
+                    <tr><td>switch</td><td>switch (x) { case v: ... break; }</td></tr>
+                    <tr><td>default</td><td>koi case match na ho toh</td></tr>
+                    <tr><td>ternary</td><td>cond ? A : B</td></tr>
+                    <tr><td>nested</td><td>if () { if () { ... } }</td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-ghost"></i> Falsy Values (6)</h4>
+                <ul>
+                    <li><i class="fas fa-times"></i> <code>false</code> — obvious!</li>
+                    <li><i class="fas fa-times"></i> <code>0</code> aur <code>-0</code> — zero paisa</li>
+                    <li><i class="fas fa-times"></i> <code>""</code> — khaali string</li>
+                    <li><i class="fas fa-times"></i> <code>null</code> — khaali dabba</li>
+                    <li><i class="fas fa-times"></i> <code>undefined</code> — dabba hi nahi</li>
+                    <li><i class="fas fa-times"></i> <code>NaN</code> — galat maths</li>
+                    <li style="color:var(--accent);"><i class="fas fa-check"></i> BAAKI SAB truthy — "0", "false", [], {}, " " bhi!</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-bomb"></i> Common Mistakes</h4>
+                <ul>
+                    <li><i class="fas fa-xmark"></i> <code>if (x = 5)</code> — assignment ho gayi, === likho!</li>
+                    <li><i class="fas fa-xmark"></i> switch mein <code>break</code> bhoolna → fall-through</li>
+                    <li><i class="fas fa-xmark"></i> else-if ka <b>order galat</b> — strict condition pehle rakho</li>
+                    <li><i class="fas fa-xmark"></i> <code>if (x == 5 or 6)</code> — JS mein aisa nahi hota! <code>x === 5 || x === 6</code> likhna padta hai</li>
+                    <li><i class="fas fa-xmark"></i> <code>if (array)</code> — khaali array bhi truthy hai!</li>
+                    <li><i class="fas fa-xmark"></i> <code>if;</code> — if ke baad semicolon = bug</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-lightbulb"></i> Interview Facts</h4>
+                <ul>
+                    <li><i class="fas fa-star"></i> else-if mein <b>pehla true hi chalta hai</b>, baaki skip</li>
+                    <li><i class="fas fa-star"></i> switch internally <b>===</b> karta hai</li>
+                    <li><i class="fas fa-star"></i> Ternary <b>expression</b> hai — value return karti hai</li>
+                    <li><i class="fas fa-star"></i> default technically optional hai, par hamesha lagao</li>
+                    <li><i class="fas fa-star"></i> Short-circuit: <code>user &amp;&amp; user.isAdmin</code> — safe check!</li>
+                    <li><i class="fas fa-star"></i> Fall-through se cases <b>group</b> kar sakte ho: case "Sat": case "Sun":</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz">
+        <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
+        <h2>Conditionals Ka Exam — 5 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Conditionals ke Boss ho. Chalo!</p>
+
+        <div class="quiz-box">
+            <div class="quiz-progress">
+                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-score" id="quizScore">Score: 0</span>
+            </div>
+            <div class="quiz-q" id="quizQ">Loading...</div>
+            <div class="quiz-opts" id="quizOpts"></div>
+            <div class="quiz-feedback" id="quizFb"></div>
+            <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Agla Sawaal →</button>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="f-next"><i class="fas fa-forward"></i> Next Chapter: Loops — Ghoomo Phiro 🔄 (100 baar print karne ka jugaad!)</div>
+        <p>Chapter 3 Complete! Ab tumhara code khud soch sakta hai — decisions le sakta hai! 🎉<br>
+        Agar-Warna Ka Khel 🎮 — banaya gaya aapke liye <span class="f-heart">❤️</span> ke saath. Workshop ke tasks zaroor karo!</p>
+    </footer>
+
+    <script>
+        /* ==================== EXAMPLES GALLERY ==================== */
+        var exData = [
+            [ // if
+                { t: 'Barish Check', c: 'let isRaining = true;\n\nif (isRaining) {\n  console.log("Chhata le jao ☂️");\n}\nconsole.log("Ghar nikle! 🚶");', o: 'Chhata le jao ☂️\nGhar nikle! 🚶' },
+                { t: 'Speed Alert', c: 'let speed = 95;\n\nif (speed > 80) {\n  console.log("Slow karo! Chall katega 🚨");\n}\nconsole.log("Drive continue...");', o: 'Slow karo! Chall katega 🚨\nDrive continue...' },
+                { t: 'Weak Password', c: 'let pass = "abc";\n\nif (pass.length < 8) {\n  console.log("Kamzor password! ⚠️");\n}', o: 'Kamzor password! ⚠️' },
+            { t: 'Positive Checker — Sirf IF', c: 'let num = 7;\n\nif (num > 0) {\n  console.log("Positive number hai!");\n}\n\nconsole.log("Program khatam");', o: 'Positive number hai!\nProgram khatam' }
+            ],
+            [ // if-else
+                { t: 'Pass / Fail', c: 'let marks = 30;\n\nif (marks >= 35) {\n  console.log("PASS! 🎉");\n} else {\n  console.log("Fail 📚 Phir try karo!");\n}', o: 'Fail 📚 Phir try karo!' },
+                { t: 'Login Check', c: 'let entered = "rahu@123";\nlet saved = "rahul@123";\n\nif (entered === saved) {\n  console.log("Login OK 📱");\n} else {\n  console.log("Galat password ❌");\n}', o: 'Galat password ❌' },
+                { t: 'Even / Odd', c: 'let num = 8;\n\nif (num % 2 === 0) {\n  console.log("Even ✅");\n} else {\n  console.log("Odd 🤔");\n}', o: 'Even ✅' },
+            { t: 'Even Ya Odd — Modulo Ka Kamaal', c: 'let n = 10;\n\nif (n % 2 === 0) {\n  console.log(n + " is EVEN");\n} else {\n  console.log(n + " is ODD");\n}', o: '10 is EVEN' }
+            ],
+            [ // else-if
+                { t: 'Grade Machine', c: 'let marks = 82;\n\nif (marks >= 90) {\n  console.log("A+ 🏆");\n} else if (marks >= 75) {\n  console.log("B 👍");\n} else if (marks >= 60) {\n  console.log("C 😊");\n} else {\n  console.log("Padhai karo 📚");\n}', o: 'B 👍' },
+                { t: 'Traffic Light', c: 'let light = "red";\n\nif (light === "green") {\n  console.log("CHALO 🟢");\n} else if (light === "yellow") {\n  console.log("READY 🟡");\n} else {\n  console.log("RUKO 🛑");\n}', o: 'RUKO 🛑' },
+                { t: 'Age Categories', c: 'let age = 8;\n\nif (age <= 12) {\n  console.log("Baccha 🧒");\n} else if (age <= 19) {\n  console.log("Teenager 😎");\n} else if (age <= 59) {\n  console.log("Adult 💼");\n} else {\n  console.log("Senior 🧓");\n}', o: 'Baccha 🧒' },
+            { t: 'Result Ladder — Marks Se Grade', c: 'let marks = 82;\n\nif (marks >= 90) {\n  console.log("Grade A+");\n} else if (marks >= 75) {\n  console.log("Grade B");\n} else {\n  console.log("Grade C");\n}', o: 'Grade B' }
+            ],
+            [ // switch
+                { t: 'Day of Week', c: 'let day = 3;\n\nswitch (day) {\n  case 1: console.log("Monday 😩"); break;\n  case 2: console.log("Tuesday"); break;\n  case 3: console.log("Wednesday 🐫"); break;\n  default: console.log("Weekend shayad? 🎉");\n}', o: 'Wednesday 🐫' },
+                { t: 'Fruit Price Menu', c: 'let fruit = "aam";\n\nswitch (fruit) {\n  case "seb":\n    console.log("₹120/kg 🍎"); break;\n  case "kela":\n    console.log("₹50/dozen 🍌"); break;\n  case "aam":\n    console.log("₹80/kg 🥭"); break;\n  default:\n    console.log("Stock nahi hai 🙃");\n}', o: '₹80/kg 🥭' },
+                { t: 'Grouped Cases (Fall-Through Use!)', c: 'let day = "Saturday";\n\nswitch (day) {\n  case "Saturday":\n  case "Sunday":\n    console.log("WEEKEND! 🥳");\n    break;\n  default:\n    console.log("Office chalo 💼");\n}', o: 'WEEKEND! 🥳' },
+            { t: 'Weekend Detector — Switch Case', c: 'let day = "Sat";\n\nswitch (day) {\n  case "Sat":\n  case "Sun":\n    console.log("Weekend hai boss!");\n    break;\n  default:\n    console.log("Working day :(");\n}', o: 'Weekend hai boss!' }
+            ],
+            [ // truthy/falsy
+                { t: 'Falsy Parade', c: 'if (0) console.log("A");     // nahi chalega\nif ("") console.log("B");    // nahi chalega\nif (null) console.log("C");  // nahi chalega\nif (undefined) console.log("D"); // nahi\nif (NaN) console.log("E");   // nahi chalega\n\nconsole.log("Sab falsy — kuch nahi chala! 👻");', o: 'Sab falsy — kuch nahi chala! 👻' },
+                { t: 'The "0" Trap', c: 'if (0) {\n  console.log("number 0 → nahi chalega");\n}\n\nif ("0") {\n  console.log("string 0 → CHAL GAYA! 😱");\n}', o: 'string 0 → CHAL GAYA! 😱' },
+                { t: 'Empty Check Pattern', c: 'let username = "";\n\nif (username) {\n  console.log("Welcome, " + username);\n} else {\n  console.log("Guest ke roop mein aaye ho 👻");\n}\n\nlet cart = ["shirt", "jeans"];\nif (cart.length) {\n  console.log("Cart mein " + cart.length + " items");\n}', o: 'Guest ke roop mein aaye ho 👻\nCart mein 2 items' },
+            { t: 'Khaali Naam — Falsy Ka Jhansa', c: 'let name = "";\n\nif (name) {\n  console.log("Welcome " + name);\n} else {\n  console.log("Naam toh do!");\n}', o: 'Naam toh do!' }
+            ]
+        ];
+
+        function hl(code) {
+            var s = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            s = s.replace(/("[^"\n]*")/g, '<span class="st">$1</span>');
+            s = s.replace(/(\/\/[^\n<]*)/g, '<span class="cm">$1</span>');
+            s = s.replace(/\b(let|const|var|if|else|switch|case|break|default|true|false|null|undefined|NaN|function|return)\b/g, '<span class="kw">$1</span>');
+            s = s.replace(/(^|[\s(=+\-*\/%,<>!:])(\d+\.?\d*)\b/g, '$1<span class="nm">$2</span>');
+            return s;
+        }
+
+        function renderExamples(idx) {
+            var grid = document.getElementById('exGrid');
+            var html = '';
+            var list = exData[idx];
+            for (var i = 0; i < list.length; i++) {
+                var ex = list[i];
+                html += '<div class="ex-card">'
+                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 4 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
+                    + '<pre>' + hl(ex.c) + '</pre>'
+                    + '<div class="ex-out">' + ex.o.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' &nbsp;|&nbsp; ') + '</div>'
+                    + '</div>';
+            }
+            grid.innerHTML = html;
+        }
+
+        function switchExTab(idx) {
+            var tabs = document.querySelectorAll('.ex-tab');
+            for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+            tabs[idx].classList.add('active');
+            renderExamples(idx);
+        }
+
+        /* ==================== INTERVIEW QUESTIONS ==================== */
+        var iqData = [
+            { lvl: 'easy', q: 'Conditional statement kya hai? Kyu zaroori hai?', a: 'Conditional statement ek decision-making tool hai — program <b>khud decide</b> karta hai kaunsa code chalana hai, condition ke basis pe. <br><br>Real life: "AGAR baarish → chhata, WARNA chashma." Code ke bina conditions sirf ek seedha rasta hota — har user ko same output. Conditions se hi apps <b>personalized</b> bante hai. Types: <code>if</code>, <code>if-else</code>, <code>else-if ladder</code>, <code>switch</code>, <code>ternary</code>.' },
+            { lvl: 'easy', q: 'if-else ka basic syntax likho.', a: '<pre>let age = 20;\n\nif (age >= 18) {\n  console.log("Voting allowed 🗳️");\n} else {\n  console.log("Abhi ruk ja ⏳");\n}</pre>Yaad rakho: condition <code>( )</code> mein, block <code>{ }</code> mein, aur <code>if</code> ke baad <b>semicolon nahi</b>.' },
+            { lvl: 'easy', q: 'else-if ladder kaise kaam karta hai?', a: 'JS ladder ko <b>upar se neeche</b> check karta hai aur <b>PEHLA true wala</b> block chalata hai — uske baad ke saare checks skip!<pre>let marks = 82;\nif (marks >= 90) { /* 82>=90? nahi */ }\nelse if (marks >= 75) { /* HAAN! ye chalega */ }\nelse if (marks >= 60) { /* skip */ }</pre>Isliye <b>sabse strict condition sabse upar</b> rakhte hai — warna 95 marks wala bhi Grade C pa lega!' },
+            { lvl: 'easy', q: 'switch mein break kyu lagate hai?', a: '<code>break</code> switch se <b>bahar nikalne</b> ke liye hai. Break nahi likha toh matching case ke baad <b>aage ke saare cases bhi chal jaate hai</b> — bina check ke! Isko <b>fall-through</b> kehte hai.<pre>let x = 1;\nswitch (x) {\n  case 1: console.log("One"); // break gayab!\n  case 2: console.log("Two"); // ye bhi chala 🤦\n}</pre>Output dono lines print karega. Exception: intentionally cases group karna ho toh break chhod sakte ho — <code>case "Sat": case "Sun":</code>' },
+            { lvl: 'easy', q: 'Conditions mein == ya === kaunsa use karein?', a: 'Hamesha <b>===</b> (strict) use karo!<br><br>Problem: <code>if (x == 0)</code> — jab x = <code>""</code> (empty string) ho, toh <code>"" == 0</code> → <b>true</b> niklega (type coercion)! Aur <code>"" == false</code> bhi true. Unexpected bugs pakke hai loose comparison se.<br><br><code>===</code> type bhi check karta hai — clean, predictable, interview-approved. ✅' },
+            { lvl: 'medium', q: 'JavaScript ki 6 falsy values kaun si hai?', a: 'Ratta maar lo — sirf yeh 6 values falsy hai:<br><br>1. <code>false</code><br>2. <code>0</code> (aur -0)<br>3. <code>""</code> (empty string)<br>4. <code>null</code><br>5. <code>undefined</code><br>6. <code>NaN</code><br><br><b>Inke alawa SAB truthy</b> — "0", "false", " ", [], {} sab truthy! Mnemonic: "0 paisa, khaali baat, jhooth, khaali dabba, bina dabba, galat maths."' },
+            { lvl: 'medium', q: '"0" (string) truthy hai ya falsy? Aur 0 (number)?', a: '<code>0</code> (number) → <b>falsy</b> — <code>if (0)</code> block nahi chalega.<br><br><code>"0"</code> (string) → <b>TRUTHY!</b> — kyunki ye ek <b>non-empty string</b> hai (ek character hai usme: 0). <code>if ("0")</code> block CHALEGA! 😱<br><br>Same: <code>"false"</code> string bhi truthy, <code>" "</code> (space) bhi truthy. Falsy string sirf <code>""</code> (bilkul khaali) hota hai. Interview mein yeh classic trap hai!' },
+            { lvl: 'medium', q: 'switch vs if-else — kab kaunsa use karna chahiye?', a: '<b>switch use karo:</b> jab EK variable ke <b>fixed discrete values</b> check karni ho — day === 1? day === 2? Menu choice? Remote button? Readable aur clean rehta hai.<br><br><b>if-else use karo:</b> jab <b>ranges</b> check karni ho (<code>marks &gt;= 90</code>), <b>multiple different variables</b> compare karne ho (<code>a &gt; b</code>), ya <b>complex conditions</b> ho (<code>age &gt; 18 &amp;&amp; hasID || isVIP</code>).<br><br>Rule of thumb: discrete values → switch, ranges/logic → if-else.' },
+            { lvl: 'medium', q: 'Nested if kya hai? Practical example do.', a: 'if ke andar doosra if = <b>nested if</b>. Use karte hai jab pehli condition pass hone ke <b>BAAD hi</b> dusri check karni ho — har level pe alag error message ke saath:<pre>if (cardValid) {\n  if (pin === savedPin) {\n    if (amount <= balance) {\n      giveCash();\n    } else { alert("Balance kam"); }\n  } else { alert("Galat PIN"); }\n} else { alert("Card invalid"); }</pre>ATM, payment gateways, multi-step forms — sab nested use karte hai. Zyada gehra ho jaye toh <code>&amp;&amp;</code> se flatten karo (jab alag-alag messages ki zaroorat na ho).' },
+            { lvl: 'medium', q: 'if (x = 5) likha toh kya hoga? (Classic trap!)', a: 'Yahan <code>=</code> hai <b>comparison nahi, ASSIGNMENT</b>! Toh:<br><br>1. x mein 5 chala jayega (purani value overwrite!)<br>2. Assignment expression ki value 5 hoti hai<br>3. 5 truthy hai → block <b>HAMESHA chalega</b>, chahe x pehle kuch bhi ho! 😱<br><br>Correct: <code>if (x === 5)</code>.<br><br>Pro tip: kutch log ulta likhte hai — <code>if (5 === x)</code> — galti se <code>=</code> likha toh error milega (5 ko value assign nahi kar sakte). Isko "Yoda condition" kehte hai! 😄' },
+            { lvl: 'medium', q: 'Short-circuit evaluation conditions mein kaise kaam aata hai?', a: '<code>&amp;&amp;</code> pehli false value pe ruk jata hai, <code>||</code> pehli true pe — baaki evaluate hi nahi hota. Conditions mein safety ke liye use hota hai:<pre>if (user && user.isAdmin) {\n  showAdminPanel();\n}</pre>Agar <code>user</code> hi undefined hai, toh <code>user.isAdmin</code> evaluate <b>hi nahi hoga</b> — <code>"Cannot read property"</code> error nahi aayega! Bina short-circuit ke crash ho jata. Safety guard ka kaam karta hai!' },
+            { lvl: 'medium', q: 'switch mein default case zaroori hota hai?', a: 'Technically <b>optional</b> hai — bina default ke bhi switch chalta hai. Par practically <b>HAMESHA lagao</b>, kyunki:<br><br>1. Unexpected/galat input handle hota hai<br>2. User ko clear message milta hai ("Invalid choice")<br>3. Debugging aasan — pata chalta hai koi case miss hua<br><br>Position kahin bhi ho sakti hai, par last mein rakhna convention hai. Aur yaad rakho: default ke bhi break lagana (ya wo last mein hona chahiye).' },
+            { lvl: 'hard', q: 'JavaScript engine if ki condition ko internally kaise handle karta hai?', a: 'Engine <b>ToBoolean</b> naam ki abstract operation use karta hai — condition ki value ko boolean mein convert karta hai:<br><br>1. Value already boolean? → wahi use hoga<br>2. Value falsy list mein? (false, 0, "", null, undefined, NaN) → <code>false</code><br>3. Baaki sab? → <code>true</code><br><br>Isliye <code>if ("hello")</code> chalta hai aur <code>if ("")</code> nahi — comparison likhne ki zaroorat hi nahi. Yehi truthy/falsy ka internal mechanism hai. Strict mode ya koi setting ise change <b>nahi</b> kar sakti — JS ka core behaviour hai.' },
+            { lvl: 'hard', q: 'Ternary aur if-else mein kya real difference hai? (Sirf syntax nahi!)', a: 'Sabse bada difference: ternary <b>EXPRESSION</b> hai, if-else <b>STATEMENT</b> hai!<br><br>Expression = <b>value produce</b> karta hai, toh variable mein assign kar sakte ho, return kar sakte ho, argument mein pass kar sakte ho:<pre>let status = age >= 18 ? "Adult" : "Minor"; // ✅ kaam kiya\n\nlet x;\nage >= 18 ? x = "Adult" : x = "Minor"; // ugly but chalta hai</pre>If-else se ye assign nahi hota directly. Performance almost same hai — difference <b>semantics</b> ka hai. Simple value-choosing → ternary, multiple actions → if-else.' },
+            { lvl: 'hard', q: 'Fall-through ko kab INTENTIONALLY use karna chahiye?', a: 'Jab <b>multiple values ka same response</b> ho — cases group kar do (break skip karke):<pre>switch (day) {\n  case "Saturday":\n  case "Sunday":\n    console.log("WEEKEND! 🥳");\n    break;\n  case "Monday":\n  case "Tuesday":\n  case "Wednesday":\n  case "Thursday":\n  case "Friday":\n    console.log("Working day 💼");\n    break;\n}</pre>Yeh <b>clean pattern</b> hai — 7 alag cases ki jagah 2 groups. Interview mein bolna: "Fall-through usually bug hai, par grouped cases ke liye intentional feature bhi hai — comment laga ke likhna chahiye ki intentional hai."' },
+            { lvl: 'hard', q: 'if (array) aur if (array.length) mein kya difference hai?', a: 'Bahut practical sawal!<br><br><code>if (array)</code> → check karta hai array <b>exist</b> karta hai. Lekin <code>[]</code> (khaali array) bhi <b>TRUTHY</b> hai! Toh khaali array pe bhi block chalega — galat logic! 🤦<br><br><code>if (array.length)</code> → check karta hai array mein <b>items hai</b> (length 0 = falsy, 1+ = truthy).<pre>let cart = [];\nif (cart) { /* chal gaya — galat! */ }\nif (cart.length) { /* nahi chala — sahi! */ }</pre>Checkout button disable karna ho toh <code>cart.length</code> check karo, <code>cart</code> nahi! Yeh bug real apps mein aaj bhi milta hai.' }
+        ];
+
+        function renderInterview(filter) {
+            var list = document.getElementById('iqList');
+            var html = '';
+            for (var i = 0; i < iqData.length; i++) {
+                var q = iqData[i];
+                if (filter !== 'all' && q.lvl !== filter) continue;
+                html += '<div class="iq-item" onclick="toggleIq(this)">'
+                    + '<div class="iq-q">'
+                    + '<span class="iq-level ' + q.lvl + '">' + q.lvl + '</span>'
+                    + '<span class="iq-text">Q' + (i + 1) + '. ' + q.q + '</span>'
+                    + '<i class="fas fa-chevron-down iq-arrow"></i>'
+                    + '</div>'
+                    + '<div class="iq-a"><div class="iq-answer">' + q.a + '</div></div>'
+                    + '</div>';
+            }
+            list.innerHTML = html || '<p style="color:var(--muted)">Is filter mein kuch nahi.</p>';
+        }
+
+        function switchIqFilter(f) {
+            var btns = document.querySelectorAll('.iq-filter');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            event.currentTarget.classList.add('active');
+            renderInterview(f);
+        }
+
+        function toggleIq(el) { el.classList.toggle('open'); }
+
+        /* ==================== WORKSHOP ==================== */
+        function toggleWs(item) { item.classList.toggle('open'); }
+
+        function toggleHint(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-hint').classList.toggle('show');
+        }
+
+        function toggleSol(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-sol').classList.toggle('show');
+        }
+
+        /* ==================== PROJECTS ==================== */
+        function toggleProj(btn) {
+            btn.parentElement.querySelector('.p-starter').classList.toggle('show');
+        }
+
+        /* ==================== PLAYGROUND ==================== */
+        var snippets = [
+            { c: '// 🚦 Traffic Signal Simulator\nlet light = "red";  // isko "green" ya "yellow" karo!\n\nif (light === "green") {\n  console.log("CHALO 🟢 — raste khaali hai");\n} else if (light === "yellow") {\n  console.log("READY 🟡 — engine garam karo");\n} else if (light === "red") {\n  console.log("RUKO 🛑 — police aa sakti hai!");\n} else {\n  console.log("Signal kharab 🙃");\n}' },
+            { c: '// 🎬 Movie Entry Check\nlet age = 16;\nlet hasTicket = true;\nlet hasID = false;\n\nif (age >= 18 && hasTicket) {\n  console.log("A movie — andar jao 🎬");\n} else if (age >= 13 && hasTicket) {\n  if (hasID) {\n    console.log("UA movie — ID mil gayi ✅");\n  } else {\n    console.log("UA movie — ID laao pehle 🪪");\n  }\n} else if (hasTicket) {\n  console.log("U movie — family ke saath 🍿");\n} else {\n  console.log("Ticket pehle kharido! 🎟️");\n}' },
+            { c: '// 📊 Grade Machine\nlet marks = 95;  // badal ke dekho: 90, 82, 65, 40, 20\n\nif (marks >= 90) {\n  console.log("Grade A+ 🏆 — Shabash!");\n} else if (marks >= 75) {\n  console.log("Grade B 👍 — Accha hai");\n} else if (marks >= 60) {\n  console.log("Grade C 😊 — Thoda aur mehnat");\n} else if (marks >= 35) {\n  console.log("Pass 😅 — Safe ho gaye");\n} else {\n  console.log("FAIL 📚 — Padhai karo bhai!");\n}' },
+            { c: '// 🍽️ Menu Switch\nlet order = "momos";  // pizza, burger, momos try karo\nlet qty = 2;\nlet price = 0;\n\nswitch (order) {\n  case "pizza":\n    price = 299;\n    console.log("Pizza 🍕 @ ₹299");\n    break;\n  case "burger":\n    price = 99;\n    console.log("Burger 🍔 @ ₹99");\n    break;\n  case "momos":\n    price = 79;\n    console.log("Momos 🥟 @ ₹79");\n    break;\n  default:\n    console.log("Menu mein nahi hai! 🙃");\n}\n\nif (price > 0) {\n  console.log("Bill:", price * qty);\n  if (price * qty >= 500) console.log("FREE cold drink! 🥤");\n}' },
+            { c: '// 👻 Truthy/Falsy Detective\nlet values = [0, 1, "", "hello", null, undefined, NaN, "0", [], " "];\n\nfor (let i = 0; i < values.length; i++) {\n  let v = values[i];\n  if (v) {\n    console.log(i, "→ TRUTHY ✅ (", JSON.stringify(v), ")");\n  } else {\n    console.log(i, "→ falsy 👻 (", JSON.stringify(v), ")");\n  }\n}\n\n// Surprise: "0", [] aur " " sab TRUTHY hai!' },
+            { c: '// 🏧 ATM Simulator\nlet pin = 1234, enteredPin = 1234;\nlet balance = 5000, amount = 600;\n\nif (enteredPin === pin) {\n  console.log("PIN sahi ✅");\n  if (amount <= balance) {\n    if (amount % 100 === 0) {\n      console.log("Le lo ₹" + amount + " 💵");\n      console.log("Bacha:", balance - amount);\n    } else {\n      console.log("100 ke multiple do! 🙏");\n    }\n  } else {\n    console.log("Balance kam hai! Paise hai sirf:", balance);\n  }\n} else {\n  console.log("Galat PIN! 🔴 Dobara try karo");\n}' }
+        ];
+
+        function loadSnippet(idx) {
+            document.getElementById('pgCode').value = snippets[idx].c;
+        }
+
+        function clearConsole() {
+            document.getElementById('pgConsole').innerHTML = '<div class="cl-info">▸ Console cleared. Naya code chalao!</div>';
+        }
+
+        function addLine(text, cls) {
+            var con = document.getElementById('pgConsole');
+            var div = document.createElement('div');
+            div.className = 'cl ' + (cls || '');
+            div.textContent = text;
+            con.appendChild(div);
+            con.scrollTop = con.scrollHeight;
+        }
+
+        function runCode() {
+            var code = document.getElementById('pgCode').value;
+            var con = document.getElementById('pgConsole');
+            con.innerHTML = '';
+            if (!code.trim()) {
+                addLine('⚠️ Pehle kuch code likho!', 'cl-warn');
+                return;
+            }
+            var fakeConsole = {
+                log: function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    addLine(args.map(function (a) {
+                        if (typeof a === 'object' && a !== null) {
+                            try { return JSON.stringify(a); } catch (e) { return String(a); }
+                        }
+                        return String(a);
+                    }).join(' '), '');
+                },
+                warn: function () { addLine('⚠️ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-warn'); },
+                error: function () { addLine('❌ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-err'); },
+                table: function (arr) {
+                    try { addLine(JSON.stringify(arr, null, 1), 'cl-info'); } catch (e) { addLine(String(arr), ''); }
+                }
+            };
+            try {
+                var fn = new Function('console', '"use strict";\n' + code);
+                fn(fakeConsole);
+            } catch (err) {
+                addLine('❌ Error: ' + err.message, 'cl-err');
+                addLine('💡 Tip: brackets () {} aur conditions check karo', 'cl-info');
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+        });
+
+        /* ==================== DECISION LADDER SIMULATOR ==================== */
+        var ladderData = [
+            {
+                label: 'Temperature (°C):',
+                input: 25,
+                rungs: [
+                    { cond: 'if (temp >= 30)', out: 'A/C chalu ❄️', test: function (v) { return v >= 30; } },
+                    { cond: 'else if (temp >= 20)', out: 'Fan kaafi hai 🌬️', test: function (v) { return v >= 20; } },
+                    { cond: 'else if (temp >= 10)', out: 'Jacket pehno 🧥', test: function (v) { return v >= 10; } },
+                    { cond: 'else', out: 'Heater jala do 🔥', test: function () { return true; } }
+                ]
+            },
+            {
+                label: 'Age:',
+                input: 16,
+                rungs: [
+                    { cond: 'if (age >= 18)', out: 'A Certificate — ₹250 🎬', test: function (v) { return v >= 18; } },
+                    { cond: 'else if (age >= 13)', out: 'UA Certificate — ₹200 🎟️', test: function (v) { return v >= 13; } },
+                    { cond: 'else', out: 'U Certificate — ₹150 🍿', test: function () { return true; } }
+                ]
+            },
+            {
+                label: 'Marks:',
+                input: 82,
+                rungs: [
+                    { cond: 'if (marks >= 90)', out: 'Grade A+ 🏆', test: function (v) { return v >= 90; } },
+                    { cond: 'else if (marks >= 75)', out: 'Grade B 👍', test: function (v) { return v >= 75; } },
+                    { cond: 'else if (marks >= 60)', out: 'Grade C 😊', test: function (v) { return v >= 60; } },
+                    { cond: 'else', out: 'Padhai karo 📚', test: function () { return true; } }
+                ]
+            }
+        ];
+
+        var ladderIdx = 0;
+
+        function loadScenario(idx) {
+            ladderIdx = idx;
+            var btns = document.querySelectorAll('#ladderScenarios button');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            btns[idx].classList.add('active');
+            document.getElementById('ladderLabel').textContent = ladderData[idx].label;
+            document.getElementById('ladderInput').value = ladderData[idx].input;
+            renderLadder();
+            document.getElementById('ladderTrace').innerHTML = 'Value daalo aur CHALAO dabao — live trace yaha dikhega! 👆';
+        }
+
+        function renderLadder() {
+            var box = document.getElementById('ladderBox');
+            var rungs = ladderData[ladderIdx].rungs;
+            var html = '';
+            for (var i = 0; i < rungs.length; i++) {
+                html += '<div class="rung" data-i="' + i + '">'
+                    + '<span><span class="r-label">Rung ' + (i + 1) + '</span><span class="r-cond">' + rungs[i].cond + '</span></span>'
+                    + '<span class="r-out">' + rungs[i].out + '</span>'
+                    + '<span class="r-res">·</span>'
+                    + '</div>';
+            }
+            box.innerHTML = html;
+        }
+
+        function runLadder() {
+            var raw = parseFloat(document.getElementById('ladderInput').value);
+            var trace = document.getElementById('ladderTrace');
+            if (isNaN(raw)) {
+                trace.innerHTML = '⚠️ Sahi number daalo bhai!';
+                return;
+            }
+            renderLadder();
+            var rungs = ladderData[ladderIdx].rungs;
+            var checks = 0, hitIdx = -1;
+            for (var i = 0; i < rungs.length; i++) {
+                checks++;
+                var rung = document.querySelector('.rung[data-i="' + i + '"]');
+                if (rungs[i].test(raw)) {
+                    hitIdx = i;
+                    rung.classList.add('hit');
+                    break;
+                } else {
+                    rung.classList.add('checked');
+                }
+            }
+            if (hitIdx === 0) {
+                trace.innerHTML = '⚡ Pehla rung hi TRUE hua — <code>' + rungs[0].cond + '</code> → <b>' + rungs[0].out + '</b>. Baaki ' + (rungs.length - 1) + ' rungs check hi nahi hue!';
+            } else if (hitIdx === rungs.length - 1 && ladderData[ladderIdx].rungs[hitIdx].cond === 'else') {
+                trace.innerHTML = '🔍 ' + (checks - 1) + ' conditions FAIL hui, toh <code>else</code> chala — <b>' + rungs[hitIdx].out + '</b>. else kabhi fail nahi hota!';
+            } else {
+                trace.innerHTML = '🔍 ' + checks + ' rungs check hue, Rung ' + (hitIdx + 1) + ' pe TRUE mila → <b>' + rungs[hitIdx].out + '</b>. Neeche ke rungs skip! Ladder ka rule: <b>pehla true hi chalta hai</b>.';
+            }
+        }
+
+        /* ==================== QUIZ ==================== */
+        var quizData = [
+            { q: '<code>if (0) { console.log("Hi"); }</code> — output kya hoga?', opts: ['Hi', 'Kuch nahi print hoga', 'Error aayega', '0'], correct: 1, exp: '0 ek FALSY value hai — toh if ka block skip ho jayega. Kuch print nahi hoga!' },
+            { q: 'In mein se kaunsi value FALSY hai?', opts: ['"0" (string)', '[] (array)', '"" (empty string)', '{} (object)'], correct: 2, exp: 'Sirf empty string "" falsy hai! "0" non-empty string hai (truthy), khaali array [] aur object {} bhi truthy hai — JS ka quirk!' },
+            { q: 'switch mein break na lagao toh kya hota hai?', opts: ['Error aata hai', 'Kuch nahi hota', 'Aage ke cases bhi chalega (fall-through)', 'default chal jayega'], correct: 2, exp: 'Fall-through! Matching case ke baad SAARE cases bina check ke chal jaate hai — jab tak break ya switch ka end na aaye.' },
+            { q: '<code>let x = 2; if (x = 5) { console.log("Chala"); }</code> — kya hoga?', opts: ['Kuch nahi chalega', '"Chala" print hoga', 'Error aayega', 'x = 2 hi rahega'], correct: 1, exp: 'Double trap! = comparison nahi, ASSIGNMENT hai — x mein 5 chala gaya, aur 5 truthy → block chala! (x = 5 ho gaya, 2 gaya!)' },
+            { q: '<code>let r = 10 > 3 ? "A" : "B";</code> — r ki value kya hogi?', opts: ['"B"', 'true', '"A"', 'Error'], correct: 2, exp: '10 > 3 → true hai, toh ? ke baad wali value milti hai → "A". Ternary mein true condition pehli value deti hai!' }
+        ];
+
+        var quizIdx = 0, quizScore = 0, quizLock = false;
+
+        function renderQuiz() {
+            var q = quizData[quizIdx];
+            document.getElementById('quizCount').textContent = 'Sawaal ' + (quizIdx + 1) + ' / ' + quizData.length;
+            document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+            document.getElementById('quizQ').innerHTML = 'Q' + (quizIdx + 1) + '. ' + q.q;
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').classList.remove('show');
+            quizLock = false;
+
+            var box = document.getElementById('quizOpts');
+            box.innerHTML = '';
+            for (var i = 0; i < q.opts.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.textContent = q.opts[i];
+                btn.setAttribute('data-i', i);
+                btn.onclick = function () { answerQuiz(parseInt(this.getAttribute('data-i'))); };
+                box.appendChild(btn);
+            }
+        }
+
+        function answerQuiz(i) {
+            if (quizLock) return;
+            quizLock = true;
+            var q = quizData[quizIdx];
+            var btns = document.querySelectorAll('.quiz-opt');
+            for (var j = 0; j < btns.length; j++) {
+                btns[j].disabled = true;
+                if (parseInt(btns[j].getAttribute('data-i')) === q.correct) btns[j].classList.add('correct');
+            }
+            var fb = document.getElementById('quizFb');
+            if (i === q.correct) {
+                quizScore++;
+                document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+                fb.textContent = '✅ Sahi jawab! ' + q.exp;
+                fb.className = 'quiz-feedback good';
+            } else {
+                btns[i].classList.add('wrong');
+                fb.textContent = '❌ Oops! Sahi jawab highlighted hai. ' + q.exp;
+                fb.className = 'quiz-feedback bad';
+            }
+            document.getElementById('quizNext').classList.add('show');
+        }
+
+        function nextQuestion() {
+            if (quizIdx < quizData.length - 1) {
+                quizIdx++;
+                renderQuiz();
+            } else {
+                showFinal();
+            }
+        }
+
+        function showFinal() {
+            var msg, emoji;
+            if (quizScore === 5) { msg = 'PERFECT! Tum Conditionals ke Boss ho — Decision Master! 🧙‍♂️'; emoji = '🏆'; }
+            else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
+            else { msg = 'Koi baat nahi — upar sections dobara padho, Ladder Simulator se khelo!'; emoji = '📚'; }
+
+            document.getElementById('quizCount').textContent = 'Quiz Complete!';
+            document.getElementById('quizQ').innerHTML = '';
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').textContent = '🔄 Dobara Khelein';
+            document.getElementById('quizNext').classList.add('show');
+            document.getElementById('quizNext').onclick = restartQuiz;
+
+            document.getElementById('quizOpts').innerHTML = '<div class="quiz-final">'
+                + '<div class="qf-emoji">' + emoji + '</div>'
+                + '<h4>Score: ' + quizScore + ' / ' + quizData.length + '</h4>'
+                + '<p>' + msg + '</p>'
+                + '</div>';
+        }
+
+        function restartQuiz() {
+            quizIdx = 0;
+            quizScore = 0;
+            var btn = document.getElementById('quizNext');
+            btn.textContent = 'Agla Sawaal →';
+            btn.onclick = nextQuestion;
+            renderQuiz();
+        }
+
+        /* ==================== INIT ==================== */
+        renderExamples(0);
+        renderInterview('all');
+        loadSnippet(0);
+        loadScenario(0);
+        renderQuiz();
+    </script>
+</body>
+</html>

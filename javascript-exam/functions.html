@@ -1,0 +1,2918 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apni Khud Ki Machine 🔧</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: #151d2e;
+            --card2: #1a2540;
+            --border: #1e3a5f;
+            --fg: #e8edf5;
+            --muted: #6b7fa3;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --purple: #a855f7;
+            --pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Background Effect === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 { top: -150px; left: -100px; background: var(--accent); }
+        .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+        .bg-glow-3 { top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--purple); opacity: 0.08; }
+
+        /* === Header === */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        header h1 {
+            font-weight: 900;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header .badge-chapter {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* === Roadmap === */
+        .roadmap-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
+        }
+
+        .roadmap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .roadmap h3 {
+            font-size: 1rem;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roadmap-track {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .rm-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .rm-chip.done { border-color: var(--accent); color: var(--accent); }
+        .rm-chip.now {
+            background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.15));
+            border-color: var(--accent2);
+            color: var(--accent2);
+            box-shadow: 0 0 18px rgba(0,212,255,0.25);
+            animation: pulseChip 2s infinite;
+        }
+        .rm-chip.future { opacity: 0.55; }
+
+        @keyframes pulseChip {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+            50% { box-shadow: 0 0 22px rgba(0,212,255,0.45); }
+        }
+
+        /* === Sections === */
+        .section {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .section > p.section-desc {
+            color: var(--muted);
+            max-width: 760px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        /* === Intro Concept Box === */
+        .concept-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .concept-box h4 {
+            color: var(--accent);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-box p {
+            color: var(--fg);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .concept-box code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        /* === Operator Family Cards === */
+        .op-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .op-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .op-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.12);
+        }
+
+        .op-card .op-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+        }
+
+        .op-card:nth-child(2) .op-icon { background: rgba(0,212,255,0.1); color: var(--accent2); }
+        .op-card:nth-child(3) .op-icon { background: rgba(168,85,247,0.1); color: var(--purple); }
+        .op-card:nth-child(4) .op-icon { background: rgba(255,107,157,0.1); color: var(--pink); }
+        .op-card:nth-child(5) .op-icon { background: rgba(255,165,2,0.1); color: var(--warn); }
+        .op-card:nth-child(6) .op-icon { background: rgba(255,71,87,0.1); color: var(--danger); }
+
+        .op-card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+        .op-card .op-symbols {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .op-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* === Operator Tables === */
+        .op-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        table.op-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 0.9rem;
+            min-width: 560px;
+        }
+
+        .op-table th {
+            background: var(--bg2);
+            color: var(--accent2);
+            text-align: left;
+            padding: 13px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .op-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(30,58,95,0.5);
+            vertical-align: middle;
+        }
+
+        .op-table tr:last-child td { border-bottom: none; }
+        .op-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+        .op-table .sym {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .op-table .ex {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.85rem;
+        }
+
+        .op-table .res {
+            font-family: 'Fira Code', monospace;
+            color: var(--warn);
+            font-weight: 600;
+        }
+
+        .op-table .desc { color: var(--muted); }
+
+        /* === Code Blocks === */
+        .code-block {
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.75;
+            overflow-x: auto;
+            white-space: pre;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .code-block .cm { color: var(--muted); }
+        .code-block .kw { color: var(--purple); }
+        .code-block .st { color: var(--accent); }
+        .code-block .nm { color: var(--accent2); }
+        .code-block .op { color: var(--warn); }
+        .code-block .out { color: var(--pink); }
+
+        /* === Gotcha / Warning Box === */
+        .gotcha {
+            background: rgba(255,71,87,0.07);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-left: 4px solid var(--danger);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .gotcha h5 {
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .gotcha p, .gotcha li { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .gotcha ul { padding-left: 20px; margin-top: 6px; }
+        .gotcha code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255,71,87,0.12);
+            color: var(--pink);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Tip Box === */
+        .tipbox {
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.25);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .tipbox h5 {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .tipbox p { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .tipbox code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Two Column Split === */
+        .split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 780px) {
+            .split-2 { grid-template-columns: 1fr; }
+        }
+
+        .split-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .split-card h5 { margin-bottom: 10px; font-size: 1rem; }
+        .split-card.vs-lose { border-top: 3px solid var(--warn); }
+        .split-card.vs-strict { border-top: 3px solid var(--accent); }
+
+        .split-card ul { list-style: none; }
+        .split-card li {
+            padding: 7px 0;
+            color: var(--fg);
+            font-size: 0.87rem;
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .split-card li:last-child { border-bottom: none; }
+        .split-card li i { margin-right: 8px; }
+        .split-card .li-ok i { color: var(--accent); }
+        .split-card .li-bad i { color: var(--danger); }
+    </style>
+<style>
+        /* === Flow Demo (Concept) === */
+        .flow {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: stretch;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-cond {
+            background: var(--bg2);
+            border: 2px dashed var(--accent2);
+            border-radius: 12px;
+            padding: 16px 22px;
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .flow-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: center;
+            min-width: 150px;
+            font-size: 0.88rem;
+        }
+
+        .flow-box .f-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .flow-box.true-path { border-top: 3px solid var(--accent); }
+        .flow-box.true-path .f-tag { color: var(--accent); }
+        .flow-box.false-path { border-top: 3px solid var(--danger); }
+        .flow-box.false-path .f-tag { color: var(--danger); }
+        .flow-arrow {
+            align-self: center;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        /* === Function Machine Simulator === */
+        .fm {
+            background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(0,212,255,0.08));
+            border: 1px solid var(--purple);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 26px 0;
+        }
+
+        .fm h4 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .fm h4 i { color: var(--purple); margin-right: 8px; }
+
+        .fm p.fm-desc {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.87rem;
+            margin-bottom: 20px;
+        }
+
+        .fm-types {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .fm-types button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .fm-types button:hover { border-color: var(--purple); color: var(--purple); }
+
+        .fm-types button.active {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .fm-input-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .fm-input-row label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .fm-input-row input {
+            width: 240px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 14px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            outline: none;
+        }
+
+        .fm-input-row input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(168,85,247,0.25); }
+
+        .fm-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            border: none;
+            color: #0a0e17;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 12px 30px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .fm-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(0,255,136,0.3); }
+
+        .fm-code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.28);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            margin: 0 auto 18px;
+            max-width: 560px;
+            font-size: 0.82rem;
+            color: var(--accent);
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        .fm-track {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .fm-row {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.84rem;
+            color: var(--fg);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.35s;
+            line-height: 1.6;
+        }
+
+        .fm-row.show { opacity: 1; transform: translateY(0); }
+
+        .fm-row.fm-in { border-left-color: var(--accent2); background: rgba(0,212,255,0.05); }
+        .fm-row.fm-step { border-left-color: var(--accent); background: rgba(0,255,136,0.05); }
+        .fm-row.fm-out { border-left-color: var(--purple); background: rgba(168,85,247,0.06); }
+        .fm-row.fm-warn { border-left-color: var(--danger); background: rgba(255,71,87,0.07); }
+
+        .fm-summary {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            min-height: 24px;
+        }
+
+        .fm-summary code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        /* === Analogies === */
+        .analogy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .analogy-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analogy-card:hover {
+            border-color: var(--accent2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.12);
+        }
+
+        .analogy-card .a-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .analogy-card h4 { margin-bottom: 8px; font-size: 1.02rem; }
+        .analogy-card h4 span { color: var(--accent2); }
+        .analogy-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+        .analogy-card .a-code {
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: rgba(0,255,136,0.07);
+            border-radius: 8px;
+            padding: 9px 12px;
+            line-height: 1.6;
+        }
+
+        /* === Examples Gallery === */
+        .ex-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .ex-tab {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .ex-tab:hover { border-color: var(--accent2); color: var(--accent2); }
+
+        .ex-tab.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .ex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .ex-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .ex-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .ex-card .ex-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ex-card .ex-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(0,255,136,0.12);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ex-card .ex-title { font-size: 0.92rem; font-weight: 600; }
+
+        .ex-card pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            padding: 16px 18px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .ex-card .ex-out {
+            padding: 12px 18px;
+            border-top: 1px dashed var(--border);
+            color: var(--warn);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .ex-card .ex-out::before { content: '▶ Output: '; color: var(--muted); }
+
+        /* === Use Cases === */
+        .use-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .use-card {
+            background: linear-gradient(145deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+
+        .use-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+
+        .use-card .u-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .use-card .u-logo { font-size: 1.8rem; }
+        .use-card h4 { font-size: 1rem; }
+        .use-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px; }
+        .use-card .u-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .u-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.12);
+            color: var(--purple);
+            border: 1px solid rgba(168,85,247,0.3);
+        }
+
+        .use-card .u-snippet {
+            margin-top: 12px;
+            background: #0d1321;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--accent2);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* === Playground === */
+        .playground {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .pg-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pg-top .pg-title { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .pg-top .pg-title i { color: var(--accent); }
+
+        .pg-snippets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .pg-snippets button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 7px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pg-snippets button:hover { border-color: var(--accent); color: var(--accent); }
+
+        .pg-body { display: grid; grid-template-columns: 1fr 1fr; }
+        @media (max-width: 820px) { .pg-body { grid-template-columns: 1fr; } }
+
+        .pg-body textarea {
+            width: 100%;
+            height: 320px;
+            background: #0d1321;
+            border: none;
+            resize: vertical;
+            padding: 18px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            outline: none;
+            border-right: 1px solid var(--border);
+        }
+
+        @media (max-width: 820px) { .pg-body textarea { border-right: none; border-bottom: 1px solid var(--border); } }
+
+        .pg-console {
+            height: 320px;
+            overflow-y: auto;
+            padding: 18px;
+            background: var(--bg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        .pg-console .cl { padding: 3px 0; color: var(--fg); word-break: break-word; }
+        .pg-console .cl-err { color: var(--danger); }
+        .pg-console .cl-info { color: var(--accent2); }
+        .pg-console .cl-warn { color: var(--warn); }
+
+        .pg-runbar {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 10px 26px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-run:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,255,136,0.3); }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+        .pg-hint { color: var(--muted); font-size: 0.75rem; margin-left: auto; }
+        @media (max-width: 640px) { .pg-hint { margin-left: 0; } }
+    </style>
+<style>
+        /* === Workshop === */
+        .ws-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .ws-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .ws-item:hover { border-color: var(--accent); }
+
+        .ws-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ws-head:hover { background: rgba(0,255,136,0.03); }
+
+        .ws-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 11px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ws-badge.easy { background: rgba(0,255,136,0.12); color: var(--accent); border: 1px solid rgba(0,255,136,0.3); }
+        .ws-badge.medium { background: rgba(255,165,2,0.12); color: var(--warn); border: 1px solid rgba(255,165,2,0.3); }
+        .ws-badge.hard { background: rgba(255,71,87,0.12); color: var(--danger); border: 1px solid rgba(255,71,87,0.3); }
+
+        .ws-head .ws-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+        .ws-head .ws-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.8rem; }
+        .ws-item.open .ws-arrow { transform: rotate(180deg); }
+
+        .ws-body { display: none; padding: 0 20px 20px; }
+        .ws-item.open .ws-body { display: block; }
+
+        .ws-body .ws-task {
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .ws-body .ws-task code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .ws-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent2);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            transition: all 0.25s;
+        }
+
+        .ws-toggle-btn:hover { border-color: var(--accent2); }
+
+        .ws-hint, .ws-sol {
+            display: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.84rem;
+            line-height: 1.7;
+        }
+
+        .ws-hint.show, .ws-sol.show { display: block; }
+
+        .ws-hint {
+            background: rgba(255,165,2,0.07);
+            border: 1px dashed rgba(255,165,2,0.4);
+            color: var(--fg);
+        }
+
+        .ws-hint strong { color: var(--warn); }
+
+        .ws-sol {
+            background: #0d1321;
+            border: 1px solid var(--border);
+        }
+
+        .ws-sol pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+        }
+
+        /* === Projects === */
+        .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+
+        .proj-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .proj-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+
+        .proj-card .p-emoji { font-size: 2rem; margin-bottom: 10px; }
+        .proj-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .proj-card .p-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 12px; }
+
+        .proj-card .p-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+
+        .p-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .proj-card .p-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+            align-self: flex-start;
+        }
+
+        .proj-card .p-btn:hover { background: rgba(0,255,136,0.1); }
+
+        .proj-card .p-starter {
+            display: none;
+            margin-top: 14px;
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .proj-card .p-starter.show { display: block; }
+
+        .proj-card .p-starter pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+            margin-bottom: 10px;
+        }
+
+        .proj-card .p-challenge {
+            color: var(--warn);
+            font-size: 0.78rem;
+            line-height: 1.65;
+        }
+
+        .proj-card .p-challenge strong { color: var(--warn); }
+
+        /* === Interview Accordion === */
+        .iq-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+
+        .iq-filter {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 9px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .iq-filter:hover { border-color: var(--accent2); color: var(--accent2); }
+        .iq-filter.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+        }
+
+        .iq-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .iq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .iq-q {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .iq-q:hover { background: rgba(0,255,136,0.03); }
+
+        .iq-level {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .iq-level.easy { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .iq-level.medium { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .iq-level.hard { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        .iq-q .iq-text { font-size: 0.9rem; font-weight: 600; flex: 1; line-height: 1.5; }
+        .iq-q .iq-arrow { color: var(--muted); font-size: 0.78rem; transition: transform 0.3s; }
+        .iq-item.open .iq-arrow { transform: rotate(180deg); }
+
+        .iq-a { display: none; padding: 0 18px 18px; }
+        .iq-item.open .iq-a { display: block; }
+
+        .iq-a .iq-answer {
+            background: var(--bg2);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: var(--fg);
+            font-size: 0.86rem;
+            line-height: 1.75;
+        }
+
+        .iq-a .iq-answer code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .iq-a .iq-answer pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            background: #0d1321;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.65;
+        }
+
+        /* === Cheat Sheet === */
+        .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+        .cheat-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .cheat-box h4 {
+            color: var(--accent2);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cheat-box table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .cheat-box td { padding: 6px 4px; border-bottom: 1px dashed rgba(30,58,95,0.6); }
+        .cheat-box td:first-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .cheat-box tr:last-child td { border-bottom: none; }
+
+        .cheat-box ul { list-style: none; }
+        .cheat-box li {
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: var(--fg);
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .cheat-box li:last-child { border-bottom: none; }
+        .cheat-box li i { color: var(--accent); margin-right: 7px; }
+        .cheat-box li code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            background: rgba(0,212,255,0.08);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* === Quiz === */
+        .quiz-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-progress .q-count { color: var(--muted); font-size: 0.85rem; }
+        .quiz-progress .q-score { font-family: 'Fira Code', monospace; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+        .quiz-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 18px; line-height: 1.6; }
+        .quiz-q code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+
+        .quiz-opt {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 18px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: var(--fg);
+            text-align: left;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .quiz-opt:hover { border-color: var(--accent2); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: var(--accent); background: rgba(0,255,136,0.1); color: var(--accent); }
+        .quiz-opt.wrong { border-color: var(--danger); background: rgba(255,71,87,0.1); color: var(--danger); }
+        .quiz-opt:disabled { cursor: default; }
+
+        .quiz-feedback { margin-top: 14px; font-size: 0.88rem; line-height: 1.6; min-height: 22px; }
+        .quiz-feedback.good { color: var(--accent); }
+        .quiz-feedback.bad { color: var(--danger); }
+
+        .quiz-next {
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 11px 28px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .quiz-next.show { display: inline-block; }
+
+        .quiz-final { text-align: center; padding: 20px 0; }
+        .quiz-final .qf-emoji { font-size: 3rem; margin-bottom: 12px; }
+        .quiz-final h4 { font-size: 1.3rem; margin-bottom: 8px; }
+        .quiz-final p { color: var(--muted); margin-bottom: 18px; font-size: 0.92rem; }
+
+        /* === Footer === */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer .f-next {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+        footer p { color: var(--muted); font-size: 0.82rem; line-height: 1.8; }
+        footer .f-heart { color: var(--danger); }
+
+        /* === Responsive === */
+        @media (max-width: 640px) {
+            .section { padding: 32px 16px; }
+            .fm { padding: 20px 16px; }
+            .roadmap-track { justify-content: flex-start; }
+        }
+    
+        /* ==================== SERIES NAVBAR (JS Ka Safar) ==================== */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 56px;
+            padding: 0 18px;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+        }
+        .tn-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .tn-brand i { filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7)); }
+        .tn-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tn-links::-webkit-scrollbar { display: none; }
+        .tn-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .tn-link i { font-size: 11px; }
+        .tn-link:hover { color: var(--accent2); background: rgba(0, 212, 255, 0.08); }
+        .tn-link.active {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.35);
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.18);
+        }
+        .tn-link.active i { filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.8)); }
+        .tn-soon { opacity: 0.45; cursor: not-allowed; }
+        .tn-soon:hover { color: var(--muted); background: transparent; }
+        body { padding-top: 56px; }
+        @media (max-width: 720px) {
+            .topnav { padding: 0 10px; gap: 8px; }
+            .tn-brand span { display: none; }
+            .tn-link { padding: 6px 9px; font-size: 11.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ SERIES NAVBAR ============ -->
+    <nav class="topnav">
+        <a class="tn-brand" href="variables.html" title="JavaScript Ka Safar — Home"><i class="fas fa-bolt"></i><span>JS Ka Safar</span></a>
+        <div class="tn-links">
+        <a href="variables.html" class="tn-link"><i class="fas fa-crown"></i> 1. Variables</a>
+        <a href="operators.html" class="tn-link"><i class="fas fa-wand-magic-sparkles"></i> 2. Operators</a>
+        <a href="conditionals.html" class="tn-link"><i class="fas fa-gamepad"></i> 3. Conditionals</a>
+        <a href="loops.html" class="tn-link"><i class="fas fa-rotate"></i> 4. Loops</a>
+        <a href="functions.html" class="tn-link active"><i class="fas fa-gears"></i> 5. Functions</a>
+        <a href="arrays.html" class="tn-link"><i class="fas fa-bars-staggered"></i> 6. Arrays</a>
+        <a href="objects.html" class="tn-link"><i class="fas fa-box-open"></i> 7. Objects</a>
+        <a href="dom.html" class="tn-link"><i class="fas fa-desktop"></i> 8. DOM</a>
+        </div>
+    </nav>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- ============ HERO ============ -->
+    <header>
+        <span class="badge-chapter">⚡ Chapter 5 — JavaScript Journey</span>
+        <h1>Apni Khud Ki Machine 🔧</h1>
+        <p>Loops aur conditions aa gaye... ab banega <b>FUNCTION</b> — code ka dabba jise NAAM milta hai! Same kaam baar-baar likhna? Band! Ek baar machine banao, jitni baar chaho <b>bulao</b> — arguments do, return lo. Juicer se lekar Swiggy tak — sab isi se chalta hai. Chalo apni pehli machine banaye! ⚙️</p>
+    </header>
+
+    <!-- ============ ROADMAP ============ -->
+    <div class="roadmap-wrap">
+        <div class="roadmap">
+            <h3><i class="fas fa-map-signs"></i> Tumhara JavaScript Journey</h3>
+            <div class="roadmap-track">
+                <span class="rm-chip done"><i class="fas fa-check"></i> 1. Variables</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 2. Operators</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 3. Conditionals</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 4. Loops</span>
+                <span class="rm-chip now"><i class="fas fa-location-arrow"></i> 5. Functions (TUM YAHIN HO)</span>
+                <span class="rm-chip future">6. Arrays</span>
+                <span class="rm-chip future">7. Objects</span>
+                <span class="rm-chip future">8. DOM + Projects</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INTRO: FUNCTION KYA HAI ============ -->
+    <section class="section" id="intro">
+        <span class="section-tag"><i class="fas fa-lightbulb"></i> Concept</span>
+        <h2>Function Kya Hota Hai? 🤔</h2>
+        <p class="section-desc">Socho: ghar pe roz chai banti hai. Har baar kya karte ho? Paani ubalo → patti daalo → doodh daalo → cheeni... <b>steps roz yaad karke repeat?</b> 😩 Nahi! Ek baar seekh liya "<b>chai banane ka tareeka</b>" — phir bas bol do "<b>chai bana do</b>" aur ho gaya. Function bilkul yahi hai: <b>code ka naam-rakha hua dabba</b> — ek baar likho, jitni baar chaho bulao!</p>
+
+        <div class="concept-box">
+            <h4><i class="fas fa-blender"></i> Juicer Machine Analogy</h4>
+            <p>Juicer ek machine hai: <b>seb daalo (INPUT)</b> → machine andar kaam karta hai → <b>juice nikalta hai (OUTPUT)</b>. Kal aam daaloge toh aam ka juice — machine <b> SAME hai</b>, input alag, output alag!<br><br>
+            Programming mein: <code>function makeJuice(fruit) { return fruit + " ka juice"; }</code> — <code>makeJuice("seb")</code> do toh seb ka juice, <code>makeJuice("aam")</code> do toh aam ka juice. Pichle chapter ka <b>loop</b> (Ch4) yaad hai? Loop same kaam <b>baar-baar chalata</b> hai; function same kaam ko <b>naam de ke reuse</b> karne deta hai. Dono milkar bante hai <b>DRY principle</b> — Don't Repeat Yourself! 🔥</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-box" style="border-top:3px solid var(--accent2);"><span class="f-tag" style="color:var(--accent2);">INPUT 📥</span>arguments do<br><small style="color:var(--muted);">(seb, aam, kela...)</small></div>
+            <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-cond">function ka BODY chala ⚙️</div>
+            <div class="flow-arrow"><i class="fas fa-check"></i></div>
+            <div class="flow-box" style="border-top:3px solid var(--purple);"><span class="f-tag" style="color:var(--purple);">OUTPUT 📤</span>return se wapas<br><small style="color:var(--muted);">(juice mila!)</small></div>
+        </div>
+
+        <div class="code-block"><span class="cm">// Function ka life cycle (3 cheezein yaad rakho):</span>
+<span class="cm">// 1. BANAO     → function define karo (ek baar)</span>
+<span class="cm">// 2. BULAO     → naam + () se call karo (jitni baar chaho)</span>
+<span class="cm">// 3. RESULT LO → return se value wapas milti hai</span>
+
+<span class="kw">function</span> greet() {              <span class="cm">// banao — abhi sirf pack hua hai!</span>
+  console.log(<span class="st">"Namaste! 🙏"</span>);
+}
+
+greet();                        <span class="cm">// bulao — AB code chalega!</span>
+greet();                        <span class="cm">// phir bulao — phir chalega!</span>
+<span class="out">// Namaste! 🙏 / Namaste! 🙏</span></div>
+
+        <p class="section-desc" style="margin-bottom:12px;">JavaScript mein functions ke <b>6 tools/styles</b> hai — har ek ka apna moment. Sab cards dekho, phir ek-ek karke detail mein 👇</p>
+        <div class="op-grid">
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-box"></i></div>
+                <h4>1. Function Declaration</h4>
+                <div class="op-symbols">function naam() { ... }</div>
+                <p>Standard tareeka — <code>function</code> keyword + <b>naam</b> + brackets + braces. Machine likhne ka basic format!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-sign-in-alt"></i></div>
+                <h4>2. Parameters &amp; Arguments</h4>
+                <div class="op-symbols">greet(name) → greet("Rahul")</div>
+                <p>Machine ke <b>input holes</b> — juicer mein fal daalo, us fal ka juice milega. Har call pe naya input!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-undo"></i></div>
+                <h4>3. return</h4>
+                <div class="op-symbols">return sum;</div>
+                <p>Machine se <b>OUTPUT wapas</b> — juice banake haath mein do! Return hote hi function khatam bhi ho jata hai.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-arrow-right"></i></div>
+                <h4>4. Arrow Functions</h4>
+                <div class="op-symbols">const add = (a, b) =&gt; a + b</div>
+                <p>ES6 ka <b>modern shortcut</b> — one-line ka kaam ek line mein likho. Callbacks ka best friend!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-box-open"></i></div>
+                <h4>5. Expression &amp; Hoisting</h4>
+                <div class="op-symbols">let f = function() { ... }</div>
+                <p>Function <b>value hai</b> — variable mein store karo! Hoisting ka magic: declaration upar ud ke chalti hai!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-handshake"></i></div>
+                <h4>6. Callbacks &amp; IIFE</h4>
+                <div class="op-symbols">setTimeout(fn, 1000)</div>
+                <p>Function ko <b>doosre function ko do</b> (callback) ya turant chalao (IIFE) — apps ka asli raaz!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FUNCTION DECLARATION ============ -->
+    <section class="section" id="declare">
+        <span class="section-tag"><i class="fas fa-box"></i> Tool #1</span>
+        <h2>Function Declaration — Machine Banao 📦</h2>
+        <p class="section-desc">Function banane ke liye 4 cheezein chahiye: <code>function</code> keyword + <b>naam</b> + <b>brackets ()</b> + <b>curly braces {}</b>. Brackets mein input jaata hai, braces mein kaam hota hai. Aur sabse important — machine bana ke chhod nahi dete, use <b>CALL</b> karna padta hai!</p>
+
+        <div class="code-block"><span class="cm">// Syntax: function NAAM(parameters) { kaam }</span>
+<span class="kw">function</span> wish() {
+  console.log(<span class="st">"Good morning! ☀️"</span>);
+}
+
+<span class="cm">// Machine ban gayi — par CHALI nahi abhi tak!</span>
+<span class="cm">// Chalane ke liye NAAM + () likho = CALL</span>
+
+wish();   <span class="cm">// ✅ call — "Good morning! ☀️" print hua</span>
+wish();   <span class="cm">// jitni baar chaho!</span>
+wish();
+
+<span class="cm">// Naam ke baad brackets LAGANA zaroori hai:</span>
+wish;     <span class="cm">// ❌ kuch nahi hoga — sirf naam ka zikr, call nahi!</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: () Bhool Gaye Toh Kuch Nahi Hoga!</h5>
+            <p><code>wish;</code> aur <code>wish();</code> mein zameen-aasmaan ka farak hai! Bina brackets = tumne function ka <b>naam liya</b> (dost ka naam liya par bulaya nahi 😄), brackets ke saath = <b>call</b> — machine chal padi! Sabse khatarnak baat: is mistake mein <b>error bhi nahi aata</b> — bas <b>silent failure</b>. Code "chal raha" dikhega par machine ne kaam kiya hi nahi. Debug karte waqt sabse pehle check: <b>call mein () hai ya nahi?</b></p>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> Function Ke 3 Golden Rules</h5>
+            <p><b>1.</b> Naam <b>verb (kaam)</b> se shuru karo — <code>greet</code>, <code>calcPrice</code>, <code>sendMsg</code>, <code>checkAge</code> — naam padhte hi pata chal jaye machine kya karti hai!<br>
+            <b>2.</b> Ek machine = <b>ek kaam</b>. Chai bhi banaye aur khana bhi — aisi machine mat banao. Chhoti machines ko jodkar bada kaam karo!<br>
+            <b>3.</b> Define karna aadha kaam hai — <b>call bhi karo!</b> Bina call ke function sirf suitcase hai — band pada hai, safar nahi hua! 🧳</p>
+        </div>
+    </section>
+
+    <!-- ============ PARAMETERS & ARGUMENTS ============ -->
+    <section class="section" id="params">
+        <span class="section-tag"><i class="fas fa-sign-in-alt"></i> Tool #2</span>
+        <h2>Parameters &amp; Arguments — Machine Mein Daalo 🧃</h2>
+        <p class="section-desc">Juicer mein fal daalte ho na? Wo holes hai <b>parameters</b>. Tum jo asli seb/aam daalte ho, wo hai <b>arguments</b>. Parameter = recipe ki khaali jagah (<code>fruit</code>), argument = asli value (<code>"seb"</code>). Machine ek, inputs hazaar — har baar naya output!</p>
+
+        <div class="code-block"><span class="cm">// parameter = name (khaali jagah / placeholder)</span>
+<span class="kw">function</span> greetUser(name) {
+  console.log(<span class="st">"Hello,"</span>, name <span class="op">+</span> <span class="st">"! 👋"</span>);
+}
+
+greetUser(<span class="st">"Rahul"</span>);     <span class="cm">// argument = "Rahul" (asli value)</span>
+greetUser(<span class="st">"Priya"</span>);
+<span class="out">// Hello, Rahul! 👋 / Hello, Priya! 👋</span>
+
+<span class="cm">// Multiple parameters — ORDER MATTER KARTA HAI!</span>
+<span class="kw">function</span> makeChai(cups, sugar) {
+  console.log(cups <span class="op">+</span> <span class="st">" chai, "</span> <span class="op">+</span> sugar <span class="op">+</span> <span class="st">" cheeni ☕"</span>);
+}
+
+makeChai(<span class="nm">2</span>, <span class="nm">1</span>);   <span class="cm">// 2 chai, 1 cheeni ✅</span>
+makeChai(<span class="nm">1</span>, <span class="nm">2</span>);   <span class="cm">// 1 chai, 2 cheeni — ulta kiya toh matlab badal gaya!</span></div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Cheez</th><th>Parameter</th><th>Argument</th></tr>
+                <tr><td class="sym">Kya hai?</td><td class="ex">Recipe ki khaali jagah (name, cups)</td><td class="res">Asli value jo tum bhejte ho ("Rahul", 2)</td></tr>
+                <tr><td class="sym">Kaha likha jata hai?</td><td class="ex">Define karte waqt () mein</td><td class="res">Call karte waqt () mein</td></tr>
+                <tr><td class="sym">Kab banta hai?</td><td class="ex">Function bante waqt fixed</td><td class="res">Har call pe naya</td></tr>
+                <tr><td class="sym">Example</td><td class="ex">function greet(<b>name</b>)</td><td class="res">greet(<b>"Rahul"</b>)</td></tr>
+            </table>
+        </div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: Kam Ya Zyada Arguments?</h5>
+            <ul>
+                <li><b>Kam bhej diya?</b> <code>greetUser()</code> — name ko kuch nahi mila → <code>undefined</code>! Output: "Hello, undefined! 👋" 😱</li>
+                <li><b>Zyada bhej diya?</b> <code>makeChai(2, 1, "adrak")</code> — teesra argument <b>chupchap IGNORE</b> — JS bolta hai "mere paas 2 jagah hi hai!"</li>
+                <li><b>Galat type?</b> <code>add(3, "5")</code> → "35" (number + string = concatenation!) — Chapter 2 wala <code>+</code> ka jadoo yaad hai na?</li>
+            </ul>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-shield-alt"></i> Default Parameters — Safety Net 🛡️</h5>
+            <p>Parameter ko <b>default value</b> de do — argument na mile toh wahi use hogi: <code>function greet(name = "Dost") { ... }</code>. Ab <code>greet()</code> bhi chalega → "Hello, Dost!" — undefined ka darr khatam! Ye ES6 ka feature hai, interviews mein interviewer ko pasand aata hai. 😎</p>
+        </div>
+    </section>
+
+    <!-- ============ RETURN ============ -->
+    <section class="section" id="returnsec">
+        <span class="section-tag"><i class="fas fa-undo"></i> Tool #3</span>
+        <h2>return — Machine Se Output Lo 📤</h2>
+        <p class="section-desc">Machine ne kaam kar liya — ab <b>result wapas do</b>! Juicer ne juice banaya par haath mein nahi diya toh fayda kya? <code>return</code> function ka <b>delivery boy</b> hai — andar ka result bahar bhejta hai, jahan tum use variable mein store karo ya seedha use karo. Aur sunlo — return hote hi function <b>turant khatam</b> ho jata hai!</p>
+
+        <div class="code-block"><span class="cm">// return = value wapas bhejo</span>
+<span class="kw">function</span> add(a, b) {
+  <span class="kw">let</span> sum = a <span class="op">+</span> b;
+  <span class="kw">return</span> sum;              <span class="cm">// sum bahar bheja + function KHATAM</span>
+}
+
+<span class="kw">let</span> result = add(<span class="nm">3</span>, <span class="nm">5</span>);    <span class="cm">// result = 8 — return ki hui value aa gayi!</span>
+console.log(result);         <span class="cm">// 8</span>
+console.log(add(<span class="nm">10</span>, <span class="nm">20</span>) <span class="op">*</span> <span class="nm">2</span>); <span class="cm">// seedha expression mein bhi → 60</span>
+
+<span class="cm">// return = EXIT DOOR — iske baad kuch nahi chalta!</span>
+<span class="kw">function</span> test() {
+  <span class="kw">return</span> <span class="st">"bas!"</span>;
+  console.log(<span class="st">"main kabhi nahi chalunga 😢"</span>);  <span class="cm">// UNREACHABLE!</span>
+}</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: return Bhool Gaye = undefined!</h5>
+            <p>Function ne kaam kiya par <b>return nahi likha</b>? JS khud hi bol dega <code>return undefined;</code>!<br>
+            <code>function add(a, b) { let sum = a + b; }</code> — ab <code>add(2, 3)</code> → <code>undefined</code>, 5 NAHI! Machine ne juice banaya, par delivery hi nahi ki 📦❌. Aur ek trap: <code>return</code> ke <b>baad</b> wali lines <b>kabhi nahi chalti</b> — "unreachable code". Linter warning bhi deta hai — return hamesha <b>aakhri kaam</b> hona chahiye!</p>
+        </div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Cheez</th><th>console.log()</th><th>return</th></tr>
+                <tr><td class="sym">Kya karta hai?</td><td class="ex">Sirf SCREEN pe DIKHAATA hai</td><td class="res">Value WAPAS BHEJTA hai function se bahar</td></tr>
+                <tr><td class="sym">Value store?</td><td class="ex">Nahi — print hua, gaya!</td><td class="res">Haan — let x = fn() mein aata hai</td></tr>
+                <tr><td class="sym">Aage use?</td><td class="ex">Nahi kar sakte</td><td class="res">Jahan chaho wahan use karo</td></tr>
+                <tr><td class="sym">Ek line mein</td><td class="ex">"Dikhawa hai!" 🪞</td><td class="res">"Asli delivery hai!" 🛵</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Golden Rule: Function return Kare, Bahar Log Karo</h5>
+            <p>Best practice: function sirf <b>return</b> kare (pure kaam kare), aur jahan dikhana hai wahan <code>console.log(fn(...))</code> karo. Kyu? Return karne se function <b>reusable</b> banta hai — 10 jagah use kar sakte ho; console.log andar kar diya toh result sirf screen pe gaya, haath mein nahi aaya!</p>
+        </div>
+    </section>
+
+    <!-- ============ ARROW FUNCTIONS ============ -->
+    <section class="section" id="arrow">
+        <span class="section-tag"><i class="fas fa-arrow-right"></i> Tool #4</span>
+        <h2>Arrow Functions — Modern Shortcut ⚡</h2>
+        <p class="section-desc">ES6 (JavaScript ka naya version) ne functions ka <b>shortcut style</b> diya — <code>=&gt;</code> (arrow). Chhota code, clean look,Callbacks ka best friend. 3 avatars hai — dekho <b>same kaam</b> 3 tareeke se:</p>
+
+        <div class="code-block"><span class="cm">// Avatar 1: Normal function</span>
+<span class="kw">function</span> square(n) {
+  <span class="kw">return</span> n <span class="op">*</span> n;
+}
+
+<span class="cm">// Avatar 2: Arrow — full body</span>
+<span class="kw">const</span> square2 = (n) <span class="op">=&gt;</span> {
+  <span class="kw">return</span> n <span class="op">*</span> n;
+};
+
+<span class="cm">// Avatar 3: Arrow — one-liner (return CHHUPA hua hai!)</span>
+<span class="kw">const</span> square3 = n <span class="op">=&gt;</span> n <span class="op">*</span> n;
+
+console.log(square3(<span class="nm">6</span>));   <span class="cm">// 36 — teeno SAME kaam karte hai!</span>
+
+<span class="cm">// Multi-param + no-param:</span>
+<span class="kw">const</span> add = (a, b) <span class="op">=&gt;</span> a <span class="op">+</span> b;
+<span class="kw">const</span> hello = () <span class="op">=&gt;</span> <span class="st">"Hi! 👋"</span>;</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: {} Lagao Toh return LIKHNA PADEGA!</h5>
+            <p>One-liner arrow mein <code>return</code> <b>chhupa hota hai</b> — <code>n =&gt; n * n</code> automatically return karta hai. Par <b>curly braces lagate hi</b> magic khatam:<br>
+            <code>const bad = n =&gt; { n * n; }</code> → <code>bad(5)</code> = <code>undefined</code>! 😱 Kyunki {} lagate hi JS samajha "ye body hai, isme return likha hi nahi gaya". Fix: braces hatao, YA khud return likho: <code>n =&gt; { return n * n; }</code>. Ye trap interviews mein bhi milta hai!</p>
+        </div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Cheez</th><th>Normal Function</th><th>Arrow Function</th></tr>
+                <tr><td class="sym">Syntax</td><td class="ex">function add(a, b) { ... }</td><td class="res">const add = (a, b) =&gt; a + b</td></tr>
+                <tr><td class="sym">One-liner return</td><td class="ex">likhna padta hai</td><td class="res">implicit — chhupa hua!</td></tr>
+                <tr><td class="sym">this</td><td class="ex">apna this hota hai</td><td class="res">apna this NAHI (parent ka use karta hai)</td></tr>
+                <tr><td class="sym">Best for</td><td class="ex">bade functions, object methods</td><td class="res">chhote helpers, callbacks</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Kab Arrow, Kab Normal?</h5>
+            <p><b>Arrow:</b> chhote one-liner helpers, callbacks (<code>setTimeout(() =&gt; ...)</code>), ek line ke kaam. <b>Normal:</b> bade functions, object ke methods, jab <code>this</code> chahiye. Rule of thumb: 1-2 line ka kaam = arrow; bada logic = normal. <code>this</code> wali baat abhi headake wali lagti hai — DOM chapter (Ch8) mein iska asli khel dikhega, tab saaf ho jayega!</p>
+        </div>
+    </section>
+
+    <!-- ============ EXPRESSION & HOISTING ============ -->
+    <section class="section" id="expression">
+        <span class="section-tag"><i class="fas fa-box-open"></i> Tool #5</span>
+        <h2>Function Expression &amp; Hoisting — Value Ka Khel 🎁</h2>
+        <p class="section-desc">JS mein function sirf code nahi — <b>VALUE hai</b>! Variable mein store kar sakte ho, doosre function ko bhej sakte ho, array mein bhi rakh sakte ho. Isi liye JS ko kehte hai — functions are <b>"first-class citizens"</b> 🏆. Aur is value wali soch se ek naya concept banta hai: <b>hoisting</b>!</p>
+
+        <div class="code-block"><span class="cm">// Function EXPRESSION — function ko variable mein daala</span>
+<span class="kw">const</span> dance = <span class="kw">function</span>() {
+  console.log(<span class="st">"💃 Naach raha hu!"</span>);
+};
+
+dance();   <span class="cm">// variable ke naam se call hota hai</span>
+
+<span class="cm">// HOISTING MAGIC: Declaration — PEHLE call, BAAD mein define?</span>
+sayHi();                        <span class="cm">// ✅ "Hi!" — chal gaya!!</span>
+<span class="kw">function</span> sayHi() { console.log(<span class="st">"Hi!"</span>); }
+
+<span class="cm">// Par expression mein yahi jadu NAHI hai:</span>
+dance2();                       <span class="cm">// ❌ TypeError!</span>
+<span class="kw">const</span> dance2 = <span class="kw">function</span>() { console.log(<span class="st">"Hi2"</span>); };</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: Sirf DECLARATION Uchhalti Hai!</h5>
+            <p>JS page load hote hi saari <b>function declarations ko upar utha leta hai</b> (isko <b>hoisting</b> kehte hai) — isliye define hone se pehle bhi call chal jaati hai. Par <b>expression</b> sirf ek variable hai — variable toh line chalne ke baad hi banta hai, isliye pehle call = <code>TypeError: dance2 is not a function</code>!<br>
+            Interview mein seedha sawal: "declaration aur expression — kaunsa hoist hota hai?" — jawab pakka yaad rakho: <b>sirf declaration!</b></p>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Function = Value = Superpower</h5>
+            <p>Kyunki function value hai, isliye: <code>const ops = [add, sub, mul];</code> (functions ki array!), <code>let op = add;</code> (copy), functions ko arguments mein dena (<b>callback</b> — agla tool!) — sab possible hai. JavaScript apps ka poora architecture isi EK fact pe khada hai. Ch1 mein socha tha "variable mein sirf numbers hote hai"? Ab function tak variable mein aa gaya! 😎</p>
+        </div>
+    </section>
+
+    <!-- ============ CALLBACKS & IIFE ============ -->
+    <section class="section" id="callback">
+        <span class="section-tag"><i class="fas fa-handshake"></i> Tool #6</span>
+        <h2>Callbacks &amp; IIFE — Function Ko Kaam Pe Bhejo 🤝</h2>
+        <p class="section-desc">Function value hai, toh <b>argument mein bhi de sakte hai</b>! Jo function doosre function ko diya jaye use <b>callback</b> kehte hai — "bhai ye mera number, kaam hone pe CALL kar lena!" Aur <b>IIFE</b> = aisa function jo define hote hi <b>khud hi chal jata hai</b> — bina kisi ke bulaye!</p>
+
+        <div class="code-block"><span class="cm">// CALLBACK: function ko argument mein doosre function ko</span>
+<span class="kw">function</span> baadMein(kaam) {    <span class="cm">// kaam = ek FUNCTION mila!</span>
+  console.log(<span class="st">"Taiyari ho rahi..."</span>);
+  kaam();                     <span class="cm">// ab call kiya — yahi callback hai!</span>
+}
+
+baadMein(<span class="kw">function</span>() { console.log(<span class="st">"🎉 Party!"</span>); });
+<span class="out">// Taiyari ho rahi... / 🎉 Party!</span>
+
+<span class="cm">// REAL WORLD — setTimeout: 2 sec baad chalao</span>
+setTimeout(() <span class="op">=&gt;</span> {
+  console.log(<span class="st">"2 second ho gaye! ⏰"</span>);
+}, <span class="nm">2000</span>);
+
+<span class="cm">// IIFE — define + call ek saath (aakhri () hi call hai!)</span>
+(<span class="kw">function</span>() {
+  console.log(<span class="st">"Main bana AUR turant chal gaya! 🚀"</span>);
+})();</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: Callback Ko ( ) Mat Lagao!</h5>
+            <p>Callback dena hai toh <b>sirf naam</b> do, call mat karo:<br>
+            <code>setTimeout(greet(), 2000)</code> ❌ — greet <b>ABHI chal gaya</b> (return value chale gayi, jo ki function nahi hai)!<br>
+            <code>setTimeout(greet, 2000)</code> ✅ — greet ka <b>reference</b> gaya, 2 sec baad setTimeout use call karega. Yaad hai Tool #1 ka <code>wish;</code> wala farak? Wahi concept ulta direction mein — dena hai toh naam, chalana hai toh ()!</p>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Yeh Sab Kaha Use Hota Hai?</h5>
+            <p><b>Callback:</b> button click (<code>btn.addEventListener("click", function() {...})</code>), timers, API se data aane pe kya karna hai — poora web development callbacks pe khada hai! Ch8 (DOM) mein yahi roz use hoga.<br>
+            <b>IIFE:</b> ek baar chalne wala setup code — apna <b>private dabba</b> banata hai taaki uske variables bahar leak na ho. <code>let/const</code> (Ch1) se pehle ke zamane mein yahi private scope ka tareeka tha!</p>
+        </div>
+    </section>
+
+    <!-- ============ FUNCTION MACHINE SIMULATOR ============ -->
+    <section class="section" id="machine">
+        <span class="section-tag"><i class="fas fa-gamepad"></i> Live Simulator</span>
+        <h2>Function Machine — Andar Se Dekho! ⚙️</h2>
+        <p class="section-desc">Machine chuno, arguments do aur CHALAO dabao — function ke <b>ANDAR</b> kya hota hai live dekho: arguments parameters se kaise bind hote hai, body kaise chalti hai, return kaise value wapas bhejta hai. <b>add(3) bina b ke</b> try karo — NaN ka poora raaz khul jayega! 🕵️</p>
+
+        <div class="fm">
+            <h4><i class="fas fa-cogs"></i> Function Machine</h4>
+            <p class="fm-desc">Function chuno → arguments do (comma se alag) → CHALAO → step-by-step live trace!</p>
+            <div class="fm-types" id="fmTypes">
+                <button class="active" onclick="setFnType(0)">greet</button>
+                <button onclick="setFnType(1)">add</button>
+                <button onclick="setFnType(2)">square</button>
+                <button onclick="setFnType(3)">isEven</button>
+                <button onclick="setFnType(4)">maxOf</button>
+            </div>
+            <div class="fm-input-row">
+                <label>Arguments:</label>
+                <input type="text" id="fmArgs" value="Rahul" placeholder="comma se alag karo">
+                <button class="fm-btn" onclick="runFn()"><i class="fas fa-bolt"></i> CHALAO!</button>
+            </div>
+            <div class="fm-code" id="fmCode">function greet(name = "Dost") {
+  return "Hello, " + name + "! 👋";
+}</div>
+            <div class="fm-track" id="fmTrack"></div>
+            <div class="fm-summary" id="fmSummary">CHALAO dabao — machine ke andar ki kahaani yaha dikhegi! ⚙️</div>
+        </div>
+    </section>
+
+    <!-- ============ REAL LIFE ANALOGIES ============ -->
+    <section class="section" id="analogies">
+        <span class="section-tag"><i class="fas fa-home"></i> Real-Life Connection</span>
+        <h2>Functions Tumhari Life Mein Roz Chal Rahe Hai! 🏠</h2>
+        <p class="section-desc">Tum roz ke kaamon mein functions use kar rahe ho, bas naam nahi pata tha! Yeh 6 cards dekho — samajh pakka ho jayegi:</p>
+
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="a-emoji">🫖</span>
+                <h4>Chai Recipe = <span>function</span></h4>
+                <p>Chai banane ka tareeka <b>ek baar</b> seekha. Ab har baar steps repeat nahi karte — bas bolte hai <b>"do chai"</b>! Recipe = function, "do chai" = call!</p>
+                <div class="a-code">function makeChai() {
+  // paani + patti + doodh
+}
+makeChai();  // "do chai!"</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🧃</span>
+                <h4>Juicer = <span>parameters + return</span></h4>
+                <p>Seb daalo → seb ka juice, aam daalo → aam ka juice. Machine <b>same</b>, input badlo, output badle — yahi parameters ka kamaal!</p>
+                <div class="a-code">function makeJuice(fruit) {
+  return fruit + " ka juice 🧃";
+}</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">📱</span>
+                <h4>Speed Dial = <span>function naam</span></h4>
+                <p>Amma ka number <b>11 digit ka</b> yaad nahi — bas "Amma" dabao aur call lag gaya! Poora code chhupa hai naam ke peeche!</p>
+                <div class="a-code">callAmma();  // 11 digits
+             // andar chal rahe hai!</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🏧</span>
+                <h4>ATM = <span>return value</span></h4>
+                <p>Card daala, PIN diya (arguments), machine ne kaam kiya aur <b>CASH diya (return)</b>! Cash na mile toh ATM bekaar — return na ho toh function bekaar!</p>
+                <div class="a-code">let cash = withdraw(pin, 500);
+// cash haath mein aaya = return!</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🛵</span>
+                <h4>Swiggy Order = <span>arguments pass</span></h4>
+                <p>Tum order details bhejte ho <b>kitchen ko</b> (function), khana <b>wapas aata hai</b> (return). Tumhe kitchen ke andar ka masala nahi pata — aur chahiye bhi nahi!</p>
+                <div class="a-code">let khana = order("Masala Dosa", 2);
+// details gayi, dosa aaya 🍽️</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎮</span>
+                <h4>Game Buttons = <span>callbacks</span></h4>
+                <p>"X dabao toh JUMP" — button tumhara function <b>yaad rakhta hai</b>, dabate hi call kar deta hai! Har game button ek callback hai!</p>
+                <div class="a-code">button.onPress = jump;
+// dabaya → jump() chala!</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXAMPLES GALLERY ============ -->
+    <section class="section" id="examples">
+        <span class="section-tag"><i class="fas fa-code"></i> Examples Gallery</span>
+        <h2>20 Examples — Har Style Ke Pakke Udaharan 📚</h2>
+        <p class="section-desc">Tabs se category badlo, examples padho, output <b>pehle khud predict karo</b> — phir Playground mein chala ke match karo. Prediction karne se logic muscle banti hai!</p>
+
+        <div class="ex-tabs" id="exTabs">
+            <button class="ex-tab active" onclick="switchExTab(0)"><i class="fas fa-box"></i> Basics</button>
+            <button class="ex-tab" onclick="switchExTab(1)"><i class="fas fa-sign-in-alt"></i> Params</button>
+            <button class="ex-tab" onclick="switchExTab(2)"><i class="fas fa-undo"></i> Return</button>
+            <button class="ex-tab" onclick="switchExTab(3)"><i class="fas fa-arrow-right"></i> Arrow</button>
+            <button class="ex-tab" onclick="switchExTab(4)"><i class="fas fa-handshake"></i> Patterns</button>
+        </div>
+
+        <div class="ex-grid" id="exGrid"></div>
+    </section>
+
+    <!-- ============ USE CASES ============ -->
+    <section class="section" id="usecases">
+        <span class="section-tag"><i class="fas fa-rocket"></i> Real-World Use Cases</span>
+        <h2>Bade Apps Ke Functions Kaise Chalte Hai? 🌍</h2>
+        <p class="section-desc">Zomato se lekar GPay tak — har app ke har button, har calculation, har check ke peeche functions hai. Dekho kaise:</p>
+
+        <div class="use-grid">
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🛒</span><h4>Zomato — Delivery Fee Calculator</h4></div>
+                <p>Fee ka logic <b>ek hi jagah</b> likha hai — <code>calcFee()</code>. Kal rules badle (free delivery!) toh sirf ek function badalna hai, poore app mein nahi! Yahi DRY ka asli fayda hai.</p>
+                <div class="u-chips"><span class="u-chip">function</span><span class="u-chip">early return</span></div>
+                <div class="u-snippet">function calcFee(km) {
+  if (km <= 3) return 20;
+  if (km <= 8) return 40;
+  return 60;
+}
+console.log("Fee: ₹" + calcFee(5));</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📸</span><h4>Instagram — Double-Tap Like</h4></div>
+                <p>Post pe double-tap ❤️? Wo ek <b>callback</b> hai — browser bolta hai "double tap hua, ye function chala do!" Function ko reference mila, event ne use call kiya.</p>
+                <div class="u-chips"><span class="u-chip">callback</span><span class="u-chip">event</span></div>
+                <div class="u-snippet">post.addEventListener("dblclick",
+  function() {
+    toggleLike(postId);  // callback!
+  }
+);</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">💸</span><h4>GPay — UPI ID Validation</h4></div>
+                <p>Payment se pehle UPI ID sahi hai ya nahi — <b>boolean return</b> wala function. Agle step se pehle check — return true toh aage badho!</p>
+                <div class="u-chips"><span class="u-chip">boolean return</span><span class="u-chip">validation</span></div>
+                <div class="u-snippet">function isValidUpi(upi) {
+  return upi.includes("@")
+      && upi.length >= 6;
+}
+if (isValidUpi(userInput)) payNow();</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🎮</span><h4>Games — Damage Calculator</h4></div>
+                <p>Har hit pe same formula: power minus armor. Formula <b>ek function mein</b> — har character, har weapon wahi call karta hai. Balance change karna ho toh ek hi jagah haath lagao!</p>
+                <div class="u-chips"><span class="u-chip">params</span><span class="u-chip">Math.max</span></div>
+                <div class="u-snippet">function calcDamage(power, armor) {
+  let dmg = power - armor * 0.5;
+  return Math.max(dmg, 0);  // negative nahi!
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📺</span><h4>YouTube — Time Formatter</h4></div>
+                <p>Video duration 125 seconds — par dikhana hai <b>"2:05"</b>. Har video pe yahi conversion — ek function, lakhon videos!</p>
+                <div class="u-chips"><span class="u-chip">Math.floor</span><span class="u-chip">%</span></div>
+                <div class="u-snippet">function formatTime(sec) {
+  let m = Math.floor(sec / 60);
+  let s = sec % 60;
+  return m + ":" + (s < 10 ? "0" + s : s);
+}</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🛍️</span><h4>Amazon — Discount Engine</h4></div>
+                <p>Har product pe discount — MRP aur percent do, final price lo. Diwali sale mein rules badle? Ek function update, poora site sync!</p>
+                <div class="u-chips"><span class="u-chip">return</span><span class="u-chip">reusable</span></div>
+                <div class="u-snippet">function finalPrice(mrp, pct) {
+  return mrp - (mrp * pct / 100);
+}
+console.log(finalPrice(2000, 30));</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PLAYGROUND ============ -->
+    <section class="section" id="playground">
+        <span class="section-tag"><i class="fas fa-terminal"></i> Code Playground</span>
+        <h2>Code Playground — Khud Likho, Turant Chalao!</h2>
+        <p class="section-desc">6 ready-made snippets — load karo, run karo (ya <b>Ctrl+Enter</b> dabao), phir values badal ke experiment karo. Yahi se asli samajh aati hai!</p>
+
+        <div class="playground">
+            <div class="pg-top">
+                <span class="pg-title"><i class="fas fa-flask"></i> Experiment Zone</span>
+                <div class="pg-snippets">
+                    <button onclick="loadSnippet(0)">👋 Pehla Function</button>
+                    <button onclick="loadSnippet(1)">🧮 Calculator Machine</button>
+                    <button onclick="loadSnippet(2)">🔢 Even Checker</button>
+                    <button onclick="loadSnippet(3)">💬 Default Params</button>
+                    <button onclick="loadSnippet(4)">➡️ Arrow Styles</button>
+                    <button onclick="loadSnippet(5)">⏰ Callback + IIFE</button>
+                </div>
+            </div>
+            <div class="pg-body">
+                <textarea id="pgCode" spellcheck="false" placeholder="// Yaha apna JavaScript likho..."></textarea>
+                <div class="pg-console" id="pgConsole"><div class="cl-info">▸ Console ready. Code likho aur Run dabao!</div></div>
+            </div>
+            <div class="pg-runbar">
+                <button class="btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run (Ctrl+Enter)</button>
+                <button class="btn-clear" onclick="clearConsole()"><i class="fas fa-broom"></i> Clear Console</button>
+                <span class="pg-hint">Tip: arguments badlo, return hata ke dekho — undefined ka darr khatam hoga!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORKSHOP ============ -->
+    <section class="section" id="workshop">
+        <span class="section-tag"><i class="fas fa-dumbbell"></i> Workshop — Khud Karo!</span>
+        <h2>6 Workshop Tasks 💪</h2>
+        <p class="section-desc">Pehle khud likho, phir hint dekho, phir solution match karo. Yaad hai na — dekhne se 20%, karne se 100% seekhte hai! 🔥</p>
+
+        <div class="ws-list">
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 1: Pehli Machine — greetUser()</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Ek function <code>greetUser(naam)</code> banao jo console pe print kare: <code>Hello, [naam]! Welcome! 🎉</code>. Phir use <b>2 alag naam</b> se call karo — Rahul aur Sneha. Same machine, do alag output!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Parameter <code>naam</code> lo, andar <code>console.log("Hello, " + naam + "! Welcome! 🎉")</code> karo. Call karte waqt <code>greetUser("Rahul")</code> — asli value bracket mein!</div>
+                    <div class="ws-sol"><pre>function greetUser(naam) {
+  console.log("Hello, " + naam + "! Welcome! 🎉");
+}
+
+greetUser("Rahul");
+greetUser("Sneha");
+// Hello, Rahul! Welcome! 🎉
+// Hello, Sneha! Welcome! 🎉</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 2: cube() — Return Wali Machine</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>cube(n)</code> likho jo <b>n ka cube return</b> kare (n × n × n). <code>console.log(cube(3))</code> → <code>27</code> aana chahiye. Yaad rakho — print function ke andar nahi, <b>return</b> karo!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>return n * n * n;</code>. Print bahar karo: <code>console.log(cube(3))</code> — console.log ne return ki hui value dikhayi!</div>
+                    <div class="ws-sol"><pre>function cube(n) {
+  return n * n * n;
+}
+
+console.log(cube(3));   // 27
+console.log(cube(5));   // 125
+
+// Arrow version — 1 line!
+const cube2 = n => n * n * n;</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 3: maxOf3() — Teen Mein Se Bada</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>maxOf3(a, b, c)</code> likho jo <b>teen numbers mein se bada return</b> kare. Chapter 3 ki if/else yaha andar kaam karegi! Test: <code>maxOf3(10, 25, 7)</code> → <code>25</code>.</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Pehle <code>a &gt;= b</code> check karo — true toh a/c compare karo; warna b/c compare karo. Ya pehle <code>big = a</code> maan lo, phir b aur c se <code>if (x &gt; big) big = x;</code></div>
+                    <div class="ws-sol"><pre>function maxOf3(a, b, c) {
+  let big = a;              // maan lo a bada hai
+  if (b > big) big = b;     // b ne haraya?
+  if (c > big) big = c;     // c ne haraya?
+  return big;
+}
+
+console.log(maxOf3(10, 25, 7));  // 25
+
+// Tournament style — maxOf do baar:
+function maxOf3v2(a, b, c) {
+  return Math.max(a, b, c);  // built-in cheat 😄
+}</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 4: fizz(n) — Loop + Function Ka Jod!</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Chapter 4 ka FizzBuzz yaad hai? Ab usse <b>function banao</b>: <code>fizz(n)</code> — 3 ka multiple → "Fizz", 5 ka → "Buzz", dono ka → "FizzBuzz", warna number return kare. Phir <b>loop se 1 se 15 tak call karo</b> — do chapters ek saath! 🔥</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Function mein sirf <b>ek number ka</b> answer return karo (15% check pehle!). Loop ke andar: <code>console.log(fizz(i))</code> — machine ko baar-baar bulao!</div>
+                    <div class="ws-sol"><pre>function fizz(n) {
+  if (n % 15 === 0) return "FizzBuzz";
+  if (n % 3 === 0) return "Fizz";
+  if (n % 5 === 0) return "Buzz";
+  return n;
+}
+
+for (let i = 1; i <= 15; i++) {
+  console.log(fizz(i));
+}
+// 1, 2, Fizz, 4, Buzz, ... 14, FizzBuzz</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 5: getGrade() — Early Return Pattern</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>getGrade(marks)</code> likho: <b>90+</b> → "A+", <b>75+</b> → "A", <b>60+</b> → "B", warna "C". Trick: har check ke saath <b>turant return</b> karo — ye <b>early return pattern</b> hai, pro coders ka favourite!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>if (marks >= 90) return "A+";</code> — return hote hi function khatam, isliye agla check sirf tab hoga jab pehla fail hua. Ladder jaisa — pehli seedhi pe mil gaya toh neeche nahi dekhna!</div>
+                    <div class="ws-sol"><pre>function getGrade(marks) {
+  if (marks >= 90) return "A+";
+  if (marks >= 75) return "A";
+  if (marks >= 60) return "B";
+  return "C";   // baki sab
+}
+
+console.log(getGrade(95));  // A+
+console.log(getGrade(80));  // A
+console.log(getGrade(40));  // C
+
+// else-if ladder se SHORT aur clean!</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 6: factorial() — Ch4 Ko Function Mein Convert!</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Chapter 4 mein factorial loop se nikala tha — ab wahi loop <b>function ke andar</b> daalo: <code>factorial(n)</code> return kare n! (5! = 120). Bonus: <code>factorial(0)</code> → <code>1</code> bhi sahi aana chahiye!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Accumulator <code>fact = 1</code> (0 se nahi!) loop se pehle banao. Loop <code>1 se n tak</code> guna karta jaye, end mein <code>return fact</code>. n = 0 pe loop chalega hi nahi — fact = 1 hi return — automatic sahi!</div>
+                    <div class="ws-sol"><pre>function factorial(n) {
+  let fact = 1;             // 1 se shuru — 0 se NAHI!
+  for (let i = 1; i <= n; i++) {
+    fact = fact * i;
+  }
+  return fact;
+}
+
+console.log(factorial(5));  // 120
+console.log(factorial(0));  // 1 ✅ (loop nahi chala)
+console.log(factorial(1));  // 1</pre></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MINI PROJECTS ============ -->
+    <section class="section" id="projects">
+        <span class="section-tag"><i class="fas fa-hammer"></i> Mini Projects</span>
+        <h2>6 Mini Projects — Functions Ka Asli Khel 🔨</h2>
+        <p class="section-desc">Har project mein starter code hai — chalao, samjho, phir challenges complete karo. Yahi portfolio banata hai!</p>
+
+        <div class="proj-grid">
+            <div class="proj-card">
+                <span class="p-emoji">🧮</span>
+                <h4>Mini Calculator</h4>
+                <p class="p-desc">Do number + operator do, jawab lo — switch (Ch3) function ke andar! Calculator app ka dil yahi hai.</p>
+                <div class="p-chips"><span class="p-chip">switch</span><span class="p-chip">params</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function calc(a, b, op) {
+  switch (op) {
+    case "+": return a + b;
+    case "-": return a - b;
+    case "*": return a * b;
+    case "/": return a / b;
+    default: return "Galat operator!";
+  }
+}
+
+console.log(calc(12, 4, "*"));  // 48
+console.log(calc(10, 0, "/"));  // Infinity 😱</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Divide by zero handle karo (0 pe "Infinity nahi!" return). 2) % operator add karo. 3) Ek call mein poora expression: <code>calc("12", "*", "4")</code> strings se bhi chale!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🤖</span>
+                <h4>Greeting Bot</h4>
+                <p class="p-desc">Hour do (0-23), bot sahi greeting bole — subah/dopahar/raat. Default parameter se naam bhi optional!</p>
+                <div class="p-chips"><span class="p-chip">default param</span><span class="p-chip">if-else</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function greetByTime(hour, name = "Dost") {
+  if (hour < 12) return "Good morning, " + name + "! ☀️";
+  if (hour < 17) return "Good afternoon, " + name + "! 🌤️";
+  return "Good night, " + name + "! 🌙";
+}
+
+console.log(greetByTime(9));
+console.log(greetByTime(20, "Rahul"));</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>new Date().getHours()</code> se REAL time ka greeting lo. 2) 5-11 "Chai time ☕" special message add karo. 3) Hinglish mode: <code>greetByTime(9, "Rahul", "hinglish")</code> → "Kya haal hai bhai!"</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🌡️</span>
+                <h4>Temperature Converter</h4>
+                <p class="p-desc">Celsius ↔ Fahrenheit — do chhoti machines, ek table loop (Ch4 combo!) se saara data convert!</p>
+                <div class="p-chips"><span class="p-chip">2 functions</span><span class="p-chip">loop combo</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function cToF(c) {
+  return c * 9 / 5 + 32;
+}
+
+function fToC(f) {
+  return (f - 32) * 5 / 9;
+}
+
+console.log(cToF(37));   // 98.6
+console.log(fToC(100));  // 37.77...
+
+for (let c = 0; c <= 40; c += 10) {
+  console.log(c + "°C = " + cToF(c) + "°F");
+}</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Result ko <code>.toFixed(1)</code> se round karo. 2) Kelvin add karo: <code>cToK()</code>. 3) Table ko function banao: <code>printTable(from, to, step)</code> — machine jo machine banaye! 🤯</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">💸</span>
+                <h4>Tip Splitter</h4>
+                <p class="p-desc">Bill aaya, tip dena hai, doston mein batwara karna hai — restaurant wala app do functions se ready!</p>
+                <div class="p-chips"><span class="p-chip">accumulator</span><span class="p-chip">return</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function calcTip(bill, pct) {
+  return bill * pct / 100;
+}
+
+function splitBill(bill, people, tipPct) {
+  let tip = calcTip(bill, tipPct);
+  let total = bill + tip;
+  return total / people;
+}
+
+console.log(splitBill(1000, 4, 10));
+// 275 — per head ₹275!</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Ek object return karo: <code>{tip: 100, total: 1100, perHead: 275}</code>. 2) Agar people 0 ho toh warning return karo (early return!). 3) GST 5% bhi add karo — naya chhota function!</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🎲</span>
+                <h4>Dice Roller</h4>
+                <p class="p-desc">Random dice + do players ki race — Chapter 4 ke loops aur random ka saath, functions ki packaging!</p>
+                <div class="p-chips"><span class="p-chip">Math.random</span><span class="p-chip">loop combo</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function rollDice(sides) {
+  return Math.ceil(Math.random() * sides);
+}
+
+function race() {
+  let a = 0, b = 0, rounds = 0;
+  while (a < 20 && b < 20) {
+    rounds++;
+    a += rollDice(6);
+    b += rollDice(6);
+  }
+  return "Rounds: " + rounds + " | A: " + a + " B: " + b;
+}
+
+console.log(race());</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Winner ka naam return karo (tie handle karo!). 2) <code>rollDice(20)</code> D&D style — 20 ke saath "CRITICAL! 🗡️" return. 3) Har round ka score array mein jodo aur end mein dikho.</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🔐</span>
+                <h4>Password Generator</h4>
+                <p class="p-desc">Length do, strong password lo — loop se characters uthao, random se mix karo. Hacker-proof (almost!) 😄</p>
+                <div class="p-chips"><span class="p-chip">loop</span><span class="p-chip">string build</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>function makePassword(len) {
+  let chars = "abcdefghjkmnpqrstuvwxyz"
+            + "ABCDEFGHJKMNPQRSTUVWXYZ"
+            + "23456789@#$%&!";
+  let pass = "";
+  for (let i = 0; i < len; i++) {
+    let idx = Math.floor(Math.random() * chars.length);
+    pass += chars[idx];
+  }
+  return pass;
+}
+
+console.log(makePassword(10));</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) Pakka ek number aur ek symbol ho — pehla char fix karo! 2) <code>strengthCheck(pass)</code> function: length + types check karke "Weak/Medium/Strong" return karo. 3) 5 passwords ka array ek hi call mein — <code>makePasswords(5, 12)</code>!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INTERVIEW QUESTIONS ============ -->
+    <section class="section" id="interview">
+        <span class="section-tag"><i class="fas fa-briefcase"></i> Interview Prep</span>
+        <h2>16 Interview Questions — Functions Edition 💼</h2>
+        <p class="section-desc">Functions se interviews mein yahi poocha jata hai — filters laga ke level-wise practice karo. Har answer mein "kyu" bhi hai, sirf "kya" nahi!</p>
+
+        <div class="iq-filters" id="iqFilters">
+            <button class="iq-filter active" onclick="switchIqFilter('all')">Sab (16)</button>
+            <button class="iq-filter" onclick="switchIqFilter('easy')">🟢 Easy</button>
+            <button class="iq-filter" onclick="switchIqFilter('medium')">🟡 Medium</button>
+            <button class="iq-filter" onclick="switchIqFilter('hard')">🔴 Hard</button>
+        </div>
+
+        <div class="iq-list" id="iqList"></div>
+    </section>
+
+    <!-- ============ CHEAT SHEET ============ -->
+    <section class="section" id="cheatsheet">
+        <span class="section-tag"><i class="fas fa-scroll"></i> Cheat Sheet</span>
+        <h2>Ek Nazar Mein Sab Kuch 📋</h2>
+        <p class="section-desc">Interview/exam se ek ghanta pehle — bas yeh 4 boxes revise kar lo!</p>
+
+        <div class="cheat-grid">
+            <div class="cheat-box">
+                <h4><i class="fas fa-code"></i> Syntax Reference</h4>
+                <table>
+                    <tr><td>declare</td><td>function naam(a, b) { ... }</td></tr>
+                    <tr><td>call</td><td>naam(1, 2);  ← () ZAROORI!</td></tr>
+                    <tr><td>default</td><td>function f(a = 10) { ... }</td></tr>
+                    <tr><td>return</td><td>return value;  (exit bhi!)</td></tr>
+                    <tr><td>arrow 1</td><td>const f = x =&gt; x * 2</td></tr>
+                    <tr><td>arrow 2</td><td>const f = (a, b) =&gt; { return ... }</td></tr>
+                    <tr><td>expression</td><td>const f = function() { ... }</td></tr>
+                    <tr><td>IIFE</td><td>(function() { ... })();</td></tr>
+                    <tr><td>callback</td><td>setTimeout(fn, 1000)</td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-route"></i> Kab Kya Use Kare?</h4>
+                <ul>
+                    <li><i class="fas fa-box"></i> <code>declaration</code> — general use, hoisting chahiye toh</li>
+                    <li><i class="fas fa-arrow-right"></i> <code>arrow</code> — chhote helpers + callbacks</li>
+                    <li><i class="fas fa-box-open"></i> <code>expression</code> — function ko value ki tarah store/dena</li>
+                    <li><i class="fas fa-handshake"></i> <code>callback</code> — click, timer, data events</li>
+                    <li><i class="fas fa-rocket"></i> <code>IIFE</code> — one-time setup, private scope</li>
+                    <li><i class="fas fa-pen"></i> Naam <b>verb</b> se — greetUser, calcFee, isValid</li>
+                    <li><i class="fas fa-cut"></i> Ek machine = ek kaam — chhoti rakho!</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-bomb"></i> Common Mistakes</h4>
+                <ul>
+                    <li><i class="fas fa-xmark"></i> Call mein <code>()</code> bhool gaye → silent no-op, error bhi nahi!</li>
+                    <li><i class="fas fa-xmark"></i> <code>return</code> bhool gaye → hamesha <code>undefined</code> milega</li>
+                    <li><i class="fas fa-xmark"></i> <code>return</code> ke baad ki lines — kabhi nahi chalti (unreachable)</li>
+                    <li><i class="fas fa-xmark"></i> Expression define se pehle call → <code>TypeError</code> (hoisting sirf declaration pe!)</li>
+                    <li><i class="fas fa-xmark"></i> Arrow + <code>{ }</code> + return nahi likha → <code>undefined</code></li>
+                    <li><i class="fas fa-xmark"></i> <code>console.log ≠ return</code> — dikhana vs dena!</li>
+                    <li><i class="fas fa-xmark"></i> Kam arguments → <code>undefined</code> → <code>NaN</code> cascade</li>
+                    <li><i class="fas fa-xmark"></i> Callback dena ho toh <code>fn()</code> nahi, sirf <code>fn</code>!</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-lightbulb"></i> Interview Facts</h4>
+                <ul>
+                    <li><i class="fas fa-star"></i> Functions are <b>first-class citizens</b> — value jaise use hote hai</li>
+                    <li><i class="fas fa-star"></i> Sirf <b>declarations hoist</b> hoti hai, expression nahi</li>
+                    <li><i class="fas fa-star"></i> Arrow ka apna <b>this / arguments nahi</b> hota</li>
+                    <li><i class="fas fa-star"></i> <code>return</code> = instant exit door — wahi se function khatam</li>
+                    <li><i class="fas fa-star"></i> <b>DRY</b> — Don't Repeat Yourself — functions ka motive!</li>
+                    <li><i class="fas fa-star"></i> Callbacks = DOM/events ka base (Ch8 mein sab use hoga)</li>
+                    <li><i class="fas fa-star"></i> Recursion ko <b>base case</b> chahiye — warna infinite!</li>
+                    <li><i class="fas fa-star"></i> Default parameters = ES6 feature — undefined se bachav</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz">
+        <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
+        <h2>Functions Ka Exam — 5 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Machine Master ho. Chalo!</p>
+
+        <div class="quiz-box">
+            <div class="quiz-progress">
+                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-score" id="quizScore">Score: 0</span>
+            </div>
+            <div class="quiz-q" id="quizQ">Loading...</div>
+            <div class="quiz-opts" id="quizOpts"></div>
+            <div class="quiz-feedback" id="quizFb"></div>
+            <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Agla Sawaal →</button>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="f-next"><i class="fas fa-forward"></i> Next Chapter: Arrays — Items Ki Line 📦 (Ek naam, hazaar items!)</div>
+        <p>Chapter 5 Complete! Ab tum code ko MACHINE bana ke reuse kar sakte ho — official DRY coder ban gaye! 🎉<br>
+        Apni Khud Ki Machine 🔧 — banaya gaya aapke liye <span class="f-heart">❤️</span> ke saath. Workshop ke tasks zaroor karo!</p>
+    </footer>
+
+    <script>
+        /* ==================== EXAMPLES GALLERY ==================== */
+        var exData = [
+            [ // basics
+                { t: 'Pehla Function — Banao Aur Bulao', c: 'function wish() {\n  console.log("Good morning! ☀️");\n}\n\nwish();\nwish();', o: 'Good morning! ☀️\nGood morning! ☀️' },
+                { t: 'Ek Machine, Alag-Alag Input', c: 'function greetUser(name) {\n  console.log("Hello, " + name + "! 👋");\n}\n\ngreetUser("Rahul");\ngreetUser("Priya");\ngreetUser("Dost");', o: 'Hello, Rahul! 👋\nHello, Priya! 👋\nHello, Dost! 👋' },
+                { t: 'Function + Loop Combo (Ch4!)', c: 'function printStars(n) {\n  let line = "";\n  for (let i = 1; i <= n; i++) {\n    line += "⭐";\n  }\n  console.log(line);\n}\n\nprintStars(3);\nprintStars(5);', o: '⭐⭐⭐\n⭐⭐⭐⭐⭐' },
+            { t: 'Ek Baar Banao, Baar-Baar Chalao', c: 'function namaste() {\n  console.log("Namaste! 🙏");\n}\n\nnamaste();\nnamaste();\nnamaste();', o: 'Namaste! 🙏\nNamaste! 🙏\nNamaste! 🙏' }
+            ],
+            [ // params
+                { t: 'Multiple Parameters — Order Matter!', c: 'function makeChai(cups, sugar) {\n  console.log(cups + " chai, " + sugar + " cheeni ☕");\n}\n\nmakeChai(2, 1);\nmakeChai(1, 2);', o: '2 chai, 1 cheeni ☕\n1 chai, 2 cheeni ☕' },
+                { t: 'Kam Arguments = undefined 😱', c: 'function greet(name) {\n  console.log("Hello, " + name);\n}\n\ngreet();          // kuch nahi diya!\ngreet("Rahul");', o: 'Hello, undefined\nHello, Rahul' },
+                { t: 'Default Parameter — Safety Net', c: 'function greet(name = "Dost") {\n  console.log("Hello, " + name + "!");\n}\n\ngreet();\ngreet("Sneha");', o: 'Hello, Dost!\nHello, Sneha!' },
+            { t: 'Chai Order — Do Params Ka Combo', c: 'function orderChai(flavor, size) {\n  return size + " cup " + flavor + " chai!";\n}\n\nconsole.log(orderChai("adrak", "bada"));\nconsole.log(orderChai("masala", "chhota"));', o: 'bada cup adrak chai!\nchhota cup masala chai!' }
+            ],
+            [ // return
+                { t: 'Return + Store + Use', c: 'function add(a, b) {\n  return a + b;\n}\n\nlet total = add(3, 5);\nconsole.log(total);\nconsole.log(add(10, 20) * 2);', o: '8\n60' },
+                { t: 'Boolean Return — isEven', c: 'function isEven(n) {\n  return n % 2 === 0;\n}\n\nconsole.log(isEven(10));\nconsole.log(isEven(7));\n\nif (isEven(4)) {\n  console.log("4 even hai!");\n}', o: 'true\nfalse\n4 even hai!' },
+                { t: 'Early Return — Guard Pattern', c: 'function loginCheck(user) {\n  if (!user) {\n    return "Pehle login karo! 🔒";\n  }\n  return "Welcome, " + user + "! 🎉";\n}\n\nconsole.log(loginCheck(""));\nconsole.log(loginCheck("Rahul"));', o: 'Pehle login karo! 🔒\nWelcome, Rahul! 🎉' },
+            { t: 'Return Ko Pakdo — Value Reuse', c: 'function double(n) {\n  return n * 2;\n}\n\nlet result = double(21);\nconsole.log(result);\nconsole.log(result + 8);', o: '42\n50' }
+            ],
+            [ // arrow
+                { t: 'One-Liner Arrow — return Chhupa Hai', c: 'const square = n => n * n;\nconst cube = n => n * n * n;\n\nconsole.log(square(6));\nconsole.log(cube(3));', o: '36\n27' },
+                { t: 'Multi-Param + No-Param Arrow', c: 'const add = (a, b) => a + b;\nconst hello = () => "Hi! 👋";\n\nconsole.log(add(12, 8));\nconsole.log(hello());', o: '20\nHi! 👋' },
+                { t: 'Arrow + Braces Trap', c: 'const bad = n => { n * n; };   // return gaya!\nconst good = n => { return n * n; };\n\nconsole.log(bad(5));\nconsole.log(good(5));', o: 'undefined\n25' },
+            { t: 'Arrow One-Liner — Square Machine', c: 'const square = n => n * n;\n\nconsole.log(square(9));\nconsole.log(square(12));\nconsole.log(square(25));', o: '81\n144\n625' }
+            ],
+            [ // patterns
+                { t: 'Function Inside Function', c: 'function calcTax(price) {\n  return price * 0.18;   // 18% GST\n}\n\nfunction calcTotal(price) {\n  return price + calcTax(price);\n}\n\nconsole.log(calcTotal(100));', o: '118' },
+                { t: 'Callback — Function Ko Function Do', c: 'function baadMein(kaam) {\n  console.log("Taiyari...");\n  kaam();\n}\n\nbaadMein(function() {\n  console.log("🎉 Party time!");\n});', o: 'Taiyari...\n🎉 Party time!' },
+                { t: 'IIFE — Bina Bulaye Chal Gaya', c: '(function() {\n  let secret = "yahi rehta hu 🔒";\n  console.log(secret);\n})();\n\n// secret bahar nahi dikhega — private scope!', o: 'yahi rehta hu 🔒' },
+            { t: 'Callback — Har Naam Pe Function Chalao', c: 'function harNaam(names, kaam) {\n  for (let n of names) {\n    kaam(n);\n  }\n}\n\nharNaam(["Rahul", "Priya"], function(naam) {\n  console.log("Hi " + naam + "!");\n});', o: 'Hi Rahul!\nHi Priya!' }
+            ]
+        ];
+
+        function hl(code) {
+            var s = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            s = s.replace(/("[^"\n]*")/g, '<span class="st">$1</span>');
+            s = s.replace(/(\/\/[^\n<]*)/g, '<span class="cm">$1</span>');
+            s = s.replace(/\b(let|const|var|if|else|for|while|do|of|in|switch|case|break|continue|default|true|false|null|undefined|NaN|function|return|new)\b/g, '<span class="kw">$1</span>');
+            s = s.replace(/(^|[\s(=+\-*\/%,<>!:])(\d+\.?\d*)\b/g, '$1<span class="nm">$2</span>');
+            return s;
+        }
+
+        function renderExamples(idx) {
+            var grid = document.getElementById('exGrid');
+            var html = '';
+            var list = exData[idx];
+            for (var i = 0; i < list.length; i++) {
+                var ex = list[i];
+                html += '<div class="ex-card">'
+                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 4 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
+                    + '<pre>' + hl(ex.c) + '</pre>'
+                    + '<div class="ex-out">' + ex.o.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' &nbsp;|&nbsp; ') + '</div>'
+                    + '</div>';
+            }
+            grid.innerHTML = html;
+        }
+
+        function switchExTab(idx) {
+            var tabs = document.querySelectorAll('.ex-tab');
+            for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+            tabs[idx].classList.add('active');
+            renderExamples(idx);
+        }
+
+        /* ==================== INTERVIEW QUESTIONS ==================== */
+        var iqData = [
+            { lvl: 'easy', q: 'Function kya hai? Programming mein kyu zaroori hai?', a: 'Function ek <b>named code block</b> hai — ek kaam karne ke liye likha hua code jise naam de ke jitni baar chaho call kar sakte ho. Socho 10 jagah GST nikalna hai: bina function ke 10 jagah same formula copy-paste; function ke saath ek baar <code>calcGST()</code> likho, 10 jagah call karo!<pre>function calcGST(price) {\n  return price * 0.18;\n}</pre>Isse <b>DRY principle</b> kehte hai — Don\'t Repeat Yourself. Fayde: (1) code chhota, (2) bug ek jagah fix karo — har jagah fix ho jata hai, (3) naam padh ke hi logic samajh aata hai. Apps mein har button, har calculation, har check — sab functions hai!' },
+            { lvl: 'easy', q: 'Function "define" karne aur "call" karne mein kya farak hai?', a: '<b>Define</b> = machine banana (code likhna, abhi chalā nahi). <b>Call</b> = machine chalana (naam + brackets).<pre>function wish() {        // DEFINE — abhi kuch nahi chala\n  console.log("Hi!");\n}\n\nwish();                  // CALL — ab "Hi!" print hua\nwish();                  // phir call — phir print!</pre>Yaad rakho: call mein <b>() lagana zaroori hai</b>. <code>wish;</code> likha toh sirf naam ka zikr hua — function <b>nahi</b> chala, aur koi error bhi nahi aata (silent failure — sabse khatarnak bug!). Ek function define <b>ek baar</b>, call <b>hazaar baar</b>.' },
+            { lvl: 'easy', q: 'Parameter aur argument mein kya farak hai?', a: '<b>Parameter</b> = function define karte waqt ki khaali jagah (placeholder). <b>Argument</b> = call karte waqt di gayi <b>asli value</b>.<pre>function greet(name) {   // name = PARAMETER\n  console.log("Hi " + name);\n}\n\ngreet("Rahul");          // "Rahul" = ARGUMENT</pre>Trick se yaad rakho: <b>P</b>arameter = <b>P</b>laceholder, <b>A</b>rgument = <b>A</b>sli value. Juicer analogy: parameter = fal daalne ka hole, argument = asli seb jo tum daale!' },
+            { lvl: 'easy', q: 'return statement kya karta hai? Kitne kaam karta hai?', a: '<b>2 kaam ek saath</b> — yahi interview ka twist hai!<br><br>1. Function ke andar ki value <b>bahar wapas bhejta hai</b> — jahan call kiya tha wahan value aa jaati hai<br>2. Function ko <b>turant khatam</b> kar deta hai — return ke baad ki lines kabhi nahi chalti<pre>function add(a, b) {\n  return a + b;          // value bahar + EXIT\n}\n\nlet x = add(2, 3);       // x = 5</pre>Agar kuch bhi return nahi kiya toh JS khud <code>undefined</code> return kar deta hai. Isliye "return bhool gaye = undefined" wala bug famous hai!' },
+            { lvl: 'easy', q: 'console.log() aur return mein kya farak hai? (Famous confusion!)', a: '<b>console.log</b> = sirf screen pe <b>dikhata</b> hai — value kahin store nahi hoti, aage use nahi kar sakte. <b>return</b> = value ko function se <b>bahar DETA</b> hai — variable mein store karo, doosre function ko do, calculation karo!<pre>function add(a, b) {\n  return a + b;      // ✅ value dena\n}\n\nlet x = add(2, 3);   // x = 5 — aage use kiya\nconsole.log(x);      // dikha bahar se!</pre>Beginner galti: function ke andar console.log karke sochna "return ho gaya". Nahi bhai — dikhana ≠ dena! <b>Golden rule:</b> function return kare, print bahar karo — tabhi function reusable banta hai.' },
+            { lvl: 'medium', q: 'Function declaration aur function expression mein kya farak hai?', a: '<b>Declaration</b> — <code>function</code> keyword se shuru, apna naam hota hai. <b>Expression</b> — function ko variable mein store karte hai (value ki tarah).<pre>// DECLARATION\nfunction greet() { ... }\n\n// EXPRESSION\nconst greet = function() { ... };\n\n// ARROW (expression ka modern roop)\nconst greet = () => "Hi!";</pre>Sabse bada practical farak — <b>hoisting</b>: declaration define hone se <b>pehle</b> bhi call ho jaati hai; expression pehle call karoge toh <code>TypeError</code>! Expression ka fayda: function ko value ki tarah rakhna/copy karna/dena — IIFE aur callbacks wahi se bante hai. Interview mein syntax + hoisting dono batana zaroori hai.' },
+            { lvl: 'medium', q: 'Hoisting kya hai? Pehle call, baad mein define — kab chalega?', a: 'Hoisting = JS engine page load hote hi <b>function declarations ko upar utha leta hai</b> (memory mein pehle register karta hai). Isliye declaration file mein neeche ho, call upar se bhi chalega:<pre>sayHi();                  // ✅ chal gaya!\n\nfunction sayHi() {\n  console.log("Hi!");\n}</pre>Par <b>sirf declarations</b> ke saath. Expression/arrow variable hai — variable banta hai line chalne pe, isliye:<pre>hi2();                    // ❌ TypeError: hi2 is not a function\nconst hi2 = () => "Hi";</pre>Interview line: "declarations hoist hoti hai poore scope mein; let/const variables bhi hoist hote hai par <b>TDZ</b> (temporal dead zone) mein rehte hai — access karne pe ReferenceError." Ye last line bol di toh impression pakka!' },
+            { lvl: 'medium', q: 'Arrow function kya hai? Kab use karna chahiye?', a: 'ES6 ka <b>short syntax</b> — <code>=&gt;</code> se likhte hai. One-liner mein <code>return</code> implicit hota hai:<pre>const square = n => n * n;        // return chhupa hai!\nconst add = (a, b) => a + b;\nconst hello = () => "Hi!";</pre><b>Kab use kare:</b> chhote one-liner helpers, callbacks (<code>setTimeout(() =&gt; ...)</code>, array methods). <b>Kab na kare:</b> object methods (apna this nahi hota!) aur bade multi-line functions (readability).<br><br>Do traps yaad rakho: (1) <code>{ }</code> lagaya toh <code>return</code> khud likhna padega — warna undefined! (2) Arrow ka apna <code>this</code> nahi — ye DOM chapter ka famous topic hai. Chhota helper = arrow, bada logic = normal declaration.' },
+            { lvl: 'medium', q: 'Default parameters kya hai? Kaise likhte hai?', a: 'Parameter ko call ke time value na mile, toh jo <b>fallback value</b> use ho — wahi default parameter hai. <code>=</code> se likhte hai:<pre>function greet(name = "Dost") {\n  console.log("Hello, " + name);\n}\n\ngreet();          // Hello, Dost  ← default use hua\ngreet("Rahul");   // Hello, Rahul ← asli value jeet gayi</pre>Undefined ka darr khatam — <code>undefined</code> pass hua toh BHI default chalega (sirf <code>undefined</code> pe, <code>null</code> pe nahi — null asli value maani jaati hai!).<br><br>Pehle default ke liye aisa karte the: <code>name = name || "Dost"</code> — par isme <code>0</code> ya <code>""</code> bhi replace ho jaate the (falsy bug!). ES6 defaults se wo bug khatam. Interview bonus point: default mein function bhi call kar sakte ho — <code>function f(x = getId())</code>!' },
+            { lvl: 'medium', q: '"Functions are first-class citizens" ka matlab kya hai?', a: 'Matlab: JS mein function ko <b>value ki tarah treat</b> kiya jata hai — numbers/strings jitna haq! 3 superpowers:<br><br>1. <b>Variable mein store</b> — <code>const f = function() {...}</code><br>2. <b>Argument mein do</b> — <code>setTimeout(fn, 1000)</code> (callback!)<br>3. <b>Return karo</b> — function jo function return kare (factory!)<pre>const ops = { add: (a,b) => a+b, sub: (a,b) => a-b };\nlet result = ops["add"](5, 3);   // 8 — function object mein!</pre>Isi ek concept pe khada hai: callbacks, event handlers (Ch8), array methods (Ch6 — map/filter functions leta hai!), promises. Interview mein itna bol do: "kyunki function value hai, isliye higher-order functions possible hai — function leta hai aur deta bhi hai."' },
+            { lvl: 'medium', q: 'Callback function kya hai? Real example do.', a: 'Doosre function ko <b>argument ki tarah diya gaya function</b> = callback. Idea: "ye mera function, jab kaam ho jaye CALL kar lena" — isliye naam callback!<pre>function baadMein(kaam) {\n  console.log("Taiyari...");\n  kaam();               // callback call hua\n}\n\nbaadMein(function() {\n  console.log("Party! 🎉");\n});</pre>Real-world: <code>setTimeout(() =&gt; ...)</code> — timer callback; <code>btn.addEventListener("click", handler)</code> — event callback; API se data aane pe <code>then(data =&gt; ...)</code> — data callback.<br><br>CAREFUL trap: dena hai toh <b>sirf naam</b> — <code>setTimeout(greet, 2000)</code> ✅; <code>setTimeout(greet(), 2000)</code> ❌ — greet turant chal gaya, uska return value (function nahi) gaya! Ch8 mein callbacks roz chalenge.' },
+            { lvl: 'medium', q: 'Function se return nahi likha toh kya milta hai? Ye bug kaise pakde?', a: 'JS khud <code>return undefined;</code> kar deta hai — matlab call ki value hamesha <b>undefined</b> milegi:<pre>function add(a, b) {\n  let sum = a + b;      // return GAYA!\n}\n\nlet x = add(2, 3);\nconsole.log(x);          // undefined 😱 — 5 nahi!</pre>Common cases: (1) calculation karke return likhna bhool gaye, (2) arrow mein <code>{ }</code> lagaya par return nahi likha, (3) console.log kar diya return ki jagah.<br><br><b>Debug tips:</b> function call ko <code>console.log(fn(...))</code> mein wrap karo — undefined dikha toh return missing. Modern editor/linter bhi "expected a return value" warning deta hai. Ye JS ka <b>top-5 beginner bug</b> hai — isliye poocha jata hai!' },
+            { lvl: 'hard', q: 'IIFE kya hai? Syntax aur use case explain karo.', a: '<b>IIFE</b> = Immediately Invoked Function Expression — function jo define hote <b>hi khud chal jata hai</b>. Syntax mein brackets ka khel:<pre>(function() {\n  let private = "andar hi rehta hu";\n  console.log("Chal gaya! 🚀");\n})();\n//  ↑ yaha call — bina naam ke!</pre>Kaise padhe: pehla <code>( )</code> = "ye expression hai" (function ko wrap kar diya), aakhri <code>( )</code> = call!<br><br><b>Use case — private scope:</b> IIFE ke andar ke variables <b>bahar leak nahi hote</b> — do libraries ka code clash nahi karta. <code>let/const</code> (Ch1) se pehle ye EK hi tareeka tha private scope ka. Aaj bhi module setup, one-time config init mein dikhta hai. Interview mein bolo: "IIFE = run once, no global pollution, private variables — purane JS ka module pattern!"' },
+            { lvl: 'hard', q: 'Pure function kya hai? Side effect se kya matlab hai?', a: '<b>Pure function</b> = (1) same input pe <b>hamesha same output</b>, (2) bahar ki duniya pe <b>koi asar nahi</b> (koi variable change nahi, koi print/network nahi).<pre>// PURE ✅\nfunction add(a, b) {\n  return a + b;      // sirf inputs pe depend\n}\n\n// IMPURE ❌\nlet tax = 0.18;\nfunction impureAdd(price) {\n  tax = 0.2;         // bahar ka variable CHANGE kiya = side effect!\n  return price + price * tax;\n}</pre><b>Side effect</b> = function ka bahar ki cheezon ko chhedna — global variable badalna, console/UI pe likhna, data modify karna.<br><br>Kyu important? Pure functions: (1) test karna easy — input do, output check karo, (2) samajhna easy — bahar dekhne ki zaroorat nahi, (3) React/functional JS ka base concept! Interview line: "pure logic functions mein rakho, side effects alag jagah — code predictable ban jata hai."' },
+            { lvl: 'hard', q: 'Recursion kya hai? Factorial ka example likho.', a: '<b>Recursion</b> = function jo <b>khud ko hi call</b> kare — bade problem ko chhote same problem mein todne ke liye!<pre>function factorial(n) {\n  if (n <= 1) {        // BASE CASE — rukne ki jagah\n    return 1;\n  }\n  return n * factorial(n - 1);   // khud ko chhote input pe call\n}\n\nconsole.log(factorial(5));  // 120</pre>Trace: 5 × factorial(4) → 5 × 4 × factorial(3) → ... → 5 × 4 × 3 × 2 × 1 = 120.<br><br><b>2 zaroori cheezein:</b> (1) <b>Base case</b> — rukne ki condition (nahi toh infinite → <code>RangeError: Maximum call stack size exceeded</code> — stack full!), (2) har call mein problem <b>chhoti</b> hoti jaani chahiye. Loop se bhi factorial hota hai — par trees, nested folders, JSON jaisi "andar-andar" wali cheezein recursion se hi aasaan hoti hai. Interview mein hamesha base case pehle batao!' },
+            { lvl: 'hard', q: 'Function ke andar bana variable bahar kyu nahi dikhta? (Scope)', a: 'Kyunki har function apna <b>local scope</b> banata hai — andar ke variables sirf andar zinda hai. Isse kehte hai <b>function scope</b>:<pre>function test() {\n  let secret = "andar ka raaz 🔒";\n  console.log(secret);    // ✅ andar dikhega\n}\n\ntest();\nconsole.log(secret);      // ❌ ReferenceError! bahar nahi mila</pre>Ulat chalta hai — function <b>bahar</b> ka variable <b>padh</b> sakta hai (scope chain):<pre>let global = "bahar wala";\n\nfunction read() {\n  console.log(global);    // ✅ bahar se padh sakta hai\n}</pre>Fayda: har function ka apna private data — do functions ka <code>total</code> aapas mein clash nahi karega. Ye encapsulation ki neev hai — IIFE, closures (aage aayega) sab isi pe bane hai. Interview mein bolo: "inner scope outer ko padh sakta hai, outer inner ko nahi — sirf upar dekhna allowed hai, neeche nahi!"' }
+        ];
+
+        function renderInterview(filter) {
+            var list = document.getElementById('iqList');
+            var html = '';
+            for (var i = 0; i < iqData.length; i++) {
+                var q = iqData[i];
+                if (filter !== 'all' && q.lvl !== filter) continue;
+                html += '<div class="iq-item" onclick="toggleIq(this)">'
+                    + '<div class="iq-q">'
+                    + '<span class="iq-level ' + q.lvl + '">' + q.lvl + '</span>'
+                    + '<span class="iq-text">Q' + (i + 1) + '. ' + q.q + '</span>'
+                    + '<i class="fas fa-chevron-down iq-arrow"></i>'
+                    + '</div>'
+                    + '<div class="iq-a"><div class="iq-answer">' + q.a + '</div></div>'
+                    + '</div>';
+            }
+            list.innerHTML = html || '<p style="color:var(--muted)">Is filter mein kuch nahi.</p>';
+        }
+
+        function switchIqFilter(f) {
+            var btns = document.querySelectorAll('.iq-filter');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            event.currentTarget.classList.add('active');
+            renderInterview(f);
+        }
+
+        function toggleIq(el) { el.classList.toggle('open'); }
+
+        /* ==================== WORKSHOP ==================== */
+        function toggleWs(item) { item.classList.toggle('open'); }
+
+        function toggleHint(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-hint').classList.toggle('show');
+        }
+
+        function toggleSol(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-sol').classList.toggle('show');
+        }
+
+        /* ==================== PROJECTS ==================== */
+        function toggleProj(btn) {
+            btn.parentElement.querySelector('.p-starter').classList.toggle('show');
+        }
+
+        /* ==================== PLAYGROUND ==================== */
+        var snippets = [
+            { c: '// 👋 Pehla Function — banao + bulao!\nfunction greetUser(name) {\n  console.log("Hello, " + name + "! 👋");\n}\n\ngreetUser("Rahul");\ngreetUser("Priya");\ngreetUser("Dost");\n\n// brackets () hata ke dekho — kuch nahi chalega! 😄' },
+            { c: '// 🧮 Calculator Machine — return wali\nfunction add(a, b) {\n  return a + b;\n}\n\nfunction mul(a, b) {\n  return a * b;\n}\n\nlet result = add(3, 5);\nconsole.log("Result:", result);\nconsole.log("add(10,20) * 2 =", add(10, 20) * 2);\nconsole.log("mul(add(1,1), 4) =", mul(add(1, 1), 4));' },
+            { c: '// 🔢 Even Checker — boolean return + loop combo\nfunction isEven(n) {\n  return n % 2 === 0;\n}\n\nfor (let i = 1; i <= 10; i++) {\n  if (isEven(i)) {\n    console.log(i, "→ even ✅");\n  } else {\n    console.log(i, "→ odd");\n  }\n}' },
+            { c: '// 💬 Default Parameters — undefined ka ilaaj!\nfunction greet(name = "Dost") {\n  console.log("Hello, " + name + "!");\n}\n\ngreet();            // default chalega\ngreet("Sneha");     // asli value jeet gayi\n\nfunction addTax(price, rate = 0.18) {\n  return price + price * rate;\n}\n\nconsole.log("₹" + addTax(100));\nconsole.log("₹" + addTax(100, 0.05));' },
+            { c: '// ➡️ Arrow Functions — 3 avatars\nconst square = n => n * n;            // one-liner\nconst add = (a, b) => a + b;          // multi-param\nconst hello = () => "Hi! 👋";         // no-param\nconst big = (a, b) => {               // full body\n  if (a > b) return a;\n  return b;\n};\n\nconsole.log(square(6));\nconsole.log(add(12, 8));\nconsole.log(hello());\nconsole.log(big(42, 17));' },
+            { c: '// ⏰ Callback + IIFE combo\nfunction baadMein(kaam) {\n  console.log("Taiyari ho rahi...");\n  kaam();\n}\n\nbaadMein(() => console.log("🎉 Party!"));\n\nsetTimeout(() => {\n  console.log("2 second baad chala! ⏰");\n}, 2000);\n\n(function() {\n  console.log("IIFE — bina bulaye chala! 🚀");\n})();\n\nconsole.log("Script khatam — ab 2 sec ka intezaar...");' }
+        ];
+
+        function loadSnippet(idx) {
+            document.getElementById('pgCode').value = snippets[idx].c;
+        }
+
+        function clearConsole() {
+            document.getElementById('pgConsole').innerHTML = '<div class="cl-info">▸ Console cleared. Naya code chalao!</div>';
+        }
+
+        function addLine(text, cls) {
+            var con = document.getElementById('pgConsole');
+            var div = document.createElement('div');
+            div.className = 'cl ' + (cls || '');
+            div.textContent = text;
+            con.appendChild(div);
+            con.scrollTop = con.scrollHeight;
+        }
+
+        function runCode() {
+            var code = document.getElementById('pgCode').value;
+            var con = document.getElementById('pgConsole');
+            con.innerHTML = '';
+            if (!code.trim()) {
+                addLine('⚠️ Pehle kuch code likho!', 'cl-warn');
+                return;
+            }
+            var fakeConsole = {
+                log: function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    addLine(args.map(function (a) {
+                        if (typeof a === 'object' && a !== null) {
+                            try { return JSON.stringify(a); } catch (e) { return String(a); }
+                        }
+                        return String(a);
+                    }).join(' '), '');
+                },
+                warn: function () { addLine('⚠️ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-warn'); },
+                error: function () { addLine('❌ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-err'); },
+                table: function (arr) {
+                    try { addLine(JSON.stringify(arr, null, 1), 'cl-info'); } catch (e) { addLine(String(arr), ''); }
+                }
+            };
+            try {
+                var fn = new Function('console', '"use strict";\n' + code);
+                fn(fakeConsole);
+            } catch (err) {
+                addLine('❌ Error: ' + err.message, 'cl-err');
+                addLine('💡 Tip: function ka naam, () aur return check karo', 'cl-info');
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+        });
+
+        /* ==================== FUNCTION MACHINE ==================== */
+        function esc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function fmShow(v) {
+            if (v === undefined) return 'undefined ⚠️';
+            if (typeof v === 'number' && isNaN(v)) return 'NaN ⚠️';
+            return esc(v);
+        }
+
+        var fmFns = [
+            {
+                label: 'greet(name)',
+                def: 'function greet(name = "Dost") {\n  return "Hello, " + name + "! 👋";\n}',
+                input: 'Rahul',
+                numeric: false,
+                build: function (args) {
+                    var steps = [];
+                    var usedDefault = args.length === 0 || args[0] === '';
+                    var name = usedDefault ? 'Dost' : args[0];
+                    if (usedDefault) {
+                        steps.push({ k: 'in', t: '📥 name ← kuch nahi mila → DEFAULT value "Dost" use hua! 🛡️' });
+                    } else {
+                        steps.push({ k: 'in', t: '📥 name ← "' + esc(name) + '" (argument bind ho gaya)' });
+                    }
+                    var out = 'Hello, ' + name + '! 👋';
+                    steps.push({ k: 'step', t: '⚙️ "Hello, " + name + "! 👋" → "' + esc(out) + '"' });
+                    steps.push({ k: 'out', t: '📤 return "' + esc(out) + '"' });
+                    var call = usedDefault ? 'greet()' : 'greet("' + esc(name) + '")';
+                    return { steps: steps, summary: '🏁 <code>' + call + '</code> → <b>"' + esc(out) + '"</b> — machine ne kaam karke STRING wapas bhej diya! Ab isse store karo: <code>let msg = greet("Rahul");</code> Aur bina argument ke call karke DEFAULT magic dekho! 🛡️' };
+                }
+            },
+            {
+                label: 'add(a, b)',
+                def: 'function add(a, b) {\n  let sum = a + b;\n  return sum;\n}',
+                input: '3, 5',
+                numeric: true,
+                build: function (args) {
+                    var steps = [];
+                    var a = args[0], b = args[1];
+                    var extra = args.slice(2);
+                    var bad = a === undefined || b === undefined || (typeof a === 'number' && isNaN(a)) || (typeof b === 'number' && isNaN(b));
+                    var inTxt = '📥 a ← ' + fmShow(a) + ', b ← ' + fmShow(b);
+                    if (a === undefined || b === undefined) inTxt += ' (kam arguments!)';
+                    steps.push({ k: bad ? 'warn' : 'in', t: inTxt });
+                    if (extra.length) steps.push({ k: 'warn', t: '😆 Extra arguments ignore ho gaye: ' + extra.map(fmShow).join(', ') + ' — JS sirf zaroori params leta hai!' });
+                    if (!bad) {
+                        steps.push({ k: 'step', t: '⚙️ sum = a + b → ' + a + ' + ' + b + ' = ' + (a + b) });
+                        steps.push({ k: 'out', t: '📤 return ' + (a + b) });
+                        return { steps: steps, summary: '🏁 <code>add(' + a + ', ' + b + ')</code> → <b>' + (a + b) + '</b> — arguments aaye → body chali → return ne value WAPAS bhej di! Store karo: <code>let result = add(3, 5);</code> 🎯' };
+                    }
+                    var missing = a === undefined || b === undefined;
+                    steps.push({ k: 'warn', t: '⚙️ sum = a + b → number + ' + (missing ? 'undefined' : 'NaN') + ' = NaN 😱' });
+                    steps.push({ k: 'warn', t: '📤 return NaN' });
+                    var sum = missing
+                        ? '🚨 <code>NaN</code> aaya! Jo parameter nahi mila wo <code>undefined</code> hai, aur <code>number + undefined = NaN</code>. Isliye <b>default parameters</b> use karo: <code>function add(a, b = 0)</code> — ab safe!'
+                        : '🚨 <code>NaN</code> aaya! Input number nahi ban paya (yaad hai Ch1 — <code>Number("abc")</code> = NaN?). Machine toh chali, par andar types ka gadbad ho gaya!';
+                    return { steps: steps, summary: sum };
+                }
+            },
+            {
+                label: 'square(n)',
+                def: 'function square(n) {\n  return n * n;\n}',
+                input: '7',
+                numeric: true,
+                build: function (args) {
+                    var steps = [];
+                    var n = args[0];
+                    var bad = n === undefined || (typeof n === 'number' && isNaN(n));
+                    steps.push({ k: bad ? 'warn' : 'in', t: '📥 n ← ' + fmShow(n) + (n === undefined ? ' (kuch nahi diya!)' : '') });
+                    if (bad) {
+                        steps.push({ k: 'warn', t: '⚙️ n * n → NaN' });
+                        steps.push({ k: 'warn', t: '📤 return NaN' });
+                        return { steps: steps, summary: '🚨 NaN! Parameter ko sahi NUMBER do — warna machine andar hi gadbad karegi. Isliye input validation zaroori hai!' };
+                    }
+                    steps.push({ k: 'step', t: '⚙️ n * n → ' + n + ' × ' + n + ' = ' + (n * n) });
+                    steps.push({ k: 'out', t: '📤 return ' + (n * n) });
+                    return { steps: steps, summary: '🏁 <code>square(' + n + ')</code> → <b>' + (n * n) + '</b> — ek line ki machine, poora kaam! Arrow se aur short: <code>n => n * n</code> ⚡' };
+                }
+            },
+            {
+                label: 'isEven(n)',
+                def: 'function isEven(n) {\n  return n % 2 === 0;\n}',
+                input: '10',
+                numeric: true,
+                build: function (args) {
+                    var steps = [];
+                    var n = args[0];
+                    var bad = n === undefined || (typeof n === 'number' && isNaN(n));
+                    steps.push({ k: bad ? 'warn' : 'in', t: '📥 n ← ' + fmShow(n) + (n === undefined ? ' (kuch nahi diya!)' : '') });
+                    if (bad) {
+                        steps.push({ k: 'warn', t: '⚙️ n % 2 → NaN' });
+                        steps.push({ k: 'warn', t: '📤 return false — par ye BHAROSE KE LAYAK nahi, input hi kharab tha!' });
+                        return { steps: steps, summary: '🚨 Input number nahi tha — result bhi galat! Validation pehle karo: <code>if (isNaN(n)) return "number do bhai!";</code>' };
+                    }
+                    var r = n % 2;
+                    var isE = r === 0;
+                    steps.push({ k: 'step', t: '⚙️ n % 2 → ' + n + ' % 2 = ' + r });
+                    steps.push({ k: 'step', t: '⚙️ ' + r + ' === 0 → ' + isE });
+                    steps.push({ k: 'out', t: '📤 return ' + isE });
+                    return { steps: steps, summary: '🏁 <code>isEven(' + n + ')</code> → <b>' + isE + '</b> — boolean return! if/else mein seedha lagao: <code>if (isEven(num)) { ... }</code> 🔥 (Ch3 + Ch5 ka combo!)' };
+                }
+            },
+            {
+                label: 'maxOf(a, b)',
+                def: 'function maxOf(a, b) {\n  if (a > b) return a;\n  return b;\n}',
+                input: '42, 17',
+                numeric: true,
+                build: function (args) {
+                    var steps = [];
+                    var a = args[0], b = args[1];
+                    var bad = a === undefined || b === undefined || (typeof a === 'number' && isNaN(a)) || (typeof b === 'number' && isNaN(b));
+                    steps.push({ k: bad ? 'warn' : 'in', t: '📥 a ← ' + fmShow(a) + ', b ← ' + fmShow(b) + ((a === undefined || b === undefined) ? ' (kam arguments!)' : '') });
+                    if (bad) {
+                        steps.push({ k: 'warn', t: '⚙️ a > b → NaN comparison → false' });
+                        steps.push({ k: 'warn', t: '📤 return b → NaN ⚠️' });
+                        return { steps: steps, summary: '🚨 Ek parameter bhi undefined hua toh comparison hi fail — NaN failati hai! Default parameters lagao ya check karo.' };
+                    }
+                    var aWin = a > b;
+                    steps.push({ k: 'step', t: '⚙️ a > b → ' + a + ' > ' + b + ' → ' + aWin + ' (if ka ' + (aWin ? 'TRUE' : 'FALSE') + ' path)' });
+                    steps.push({ k: 'out', t: aWin ? '📤 return a → ' + a : '📤 return b → ' + b });
+                    return { steps: steps, summary: '🏁 <code>maxOf(' + a + ', ' + b + ')</code> → <b>' + (aWin ? a : b) + '</b> — Ch3 ki if/else function ke andar chal padi! Logic + machine = asli app 🔥' };
+                }
+            }
+        ];
+
+        var fmIdx = 0;
+        var fmBusy = false;
+
+        function setFnType(idx) {
+            fmIdx = idx;
+            var btns = document.querySelectorAll('#fmTypes button');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            btns[idx].classList.add('active');
+            var fn = fmFns[idx];
+            document.getElementById('fmArgs').value = fn.input;
+            document.getElementById('fmCode').textContent = fn.def;
+            document.getElementById('fmTrack').innerHTML = '';
+            document.getElementById('fmSummary').innerHTML = 'Function: <code>' + fn.label + '</code>' + (fn.numeric ? ' — NUMBERS do (comma se alag)!' : ' — text do, quotes ki zaroorat nahi!') + ' Ab CHALAO ⚡';
+        }
+
+        function parseFmArgs(raw, numeric) {
+            var parts = raw.split(',');
+            var out = [];
+            for (var i = 0; i < parts.length; i++) {
+                var v = parts[i].trim();
+                if (v === '') continue;
+                out.push(numeric ? Number(v) : v);
+            }
+            return out;
+        }
+
+        function runFn() {
+            if (fmBusy) return;
+            var fn = fmFns[fmIdx];
+            var raw = document.getElementById('fmArgs').value;
+            var track = document.getElementById('fmTrack');
+            var summary = document.getElementById('fmSummary');
+
+            var res = fn.build(parseFmArgs(raw, fn.numeric));
+            var html = '';
+            for (var i = 0; i < res.steps.length; i++) {
+                html += '<div class="fm-row fm-' + res.steps[i].k + '">' + res.steps[i].t + '</div>';
+            }
+            track.innerHTML = html;
+
+            fmBusy = true;
+            var els = track.children;
+            var k = 0;
+            var timer = setInterval(function () {
+                if (k >= els.length) {
+                    clearInterval(timer);
+                    fmBusy = false;
+                    summary.innerHTML = res.summary;
+                    return;
+                }
+                els[k].classList.add('show');
+                k++;
+            }, 260);
+        }
+
+        /* ==================== QUIZ ==================== */
+        var quizData = [
+            { q: '<code>wish;</code> (bina brackets) likha — kya hoga?', opts: ['Function chal jayega', 'Kuch nahi — sirf naam ka zikr hua, call () ke saath hota hai', 'Error aayega', 'undefined print hoga'], correct: 1, exp: 'Bina brackets = sirf function ka NAAM (reference) — call nahi hua! Aur khatarnak baat: koi ERROR bhi nahi aata — silent failure. Call ke liye wish(); likho!' },
+            { q: '<code>function add(a, b) { return a + b; }</code> — <code>console.log(add(2, 3));</code> ka output?', opts: ['23', '5', 'undefined', 'NaN'], correct: 1, exp: 'add(2, 3) ne 2 + 3 = 5 RETURN kiya, console.log ne wo value dikha di. (2, 3 arguments hai, a, b parameters — a + b mathematical addition hai, string nahi!)' },
+            { q: 'Function mein return nahi likha toh call kya dega?', opts: ['0', 'null', 'undefined', 'Error aayega'], correct: 2, exp: 'JS khud return undefined; kar deta hai! Machine ne kaam kiya par kuch wapas nahi bheja — isliye "return bhool gaye = undefined milega" — top beginner bug!' },
+            { q: '<code>const double = x =&gt; x * 2;</code> — <code>double(5)</code> kya dega?', opts: ['10', '25', 'undefined', 'Error'], correct: 0, exp: 'One-liner arrow mein return CHHUPA hota hai — x => x * 2 automatically x * 2 return karta hai! 5 × 2 = 10. ({} lagate toh return likhna padta — warna undefined!)' },
+            { q: '<code>greet("Rahul")</code> — yaha "Rahul" ko kya kehte hai?', opts: ['Parameter', 'Argument', 'Return value', 'Variable'], correct: 1, exp: 'Call karte waqt di gayi ASLI value = argument. Define karte waqt ki khaali jagah (name) = parameter. P = Placeholder, A = Asli value!' }
+        ];
+
+        var quizIdx = 0, quizScore = 0, quizLock = false;
+
+        function renderQuiz() {
+            var q = quizData[quizIdx];
+            document.getElementById('quizCount').textContent = 'Sawaal ' + (quizIdx + 1) + ' / ' + quizData.length;
+            document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+            document.getElementById('quizQ').innerHTML = 'Q' + (quizIdx + 1) + '. ' + q.q;
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').classList.remove('show');
+            quizLock = false;
+
+            var box = document.getElementById('quizOpts');
+            box.innerHTML = '';
+            for (var i = 0; i < q.opts.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.textContent = q.opts[i];
+                btn.setAttribute('data-i', i);
+                btn.onclick = function () { answerQuiz(parseInt(this.getAttribute('data-i'))); };
+                box.appendChild(btn);
+            }
+        }
+
+        function answerQuiz(i) {
+            if (quizLock) return;
+            quizLock = true;
+            var q = quizData[quizIdx];
+            var btns = document.querySelectorAll('.quiz-opt');
+            for (var j = 0; j < btns.length; j++) {
+                btns[j].disabled = true;
+                if (parseInt(btns[j].getAttribute('data-i')) === q.correct) btns[j].classList.add('correct');
+            }
+            var fb = document.getElementById('quizFb');
+            if (i === q.correct) {
+                quizScore++;
+                document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+                fb.textContent = '✅ Sahi jawab! ' + q.exp;
+                fb.className = 'quiz-feedback good';
+            } else {
+                btns[i].classList.add('wrong');
+                fb.textContent = '❌ Oops! Sahi jawab highlighted hai. ' + q.exp;
+                fb.className = 'quiz-feedback bad';
+            }
+            document.getElementById('quizNext').classList.add('show');
+        }
+
+        function nextQuestion() {
+            if (quizIdx < quizData.length - 1) {
+                quizIdx++;
+                renderQuiz();
+            } else {
+                showFinal();
+            }
+        }
+
+        function showFinal() {
+            var msg, emoji;
+            if (quizScore === 5) { msg = 'PERFECT! Tum Machine Master ho — Functions ka Boss! 🔧'; emoji = '🏆'; }
+            else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
+            else { msg = 'Koi baat nahi — upar sections dobara padho, Function Machine se khelo!'; emoji = '📚'; }
+
+            document.getElementById('quizCount').textContent = 'Quiz Complete!';
+            document.getElementById('quizQ').innerHTML = '';
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').textContent = '🔄 Dobara Khelein';
+            document.getElementById('quizNext').classList.add('show');
+            document.getElementById('quizNext').onclick = restartQuiz;
+
+            document.getElementById('quizOpts').innerHTML = '<div class="quiz-final">'
+                + '<div class="qf-emoji">' + emoji + '</div>'
+                + '<h4>Score: ' + quizScore + ' / ' + quizData.length + '</h4>'
+                + '<p>' + msg + '</p>'
+                + '</div>';
+        }
+
+        function restartQuiz() {
+            quizIdx = 0;
+            quizScore = 0;
+            var btn = document.getElementById('quizNext');
+            btn.textContent = 'Agla Sawaal →';
+            btn.onclick = nextQuestion;
+            renderQuiz();
+        }
+
+        /* ==================== INIT ==================== */
+        renderExamples(0);
+        renderInterview('all');
+        loadSnippet(0);
+        setFnType(0);
+        renderQuiz();
+    </script>
+</body>
+</html>

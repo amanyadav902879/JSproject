@@ -1,0 +1,3324 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cheezon Ka Pitara 🎒</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Poppins:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0a0e17;
+            --bg2: #111827;
+            --card: #151d2e;
+            --card2: #1a2540;
+            --border: #1e3a5f;
+            --fg: #e8edf5;
+            --muted: #6b7fa3;
+            --accent: #00ff88;
+            --accent2: #00d4ff;
+            --danger: #ff4757;
+            --warn: #ffa502;
+            --purple: #a855f7;
+            --pink: #ff6b9d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === Background Effect === */
+        .bg-grid {
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(0,255,136,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,136,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow {
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            filter: blur(150px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-glow-1 { top: -150px; left: -100px; background: var(--accent); }
+        .bg-glow-2 { bottom: -200px; right: -100px; background: var(--accent2); }
+        .bg-glow-3 { top: 50%; left: 50%; transform: translate(-50%,-50%); background: var(--purple); opacity: 0.08; }
+
+        /* === Header === */
+        header {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 30px;
+        }
+
+        header h1 {
+            font-weight: 900;
+            font-size: clamp(2.2rem, 6vw, 3.8rem);
+            background: linear-gradient(135deg, var(--accent), var(--accent2), var(--purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+            margin-bottom: 10px;
+        }
+
+        header .badge-chapter {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 5px 16px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        header p {
+            color: var(--muted);
+            font-size: 1.05rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* === Roadmap === */
+        .roadmap-wrap {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto 20px;
+            padding: 0 20px;
+        }
+
+        .roadmap {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+        }
+
+        .roadmap h3 {
+            font-size: 1rem;
+            color: var(--accent2);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .roadmap-track {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .rm-chip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            white-space: nowrap;
+        }
+
+        .rm-chip.done { border-color: var(--accent); color: var(--accent); }
+        .rm-chip.now {
+            background: linear-gradient(135deg, rgba(0,255,136,0.15), rgba(0,212,255,0.15));
+            border-color: var(--accent2);
+            color: var(--accent2);
+            box-shadow: 0 0 18px rgba(0,212,255,0.25);
+            animation: pulseChip 2s infinite;
+        }
+        .rm-chip.future { opacity: 0.55; }
+
+        @keyframes pulseChip {
+            0%, 100% { box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+            50% { box-shadow: 0 0 22px rgba(0,212,255,0.45); }
+        }
+
+        /* === Sections === */
+        .section {
+            position: relative;
+            z-index: 10;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .section-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--accent);
+            background: rgba(0,255,136,0.08);
+            border: 1px solid rgba(0,255,136,0.25);
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 14px;
+        }
+
+        .section h2 {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .section > p.section-desc {
+            color: var(--muted);
+            max-width: 760px;
+            margin-bottom: 28px;
+            line-height: 1.7;
+        }
+
+        /* === Intro Concept Box === */
+        .concept-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .concept-box h4 {
+            color: var(--accent);
+            font-size: 1.05rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .concept-box p {
+            color: var(--fg);
+            line-height: 1.8;
+            font-size: 0.95rem;
+        }
+
+        .concept-box code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 2px 7px;
+            border-radius: 5px;
+            font-size: 0.88em;
+        }
+
+        /* === Operator Family Cards === */
+        .op-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+        }
+
+        .op-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .op-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,255,136,0.12);
+        }
+
+        .op-card .op-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+        }
+
+        .op-card:nth-child(2) .op-icon { background: rgba(0,212,255,0.1); color: var(--accent2); }
+        .op-card:nth-child(3) .op-icon { background: rgba(168,85,247,0.1); color: var(--purple); }
+        .op-card:nth-child(4) .op-icon { background: rgba(255,107,157,0.1); color: var(--pink); }
+        .op-card:nth-child(5) .op-icon { background: rgba(255,165,2,0.1); color: var(--warn); }
+        .op-card:nth-child(6) .op-icon { background: rgba(255,71,87,0.1); color: var(--danger); }
+
+        .op-card h4 { font-size: 1.05rem; margin-bottom: 6px; }
+        .op-card .op-symbols {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+        .op-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+        /* === Operator Tables === */
+        .op-table-wrap {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            margin: 20px 0;
+        }
+
+        table.op-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            font-size: 0.9rem;
+            min-width: 560px;
+        }
+
+        .op-table th {
+            background: var(--bg2);
+            color: var(--accent2);
+            text-align: left;
+            padding: 13px 16px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .op-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(30,58,95,0.5);
+            vertical-align: middle;
+        }
+
+        .op-table tr:last-child td { border-bottom: none; }
+        .op-table tr:hover td { background: rgba(0,255,136,0.03); }
+
+        .op-table .sym {
+            font-family: 'Fira Code', monospace;
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .op-table .ex {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            font-size: 0.85rem;
+        }
+
+        .op-table .res {
+            font-family: 'Fira Code', monospace;
+            color: var(--warn);
+            font-weight: 600;
+        }
+
+        .op-table .desc { color: var(--muted); }
+
+        /* === Code Blocks === */
+        .code-block {
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.75;
+            overflow-x: auto;
+            white-space: pre;
+            margin: 16px 0;
+            position: relative;
+        }
+
+        .code-block .cm { color: var(--muted); }
+        .code-block .kw { color: var(--purple); }
+        .code-block .st { color: var(--accent); }
+        .code-block .nm { color: var(--accent2); }
+        .code-block .op { color: var(--warn); }
+        .code-block .out { color: var(--pink); }
+
+        /* === Gotcha / Warning Box === */
+        .gotcha {
+            background: rgba(255,71,87,0.07);
+            border: 1px solid rgba(255,71,87,0.3);
+            border-left: 4px solid var(--danger);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .gotcha h5 {
+            color: var(--danger);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .gotcha p, .gotcha li { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .gotcha ul { padding-left: 20px; margin-top: 6px; }
+        .gotcha code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(255,71,87,0.12);
+            color: var(--pink);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Tip Box === */
+        .tipbox {
+            background: rgba(0,255,136,0.06);
+            border: 1px solid rgba(0,255,136,0.25);
+            border-left: 4px solid var(--accent);
+            border-radius: 12px;
+            padding: 18px 20px;
+            margin: 18px 0;
+        }
+
+        .tipbox h5 {
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+
+        .tipbox p { color: var(--fg); font-size: 0.88rem; line-height: 1.7; }
+        .tipbox code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* === Two Column Split === */
+        .split-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 780px) {
+            .split-2 { grid-template-columns: 1fr; }
+        }
+
+        .split-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .split-card h5 { margin-bottom: 10px; font-size: 1rem; }
+        .split-card.vs-lose { border-top: 3px solid var(--warn); }
+        .split-card.vs-strict { border-top: 3px solid var(--accent); }
+
+        .split-card ul { list-style: none; }
+        .split-card li {
+            padding: 7px 0;
+            color: var(--fg);
+            font-size: 0.87rem;
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .split-card li:last-child { border-bottom: none; }
+        .split-card li i { margin-right: 8px; }
+        .split-card .li-ok i { color: var(--accent); }
+        .split-card .li-bad i { color: var(--danger); }
+    </style>
+<style>
+        /* === Flow Demo (Concept) === */
+        .flow {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            align-items: stretch;
+            margin: 22px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-cond {
+            background: var(--bg2);
+            border: 2px dashed var(--accent2);
+            border-radius: 12px;
+            padding: 16px 22px;
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .flow-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: center;
+            min-width: 150px;
+            font-size: 0.88rem;
+        }
+
+        .flow-box .f-tag {
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .flow-box.true-path { border-top: 3px solid var(--accent); }
+        .flow-box.true-path .f-tag { color: var(--accent); }
+        .flow-box.false-path { border-top: 3px solid var(--danger); }
+        .flow-box.false-path .f-tag { color: var(--danger); }
+        .flow-arrow {
+            align-self: center;
+            color: var(--muted);
+            font-size: 1.1rem;
+        }
+
+        /* === Object Machine Simulator === */
+        .om {
+            background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(0,212,255,0.08));
+            border: 1px solid var(--purple);
+            border-radius: 18px;
+            padding: 28px;
+            margin: 26px 0;
+        }
+
+        .om h4 {
+            text-align: center;
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .om h4 i { color: var(--purple); margin-right: 8px; }
+
+        .om p.om-desc {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.87rem;
+            margin-bottom: 20px;
+        }
+
+        .om-types {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+
+        .om-types button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 8px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .om-types button:hover { border-color: var(--purple); color: var(--purple); }
+
+        .om-types button.active {
+            background: linear-gradient(135deg, var(--purple), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+        }
+
+        .om-input-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .om-input-row label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .om-input-row input {
+            width: 220px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 11px 14px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            outline: none;
+            text-align: center;
+        }
+
+        .om-input-row input:focus { border-color: var(--purple); box-shadow: 0 0 15px rgba(168,85,247,0.3); }
+
+        .om-btn {
+            background: linear-gradient(135deg, var(--purple), var(--accent2));
+            border: none;
+            color: #0a0e17;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 12px 30px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .om-btn:hover { transform: scale(1.05); box-shadow: 0 8px 25px rgba(168,85,247,0.35); }
+
+        .om-btn-reset {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 12px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .om-btn-reset:hover { border-color: var(--warn); color: var(--warn); }
+
+        .om-code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,0,0,0.28);
+            border: 1px dashed var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin: 0 auto 18px;
+            max-width: 480px;
+            font-size: 0.86rem;
+            color: var(--purple);
+            text-align: center;
+        }
+
+        .om-view {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            max-width: 820px;
+            margin: 0 auto 6px;
+            min-height: 124px;
+            padding: 14px;
+            background: rgba(0,0,0,0.22);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+        }
+
+        .om-slot {
+            min-width: 104px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 9px 12px 8px;
+            text-align: center;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .om-slot .om-key {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--accent2);
+            display: block;
+            border-bottom: 1px dashed rgba(30,58,95,0.8);
+            padding-bottom: 4px;
+            margin-bottom: 5px;
+        }
+
+        .om-slot .om-val { font-size: 1.15rem; font-weight: 700; display: block; line-height: 1.4; }
+
+        .om-slot.om-new {
+            border-color: var(--accent);
+            background: rgba(0,255,136,0.14);
+            box-shadow: 0 0 18px rgba(0,255,136,0.4);
+            transform: translateY(-8px);
+        }
+        .om-slot.om-new .om-key { color: var(--accent); font-weight: 700; }
+
+        .om-slot.om-dying {
+            border-color: var(--danger);
+            background: rgba(255,71,87,0.16);
+            transform: scale(0.82);
+            opacity: 0.45;
+        }
+        .om-slot.om-dying .om-key { color: var(--danger); }
+
+        .om-slot.om-scan {
+            border-color: var(--warn);
+            background: rgba(255,165,2,0.14);
+            transform: translateY(-6px);
+        }
+        .om-slot.om-scan .om-key { color: var(--warn); font-weight: 700; }
+
+        .om-slot.om-found {
+            border-color: var(--accent);
+            background: rgba(0,255,136,0.22);
+            box-shadow: 0 0 24px rgba(0,255,136,0.55);
+            transform: translateY(-8px) scale(1.08);
+        }
+        .om-slot.om-found .om-key { color: var(--accent); font-weight: 700; }
+
+        .om-slot.om-updated {
+            border-color: var(--accent2);
+            background: rgba(0,212,255,0.18);
+            box-shadow: 0 0 20px rgba(0,212,255,0.45);
+            transform: translateY(-8px);
+        }
+        .om-slot.om-updated .om-val { color: var(--accent2); }
+
+        .om-empty {
+            font-family: 'Fira Code', monospace;
+            color: var(--danger);
+            font-size: 0.9rem;
+            align-self: center;
+        }
+
+        .om-len {
+            font-family: 'Fira Code', monospace;
+            color: var(--purple);
+            font-size: 0.78rem;
+            align-self: flex-start;
+            background: rgba(168,85,247,0.08);
+            border: 1px dashed rgba(168,85,247,0.4);
+            border-radius: 999px;
+            padding: 5px 12px;
+        }
+
+        .om-track {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-width: 700px;
+            margin: 14px auto 0;
+        }
+
+        .om-row {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.84rem;
+            color: var(--fg);
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.35s;
+            line-height: 1.6;
+        }
+
+        .om-row.show { opacity: 1; transform: translateY(0); }
+
+        .om-row.om-in { border-left-color: var(--accent2); background: rgba(0,212,255,0.05); }
+        .om-row.om-step { border-left-color: var(--accent); background: rgba(0,255,136,0.05); }
+        .om-row.om-out { border-left-color: var(--purple); background: rgba(168,85,247,0.06); }
+        .om-row.om-warn { border-left-color: var(--danger); background: rgba(255,71,87,0.07); }
+
+        .om-summary {
+            text-align: center;
+            margin-top: 18px;
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            min-height: 24px;
+        }
+
+        .om-summary code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        /* === Analogies === */
+        .analogy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .analogy-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .analogy-card:hover {
+            border-color: var(--accent2);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0,212,255,0.12);
+        }
+
+        .analogy-card .a-emoji { font-size: 2.2rem; margin-bottom: 12px; display: block; }
+        .analogy-card h4 { margin-bottom: 8px; font-size: 1.02rem; }
+        .analogy-card h4 span { color: var(--accent2); }
+        .analogy-card p { color: var(--muted); font-size: 0.86rem; line-height: 1.7; }
+        .analogy-card .a-code {
+            margin-top: 12px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+            background: rgba(0,255,136,0.07);
+            border-radius: 8px;
+            padding: 9px 12px;
+            line-height: 1.6;
+        }
+
+        /* === Examples Gallery === */
+        .ex-tabs {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+        }
+
+        .ex-tab {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .ex-tab:hover { border-color: var(--accent2); color: var(--accent2); }
+
+        .ex-tab.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+            font-weight: 700;
+        }
+
+        .ex-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .ex-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .ex-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+        .ex-card .ex-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .ex-card .ex-num {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: rgba(0,255,136,0.12);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .ex-card .ex-title { font-size: 0.92rem; font-weight: 600; }
+
+        .ex-card pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.7;
+            padding: 16px 18px;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .ex-card .ex-out {
+            padding: 12px 18px;
+            border-top: 1px dashed var(--border);
+            color: var(--warn);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+        }
+
+        .ex-card .ex-out::before { content: '▶ Output: '; color: var(--muted); }
+
+        /* === Use Cases === */
+        .use-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 18px;
+        }
+
+        .use-card {
+            background: linear-gradient(145deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+        }
+
+        .use-card:hover { border-color: var(--purple); transform: translateY(-4px); }
+
+        .use-card .u-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .use-card .u-logo { font-size: 1.8rem; }
+        .use-card h4 { font-size: 1rem; }
+        .use-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 10px; }
+        .use-card .u-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+        .u-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(168,85,247,0.12);
+            color: var(--purple);
+            border: 1px solid rgba(168,85,247,0.3);
+        }
+
+        .use-card .u-snippet {
+            margin-top: 12px;
+            background: #0d1321;
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.65;
+            color: var(--accent2);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* === Playground === */
+        .playground {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            overflow: hidden;
+        }
+
+        .pg-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pg-top .pg-title { font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 8px; }
+        .pg-top .pg-title i { color: var(--accent); }
+
+        .pg-snippets { display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .pg-snippets button {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 7px 13px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pg-snippets button:hover { border-color: var(--accent); color: var(--accent); }
+
+        .pg-body { display: grid; grid-template-columns: 1fr 1fr; }
+        @media (max-width: 820px) { .pg-body { grid-template-columns: 1fr; } }
+
+        .pg-body textarea {
+            width: 100%;
+            height: 320px;
+            background: #0d1321;
+            border: none;
+            resize: vertical;
+            padding: 18px;
+            color: var(--fg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.85rem;
+            line-height: 1.7;
+            outline: none;
+            border-right: 1px solid var(--border);
+        }
+
+        @media (max-width: 820px) { .pg-body textarea { border-right: none; border-bottom: 1px solid var(--border); } }
+
+        .pg-console {
+            height: 320px;
+            overflow-y: auto;
+            padding: 18px;
+            background: var(--bg);
+            font-family: 'Fira Code', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+        }
+
+        .pg-console .cl { padding: 3px 0; color: var(--fg); word-break: break-word; }
+        .pg-console .cl-err { color: var(--danger); }
+        .pg-console .cl-info { color: var(--accent2); }
+        .pg-console .cl-warn { color: var(--warn); }
+
+        .pg-runbar {
+            display: flex;
+            gap: 10px;
+            padding: 12px 20px;
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-run {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            padding: 10px 26px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-run:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(0,255,136,0.3); }
+
+        .btn-clear {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .btn-clear:hover { border-color: var(--danger); color: var(--danger); }
+
+        .pg-hint { color: var(--muted); font-size: 0.75rem; margin-left: auto; }
+        @media (max-width: 640px) { .pg-hint { margin-left: 0; } }
+    </style>
+<style>
+        /* === Workshop === */
+        .ws-list { display: flex; flex-direction: column; gap: 16px; }
+
+        .ws-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color 0.3s;
+        }
+
+        .ws-item:hover { border-color: var(--accent); }
+
+        .ws-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .ws-head:hover { background: rgba(0,255,136,0.03); }
+
+        .ws-badge {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 4px 11px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .ws-badge.easy { background: rgba(0,255,136,0.12); color: var(--accent); border: 1px solid rgba(0,255,136,0.3); }
+        .ws-badge.medium { background: rgba(255,165,2,0.12); color: var(--warn); border: 1px solid rgba(255,165,2,0.3); }
+        .ws-badge.hard { background: rgba(255,71,87,0.12); color: var(--danger); border: 1px solid rgba(255,71,87,0.3); }
+
+        .ws-head .ws-title { font-weight: 600; font-size: 0.95rem; flex: 1; }
+        .ws-head .ws-arrow { color: var(--muted); transition: transform 0.3s; font-size: 0.8rem; }
+        .ws-item.open .ws-arrow { transform: rotate(180deg); }
+
+        .ws-body { display: none; padding: 0 20px 20px; }
+        .ws-item.open .ws-body { display: block; }
+
+        .ws-body .ws-task {
+            color: var(--fg);
+            font-size: 0.88rem;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .ws-body .ws-task code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .ws-toggle-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent2);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            margin-right: 8px;
+            margin-bottom: 10px;
+            transition: all 0.25s;
+        }
+
+        .ws-toggle-btn:hover { border-color: var(--accent2); }
+
+        .ws-hint, .ws-sol {
+            display: none;
+            margin-top: 12px;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.84rem;
+            line-height: 1.7;
+        }
+
+        .ws-hint.show, .ws-sol.show { display: block; }
+
+        .ws-hint {
+            background: rgba(255,165,2,0.07);
+            border: 1px dashed rgba(255,165,2,0.4);
+            color: var(--fg);
+        }
+
+        .ws-hint strong { color: var(--warn); }
+
+        .ws-sol {
+            background: #0d1321;
+            border: 1px solid var(--border);
+        }
+
+        .ws-sol pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+        }
+
+        /* === Projects === */
+        .proj-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px; }
+
+        .proj-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 22px;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .proj-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+
+        .proj-card .p-emoji { font-size: 2rem; margin-bottom: 10px; }
+        .proj-card h4 { font-size: 1rem; margin-bottom: 8px; }
+        .proj-card .p-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.7; margin-bottom: 12px; }
+
+        .proj-card .p-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+
+        .p-chip {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(0,212,255,0.1);
+            color: var(--accent2);
+            border: 1px solid rgba(0,212,255,0.3);
+        }
+
+        .proj-card .p-btn {
+            margin-top: auto;
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: all 0.25s;
+            align-self: flex-start;
+        }
+
+        .proj-card .p-btn:hover { background: rgba(0,255,136,0.1); }
+
+        .proj-card .p-starter {
+            display: none;
+            margin-top: 14px;
+            background: #0d1321;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px;
+        }
+
+        .proj-card .p-starter.show { display: block; }
+
+        .proj-card .p-starter pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            line-height: 1.7;
+            white-space: pre;
+            overflow-x: auto;
+            color: var(--fg);
+            margin-bottom: 10px;
+        }
+
+        .proj-card .p-challenge {
+            color: var(--warn);
+            font-size: 0.78rem;
+            line-height: 1.65;
+        }
+
+        .proj-card .p-challenge strong { color: var(--warn); }
+
+        /* === Interview Accordion === */
+        .iq-filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+
+        .iq-filter {
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 9px 20px;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.83rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .iq-filter:hover { border-color: var(--accent2); color: var(--accent2); }
+        .iq-filter.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border-color: transparent;
+        }
+
+        .iq-list { display: flex; flex-direction: column; gap: 12px; }
+
+        .iq-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .iq-q {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 18px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .iq-q:hover { background: rgba(0,255,136,0.03); }
+
+        .iq-level {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            padding: 3px 9px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .iq-level.easy { background: rgba(0,255,136,0.12); color: var(--accent); }
+        .iq-level.medium { background: rgba(255,165,2,0.12); color: var(--warn); }
+        .iq-level.hard { background: rgba(255,71,87,0.12); color: var(--danger); }
+
+        .iq-q .iq-text { font-size: 0.9rem; font-weight: 600; flex: 1; line-height: 1.5; }
+        .iq-q .iq-arrow { color: var(--muted); font-size: 0.78rem; transition: transform 0.3s; }
+        .iq-item.open .iq-arrow { transform: rotate(180deg); }
+
+        .iq-a { display: none; padding: 0 18px 18px; }
+        .iq-item.open .iq-a { display: block; }
+
+        .iq-a .iq-answer {
+            background: var(--bg2);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 14px 16px;
+            color: var(--fg);
+            font-size: 0.86rem;
+            line-height: 1.75;
+        }
+
+        .iq-a .iq-answer code {
+            font-family: 'Fira Code', monospace;
+            background: rgba(0,255,136,0.1);
+            color: var(--accent);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        .iq-a .iq-answer pre {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            background: #0d1321;
+            border-radius: 8px;
+            padding: 12px;
+            margin-top: 10px;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.65;
+        }
+
+        /* === Cheat Sheet === */
+        .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+
+        .cheat-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .cheat-box h4 {
+            color: var(--accent2);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cheat-box table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+        .cheat-box td { padding: 6px 4px; border-bottom: 1px dashed rgba(30,58,95,0.6); }
+        .cheat-box td:first-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+        .cheat-box tr:last-child td { border-bottom: none; }
+
+        .cheat-box ul { list-style: none; }
+        .cheat-box li {
+            padding: 6px 0;
+            font-size: 0.8rem;
+            color: var(--fg);
+            line-height: 1.6;
+            border-bottom: 1px dashed rgba(30,58,95,0.6);
+        }
+        .cheat-box li:last-child { border-bottom: none; }
+        .cheat-box li i { color: var(--accent); margin-right: 7px; }
+        .cheat-box li code {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent2);
+            background: rgba(0,212,255,0.08);
+            padding: 1px 5px;
+            border-radius: 4px;
+        }
+
+        /* === Quiz === */
+        .quiz-box {
+            background: linear-gradient(135deg, var(--card), var(--card2));
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 28px;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .quiz-progress .q-count { color: var(--muted); font-size: 0.85rem; }
+        .quiz-progress .q-score { font-family: 'Fira Code', monospace; color: var(--accent); font-weight: 700; font-size: 0.9rem; }
+
+        .quiz-q { font-size: 1.05rem; font-weight: 600; margin-bottom: 18px; line-height: 1.6; }
+        .quiz-q code { font-family: 'Fira Code', monospace; color: var(--accent2); }
+
+        .quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+
+        .quiz-opt {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 13px 18px;
+            cursor: pointer;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.88rem;
+            color: var(--fg);
+            text-align: left;
+            transition: all 0.25s;
+            width: 100%;
+        }
+
+        .quiz-opt:hover { border-color: var(--accent2); transform: translateX(4px); }
+        .quiz-opt.correct { border-color: var(--accent); background: rgba(0,255,136,0.1); color: var(--accent); }
+        .quiz-opt.wrong { border-color: var(--danger); background: rgba(255,71,87,0.1); color: var(--danger); }
+        .quiz-opt:disabled { cursor: default; }
+
+        .quiz-feedback { margin-top: 14px; font-size: 0.88rem; line-height: 1.6; min-height: 22px; }
+        .quiz-feedback.good { color: var(--accent); }
+        .quiz-feedback.bad { color: var(--danger); }
+
+        .quiz-next {
+            margin-top: 16px;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            color: #0a0e17;
+            border: none;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 11px 28px;
+            border-radius: 999px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .quiz-next.show { display: inline-block; }
+
+        .quiz-final { text-align: center; padding: 20px 0; }
+        .quiz-final .qf-emoji { font-size: 3rem; margin-bottom: 12px; }
+        .quiz-final h4 { font-size: 1.3rem; margin-bottom: 8px; }
+        .quiz-final p { color: var(--muted); margin-bottom: 18px; font-size: 0.92rem; }
+
+        /* === Footer === */
+        footer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 50px 20px 40px;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        footer .f-next {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 12px 26px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 18px;
+        }
+
+        footer p { color: var(--muted); font-size: 0.82rem; line-height: 1.8; }
+        footer .f-heart { color: var(--danger); }
+
+        /* === Responsive === */
+        @media (max-width: 640px) {
+            .section { padding: 32px 16px; }
+            .om { padding: 20px 16px; }
+            .roadmap-track { justify-content: flex-start; }
+        }
+    
+        /* ==================== SERIES NAVBAR (JS Ka Safar) ==================== */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            height: 56px;
+            padding: 0 18px;
+            background: rgba(10, 14, 23, 0.9);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 6px 28px rgba(0, 0, 0, 0.4);
+        }
+        .tn-brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: var(--accent);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .tn-brand i { filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.7)); }
+        .tn-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+        .tn-links::-webkit-scrollbar { display: none; }
+        .tn-link {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--muted);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: color 0.2s, background 0.2s, border-color 0.2s;
+        }
+        .tn-link i { font-size: 11px; }
+        .tn-link:hover { color: var(--accent2); background: rgba(0, 212, 255, 0.08); }
+        .tn-link.active {
+            color: var(--accent);
+            background: rgba(0, 255, 136, 0.1);
+            border-color: rgba(0, 255, 136, 0.35);
+            box-shadow: 0 0 14px rgba(0, 255, 136, 0.18);
+        }
+        .tn-link.active i { filter: drop-shadow(0 0 6px rgba(0, 255, 136, 0.8)); }
+        .tn-soon { opacity: 0.45; cursor: not-allowed; }
+        .tn-soon:hover { color: var(--muted); background: transparent; }
+        body { padding-top: 56px; }
+        @media (max-width: 720px) {
+            .topnav { padding: 0 10px; gap: 8px; }
+            .tn-brand span { display: none; }
+            .tn-link { padding: 6px 9px; font-size: 11.5px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============ SERIES NAVBAR ============ -->
+    <nav class="topnav">
+        <a class="tn-brand" href="variables.html" title="JavaScript Ka Safar — Home"><i class="fas fa-bolt"></i><span>JS Ka Safar</span></a>
+        <div class="tn-links">
+        <a href="variables.html" class="tn-link"><i class="fas fa-crown"></i> 1. Variables</a>
+        <a href="operators.html" class="tn-link"><i class="fas fa-wand-magic-sparkles"></i> 2. Operators</a>
+        <a href="conditionals.html" class="tn-link"><i class="fas fa-gamepad"></i> 3. Conditionals</a>
+        <a href="loops.html" class="tn-link"><i class="fas fa-rotate"></i> 4. Loops</a>
+        <a href="functions.html" class="tn-link"><i class="fas fa-gears"></i> 5. Functions</a>
+        <a href="arrays.html" class="tn-link"><i class="fas fa-bars-staggered"></i> 6. Arrays</a>
+        <a href="objects.html" class="tn-link active"><i class="fas fa-box-open"></i> 7. Objects</a>
+        <a href="dom.html" class="tn-link"><i class="fas fa-desktop"></i> 8. DOM</a>
+        </div>
+    </nav>
+
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- ============ HERO ============ -->
+    <header>
+        <span class="badge-chapter">⚡ Chapter 7 — JavaScript Journey</span>
+        <h1>Cheezon Ka Pitara 🎒</h1>
+        <p>Array ne sikhaya EK naam mein poori LINE... par <b>ek STUDENT ki details?</b> Naam alag variable, age alag, marks alag — chhota bhai ban gaya variables ka raja! 😩 Ruko — Objects aa gaye! <b>EK pitara, saari DETAILS, har detail ka apna NAAM.</b> Aadhaar card, Instagram profile, Zomato ka restaurant — sab objects pe chalte hai. Chalo cheezein pitare mein band karein! 🪪</p>
+    </header>
+
+    <!-- ============ ROADMAP ============ -->
+    <div class="roadmap-wrap">
+        <div class="roadmap">
+            <h3><i class="fas fa-map-signs"></i> Tumhara JavaScript Journey</h3>
+            <div class="roadmap-track">
+                <span class="rm-chip done"><i class="fas fa-check"></i> 1. Variables</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 2. Operators</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 3. Conditionals</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 4. Loops</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 5. Functions</span>
+                <span class="rm-chip done"><i class="fas fa-check"></i> 6. Arrays</span>
+                <span class="rm-chip now"><i class="fas fa-location-arrow"></i> 7. Objects (TUM YAHIN HO)</span>
+                <span class="rm-chip future">8. DOM + Projects</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ INTRO: OBJECT KYA HAI ============ -->
+    <section class="section" id="intro">
+        <span class="section-tag"><i class="fas fa-lightbulb"></i> Concept</span>
+        <h2>Object Kya Hota Hai? 🤔</h2>
+        <p class="section-desc">Socho: tumhara <b>Aadhaar card</b>. Uspe naam hai, date of birth hai, address hai, photo hai — sab <b>EK card</b> pe, aur har detail ka apna <b>naam</b> (Name, DOB, Address). Koi number-number nahi — <b>label ke saath</b>! Object wahi Aadhaar card hai: ek variable ke andar <b>ek cheez ki saari jaankari</b>, har jaankari ka apna naam!</p>
+
+        <div class="concept-box">
+            <h4><i class="fas fa-id-card"></i> Aadhaar Card Analogy</h4>
+            <p>Pichle chapter ka array yaad hai? Array = <b>ek jaisi cheezon ki LINE</b> (5 fruits, 10 marks). Par ek student ki baat karo toh uski details alag-alag TYPE ki hai — naam (string), age (number), pass (true/false). Array mein daala toh kaun sa item kya hai, yaad rakhna padega — <code>arr[0]</code> naam tha? ya age?! 🤯 Object ne ye problem khatam kardi: <code>student.name</code> — naam hi naam se milta hai! <b>Index ke bajaye LABEL</b> — 0,1,2 ratna band, seedha naam se uthao.<br><br>
+            Real apps mein objects har jagah hai: Zomato ka restaurant ek object (naam, rating, time), Instagram ka profile ek object (username, followers, bio), tumhara GPay transaction ek object (amount, type, date). Aur jab inki LIST chahiye — <b>array of objects</b> (Ch6 + Ch7 ka jodi!) — poori app ka data ban gaya! 🪄</p>
+        </div>
+
+        <div class="flow">
+            <div class="flow-box" style="border-top:3px solid var(--accent2);"><span class="f-tag" style="color:var(--accent2);">CREATE 🏗️</span>pitara banao<br><small style="color:var(--muted);">let student = { ... }</small></div>
+            <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+            <div class="flow-cond">NAAM se padho / badlo .name ya ["name"]</div>
+            <div class="flow-arrow"><i class="fas fa-check"></i></div>
+            <div class="flow-box" style="border-top:3px solid var(--purple);"><span class="f-tag" style="color:var(--purple);">MANIPULATE 🎛️</span>add / update / delete / method chalao<br><small style="color:var(--muted);">obj.key = val, delete...</small></div>
+        </div>
+
+        <div class="code-block"><span class="cm">// Object ka life (4 kaam yaad rakho):</span>
+<span class="cm">// 1. BANAO      → { } ke andar key: value pairs</span>
+<span class="cm">// 2. PADHO      → naam se: student.name, student["name"]</span>
+<span class="cm">// 3. BADLO      → student.marks = 99 (update = add bhi!)</span>
+<span class="cm">// 4. KAAM       → methods chalao: student.introduce()</span>
+
+<span class="kw">let</span> student = {
+  name: <span class="st">"Rahul"</span>,     <span class="cm">// key: value (comma yaad rakhna!)</span>
+  age: <span class="nm">16</span>,
+  pass: <span class="kw">true</span>
+};
+console.log(student.name);    <span class="cm">// "Rahul" — naam se nikala!</span>
+console.log(student.age);     <span class="cm">// 16</span>
+student.age = <span class="nm">17</span>;            <span class="cm">// birthday aa gaya — update!</span></div>
+
+        <p class="section-desc" style="margin-bottom:12px;">JavaScript mein objects ke <b>6 superpowers</b> hai — har ek ka apna moment. Sab cards dekho, phir ek-ek karke detail mein 👇</p>
+        <div class="op-grid">
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-id-badge"></i></div>
+                <h4>1. Create &amp; Access</h4>
+                <div class="op-symbols">{ key: value } / obj.key</div>
+                <p>Object banao <b>{ curly brackets }</b> se, cheez nikalo <b>naam</b> se — <code>obj.name</code>! Dot ya bracket — dono tarike (dono ka apna maza).</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-pen"></i></div>
+                <h4>2. Add / Update / Delete</h4>
+                <div class="op-symbols">obj.key = val / delete</div>
+                <p><code>obj.key = value</code> — pehle se thi toh <b>update</b>, nahi thi toh <b>NAYI ban gayi</b>! Udao toh <code>delete obj.key</code>.</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-gears"></i></div>
+                <h4>3. Methods — Object Ke Kaam</h4>
+                <div class="op-symbols">obj.doSomething()</div>
+                <p>Object ke andar <b>function</b> bhi rakh sakte ho — <b>method</b> kehlata hai! Car ka <code>drive()</code> button — property hai hi kaam karne wali!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-mirror"></i></div>
+                <h4>4. this — Apni Baat Apni</h4>
+                <div class="op-symbols">this.name</div>
+                <p>Method ke andar <code>this</code> = <b>yehi object</b>! <code>this.name</code> se object apni hi property padh leta hai — koi argument nahi chahiye!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-list-check"></i></div>
+                <h4>5. Keys / Values / Loop</h4>
+                <div class="op-symbols">Object.keys(obj) / for...in</div>
+                <p><code>Object.keys</code> saare labels ki list deta hai, <code>for...in</code> har key pe loop chalata hai — array wala <code>for...of</code> ka bhai!</p>
+            </div>
+            <div class="op-card">
+                <div class="op-icon"><i class="fas fa-layer-group"></i></div>
+                <h4>6. Nested + Array of Objects</h4>
+                <div class="op-symbols">obj.a.b / [{...}, {...}]</div>
+                <p>Object ke andar object (<b>nested</b>), aur objects ki array — <b>real apps ka asli data</b> aise hi dikhta hai! Zomato ka menu isi se banta hai.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CREATE & ACCESS ============ -->
+    <section class="section" id="create">
+        <span class="section-tag"><i class="fas fa-id-badge"></i> Power #1</span>
+        <h2>Create &amp; Access — Dot vs Bracket 🔑</h2>
+        <p class="section-desc">Object banane ke liye <b>{ curly brackets }</b> aur andar <b>key: value</b> pairs — har pair <b>comma se alag</b>. Key = label (naam), value = cheez. Access ke <b>2 tarike</b>: <b>dot</b> (<code>obj.name</code>) aur <b>bracket</b> (<code>obj["name"]</code>). Dono same kaam karte hai — par kab kaunsa? Yahi asli sawal hai!</p>
+
+        <div class="code-block"><span class="cm">// Syntax: let NAAM = { key1: value1, key2: value2 };</span>
+<span class="kw">let</span> student = {
+  name: <span class="st">"Rahul"</span>,
+  age: <span class="nm">16</span>,
+  marks: <span class="nm">92</span>
+};
+
+<span class="cm">// DOT notation — sabse common, seedha-saadha</span>
+console.log(student.name);     <span class="cm">// "Rahul"</span>
+console.log(student.marks);    <span class="cm">// 92</span>
+
+<span class="cm">// BRACKET notation — key STRING mein do</span>
+console.log(student[<span class="st">"name"</span>]);  <span class="cm">// "Rahul" — same jawab!</span>
+console.log(student[<span class="st">"marks"</span>]); <span class="cm">// 92</span>
+
+<span class="cm">// Missing key? Error NAHI — undefined (Ch6 wala scene!)</span>
+console.log(student.city);     <span class="cm">// undefined 😶 — silent failure</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: Dot Mein Variable KAAM NAHI Karta!</h5>
+            <p><code>let k = "name";</code> ab <code>student.k</code> likha toh JS <b>literally "k" naam ki property</b> dhoondhega — "name" nahi! <code>undefined</code> milega aur tum confusion mein doob jaoge 😵.<br>
+            Variable se access karna hai toh <b>bracket hi lagao</b>: <code>student[k]</code> — ab JS k ki <b>VALUE</b> ("name") use karega! Yaad rakho: <b>dot = sirf literal naam, bracket = variable bhi chalega!</b></p>
+        </div>
+
+        <div class="code-block"><span class="cm">// BRACKET ka asli SUPERPOWER — dynamic access</span>
+<span class="kw">let</span> field = <span class="st">"marks"</span>;              <span class="cm">// kaunsi property? user ne batai!</span>
+console.log(student[field]);      <span class="cm">// 92 — variable ki VALUE use hui</span>
+
+field = <span class="st">"name"</span>;
+console.log(student[field]);      <span class="cm">// "Rahul" — ab naam nikala!</span>
+
+<span class="cm">// Space wali key? Bracket hi rasta hai</span>
+<span class="kw">let</span> person = { <span class="st">"full name"</span>: <span class="st">"Rahul Kumar"</span> };
+console.log(person[<span class="st">"full name"</span>]); <span class="cm">// ✅ bracket chal gaya</span>
+<span class="cm">// person.full name  ❌ — dot syntax yaha kaise karega?!</span></div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Tareeka</th><th>Example</th><th>Kab use kare?</th><th>Result</th></tr>
+                <tr><td class="sym">obj.key</td><td class="ex">student.name</td><td class="desc">key ka naam PAATA hai, simple hai</td><td class="res">"Rahul"</td></tr>
+                <tr><td class="sym">obj["key"]</td><td class="ex">student["name"]</td><td class="desc">key STRING mein — same kaam</td><td class="res">"Rahul"</td></tr>
+                <tr><td class="sym">obj[variable]</td><td class="ex">student[k] (k="marks")</td><td class="desc">key chalti-firti (dynamic) hai!</td><td class="res">92</td></tr>
+                <tr><td class="sym">obj["full name"]</td><td class="ex">space/dash wali key</td><td class="desc">dot yaha kaam nahi karega</td><td class="res">"Rahul Kumar"</td></tr>
+                <tr><td class="sym">obj.galatNaam</td><td class="ex">student.city (nahi hai!)</td><td class="desc">missing property poochi</td><td class="res">undefined (error nahi!)</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> Default Rule: Dot Likho, Baaki Cases Mein Bracket</h5>
+            <p>90% time <b>dot</b> — chhota, padhne mein aasan, har codebase mein. Bracket ka time aata hai jab: (1) key <b>variable mein</b> hai, (2) key mein <b>space ya special character</b> hai, (3) key <b>number</b> hai. Professional code mein dono dikhega — ab tum jaante ho kaunsa kab! Aur ek pro habit: quotes yaad rakho — <code>obj["name"]</code> ✅, <code>obj[name]</code> sirf tab jab <b>name naam ka variable</b> sach mein ho!</p>
+        </div>
+    </section>
+
+    <!-- ============ ADD / UPDATE / DELETE ============ -->
+    <section class="section" id="update">
+        <span class="section-tag"><i class="fas fa-pen"></i> Power #2</span>
+        <h2>Add / Update / Delete — Pitara Zinda Hai! ✏️</h2>
+        <p class="section-desc">Array mein push/pop alag-alag the... object mein toh <b>ek hi syntax</b> sab kuch karta hai: <code>obj.key = value</code>! Pehle se property thi → <b>update</b> ho gayi. Nahi thi → <b>nayi ban gayi</b>! Aur hatana ho toh <code>delete</code>. Pata karna ho ki property hai ya nahi — <code>in</code> operator. Chalo dekho!</p>
+
+        <div class="code-block"><span class="cm">// UPDATE — pehle se thi, badal do</span>
+<span class="kw">let</span> student = { name: <span class="st">"Rahul"</span>, marks: <span class="nm">72</span> };
+student.marks = <span class="nm">95</span>;
+console.log(student.marks);   <span class="cm">// 95 — pehle 72 tha!</span>
+
+<span class="cm">// ADD — nayi property? WAHI syntax!</span>
+student.city = <span class="st">"Delhi"</span>;
+console.log(student);         <span class="cm">// { name, marks: 95, city: "Delhi" } — naya label aa gaya!</span>
+
+<span class="cm">// Bracket se bhi add/update chalta hai</span>
+student[<span class="st">"email"</span>] = <span class="st">"rahul@mail.com"</span>;
+
+<span class="cm">// DELETE — property hamesha ke liye gayi</span>
+<span class="kw">delete</span> student.city;
+console.log(student.city);    <span class="cm">// undefined — ab nahi rahi</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: obj.key Padhne Pe undefined — Error NAHI!</h5>
+            <p>Jo property exist nahi karti, usse padha toh JS chup-chaap <code>undefined</code> de dega — <b>error nahi aayega</b>! Silent failure (Ch5 + Ch6 mein bhi mila tha — yahi JS ka style hai!). Aur haan — <code>delete</code> ek <b>operator</b> hai, function nahi: <code>delete obj.key</code> ✅, <code>obj.delete("key")</code> ❌ (aisa koi method hai hi nahi!).<br>
+            Isliye use karne se PEHLE check karo — neeche wala <code>in</code> operator dekho! 👇</p>
+        </div>
+
+        <div class="code-block"><span class="cm">// IN operator — "kya ye property hai?" (true/false)</span>
+<span class="kw">let</span> student = { name: <span class="st">"Rahul"</span>, marks: <span class="nm">92</span> };
+
+console.log(<span class="st">"name"</span> <span class="kw">in</span> student);   <span class="cm">// true — hai!</span>
+console.log(<span class="st">"city"</span> <span class="kw">in</span> student);   <span class="cm">// false — nahi hai</span>
+
+<span class="cm">// Safe access ka full pattern (Ch3 ka if + Ch7 ka in!)</span>
+<span class="kw">if</span> (<span class="st">"marks"</span> <span class="kw">in</span> student) {
+  console.log(<span class="st">"Marks: "</span> + student.marks);
+} <span class="kw">else</span> {
+  console.log(<span class="st">"Marks ka label hi nahi hai!"</span>);
+}</div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Kaam</th><th>Syntax</th><th>Kya hota hai</th></tr>
+                <tr><td class="sym">Read</td><td class="ex">obj.key / obj["key"]</td><td class="desc">value milti hai — missing toh <b>undefined</b></td></tr>
+                <tr><td class="sym">Update</td><td class="ex">obj.key = newValue</td><td class="desc">property thi → value badal gayi</td></tr>
+                <tr><td class="sym">Add</td><td class="ex">obj.newKey = value</td><td class="desc">property nahi thi → NAYI ban gayi!</td></tr>
+                <tr><td class="sym">Delete</td><td class="ex">delete obj.key</td><td class="desc">property gayi — access = undefined</td></tr>
+                <tr><td class="sym">Check</td><td class="ex">"key" in obj</td><td class="desc">true/false — property ka pacca proof</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Ek Syntax, Teen Kaam — Isi Ko "Object Ki Azadi" Kehte Hai!</h5>
+            <p>Array mein add karne ke liye push, hatane ke liye pop, badalne ke liye index assign — <b>3 cheezein ratni padi</b>. Object mein? Bas <code>obj.key = value</code> — JS khud soch leta hai "pehle se hai toh update, nahi toh add"! Aur <code>delete</code> kaam khatam. Isi liye objects ko "flexible" kehte hai — <b>batao kya chahiye, JS de dega</b>. Instagram profile mein bio add karna, phone number update karna — sab isi ek syntax se hota hai! 🔄</p>
+        </div>
+    </section>
+
+    <!-- ============ METHODS + THIS ============ -->
+    <section class="section" id="methods">
+        <span class="section-tag"><i class="fas fa-gears"></i> Power #3 &amp; #4</span>
+        <h2>Methods + this — Object Jo Kaam Bhi Kare! 🤖</h2>
+        <p class="section-desc">Ch5 ka function yaad hai? Ab usse object ke <b>ANDAR</b> rakh do — ban gaya <b>method</b>! Car ke andar horn ho toh horn ka button dabao — car ki apni cheez, car ke andar. Object ka method bhi wahi hai: object ki apni function. Aur <code>this</code>? Method ke andar <b>"main khud"</b> bolne ka tareeka — object apni hi properties padh leta hai!</p>
+
+        <div class="code-block"><span class="cm">// METHOD — object ke andar function (shorthand syntax)</span>
+<span class="kw">let</span> student = {
+  name: <span class="st">"Rahul"</span>,
+  marks: <span class="nm">92</span>,
+  <span class="cm">// method #1 — function jo KAAM karti hai</span>
+  introduce() {
+    <span class="kw">return</span> <span class="st">"Hi! Main "</span> + <span class="kw">this</span>.name;   <span class="cm">// this = YEHI student</span>
+  },
+  <span class="cm">// method #2 — properties padh ke CALCULATE karta hai</span>
+  grade() {
+    <span class="kw">if</span> (<span class="kw">this</span>.marks &gt;= <span class="nm">90</span>) <span class="kw">return</span> <span class="st">"A+"</span>;
+    <span class="kw">if</span> (<span class="kw">this</span>.marks &gt;= <span class="nm">75</span>) <span class="kw">return</span> <span class="st">"B"</span>;
+    <span class="kw">return</span> <span class="st">"C"</span>;
+  }
+};
+
+console.log(student.introduce());   <span class="cm">// "Hi! Main Rahul"</span>
+console.log(student.grade());       <span class="cm">// "A+" — 92 se calculation!</span>
+
+student.marks = <span class="nm">60</span>;                 <span class="cm">// marks badle...</span>
+console.log(student.grade());       <span class="cm">// "C" — jawab bhi badal gaya! LIVE!</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: () Ke Bina Method Sirf "Recipe" Hai!</h5>
+            <p><code>student.introduce</code> (bina brackets) = function ka <b>CODE</b> milta hai — chalta nahi! <code>student.introduce()</code> (brackets ke saath) = <b>method CHALTA hai</b> aur jawab aata hai. Ch5 wala <code>fn vs fn()</code> trap ab object ka roop pehen gaya! Console mein <code>f introduce() { ... }</code> dikha toh samajh lo brackets bhool gaye 😅</p>
+        </div>
+
+        <div class="code-block"><span class="cm">// THIS ka matlab: "jis object pe method chala, WAHI"</span>
+<span class="kw">let</span> rahul = {
+  name: <span class="st">"Rahul"</span>,
+  hello() { <span class="kw">return</span> <span class="st">"Main hu "</span> + <span class="kw">this</span>.name; }
+};
+<span class="kw">let</span> priya = {
+  name: <span class="st">"Priya"</span>,
+  hello() { <span class="kw">return</span> <span class="st">"Main hu "</span> + <span class="kw">this</span>.name; }
+};
+
+console.log(rahul.hello());   <span class="cm">// "Main hu Rahul" — this = rahul</span>
+console.log(priya.hello());   <span class="cm">// "Main hu Priya" — this = priya</span>
+<span class="cm">// SAME method, ALAG this — jisne bulaya uska naam!</span></div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> this = "Jisne Bulaya Usi Ka" — Recharge Card!</h5>
+            <p><code>this</code> ek <b>recharge card</b> hai jo method ke andar dikhta hai — jis object ne method <b>bulaaya</b>, wahi isme recharge hota hai! <code>rahul.hello()</code> mein this = rahul, <code>priya.hello()</code> mein this = priya. Isliye ek hi method likh ke <b>hazaar objects</b> pe chala sakte ho — har object apna naam khud dikhega! Yahi wajah hai ki Instagram ke crores of profiles ek hi code se chalte hai 🤯. Pro tip: method banate waqt <code>arrow function</code> se bacho — arrow ka <code>this</code> object ko point NAHI karta (interview ka favourite trap — neeche workshop mein dikhega!).</p>
+        </div>
+    </section>
+
+    <!-- ============ KEYS / VALUES / LOOP ============ -->
+    <section class="section" id="listsec">
+        <span class="section-tag"><i class="fas fa-list-check"></i> Power #5</span>
+        <h2>Object.keys / values / for...in — Pitare Ki Ginti 📋</h2>
+        <p class="section-desc">Array ka <code>length</code> tha, object ka <b>length nahi hota</b>! 😱 Toh pitare mein kya-kya hai ye kaise pata kare? JS ke paas ready-made tools hai: <code>Object.keys</code> (saare labels), <code>Object.values</code> (saari cheezein), <code>Object.entries</code> (dono ki jodi) — aur <code>for...in</code> loop har key pe chalne ke liye. Ye tools <b>ARRAY return karte hai</b> — matlab Ch6 ka poora gyaan yaha bhi chalega!</p>
+
+        <div class="code-block"><span class="kw">let</span> student = { name: <span class="st">"Rahul"</span>, age: <span class="nm">16</span>, marks: <span class="nm">92</span> };
+
+<span class="cm">// KEYS — saare LABELS ka array</span>
+console.log(Object.keys(student));    <span class="cm">// ["name", "age", "marks"]</span>
+
+<span class="cm">// VALUES — saari CHEEZEIN ka array</span>
+console.log(Object.values(student));  <span class="cm">// ["Rahul", 16, 92]</span>
+
+<span class="cm">// ENTRIES — [key, value] jodiyon ka array</span>
+console.log(Object.entries(student));
+<span class="cm">// [["name","Rahul"], ["age",16], ["marks",92]]</span>
+
+<span class="cm">// Kitti properties hai? .length ab chalega (array bhi toh hai!)</span>
+console.log(Object.keys(student).length);  <span class="cm">// 3</span></div>
+
+        <div class="code-block"><span class="cm">// LOOP #1: for...in — har KEY pe chalta hai</span>
+<span class="kw">for</span> (<span class="kw">let</span> key <span class="kw">in</span> student) {
+  console.log(key + <span class="st">" = "</span> + student[key]);  <span class="cm">// bracket ZAROORI (dynamic!)</span>
+}
+<span class="cm">// name = Rahul / age = 16 / marks = 92</span>
+
+<span class="cm">// LOOP #2: Object.keys + for...of (Ch6 style!)</span>
+<span class="kw">for</span> (<span class="kw">let</span> key <span class="kw">of</span> Object.keys(student)) {
+  console.log(<span class="st">"Label: "</span> + key);
+}
+
+<span class="cm">// LOOP #3: sirf values chahiye? for...of values pe</span>
+<span class="kw">for</span> (<span class="kw">let</span> val <span class="kw">of</span> Object.values(student)) {
+  console.log(val);   <span class="cm">// Rahul, 16, 92</span>
+}</div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: for...in INDEX NahI, KEY Deta Hai!</h5>
+            <p>Ch6 mein kaha tha — <code>for...in</code> array pe mat lagao. Kyun? Ab samjho: for...in <b>objects ke liye bana hai</b> — wo <b>KEYS</b> deta hai! Array pe lagaya toh index deta hai (aur wo bhi STRING "0","1","2" — Ch2 wala + trap!).<br>
+            Object loop ka classic bug: <code>for (let key in obj) console.log(obj.key)</code> — dot ne literal "key" naam ki property dhoondhi, <b>undefined × 3</b>! Bracket likho: <code>obj[key]</code> ✅ — ab variable ki VALUE use hogi. Ye do trap aaj raat sapne mein aayenge, bachke rehna! 😄</p>
+        </div>
+
+        <div class="op-table-wrap">
+            <table class="op-table">
+                <tr><th>Tool</th><th>Kya return karta hai</th><th>Example output (student)</th></tr>
+                <tr><td class="sym">Object.keys(obj)</td><td class="ex">labels ka array</td><td class="res">["name", "age", "marks"]</td></tr>
+                <tr><td class="sym">Object.values(obj)</td><td class="ex">cheezein ka array</td><td class="res">["Rahul", 16, 92]</td></tr>
+                <tr><td class="sym">Object.entries(obj)</td><td class="ex">[key, value] jodiyon ka array</td><td class="res">[["name","Rahul"], ...]</td></tr>
+                <tr><td class="sym">for (let k in obj)</td><td class="ex">har KEY pe loop (string keys)</td><td class="res">name, age, marks</td></tr>
+                <tr><td class="sym">obj.length</td><td class="ex">❌ EXIST NAHI KARTA!</td><td class="res">undefined — Object.keys().length lagao!</td></tr>
+            </table>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-star"></i> Full Circle Moment: Ch6 Ka Promise Poora! 🎯</h5>
+            <p>Ch6 mein padha tha — "for...in <b>asal mein objects</b> ke liye bana hai". Aaj wo din aa gaya! Object pe loop chahiye toh for...in ya <code>Object.keys + for...of</code> — dono chalte hai. Pro coders ka favourite: <code>Object.entries</code> se dono ek saath: <code>for (let [key, value] of Object.entries(obj))</code> — key bhi, value bhi, ek saath! Array of keys mil gayi matlab <b>filter/map bhi laga sakte ho</b> (Ch6 combo!). Pitara khul gaya — ab kuch bhi count, loop, transform karo! 🔓</p>
+        </div>
+    </section>
+
+    <!-- ============ NESTED + ARRAY OF OBJECTS ============ -->
+    <section class="section" id="nested">
+        <span class="section-tag"><i class="fas fa-layer-group"></i> Power #6</span>
+        <h2>Nested Objects + Array of Objects — Asli App Ka Data! 🪆</h2>
+        <p class="section-desc">Ab tak ke objects seedhe the — ek level. Par asli app ka data <b>matryoshka doll</b> jaisa hai: object ke andar object, array ke andar object! Zomato ka restaurant object = naam (string) + rating (number) + <b>address (khud ek object!)</b> + <b>menu (objects ki ARRAY!)</b>. Ye section samajh gaye toh kisi bhi app ka API data padh sakte ho — pakka!</p>
+
+        <div class="code-block"><span class="cm">// NESTED OBJECT — object ke andar object (alag dabba alag label)</span>
+<span class="kw">let</span> student = {
+  name: <span class="st">"Rahul"</span>,
+  marks: { math: <span class="nm">92</span>, science: <span class="nm">85</span>, english: <span class="nm">78</span> },  <span class="cm">// marks khud object!</span>
+  address: { city: <span class="st">"Delhi"</span>, pin: <span class="st">"110001"</span> }
+};
+
+<span class="cm">// Dot chain se andar jao — ek-ek darwaza kholte jao</span>
+console.log(student.marks.math);      <span class="cm">// 92</span>
+console.log(student.address.city);    <span class="cm">// "Delhi"</span>
+student.marks.math = <span class="nm">95</span>;              <span class="cm">// andar ki cheez bhi badal sakte ho</span></div>
+
+        <div class="code-block"><span class="cm">// ARRAY OF OBJECTS — real apps ka pakka data shape!</span>
+<span class="kw">let</span> students = [
+  { name: <span class="st">"Rahul"</span>, marks: <span class="nm">92</span> },
+  { name: <span class="st">"Priya"</span>, marks: <span class="nm">88</span> },
+  { name: <span class="st">"Amit"</span>, marks: <span class="nm">75</span> }
+];
+
+<span class="cm">// Array ka index + object ka dot — dono ek saath!</span>
+console.log(students[<span class="nm">0</span>].name);        <span class="cm">// "Rahul"</span>
+console.log(students[<span class="nm">2</span>].marks);       <span class="cm">// 75</span>
+
+<span class="cm">// Ch6 ka loop + Ch5 ka function + Ch7 ka object = TRIO!</span>
+<span class="kw">for</span> (<span class="kw">let</span> s <span class="kw">of</span> students) {
+  console.log(s.name + <span class="st">": "</span> + s.marks);
+}
+<span class="cm">// Rahul: 92 / Priya: 88 / Amit: 75</span>
+
+<span class="cm">// Topper dhoondo — Ch6 ka findMax, ab object pe!</span>
+<span class="kw">let</span> topper = students[<span class="nm">0</span>];
+<span class="kw">for</span> (<span class="kw">let</span> s <span class="kw">of</span> students) {
+  <span class="kw">if</span> (s.marks &gt; topper.marks) topper = s;
+}
+console.log(topper.name);             <span class="cm">// "Rahul"</span></div>
+
+        <div class="gotcha">
+            <h5><i class="fas fa-bomb"></i> BOMB ALERT: undefined Chain — Ek Galat Naam, Poora Ujda!</h5>
+            <p><code>student.adres.city</code> — "address" ki spelling galat likhi! <code>student.adres</code> = <code>undefined</code>... aur <code>undefined</code> ki property poocho ge toh? <b>TypeError: Cannot read properties of undefined</b> — poora code crash! 😱<br>
+            Array ki galat index se <b>sirf</b> <code>undefined</code> aata tha (Ch6), par undefined ki AAGE property poochna = <b>error</b>! Isliye nested data pe deep dive se pehle har level check karo: <code>if (student.address &amp;&amp; student.address.city)</code> — "address hai TABHI city poochho". Ye ek line tumhe aadhi raat ke production bugs se bachaegi! 🌙</p>
+        </div>
+
+        <div class="tipbox">
+            <h5><i class="fas fa-key"></i> Padhne Ka Formula: Bade Dabbe Se Chhote Tak — Ek-Ek Label</h5>
+            <p>Nested data padhne ka tareeka: <b>right se left padho, left se right access karo</b>! <code>students[0].marks.math</code> — "students ki pehli entry ke marks ke andar ka math". Access bhi waise hi: pehle array ka index (<code>[0]</code>), phir object ka key (<code>.marks</code>), phir andar ka key (<code>.math</code>). Zomato ka data bhi aise hi dikhta hai: <code>restaurants[0].menu[2].price</code> — ab tum isse daroge nahi, <b>padh jaoge</b>! 🗺️</p>
+        </div>
+    </section>
+
+    <!-- ============ OBJECT MACHINE SIMULATOR ============ -->
+    <section class="section" id="machine">
+        <span class="section-tag"><i class="fas fa-gamepad"></i> Live Simulator</span>
+        <h2>Object Machine — Pitare Ke Andar Se Dekho! 🪪</h2>
+        <p class="section-desc">Operation chuno → (key/value do) → <b>CHALAO</b> — object pe LIVE kya hota hai dekho: dot vs bracket access, <b>missing key ka undefined</b>, update vs add ka same syntax, delete ka natak, <b>this ka jaadu</b> method mein, aur keys ki scanning! Sab khud karo! 🕵️</p>
+
+        <div class="om">
+            <h4><i class="fas fa-id-card"></i> Object Machine</h4>
+            <p class="om-desc">Operation chuno → input do → CHALAO → properties ka live natak! (read mein key do, write mein "key, value" do, method/keys bina input!)</p>
+            <div class="om-types" id="omTypes">
+                <button class="active" onclick="setOmOp(0)">dot read</button>
+                <button onclick="setOmOp(1)">bracket read</button>
+                <button onclick="setOmOp(2)">write</button>
+                <button onclick="setOmOp(3)">delete</button>
+                <button onclick="setOmOp(4)">method</button>
+                <button onclick="setOmOp(5)">Object.keys</button>
+            </div>
+            <div class="om-input-row">
+                <label>Input:</label>
+                <input type="text" id="omVal" value="name" placeholder="key ya key, value">
+                <button class="om-btn" onclick="runOm()"><i class="fas fa-bolt"></i> CHALAO!</button>
+                <button class="om-btn-reset" onclick="resetOm()"><i class="fas fa-rotate-left"></i> Reset</button>
+            </div>
+            <div class="om-code" id="omCode">student.name</div>
+            <div class="om-view" id="omView"></div>
+            <div class="om-track" id="omTrack"></div>
+            <div class="om-summary" id="omSummary">CHALAO dabao — object ke andar ki kahaani yaha dikhegi! 🪪</div>
+        </div>
+    </section>
+
+    <!-- ============ REAL LIFE ANALOGIES ============ -->
+    <section class="section" id="analogies">
+        <span class="section-tag"><i class="fas fa-home"></i> Real-Life Connection</span>
+        <h2>Objects Tumhari Life Mein Roz Chal Rahe Hai! 🏠</h2>
+        <p class="section-desc">Tum roz objects ke saath khel rahe ho, bas naam nahi pata tha! Yeh 6 cards dekho — samajh pakka ho jayegi:</p>
+
+        <div class="analogy-grid">
+            <div class="analogy-card">
+                <span class="a-emoji">🪪</span>
+                <h4>Aadhaar Card = <span>object</span></h4>
+                <p>Har detail ka apna <b>label</b>: Name, DOB, Address. Koi index number nahi — <b>naam se field milta hai</b>! Card = object, har label = key, har jaankari = value.</p>
+                <div class="a-code">let aadhaar = { name: "Rahul", dob: "2008-05-14" };
+aadhaar.name;   // naam se nikala! 🪪</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">📱</span>
+                <h4>Phone Contact = <span>object + method</span></h4>
+                <p>Contact card mein naam, number, email — properties. Aur <b>"Call" button</b>? Wo method hai — dabao toh KAAM karta hai, sirf dikhta nahi!</p>
+                <div class="a-code">let maa = { name: "Maa", call() { return "📞..." } };
+maa.call();   // button daba diya!</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🍽️</span>
+                <h4>Zomato Menu = <span>array OF objects</span></h4>
+                <p>Har dish ek object hai (naam, price, veg?) aur poora menu <b>un objects ki array</b>! <code>menu[2].price</code> — teesri dish ka price. Ch6 + Ch7 ka shaadi!</p>
+                <div class="a-code">let menu = [{name:"Dosa", price:80}, {name:"Chai", price:20}];
+menu[0].price;  // 80</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🎮</span>
+                <h4>Game Character = <span>properties + this</span></h4>
+                <p>Health, level, power — properties. <code>attack()</code>, <code>heal()</code> — methods. Aur attack ke andar <code>this.power</code> — <b>apni hi power</b> se maarta hai!</p>
+                <div class="a-code">let hero = { power: 90, attack() { return this.power; } };
+hero.attack();  // 90 — apna use kiya!</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🚗</span>
+                <h4>Car Dashboard = <span>live object</span></h4>
+                <p>Speed meter = property (badalti rehti hai). Start button = method. Start dabao toh gaadi <b>apni hi</b> battery, apna hi engine use karti hai — <code>this</code> ka asli maza!</p>
+                <div class="a-code">let car = { speed: 0, start() { this.speed = 60; } };
+car.start();  car.speed;  // 60</div>
+            </div>
+            <div class="analogy-card">
+                <span class="a-emoji">🗄️</span>
+                <h4>Almirah = <span>nested object</span></h4>
+                <p>Almirah ke andar drawer, drawer ke andar cheez — <b>ek-ek label khulte jao</b>: almirah.drawer1.sock. Matryoshka doll — bas har doll ka naam hai!</p>
+                <div class="a-code">let ghar = { almirah: { drawer: "mojadi" } };
+ghar.almirah.drawer;  // "mojadi"</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ EXAMPLES GALLERY ============ -->
+    <section class="section" id="examples">
+        <span class="section-tag"><i class="fas fa-code"></i> Examples Gallery</span>
+        <h2>20 Examples — Har Style Ke Pakke Udaharan 📚</h2>
+        <p class="section-desc">Tabs se category badlo, examples padho, output <b>pehle khud predict karo</b> — phir Playground mein chala ke match karo. Prediction karne se logic muscle banti hai!</p>
+
+        <div class="ex-tabs" id="exTabs">
+            <button class="ex-tab active" onclick="switchExTab(0)"><i class="fas fa-id-badge"></i> Basics</button>
+            <button class="ex-tab" onclick="switchExTab(1)"><i class="fas fa-pen"></i> Update-Delete</button>
+            <button class="ex-tab" onclick="switchExTab(2)"><i class="fas fa-gears"></i> Methods-This</button>
+            <button class="ex-tab" onclick="switchExTab(3)"><i class="fas fa-list-check"></i> Keys-Loop</button>
+            <button class="ex-tab" onclick="switchExTab(4)"><i class="fas fa-layer-group"></i> Real-Data</button>
+        </div>
+
+        <div class="ex-grid" id="exGrid"></div>
+    </section>
+
+    <!-- ============ USE CASES ============ -->
+    <section class="section" id="usecases">
+        <span class="section-tag"><i class="fas fa-rocket"></i> Real-World Use Cases</span>
+        <h2>Bade Apps Ke Objects Kaise Chalte Hai? 🌍</h2>
+        <p class="section-desc">Zomato se lekar GPay tak — har app ka har card, har profile, har transaction peeche object hi hai. Dekho kaise:</p>
+
+        <div class="use-grid">
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🛒</span><h4>Zomato — Restaurant Object</h4></div>
+                <p>Har restaurant ek <b>object</b>: naam, rating, delivery time. Menu? <b>Objects ki array</b>! "Chinese dikhao" filter = menu array pe loop + <code>if (dish.type === "chinese")</code> (Ch3 + Ch6 + Ch7 trio!)</p>
+                <div class="u-chips"><span class="u-chip">nested</span><span class="u-chip">array of objects</span></div>
+                <div class="u-snippet">let resto = {
+  name: "Sharma Ji Ka Dhaba",
+  rating: 4.5,
+  menu: [ {name:"Dosa", price:80}, {name:"Chai", price:20} ]
+};
+console.log(resto.menu[0].price); // 80</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">📸</span><h4>Instagram — Profile Object</h4></div>
+                <p>Tumhara profile ek object: username, bio, followers. Follow dabaya = <code>profile.followers = profile.followers + 1</code> — wahi update syntax jo upar seekha! Bio badalna = property update.</p>
+                <div class="u-chips"><span class="u-chip">update</span><span class="u-chip">counter</span></div>
+                <div class="u-snippet">let profile = { username: "rahul_codes", followers: 150 };
+profile.followers += 1;        // naya follower!
+console.log(profile.followers); // 151</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">💬</span><h4>WhatsApp — Chat Object</h4></div>
+                <p>Har chat ek object: dost ka naam, unread count, aur <b>messages ki array</b> — jisme har message khud ek object hai (text, time, mera/uska)! Nested data ka king 👑</p>
+                <div class="u-chips"><span class="u-chip">nested</span><span class="u-chip">update</span></div>
+                <div class="u-snippet">let chat = {
+  name: "Rahul",
+  unread: 3,
+  messages: [ {text:"Bhai kal aa?", from:"uska"}, {text:"aa raha!", from:"mera"} ]
+};
+chat.unread = 0;  // khol liya chat</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🎵</span><h4>Spotify — Song Object + Method</h4></div>
+                <p>Gaana ek object: title, artist, duration. Play/Pause button = <b>method</b> jo <code>this.playing</code> ko toggle karta hai — object apni hi state badalta hai!</p>
+                <div class="u-chips"><span class="u-chip">method</span><span class="u-chip">this</span></div>
+                <div class="u-snippet">let song = {
+  title: "Kesariya", playing: false,
+  toggle() { this.playing = !this.playing; }
+};
+song.toggle();
+console.log(song.playing); // true ▶️</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">🎓</span><h4>School App — Report Card</h4></div>
+                <p>Student object ke andar <b>marks ka object</b> (har subject ka label!) + <b>grade() method</b> jo marks dekh ke grade nikalta hai — school ka poora software 2 concepts!</p>
+                <div class="u-chips"><span class="u-chip">nested</span><span class="u-chip">method</span></div>
+                <div class="u-snippet">let report = {
+  name: "Priya",
+  marks: { math: 92, sci: 88 },
+  total() { return this.marks.math + this.marks.sci; }
+};
+console.log(report.total()); // 180</div>
+            </div>
+            <div class="use-card">
+                <div class="u-head"><span class="u-logo">💸</span><h4>GPay — Transaction Object</h4></div>
+                <p>Har payment ek object: amount, type ("paid"/"received"), kis-ko. Statement = <b>objects ki array</b> — "sirf received dikhao" = loop + if filter!</p>
+                <div class="u-chips"><span class="u-chip">array of objects</span><span class="u-chip">filter loop</span></div>
+                <div class="u-snippet">let txn = [
+  { to: "Ravi", amount: 500, type: "paid" },
+  { to: "Papa", amount: 2000, type: "received" }
+];
+for (let t of txn) {
+  if (t.type === "received") console.log("+" + t.amount);
+}</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ PLAYGROUND ============ -->
+    <section class="section" id="playground">
+        <span class="section-tag"><i class="fas fa-terminal"></i> Code Playground</span>
+        <h2>Code Playground — Khud Likho, Turant Chalao!</h2>
+        <p class="section-desc">6 ready-made snippets — load karo, run karo (ya <b>Ctrl+Enter</b> dabao), phir values badal ke experiment karo. Yahi se asli samajh aati hai!</p>
+
+        <div class="playground">
+            <div class="pg-top">
+                <span class="pg-title"><i class="fas fa-flask"></i> Experiment Zone</span>
+                <div class="pg-snippets">
+                    <button onclick="loadSnippet(0)">🪪 Pehla Object</button>
+                    <button onclick="loadSnippet(1)">✏️ Update/Add Khel</button>
+                    <button onclick="loadSnippet(2)">🤖 Method + this</button>
+                    <button onclick="loadSnippet(3)">📋 Keys &amp; Loop</button>
+                    <button onclick="loadSnippet(4)">🪆 Nested Data</button>
+                    <button onclick="loadSnippet(5)">🛒 Array of Objects</button>
+                </div>
+            </div>
+            <div class="pg-body">
+                <textarea id="pgCode" spellcheck="false" placeholder="// Yaha apna JavaScript likho..."></textarea>
+                <div class="pg-console" id="pgConsole"><div class="cl-info">▸ Console ready. Code likho aur Run dabao!</div></div>
+            </div>
+            <div class="pg-runbar">
+                <button class="btn-run" onclick="runCode()"><i class="fas fa-play"></i> Run (Ctrl+Enter)</button>
+                <button class="btn-clear" onclick="clearConsole()"><i class="fas fa-broom"></i> Clear Console</button>
+                <span class="pg-hint">Tip: galat key poocho (undefined dekho), delete try karo, this wale method chalao — machine ke andar jhaanko!</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ WORKSHOP ============ -->
+    <section class="section" id="workshop">
+        <span class="section-tag"><i class="fas fa-dumbbell"></i> Workshop — Khud Karo!</span>
+        <h2>6 Workshop Tasks 💪</h2>
+        <p class="section-desc">Pehle khud likho, phir hint dekho, phir solution match karo. Yaad hai na — dekhne se 20%, karne se 100% seekhte hai! 🔥</p>
+
+        <div class="ws-list">
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 1: Pehla Pitara — 3 Tareeke Se Access</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Object <code>friend = { name: "Asha", age: 17, city: "Mumbai" }</code> banao. Ab uska <code>name</code> <b>3 tareeke se</b> print karo: (1) dot se, (2) bracket se, (3) <b>variable ke through</b> bracket se (<code>let k = "name"; friend[k]</code>). Teeno ka same output aana chahiye!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Dot = <code>friend.name</code>. Bracket = <code>friend["name"]</code> (quotes yaad!). Variable = <code>friend[k]</code> — <b>bina quotes</b>, kyunki k khud ek variable hai jo "name" hold karta hai. Dot se variable kabhi nahi!</div>
+                    <div class="ws-sol"><pre>let friend = { name: "Asha", age: 17, city: "Mumbai" };
+
+console.log(friend.name);      // dot — Asha
+console.log(friend["name"]);   // bracket — Asha
+
+let k = "name";
+console.log(friend[k]);        // variable — Asha
+console.log(friend.k);         // undefined! dot ne literal "k" dhoondha 😅</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge easy">🟢 Easy</span>
+                    <span class="ws-title">Task 2: updateStudent() — Ek Function, Do Kaam</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>updateStudent(obj, key, value)</code> likho jo object ki property <b>update kare</b> aur poori object return kare. Test: <code>updateStudent(student, "marks", 99)</code>. Bonus: koi aisi key do jo pehle se nahi hai (jaise "city") — function ne kya kiya? (Spoiler: wahi syntax ADD bhi karta hai!)</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Dynamic key hai toh <b>bracket + variable</b> lagta hai: <code>obj[key] = value</code> — dot yaha fail! Bas ye likh do, return karo — JS khud update/add decide karega!</div>
+                    <div class="ws-sol"><pre>let student = { name: "Rahul", marks: 72 };
+
+function updateStudent(obj, key, value) {
+  obj[key] = value;        // bracket = dynamic key ka raja!
+  return obj;
+}
+
+console.log(updateStudent(student, "marks", 99));
+// { name: "Rahul", marks: 99 } — update hua
+console.log(updateStudent(student, "city", "Delhi"));
+// { name: "Rahul", marks: 99, city: "Delhi" } — ADD bhi isi se!</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 3: describeObj() — Pitare Ka Naksha</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>describeObj(obj)</code> likho jo har property ek line mein print kare format <code>key: value</code> — <b>Object.keys() se</b>. Test: <code>describeObj({ name: "Asha", age: 17 })</code> → <code>name: Asha</code>, <code>age: 17</code>. End mein total properties bhi print karo!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> <code>Object.keys(obj)</code> labels ka array deta hai — ab Ch6 ka loop chalao! Andar value nikalni hai toh <code>obj[key]</code> — bracket, dot nahi (dot = literal "key" wala trap!). Length = <code>Object.keys(obj).length</code>.</div>
+                    <div class="ws-sol"><pre>function describeObj(obj) {
+  let keys = Object.keys(obj);      // labels ka array
+  for (let key of keys) {
+    console.log(key + ": " + obj[key]);   // bracket ZAROORI!
+  }
+  console.log("Total properties: " + keys.length);
+}
+
+describeObj({ name: "Asha", age: 17, city: "Mumbai" });
+// name: Asha / age: 17 / city: Mumbai / Total properties: 3
+
+// Bonus — for...in se (same kaam):
+function describeObj2(obj) {
+  for (let key in obj) {
+    console.log(key + ": " + obj[key]);
+  }
+}</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge medium">🟡 Medium</span>
+                    <span class="ws-title">Task 4: totalPrice() — Cart of Objects</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>totalPrice(cart)</code> likho — cart <b>objects ki array</b> hai (har item: <code>{ name, price }</code>). Poori cart ka <b>total price return</b> karo. Test: <code>totalPrice([{name:"Dosa",price:80},{name:"Chai",price:20}])</code> → <code>100</code>. Ch6 ka sumOf + Ch7 ka dot access = asli Zomato math!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> for...of se har ITEM (object) lo, phir us object ka <code>item.price</code> total mein jodo. Array pe loop (Ch6), object se value nikalna (Ch7) — bas yahi combo hai!</div>
+                    <div class="ws-sol"><pre>function totalPrice(cart) {
+  let total = 0;
+  for (let item of cart) {
+    total += item.price;    // object se price nikala
+  }
+  return total;
+}
+
+let cart = [
+  { name: "Dosa", price: 80 },
+  { name: "Chai", price: 20 },
+  { name: "Idli", price: 40 }
+];
+console.log(totalPrice(cart)); // 140
+
+// Bonus — sirf mehngi cheezein? (Ch3 + Ch4 combo)
+function bigTotal(cart) {
+  let t = 0;
+  for (let item of cart) {
+    if (item.price > 50) t += item.price;
+  }
+  return t;
+}</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 5: User + Methods — this Ka Jaadu</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Object <code>user</code> banao jisme: <code>name</code>, <code>age</code> properties ho aur <b>2 methods</b>: <code>introduce()</code> — "Main [name], [age] saal ka" return kare (this se!), aur <code>birthday()</code> — age +1 kare aur nayi age return kare. Test: <code>user.birthday()</code> ke baad <code>user.introduce()</code> — <b>nayi age</b> dikhni chahiye!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Methods mein object ki property ke liye <code>this.property</code> likho. birthday mein <code>this.age = this.age + 1</code> (ya <code>this.age++</code>) — object apni hi property badal raha hai. Introduce ko <b>this</b> se hi padhna hai, hardcode "Rahul" nahi!</div>
+                    <div class="ws-sol"><pre>let user = {
+  name: "Rahul",
+  age: 16,
+  introduce() {
+    return "Main " + this.name + ", " + this.age + " saal ka";
+  },
+  birthday() {
+    this.age = this.age + 1;    // apni age khud badlai
+    return this.age;
+  }
+};
+
+console.log(user.introduce());  // Main Rahul, 16 saal ka
+console.log(user.birthday());   // 17
+console.log(user.introduce());  // Main Rahul, 17 saal ka — LIVE update!
+
+// SAME method likh do doosre user ke liye:
+let priya = { name: "Priya", age: 15, introduce: user.introduce };
+console.log(priya.introduce()); // Main Priya... — this ne naam badal diya!</pre></div>
+                </div>
+            </div>
+
+            <div class="ws-item" onclick="toggleWs(this)">
+                <div class="ws-head">
+                    <span class="ws-badge hard">🔴 Hard</span>
+                    <span class="ws-title">Task 6: findTopper() — Objects Ki Bheed Mein Raja Kaun?</span>
+                    <i class="fas fa-chevron-down ws-arrow"></i>
+                </div>
+                <div class="ws-body">
+                    <p class="ws-task">Function <code>findTopper(students)</code> likho — students <b>objects ki array</b> hai (har ek: <code>{ name, marks }</code>). Sabse zyada marks wala <b>poora object return</b> karo (sirf naam nahi!). Test: <code>findTopper([{name:"Rahul",marks:92},{name:"Priya",marks:95}])</code> → Priya ka object. Ch6 ke findMax ka object avatar!</p>
+                    <button class="ws-toggle-btn" onclick="toggleHint(event, this)"><i class="fas fa-lightbulb"></i> Hint</button>
+                    <button class="ws-toggle-btn" onclick="toggleSol(event, this)"><i class="fas fa-key"></i> Solution</button>
+                    <div class="ws-hint"><strong>Idea:</strong> Pehle student ko topper maan lo (<code>topper = students[0]</code> — poori object, sirf marks nahi!). Loop mein compare karo <code>s.marks &gt; topper.marks</code> — bada mila toh <code>topper = s</code> (poora object badlo!). Return topper.</div>
+                    <div class="ws-sol"><pre>function findTopper(students) {
+  let topper = students[0];          // pehla = default raja (poora object!)
+  for (let s of students) {
+    if (s.marks > topper.marks) {
+      topper = s;                    // naya raja — poora object!
+    }
+  }
+  return topper;
+}
+
+let students = [
+  { name: "Rahul", marks: 92 },
+  { name: "Priya", marks: 95 },
+  { name: "Amit", marks: 88 }
+];
+
+let topper = findTopper(students);
+console.log(topper.name + " topper hai " + topper.marks + " ke saath!");
+// "Priya topper hai 95 ke saath!"
+
+// Bonus — average bhi nikaalo (Ch6 combo):
+function classAverage(students) {
+  let sum = 0;
+  for (let s of students) sum += s.marks;
+  return sum / students.length;
+}</pre></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ MINI PROJECTS ============ -->
+    <section class="section" id="projects">
+        <span class="section-tag"><i class="fas fa-hammer"></i> Mini Projects</span>
+        <h2>6 Mini Projects — Objects Ka Asli Khel 🔨</h2>
+        <p class="section-desc">Har project mein starter code hai — chalao, samjho, phir challenges complete karo. Yahi portfolio banata hai!</p>
+
+        <div class="proj-grid">
+            <div class="proj-card">
+                <span class="p-emoji">🪪</span>
+                <h4>Profile Card Maker</h4>
+                <p class="p-desc">Ek user object banao jisme properties + introduce/status methods ho — Instagram profile ka engine!</p>
+                <div class="p-chips"><span class="p-chip">methods</span><span class="p-chip">this</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let user = {
+  username: "rahul_codes",
+  followers: 150,
+  bio: "JS seekh raha hu",
+  introduce() {
+    return "@" + this.username + " — " + this.bio;
+  },
+  gainFollower() {
+    this.followers = this.followers + 1;
+    return this.followers;
+  }
+};
+
+console.log(user.introduce());
+console.log("Followers: " + user.gainFollower());
+console.log(user.introduce());</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>updateBio(newBio)</code> — bio badlo, introduce se verify karo. 2) <code>loseFollower()</code> — 0 se neeche ja nahi paye (Ch3 ka if!). 3) Object.keys se saari properties print karo.</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🛒</span>
+                <h4>Zomato Cart 2.0</h4>
+                <p class="p-desc">Cart ab objects ka array hai — har item ka naam + price. Bill nikalo, mehngi cheez dhoondo — asli Zomato math!</p>
+                <div class="p-chips"><span class="p-chip">array of objects</span><span class="p-chip">total loop</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let cart = [];
+
+function addToCart(name, price) {
+  cart.push({ name: name, price: price });   // object banake push!
+  console.log(name + " added (" + price + "₹)");
+}
+
+function bill() {
+  let total = 0;
+  for (let item of cart) total += item.price;
+  return "Items: " + cart.length + " | Total: ₹" + total;
+}
+
+addToCart("Dosa", 80);
+addToCart("Chai", 20);
+console.log(bill());</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>mostExpensive()</code> — sabse mehngi item ka object (findTopper yaad karo!). 2) <code>removeItem(name)</code> — naam dhoond ke array se hatao (indexOf + splice — Ch6!). 3) <code>cartSummary()</code> — har item "1. Dosa — ₹80" format mein.</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">📱</span>
+                <h4>Contact Book</h4>
+                <p class="p-desc">Doston ka phonebook — contacts objects ki array. Add karo, dhoondo, delete karo — WhatsApp ka backend!</p>
+                <div class="p-chips"><span class="p-chip">search</span><span class="p-chip">delete</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let contacts = [];
+
+function addContact(name, phone) {
+  contacts.push({ name: name, phone: phone });
+  return name + " save ho gaya! 📱";
+}
+
+function findContact(name) {
+  for (let c of contacts) {
+    if (c.name === name) return c;   // poora object mila!
+  }
+  return null;   // "nahi mila" ka signal (Ch6 wala -1 ka bhai!)
+}
+
+addContact("Asha", "9876543210");
+addContact("Ravi", "9123456780");
+console.log(findContact("Asha").phone);  // 9876543210</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>deleteContact(name)</code> — mila toh delete, nahi toh "nahi mila" message. 2) <code>countContacts()</code> — total contacts. 3) <code>search(query)</code> — naam ke <b>andar</b> query ho toh bhi match (includes — Ch6!).</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">🎮</span>
+                <h4>Game Character</h4>
+                <p class="p-desc">Hero object — health, power, aur methods jo khud ki state chhedte hai (this ka full use!). Chalo battle kare!</p>
+                <div class="p-chips"><span class="p-chip">methods</span><span class="p-chip">this + state</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let hero = {
+  name: "Arjun",
+  health: 100,
+  power: 30,
+  attack() {
+    return this.name + " ne " + this.power + " damage diya!";
+  },
+  takeHit(damage) {
+    this.health = this.health - damage;
+    return "Health: " + this.health;
+  },
+  isAlive() {
+    return this.health > 0;
+  }
+};
+
+console.log(hero.attack());
+console.log(hero.takeHit(40));
+console.log(hero.isAlive()); // true</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>heal(points)</code> — health +points, par 100 se upar na jaye! 2) Villain object banao — dono ko ek-dusre pe attack karao (loop!). 3) <code>status()</code> — "Arjun ❤️60 ⚡30" format mein print.</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">📚</span>
+                <h4>Library Manager</h4>
+                <p class="p-desc">Kitabon ka hisaab — har book object (title, author, available). Issue karo, wapas lao — school library ka software!</p>
+                <div class="p-chips"><span class="p-chip">boolean state</span><span class="p-chip">search</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let books = [
+  { title: "Panchatantra", author: "Vishnu Sharma", available: true },
+  { title: "Wings of Fire", author: "APJ Abdul Kalam", available: true },
+  { title: "Malgudi Days", author: "RK Narayan", available: true }
+];
+
+function issueBook(title) {
+  for (let b of books) {
+    if (b.title === title && b.available) {
+      b.available = false;    // state badal gayi!
+      return title + " issue ho gayi 📖";
+    }
+  }
+  return title + " available nahi hai 😢";
+}
+
+console.log(issueBook("Wings of Fire"));
+console.log(issueBook("Wings of Fire")); // dobara nahi!</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>returnBook(title)</code> — available wapas true. 2) <code>availableBooks()</code> — sirf available kitabon ke titles (loop + if). 3) <code>byAuthor(name)</code> — author se search.</p>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <span class="p-emoji">💰</span>
+                <h4>Expense Tracker 2.0</h4>
+                <p class="p-desc">Ch6 wala tracker upgrade — har kharch ab object hai (item, amount, category). Category-wise hisaab — GPay ka statement!</p>
+                <div class="p-chips"><span class="p-chip">objects + filter</span><span class="p-chip">category loop</span></div>
+                <button class="p-btn" onclick="toggleProj(this)"><i class="fas fa-code"></i> Starter Code</button>
+                <div class="p-starter">
+<pre>let expenses = [];
+
+function spend(item, amount, category) {
+  expenses.push({ item: item, amount: amount, category: category });
+  console.log("₹" + amount + " — " + item + " (" + category + ")");
+}
+
+function totalByCategory(cat) {
+  let total = 0;
+  for (let e of expenses) {
+    if (e.category === cat) total += e.amount;   // sirf ye category!
+  }
+  return total;
+}
+
+spend("Movie", 300, "entertainment");
+spend("Auto", 50, "travel");
+spend("Snacks", 120, "food");
+console.log("Food total: ₹" + totalByCategory("food"));</pre>
+                    <p class="p-challenge"><strong>Challenges:</strong> 1) <code>biggestExpense()</code> — sabse bada kharcha object. 2) <code>monthlyReport()</code> — har category ka total (categories ki list Object.keys se!). 3) Budget warning: total 1000 cross = "⚠️ Budget gaya!" (Ch3 combo!).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ INTERVIEW QUESTIONS ============ -->
+    <section class="section" id="interview">
+        <span class="section-tag"><i class="fas fa-briefcase"></i> Interview Prep</span>
+        <h2>16 Interview Questions — Objects Edition 💼</h2>
+        <p class="section-desc">Objects se interviews mein yahi poocha jata hai — filters laga ke level-wise practice karo. Har answer mein "kyu" bhi hai, sirf "kya" nahi!</p>
+
+        <div class="iq-filters" id="iqFilters">
+            <button class="iq-filter active" onclick="switchIqFilter('all')">Sab (16)</button>
+            <button class="iq-filter" onclick="switchIqFilter('easy')">🟢 Easy</button>
+            <button class="iq-filter" onclick="switchIqFilter('medium')">🟡 Medium</button>
+            <button class="iq-filter" onclick="switchIqFilter('hard')">🔴 Hard</button>
+        </div>
+
+        <div class="iq-list" id="iqList"></div>
+    </section>
+
+    <!-- ============ CHEAT SHEET ============ -->
+    <section class="section" id="cheatsheet">
+        <span class="section-tag"><i class="fas fa-scroll"></i> Cheat Sheet</span>
+        <h2>Ek Nazar Mein Sab Kuch 📋</h2>
+        <p class="section-desc">Interview/exam se ek ghanta pehle — bas yeh 4 boxes revise kar lo!</p>
+
+        <div class="cheat-grid">
+            <div class="cheat-box">
+                <h4><i class="fas fa-code"></i> Syntax Reference</h4>
+                <table>
+                    <tr><td>create</td><td>let obj = { name: "Rahul", age: 16 }</td></tr>
+                    <tr><td>read (dot)</td><td>obj.name — simple &amp; common</td></tr>
+                    <tr><td>read (bracket)</td><td>obj["name"] — string key</td></tr>
+                    <tr><td>dynamic read</td><td>obj[varKey] — variable se!</td></tr>
+                    <tr><td>update</td><td>obj.name = "Priya"</td></tr>
+                    <tr><td>add</td><td>obj.newKey = value — same syntax!</td></tr>
+                    <tr><td>delete</td><td>delete obj.key</td></tr>
+                    <tr><td>check</td><td>"key" in obj — true/false</td></tr>
+                    <tr><td>method</td><td>obj.doWork() / this.prop</td></tr>
+                    <tr><td>keys</td><td>Object.keys(obj) → array</td></tr>
+                    <tr><td>values</td><td>Object.values(obj) → array</td></tr>
+                    <tr><td>entries</td><td>Object.entries(obj) → [k,v] pairs</td></tr>
+                    <tr><td>count</td><td>Object.keys(obj).length</td></tr>
+                    <tr><td>loop</td><td>for (let k in obj) { obj[k] }</td></tr>
+                    <tr><td>nested</td><td>obj.address.city — chain karo</td></tr>
+                </table>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-route"></i> Kab Kya Use Kare?</h4>
+                <ul>
+                    <li><i class="fas fa-id-badge"></i> Ek cheez ki <b>saari details</b>? Object (student, product, profile)</li>
+                    <li><i class="fas fa-bars"></i> Ek jaisi cheezon ki <b>list</b>? Array (names, marks, cart)</li>
+                    <li><i class="fas fa-layer-group"></i> List of DETAILS? <b>Array of objects</b> (menu, contacts, transactions)</li>
+                    <li><i class="fas fa-pen"></i> Default access — <b>dot</b> likho, seedha saadha</li>
+                    <li><i class="fas fa-keyboard"></i> Key variable mein hai? <b>Bracket</b> hi lagao</li>
+                    <li><i class="fas fa-question"></i> Pehle check karo — <code>"key" in obj</code> — phir use karo</li>
+                    <li><i class="fas fa-gears"></i> Object se related KAAM? Method banao (obj.introduce())</li>
+                    <li><i class="fas fa-mirror"></i> Method ke andar apni property? <code>this.prop</code> likho</li>
+                    <li><i class="fas fa-arrows-rotate"></i> Object loop — <code>for...in</code> ya <code>Object.keys + for...of</code></li>
+                    <li><i class="fas fa-copy"></i> Copy chahiye? <code>{...obj}</code> ya <code>Object.assign({}, obj)</code></li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-bomb"></i> Common Mistakes</h4>
+                <ul>
+                    <li><i class="fas fa-xmark"></i> <code>obj[varKey]</code> ki jagah <code>obj.varKey</code> — dot variable ko literal bana deta hai!</li>
+                    <li><i class="fas fa-xmark"></i> <code>obj["key"]</code> mein quotes bhoolna — <code>obj[key]</code> = variable dhoond raha ho!</li>
+                    <li><i class="fas fa-xmark"></i> Missing property → <b>undefined</b> (error nahi!) — silent failure pe bharosa mat karo</li>
+                    <li><i class="fas fa-xmark"></i> <code>obj.length</code> — object ka length EXIST nahi karta! <code>Object.keys(obj).length</code></li>
+                    <li><i class="fas fa-xmark"></i> Loop mein <code>obj.key</code> — literal "key" dhoondhega! <code>obj[key]</code> likho</li>
+                    <li><i class="fas fa-xmark"></i> Method bina <code>()</code> ke — function ka CODE milta hai, chalta nahi!</li>
+                    <li><i class="fas fa-xmark"></i> Key-value beech <b>colon</b> (:), pairs ke beech <b>comma</b> — dono yaad!</li>
+                    <li><i class="fas fa-xmark"></i> <code>undefined</code> ke aage chain karna — "Cannot read properties" crash!</li>
+                    <li><i class="fas fa-xmark"></i> <code>b = a</code> soch ke "copy" — dono EK hi object hai (reference!)</li>
+                </ul>
+            </div>
+
+            <div class="cheat-box">
+                <h4><i class="fas fa-lightbulb"></i> Interview Facts</h4>
+                <ul>
+                    <li><i class="fas fa-star"></i> <code>typeof {}</code> = <b>"object"</b> — aur <code>typeof []</code> bhi "object"! Array check: <code>Array.isArray()</code></li>
+                    <li><i class="fas fa-star"></i> Objects <b>reference type</b> hai — b = a copy nahi, same object!</li>
+                    <li><i class="fas fa-star"></i> <code>const</code> object mein property update chalti hai — binding fix, content free!</li>
+                    <li><i class="fas fa-star"></i> <code>this</code> = jis object ne method bulaya — call karte waqt decide hota hai</li>
+                    <li><i class="fas fa-star"></i> Object keys <b>string (ya symbol)</b> hoti hai — number key bhi string ban jaati!</li>
+                    <li><i class="fas fa-star"></i> <code>Object.keys/values/entries</code> sab <b>ARRAY</b> return karte hai</li>
+                    <li><i class="fas fa-star"></i> Property order: string keys <b>insertion order</b> mein milti hai</li>
+                    <li><i class="fas fa-star"></i> <code>delete obj.key</code> property hatata hai — <code>obj.key = undefined</code> sirf value udaata hai (key reh jaati hai!)</li>
+                    <li><i class="fas fa-star"></i> JSON = object ka <b>text format</b> — API data JSON mein hi aata hai!</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ QUIZ ============ -->
+    <section class="section" id="quiz">
+        <span class="section-tag"><i class="fas fa-trophy"></i> Final Quiz</span>
+        <h2>Objects Ka Exam — 5 Sawaal! 🏆</h2>
+        <p class="section-desc">Journey ka agla test! 5/5 aaye toh tum Object Master ho. Chalo!</p>
+
+        <div class="quiz-box">
+            <div class="quiz-progress">
+                <span class="q-count" id="quizCount">Sawaal 1 / 5</span>
+                <span class="q-score" id="quizScore">Score: 0</span>
+            </div>
+            <div class="quiz-q" id="quizQ">Loading...</div>
+            <div class="quiz-opts" id="quizOpts"></div>
+            <div class="quiz-feedback" id="quizFb"></div>
+            <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Agla Sawaal →</button>
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer>
+        <div class="f-next"><i class="fas fa-forward"></i> Next Chapter: DOM + Projects — Browser Se Baat Karo 🖥️ (JS ab page ko chhedega!)</div>
+        <p>Chapter 7 Complete! Ab tum EK pitare mein poori jaankari sambhal sakte ho — properties add karo, methods chalao, nested data padho — official Data Manager ban gaye! 🎉<br>
+        Cheezon Ka Pitara 🎒 — banaya gaya aapke liye <span class="f-heart">❤️</span> ke saath. Workshop ke tasks zaroor karo!</p>
+    </footer>
+
+    <script>
+        /* ==================== EXAMPLES GALLERY ==================== */
+        var exData = [
+            [ // basics
+                { t: 'Pehla Object — Banao Aur Padho', c: 'let student = { name: "Rahul", age: 16, pass: true };\n\nconsole.log(student.name);\nconsole.log(student.age);\nconsole.log(student.pass);', o: 'Rahul\n16\ntrue' },
+                { t: 'Dot vs Bracket — Same Cheez, Do Raste', c: 'let book = { title: "Wings of Fire" };\n\nconsole.log(book.title);\nconsole.log(book["title"]);\n\nlet k = "title";\nconsole.log(book[k]);    // variable!', o: 'Wings of Fire\nWings of Fire\nWings of Fire' },
+                { t: 'Missing Key? undefined Milega (Error Nahi!)', c: 'let student = { name: "Rahul" };\n\nconsole.log(student.city);\nconsole.log("city" in student);\nconsole.log("name" in student);', o: 'undefined\nfalse\ntrue' },
+            { t: 'Ek Naam, Poori Detail — Phone Object', c: 'let phone = {\n  brand: "Samsung",\n  price: 15000,\n  is5G: true\n};\n\nconsole.log(phone.brand);\nconsole.log(phone.price);', o: 'Samsung\n15000' }
+            ],
+            [ // update-delete
+                { t: 'Update — Property Badal Do', c: 'let profile = { followers: 100 };\n\nprofile.followers = 101;\nconsole.log(profile.followers);\n\nprofile["followers"] = 102;\nconsole.log(profile.followers);', o: '101\n102' },
+                { t: 'Add — Nayi Property? Wahi Syntax!', c: 'let student = { name: "Rahul" };\n\nstudent.marks = 92;\nstudent["city"] = "Delhi";\nconsole.log(student);', o: '{ name: "Rahul", marks: 92, city: "Delhi" }' },
+                { t: 'delete — Property Hamesha Ke Liye Gayi', c: 'let app = { name: "Chatsy", ads: true, version: 2 };\n\ndelete app.ads;\nconsole.log(app);\nconsole.log(app.ads);', o: '{ name: "Chatsy", version: 2 }\nundefined' },
+            { t: 'Profile Upgrade — Badlo Aur Badhao', c: 'let user = {\n  name: "Rahul",\n  followers: 100\n};\n\nuser.name = "Rahul Yadav";\nuser.verified = true;\n\nconsole.log(user.name);\nconsole.log(user.verified);', o: 'Rahul Yadav\ntrue' }
+            ],
+            [ // methods-this
+                { t: 'Method — Object Ke Andar Function', c: 'let student = {\n  name: "Rahul",\n  introduce() {\n    return "Hi! Main " + this.name;\n  }\n};\n\nconsole.log(student.introduce());', o: 'Hi! Main Rahul' },
+                { t: 'this LIVE Hai — Update Dikhta Hai!', c: 'let phone = {\n  battery: 50,\n  charge() {\n    this.battery = 100;\n    return "Full! " + this.battery + "%";\n  }\n};\n\nconsole.log(phone.charge());', o: 'Full! 100%' },
+                { t: 'Method + Ch3 Combo — Grade Engine', c: 'let student = {\n  marks: 78,\n  grade() {\n    if (this.marks >= 90) return "A+";\n    if (this.marks >= 75) return "B";\n    return "C";\n  }\n};\n\nconsole.log(student.grade());\nstudent.marks = 95;\nconsole.log(student.grade());', o: 'B\nA+' },
+            { t: 'Player Card — Method + This Jodi', c: 'let player = {\n  name: "Sky",\n  level: 7,\n  info() {\n    return this.name + " — Level " + this.level;\n  }\n};\n\nconsole.log(player.info());', o: 'Sky — Level 7' }
+            ],
+            [ // keys-loop
+                { t: 'Object.keys — Labels Ki List', c: 'let student = { name: "Rahul", age: 16, marks: 92 };\n\nconsole.log(Object.keys(student));\nconsole.log(Object.keys(student).length);', o: '[ "name", "age", "marks" ]\n3' },
+                { t: 'for...in — Har Key Pe Loop', c: 'let marks = { math: 92, sci: 85, eng: 78 };\n\nfor (let subject in marks) {\n  console.log(subject + ": " + marks[subject]);\n}', o: 'math: 92\nsci: 85\neng: 78' },
+                { t: 'values + entries — Poora Pitara', c: 'let obj = { a: 1, b: 2 };\n\nconsole.log(Object.values(obj));\nconsole.log(Object.entries(obj));', o: '[ 1, 2 ]\n[ [ "a", 1 ], [ "b", 2 ] ]' },
+            { t: 'Keys Ginno — Kitne Properties?', c: 'let student = {\n  name: "Amit",\n  age: 16,\n  city: "Jaipur"\n};\n\nlet keys = Object.keys(student);\n\nconsole.log(keys.length);\nconsole.log(keys[0]);', o: '3\nname' }
+            ],
+            [ // real-data
+                { t: 'Nested Object — Andar Ka Dabba', c: 'let student = {\n  name: "Rahul",\n  marks: { math: 92, sci: 85 }\n};\n\nconsole.log(student.marks.math);\nstudent.marks.sci = 88;\nconsole.log(student.marks.sci);', o: '92\n88' },
+                { t: 'Array of Objects — Asli App Data!', c: 'let students = [\n  { name: "Rahul", marks: 92 },\n  { name: "Priya", marks: 95 }\n];\n\nconsole.log(students[1].name);\nconsole.log(students[0].marks);', o: 'Priya\n92' },
+                { t: 'Loop + Object Combo — Poora Report!', c: 'let students = [\n  { name: "Rahul", marks: 92 },\n  { name: "Amit", marks: 75 }\n];\n\nfor (let s of students) {\n  console.log(s.name + " -> " + s.marks);\n}', o: 'Rahul -> 92\nAmit -> 75' },
+            { t: 'Menu Card — Array of Objects', c: 'let menu = [\n  { item: "Dosa", price: 80 },\n  { item: "Idli", price: 40 }\n];\n\nconsole.log(menu[0].item);\nconsole.log(menu[1].price);', o: 'Dosa\n40' }
+            ]
+        ];
+
+        function hl(code) {
+            var s = code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            s = s.replace(/("[^"\n]*")/g, '<span class="st">$1</span>');
+            s = s.replace(/(\/\/[^\n<]*)/g, '<span class="cm">$1</span>');
+            s = s.replace(/\b(let|const|var|if|else|for|while|do|of|in|switch|case|break|continue|default|true|false|null|undefined|NaN|function|return|new|delete|this)\b/g, '<span class="kw">$1</span>');
+            s = s.replace(/(^|[\s(=+\-*\/%,<>!:])(\d+\.?\d*)\b/g, '$1<span class="nm">$2</span>');
+            return s;
+        }
+
+        function renderExamples(idx) {
+            var grid = document.getElementById('exGrid');
+            var html = '';
+            var list = exData[idx];
+            for (var i = 0; i < list.length; i++) {
+                var ex = list[i];
+                html += '<div class="ex-card">'
+                    + '<div class="ex-head"><span class="ex-num">#' + (idx * 4 + i + 1) + '</span><span class="ex-title">' + ex.t + '</span></div>'
+                    + '<pre>' + hl(ex.c) + '</pre>'
+                    + '<div class="ex-out">' + ex.o.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/\n/g, ' &nbsp;|&nbsp; ') + '</div>'
+                    + '</div>';
+            }
+            grid.innerHTML = html;
+        }
+
+        function switchExTab(idx) {
+            var tabs = document.querySelectorAll('.ex-tab');
+            for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove('active');
+            tabs[idx].classList.add('active');
+            renderExamples(idx);
+        }
+
+        /* ==================== INTERVIEW QUESTIONS ==================== */
+        var iqData = [
+            { lvl: 'easy', q: 'Object kya hai? Array se kya farak hai?', a: 'Object ek <b>key-value collection</b> hai — EK variable mein ek cheez ki SAARI details, har detail ka apna <b>naam (key)</b>.<pre>let student = { name: "Rahul", age: 16, pass: true };\nconsole.log(student.name);  // "Rahul" — naam se!</pre><b>Farak:</b> Array = <b>ordered list</b>, access INDEX se (<code>arr[0]</code>) — "kaunsa position wala". Object = <b>named details</b>, access KEY se (<code>obj.name</code>) — "kya cheez hai".<br><br>Rule of thumb: <b>same type ki list</b> → array (names, marks). <b>ek cheez ki alag-alag details</b> → object (student, product, profile). Real apps mein dono saath: <b>array of objects</b> — Zomato ka menu, WhatsApp ke messages!' },
+            { lvl: 'easy', q: 'Dot aur bracket notation — kab kaunsa use kare?', a: 'Dono property access karte hai — par alag situations:<pre>obj.name          // DOT — simple, literal naam\nobj["name"]       // BRACKET — string key\nobj[varKey]       // BRACKET — variable se (dynamic!)\nobj["full name"]  // BRACKET — space wali key</pre><b>Dot (default — 90% cases):</b> key ka naam pata hai aur simple hai. Chhota, padhne mein easy.<br><br><b>Bracket (special cases):</b> (1) key <b>variable mein</b> hai — <code>obj[k]</code>, (2) key mein space/special char — <code>obj["full name"]</code>, (3) key loop se aati hai.<br><br>Famous trap: dot ke saath variable KAAM NAHI karta — <code>obj.k</code> literally "k" naam ki property dhoondhega! Variable = <b>bracket bina quotes</b>, literal = dot ya bracket with quotes.' },
+            { lvl: 'easy', q: 'Object mein nayi property kaise ADD karte hai? Update kaise?', a: 'Same syntax — <b>dono ka ek hi rasta</b>: <code>obj.key = value</code>!<pre>let student = { name: "Rahul" };\n\nstudent.marks = 92;        // marks Nahi tha → ADD ho gayi\nstudent.name = "Priya";    // name thi → UPDATE ho gayi\n\nstudent["city"] = "Delhi"; // bracket se bhi add!\nconsole.log(student);\n// { name: "Priya", marks: 92, city: "Delhi" }</pre>JS khud decide karta hai: property <b>pehle se hai</b> → value badal do (update), <b>nahi hai</b> → nayi bana do (add). Array jaisa push/pop alag nahi ratna padta — ek syntax, teen kaam (read/update/add)! Isi flexibility ki wajah se objects JS ka sabse used data structure hai.' },
+            { lvl: 'easy', q: 'Property DELETE kaise karte hai? Delete ke baad access kare toh?', a: '<code>delete</code> operator se:<pre>let app = { name: "Chatsy", ads: true };\n\ndelete app.ads;\nconsole.log(app);        // { name: "Chatsy" } — ads gayi!\nconsole.log("ads" in app); // false — pakka gayi\nconsole.log(app.ads);    // undefined — error NAHI!</pre>Delete ke baad property access karo toh koi error nahi — normal <b>undefined</b> milega (missing property wala standard behaviour).<br><br>Interview point: <code>delete</code> <b>operator</b> hai, method nahi — <code>delete obj.key</code> ✅, <code>obj.delete("key")</code> ❌. Aur <code>obj.key = undefined</code> se farak yaad rakho: wo value udaata hai par <b>key reh jaati hai</b> ("key" in obj = true!), delete key tak hata deta hai!' },
+            { lvl: 'easy', q: 'typeof {} kya deta hai? Aur null ka typeof?', a: '<code>typeof {}</code> = <b>"object"</b> — expected. Par do surprises:<pre>console.log(typeof {});     // "object" ✅\nconsole.log(typeof []);     // "object" 😱 — array bhi object!\nconsole.log(typeof null);   // "object" 😱😱 — JS ka famous bug!</pre>(1) <b>Array bhi object hai</b> — special object jiske keys 0,1,2 hai. Array check: <code>Array.isArray(arr)</code>. (2) <code>typeof null = "object"</code> — JS ke pehle version ka <b>bug</b> jo ab fix nahi kar sakte (poori purani websites toot jayengi!) — isliye null check: <code>x === null</code>.<br><br>Interview line: "typeof null === \'object\' is a historical bug in JS that can\'t be fixed due to backwards compatibility" — ye bol diya toh interviewer impress!' },
+            { lvl: 'medium', q: 'Method kya hota hai? Shorthand syntax kya hai?', a: 'Method = object ki <b>property jiski value ek FUNCTION</b> ho — object ka apna kaam!<pre>let student = {\n  name: "Rahul",\n  // shorthand (modern) — method name() {}\n  introduce() {\n    return "Hi, " + this.name;\n  }\n};\n\nconsole.log(student.introduce());  // chalao brackets se!</pre>Do syntax dekho:<pre>// shorthand — clean\nintroduce() { return ...; }\n\n// purana (same kaam) — property mein function assign\nintroduce: function() { return ...; }</pre>Dono same hai — shorthand use karo. <b>Call karna mat bhoolo brackets ke saath</b>: <code>obj.introduce()</code> ✅, <code>obj.introduce</code> ❌ (sirf function code milta hai, chalta nahi — Ch5 ka fn vs fn() trap!). Method banane ka idea: jo kaam object se RELATED hai, wo object ke ANDAR hi rakho — data + behaviour ek jagah!' },
+            { lvl: 'medium', q: 'this keyword kya hai? Method mein kaise kaam karta hai?', a: '<code>this</code> = <b>"jis object ne method bulaya, WAHI"</b> — method ke andar object ka khud ka reference!<pre>let rahul = { name: "Rahul", hello() { return "Main " + this.name; } };\nlet priya = { name: "Priya", hello() { return "Main " + this.name; } };\n\nrahul.hello();  // "Main Rahul" — this = rahul\npriya.hello();  // "Main Priya" — this = priya</pre>Same method, alag result — kyunki <code>this</code> <b>call karte waqt</b> decide hota hai: <code>X.method()</code> likha toh this = X. Isliye ek hi method hazaar objects pe chalta hai — har object apni properties dikhata hai!<br><br>Practical use: <code>counter.increment()</code> ke andar <code>this.count += 1</code> — object apni hi state badalta hai. <b>this likhna zaroori hai</b>: sirf <code>count</code> likha toh JS variable dhoondhega (jo exist nahi karta — ReferenceError!), <code>this.count</code> hi object ki property hai.' },
+            { lvl: 'medium', q: 'Object.keys(), values(), entries() kya karte hai?', a: 'Teeno object ko <b>ARRAY</b> bana ke dete hai — alag-alag hisse:<pre>let obj = { name: "Rahul", age: 16, marks: 92 };\n\nObject.keys(obj);    // ["name", "age", "marks"] — labels\nObject.values(obj);  // ["Rahul", 16, 92] — cheezein\nObject.entries(obj); // [["name","Rahul"], ["age",16], ["marks",92]] — jodiyan</pre><b>Kab kya:</b> keys — saare labels loop karna / property count (<code>Object.keys(obj).length</code> — object ka "length" yahi hai!). values — sirf data chahiye (total, average). entries — key AUR value dono chahiye.<br><br>Bonus trick: <code>for (let [key, value] of Object.entries(obj))</code> — destructuring se dono ek saath! Aur kyunki result ARRAY hai — Ch6 ke filter/map sab laga sakte ho: <code>Object.keys(obj).filter(...)</code> 🔥' },
+            { lvl: 'medium', q: 'Property exist karti hai kaise check kare? in vs undefined check?', a: 'Standard: <code>in</code> operator:<pre>let obj = { name: "Rahul" };\n\nconsole.log("name" in obj);  // true — hai\nconsole.log("city" in obj);  // false — nahi\n\nif ("marks" in obj) { /* safe access */ }</pre><b>Alternative:</b> <code>obj.marks !== undefined</code> — mostly kaam karta hai, par ek trap:<pre>let obj = { bonus: undefined };\nconsole.log(obj.bonus !== undefined); // false 😱\nconsole.log("bonus" in obj);          // TRUE! property hai!</pre>Property <b>exist karti hai</b> par uski value undefined ho sakti hai — <code>!== undefined</code> check galat jawab dega, <code>in</code> sahi dega!<br><br>Isliye rule: <b>existence poochna hai → in</b>. Value ki jaanch karni hai → direct compare. Aur haan — <code>if (obj.marks)</code> falsy trap se bacho: marks = 0 (koi zero score!) toh bhi false milega — real bug!' },
+            { lvl: 'medium', q: 'for...in loop kya hai? Object pe kaise chalta hai?', a: '<code>for...in</code> = har <b>KEY</b> pe chalne wala loop — objects ke liye bana hai!<pre>let marks = { math: 92, sci: 85 };\n\nfor (let subject in marks) {\n  console.log(subject + " = " + marks[subject]);\n}\n// math = 92 / sci = 85</pre>Do zaroori baatein: (1) key <b>string</b> milta hai. (2) value nikalne ke liye <b>bracket</b>: <code>marks[subject]</code> — <code>marks.subject</code> likha toh literal "subject" dhoondhega = undefined × har iteration (classic bug!).<br><br>Alternative: <code>Object.keys + for...of</code> — same kaam, Ch6 wala style:<pre>for (let key of Object.keys(marks)) { ... }</pre>Array pe for...in kyun nahi (Ch6 wala yaad)? Array ki keys = indexes, jo STRING milte hai + extra properties bhi aa jaati hai. Object = for...in, Array = for...of ya classic for. Simple!' },
+            { lvl: 'medium', q: 'let b = a object ki copy hai? Object ki copy kaise le?', a: '<b>Bilkul nahi</b> — dono naam EK HI object pe point karte hai (reference type — Ch6 arrays wala concept ab yaha bhi!)<pre>let a = { name: "Rahul" };\nlet b = a;            // copy NAHI — same object, naya naam!\nb.name = "Priya";\nconsole.log(a.name);  // "Priya" 😱 — a bhi badal gaya!</pre><b>Sahi copy (shallow):</b><pre>let c = { ...a };                 // spread operator\nlet d = Object.assign({}, a);     // purana tareeka\nd.name = "Amit";\nconsole.log(a.name);  // "Priya" — SAFE ab!</pre>Interview twist: ye <b>shallow copy</b> hai — sirf pehli level copy hoti hai! Nested objects abhi bhi SHARE hote hai:<pre>let s = { marks: { math: 90 } };\nlet s2 = { ...s };\ns2.marks.math = 0;\nconsole.log(s.marks.math);  // 0 😱 — andar abhi bhi jude hai!</pre>Deep copy ke liye: <code>structuredClone(obj)</code> ya <code>JSON.parse(JSON.stringify(obj))</code> — details hard question mein!' },
+            { lvl: 'medium', q: 'Arrow function method mein this — kya problem hai?', a: 'Arrow function ka <b>this object ko point NAHI karta</b> — yahi problem hai!<pre>let timer = {\n  seconds: 0,\n  // ❌ arrow — this object nahi!\n  bad: () => { return this.seconds; },\n  // ✅ regular — this = timer\n  good() { return this.seconds; }\n};\n\nconsole.log(timer.bad());   // undefined 😱\nconsole.log(timer.good());  // 0 ✅</pre>Kyun: regular function ka this <b>call karte waqt</b> decide hota hai (timer.good() → this = timer). Arrow function ka this likhte waqt hi <b>baahar ke scope</b> se aata hai — object ke baahar ka this (browser mein window/global, strict mein undefined) — object bilkul nahi!<br><br><b>Rule:</b> object ke methods ke liye <b>shorthand ya regular function</b> — arrow kabhi nahi. Arrow ki jagah callbacks mein (Ch6 ke map/filter) — waha arrow hero hai! Ye "kab arrow, kab regular" sawal interviews ka pakka sawal hai.' },
+            { lvl: 'hard', q: 'Method ko variable mein nikal ke call kare toh this ka kya hota hai?', a: '<b>this kho jaata hai</b> — JS ka sabse famous context trap!<pre>let student = {\n  name: "Rahul",\n  hello() { return "Hi " + this.name; }\n};\n\nconsole.log(student.hello());  // "Hi Rahul" ✅ this = student\n\nlet talk = student.hello;      // function nikal liya...\ntalk();                        // 😱 this = undefined (strict) — "Hi undefined"!</pre>Kyun: <code>this</code> call karte waqt <b>dot ke LEFT</b> se decide hota hai. <code>student.hello()</code> — dot ke left student hai → this = student. <code>talk()</code> — koi dot nahi → this ka connection TOOT gaya!<br><br>Ye real apps mein aata hai: <code>setTimeout(student.hello, 1000)</code> — hello pass ho gaya, par student ke saath uska rishta nahi! Fix: <code>setTimeout(() =&gt; student.hello(), 1000)</code> — arrow wrapper se call pakka dot ke saath. Pro answer: <code>bind</code> bhi mention karo — <code>student.hello.bind(student)</code> — function ka this HAMESHA ke liye fix!<br><br>Bonus sawal jo saath mein aata hai — <b>object khaali hai kaise check kare?</b> Pakka tareeka: <code>Object.keys(obj).length === 0</code> — kyunki <code>if (obj)</code> hamesha true dega (khaali object bhi <b>truthy</b> hai — Ch6 wale khaali-array trap ka bhai!).' },
+            { lvl: 'hard', q: 'Shallow copy vs deep copy — poora farak batao?', a: '<b>Shallow copy</b> = sirf PEHLI level copy; nested objects <b>share</b> rehte hai. <b>Deep copy</b> = saare levels ki asli copy — koi connection nahi!<pre>let original = { name: "Rahul", marks: { math: 90 } };\n\n// SHALLOW — spread / Object.assign\nlet shallow = { ...original };\nshallow.name = "Priya";        // ✅ pehli level safe\nshallow.marks.math = 0;        // 😱 original bhi 0!\n\n// DEEP — structuredClone (modern)\nlet deep = structuredClone(original);\ndeep.marks.math = 0;\nconsole.log(original.marks.math);  // 90 ✅ SAFE!</pre>Kyun hota hai: shallow copy mein nested object ki <b>reference</b> copy hoti hai — dono copies same andar ke object pe point karte hai (alag almirah, same andar wala dabba!).<br><br>Deep copy options: (1) <code>structuredClone(obj)</code> — modern, best. (2) <code>JSON.parse(JSON.stringify(obj))</code> — purana hack; limitation: functions, undefined, dates kharab ho jaate hai. Interview line: "spread is shallow; nested structures need structuredClone" — solid jawab!' },
+            { lvl: 'hard', q: 'Object.freeze() kya karta hai? Kya ye deep protection hai?', a: '<code>Object.freeze(obj)</code> = object ko <b>lock</b> kar deta hai — add, update, delete SAB blocked!<pre>let config = Object.freeze({ theme: "dark", version: 1 });\n\nconfig.theme = "light";    // 😶 silently IGNORED (strict mode: error!)\nconfig.newProp = "x";      // 😶 ignored\ndelete config.version;     // 😶 ignored\nconsole.log(config);       // { theme: "dark", version: 1 } — same!</pre>Use case: <b>constants jaisa data</b> — API config, days list, tax rates — jise galti se badalna hi nahi hai.<br><br>Interview twist — <b>freeze SHALLOW hai</b>:<pre>let obj = Object.freeze({ marks: { math: 90 } });\nobj.marks.math = 0;              // 😱 ho gaya!\nconsole.log(obj.marks.math);     // 0 — andar FREEZE NAHI hai!</pre>Sirf pehli level locked hai; nested objects freely badalte hai. Deep freeze chahiye toh recursively har nested object pe freeze chalao. Bonus: freeze ke bina bhi <code>const obj</code> re-assign rokti hai — par PROPERTY change se nahi rokta; freeze property changes rokta hai par re-assign se nahi (const already rokta hai). Dono ka combo = poori shakti!' },
+            { lvl: 'hard', q: 'JSON kya hai? JSON.stringify() aur JSON.parse() kya karte hai?', a: 'JSON (JavaScript Object Notation) = object ka <b>TEXT format</b> — data bhejne/store karne ka universal standard. APIs, databases, files — sab JSON chalate hai!<pre>let student = { name: "Rahul", marks: 92 };\n\n// stringify: object → TEXT (string)\nlet text = JSON.stringify(student);\nconsole.log(text);       // \'{"name":"Rahul","marks":92}\'\nconsole.log(typeof text); // "string"\n\n// parse: TEXT → wapas object\nlet back = JSON.parse(text);\nconsole.log(back.name);  // "Rahul" — object phir zinda!</pre>Kyun zaroori: network pe <b>sirf text</b> ja sakta hai — object ko string banana padta hai (stringify), doosri taraf wapas object (parse). Zomato ka menu, Instagram ka feed — API se JSON aata hai, <code>JSON.parse</code> se object banta hai, phir tumhara Ch7 ka gyaan chalta hai!<br><br>Gotchas: (1) JSON mein <b>functions aur undefined</b> stringify pe SKIP ho jaate hai. (2) Key names JSON mein hamesha <b>double quotes</b>. (3) Round-trip trick: <code>JSON.parse(JSON.stringify(obj))</code> = poori tarah deep copy (structuredClone ke zamane se pehle ka hack!).' }
+        ];
+
+        function renderInterview(filter) {
+            var list = document.getElementById('iqList');
+            var html = '';
+            for (var i = 0; i < iqData.length; i++) {
+                var q = iqData[i];
+                if (filter !== 'all' && q.lvl !== filter) continue;
+                html += '<div class="iq-item" onclick="toggleIq(this)">'
+                    + '<div class="iq-q">'
+                    + '<span class="iq-level ' + q.lvl + '">' + q.lvl + '</span>'
+                    + '<span class="iq-text">Q' + (i + 1) + '. ' + q.q + '</span>'
+                    + '<i class="fas fa-chevron-down iq-arrow"></i>'
+                    + '</div>'
+                    + '<div class="iq-a"><div class="iq-answer">' + q.a + '</div></div>'
+                    + '</div>';
+            }
+            list.innerHTML = html || '<p style="color:var(--muted)">Is filter mein kuch nahi.</p>';
+        }
+
+        function switchIqFilter(f) {
+            var btns = document.querySelectorAll('.iq-filter');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            event.currentTarget.classList.add('active');
+            renderInterview(f);
+        }
+
+        function toggleIq(el) { el.classList.toggle('open'); }
+
+        /* ==================== WORKSHOP ==================== */
+        function toggleWs(item) { item.classList.toggle('open'); }
+
+        function toggleHint(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-hint').classList.toggle('show');
+        }
+
+        function toggleSol(e, btn) {
+            e.stopPropagation();
+            btn.parentElement.querySelector('.ws-sol').classList.toggle('show');
+        }
+
+        /* ==================== PROJECTS ==================== */
+        function toggleProj(btn) {
+            btn.parentElement.querySelector('.p-starter').classList.toggle('show');
+        }
+
+        /* ==================== PLAYGROUND ==================== */
+        var snippets = [
+            { c: '// 🪪 Pehla Object — banao, padho, check karo!\nlet student = {\n  name: "Rahul",\n  age: 16,\n  pass: true\n};\n\nconsole.log("Naam:", student.name);\nconsole.log("Age:", student.age);\nconsole.log("Bracket se:", student["name"]);\n\n// missing key? error nahi — undefined!\nconsole.log("City:", student.city);\nconsole.log("City hai?", "city" in student);' },
+            { c: '// ✏️ Update / Add / Delete — ek syntax, teen kaam!\nlet profile = { username: "rahul_codes", followers: 150 };\n\nprofile.followers = 151;         // UPDATE (pehle se thi)\nprofile.bio = "JS seekh raha!";  // ADD (nahi thi)\nconsole.log(profile);\n\ndelete profile.bio;             // DELETE\nconsole.log("Bio hai?", "bio" in profile);   // false\n\n// dynamic key — bracket ka superpower!\nlet k = "followers";\nconsole.log("Followers:", profile[k]);' },
+            { c: '// 🤖 Method + this — object jo kaam bhi kare!\nlet phone = {\n  battery: 50,\n  charge() {\n    this.battery = 100;\n    return "Battery: " + this.battery + "%";\n  },\n  status() {\n    if (this.battery > 20) {\n      return "Chalu raho!";\n    }\n    return "Charger dhoondo!";\n  }\n};\n\nconsole.log(phone.charge());\nconsole.log(phone.status());\nconsole.log("Ab battery:", phone.battery);' },
+            { c: '// 📋 Keys / Values / Loop — pitare ki ginti\nlet marks = { math: 92, science: 85, english: 78 };\n\nconsole.log("Labels:", Object.keys(marks));\nconsole.log("Values:", Object.values(marks));\nconsole.log("Total subjects:", Object.keys(marks).length);\n\nfor (let subject in marks) {\n  console.log(subject + " = " + marks[subject]);\n}' },
+            { c: '// 🪆 Nested — andar ke dabbo ko kholo\nlet student = {\n  name: "Priya",\n  marks: { math: 95, sci: 88 },\n  address: { city: "Delhi", pin: "110001" }\n};\n\nconsole.log("Math:", student.marks.math);\nconsole.log("City:", student.address.city);\n\n// galat naam? undefined mila —\nconsole.log("Adres:", student.adres);\n// neeche wali line se // hatao — TypeError dekho!\n// console.log(student.adres.city);' },
+            { c: '// 🛒 Array of Objects — real app ka data!\nlet students = [\n  { name: "Rahul", marks: 92 },\n  { name: "Priya", marks: 95 },\n  { name: "Amit", marks: 75 }\n];\n\nlet topper = students[0];\nfor (let s of students) {\n  if (s.marks > topper.marks) topper = s;\n}\nconsole.log("Topper:", topper.name, "-", topper.marks);\n\nlet total = 0;\nfor (let s of students) total += s.marks;\nconsole.log("Average:", total / students.length);' }
+        ];
+
+        function loadSnippet(idx) {
+            document.getElementById('pgCode').value = snippets[idx].c;
+        }
+
+        function clearConsole() {
+            document.getElementById('pgConsole').innerHTML = '<div class="cl-info">▸ Console cleared. Naya code chalao!</div>';
+        }
+
+        function addLine(text, cls) {
+            var con = document.getElementById('pgConsole');
+            var div = document.createElement('div');
+            div.className = 'cl ' + (cls || '');
+            div.textContent = text;
+            con.appendChild(div);
+            con.scrollTop = con.scrollHeight;
+        }
+
+        function runCode() {
+            var code = document.getElementById('pgCode').value;
+            var con = document.getElementById('pgConsole');
+            con.innerHTML = '';
+            if (!code.trim()) {
+                addLine('⚠️ Pehle kuch code likho!', 'cl-warn');
+                return;
+            }
+            var fakeConsole = {
+                log: function () {
+                    var args = Array.prototype.slice.call(arguments);
+                    addLine(args.map(function (a) {
+                        if (typeof a === 'object' && a !== null) {
+                            try { return JSON.stringify(a); } catch (e) { return String(a); }
+                        }
+                        return String(a);
+                    }).join(' '), '');
+                },
+                warn: function () { addLine('⚠️ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-warn'); },
+                error: function () { addLine('❌ ' + Array.prototype.slice.call(arguments).join(' '), 'cl-err'); },
+                table: function (arr) {
+                    try { addLine(JSON.stringify(arr, null, 1), 'cl-info'); } catch (e) { addLine(String(arr), ''); }
+                }
+            };
+            try {
+                var fn = new Function('console', '"use strict";\n' + code);
+                fn(fakeConsole);
+            } catch (err) {
+                addLine('❌ Error: ' + err.message, 'cl-err');
+                addLine('💡 Tip: key ke quotes, bracket vs dot aur delete syntax check karo', 'cl-info');
+            }
+        }
+
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                e.preventDefault();
+                runCode();
+            }
+        });
+
+        /* ==================== OBJECT MACHINE ==================== */
+        function esc(s) {
+            return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function stripQ(s) {
+            return String(s).trim().replace(/^["']+|["']+$/g, '');
+        }
+
+        var omOrig = { name: 'Rahul', 'class': 10, marks: 92, introduce: '__fn__' };
+        var omItems = Object.assign({}, omOrig);
+
+        var omOps = [
+            { label: 'dot read', input: 'name', hint: '<b>dot read</b> — key do (jaise <code>name</code>). <code>city</code> try karo — jo EXIST nahi karta! 😏' },
+            { label: 'bracket read', input: 'name', hint: '<b>bracket read</b> — key STRING mein do (jaise <code>name</code>) — machine khud quotes lagayegi!' },
+            { label: 'write', input: 'marks, 95', hint: '<b>write</b> — "<code>key, value</code>" do (jaise <code>marks, 95</code>). Nayi key try karo — jaise <code>city, Delhi</code>! 🆕' },
+            { label: 'delete', input: 'class', hint: '<b>delete</b> — key do (jaise <code>class</code>). Jo property HAI wo do — phir dobara delete try karo! 🗑️' },
+            { label: 'method', input: '', hint: '<b>method</b> — bina input ke CHALAO! <code>this</code> ka jaadu dekho — method apni properties padhega! 🤖' },
+            { label: 'keys', input: '', hint: '<b>Object.keys</b> — bina input ke CHALAO! Labels ki scanning dekho — ARRAY milegi! 📋' }
+        ];
+
+        var omIdx = 0;
+        var omBusy = false;
+
+        function renderOm(clsFn) {
+            var view = document.getElementById('omView');
+            var keys = Object.keys(omItems);
+            var html = '<span class="om-len">' + keys.length + ' properties</span>';
+            if (keys.length === 0) {
+                html += '<div class="om-empty">{ } — khaali pitara! 😢</div>';
+            }
+            for (var i = 0; i < keys.length; i++) {
+                var k = keys[i];
+                var v = omItems[k];
+                var shown = (v === '__fn__') ? '⚙️ fn' : esc(v);
+                var cls = clsFn ? (clsFn(k) || '') : '';
+                html += '<div class="om-slot ' + cls + '"><span class="om-key">' + esc(k) + '</span><span class="om-val">' + shown + '</span></div>';
+            }
+            view.innerHTML = html;
+        }
+
+        function omShowRows(rows, done) {
+            var track = document.getElementById('omTrack');
+            var html = '';
+            for (var i = 0; i < rows.length; i++) {
+                html += '<div class="om-row om-' + rows[i].k + '">' + rows[i].t + '</div>';
+            }
+            track.innerHTML = html;
+            var els = track.children;
+            var j = 0;
+            var timer = setInterval(function () {
+                if (j >= els.length) {
+                    clearInterval(timer);
+                    omBusy = false;
+                    if (done) done();
+                    return;
+                }
+                els[j].classList.add('show');
+                j++;
+            }, 300);
+        }
+
+        function omList() {
+            var parts = [];
+            var keys = Object.keys(omItems);
+            for (var i = 0; i < keys.length; i++) {
+                var k = keys[i];
+                var v = omItems[k];
+                parts.push(k + ': ' + (v === '__fn__' ? 'fn' : (typeof v === 'number' ? v : '"' + v + '"')));
+            }
+            return '{ ' + parts.join(', ') + ' }';
+        }
+
+        function omCall(op, val) {
+            var key = stripQ(val);
+            if (op === 'dot read') return val ? 'student.' + key : 'student.key';
+            if (op === 'bracket read') return 'student["' + key + '"]';
+            if (op === 'write') {
+                var commaAt = val.indexOf(',');
+                if (commaAt > 0) return 'student.' + stripQ(val.slice(0, commaAt)) + ' = ...';
+                return 'student.key = ...';
+            }
+            if (op === 'delete') return 'delete student.' + key;
+            if (op === 'method') return 'student.introduce()';
+            return 'Object.keys(student)';
+        }
+
+        function setOmOp(idx) {
+            if (omBusy) return;
+            omIdx = idx;
+            var btns = document.querySelectorAll('#omTypes button');
+            for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+            btns[idx].classList.add('active');
+            var op = omOps[idx];
+            document.getElementById('omVal').value = op.input;
+            document.getElementById('omCode').textContent = omCall(op.label, op.input);
+            document.getElementById('omTrack').innerHTML = '';
+            renderOm();
+            document.getElementById('omSummary').innerHTML = op.hint + ' Ab CHALAO ⚡';
+        }
+
+        function doDot(raw) {
+            var key = stripQ(raw);
+            document.getElementById('omCode').textContent = key ? 'student.' + key : 'student.?';
+            if (!key) {
+                omShowRows([{ k: 'warn', t: '⚠️ Input khaali hai — dot read ko KEY do (jaise name)!' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Input box mein koi key likho (jaise <code>name</code>) — phir CHALAO! 🔑';
+                });
+                return;
+            }
+            if (key.indexOf(' ') > -1) {
+                omShowRows([{ k: 'warn', t: '⚠️ Dot mein space nahi chalta! <code>student.full name</code> syntax hi nahi hai!' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Space wali key? <b>bracket read</b> use karo — <code>student["full name"]</code> ✅';
+                });
+                return;
+            }
+            if (!(key in omItems)) {
+                omShowRows([
+                    { k: 'in', t: '📥 poocha: student.' + esc(key) + ' — "kya tumhare paas ' + esc(key) + ' hai?"' },
+                    { k: 'warn', t: '⚙️ label "' + esc(key) + '" kahin nahi mila — koi slot nahi!' },
+                    { k: 'out', t: '📤 return undefined ← ERROR NAHI! Silent failure' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Missing property → <b>undefined</b> (error nahi!) 😶 Isliye use se pehle check karo: <code>"' + esc(key) + '" in student</code> — Ch6 wale silent-failure family ka naya member!';
+                });
+                return;
+            }
+            var v = omItems[key];
+            if (v === '__fn__') {
+                renderOm(function (k) { return k === key ? 'om-found' : ''; });
+                omShowRows([
+                    { k: 'in', t: '📥 poocha: student.' + esc(key) },
+                    { k: 'step', t: '⚙️ label "' + esc(key) + '" mila — isme FUNCTION rakha hai!' },
+                    { k: 'out', t: '📤 return function ka CODE (chala NAHI!) — chalane ke liye () lagao!' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Dot se method ki property mili — par <b>() ke bina sirf recipe milti hai</b>, khana nahi! <code>student.' + esc(key) + '()</code> likho — chal jayega! (Ch5 ka fn vs fn() trap!)';
+                });
+                return;
+            }
+            renderOm(function (k) { return k === key ? 'om-found' : ''; });
+            omShowRows([
+                { k: 'in', t: '📥 poocha: student.' + esc(key) },
+                { k: 'step', t: '⚙️ label "' + esc(key) + '" wala slot mila — value andar rakhi hai' },
+                { k: 'out', t: '📤 return ' + esc(v) + ' ← naam se nikal diya!' }
+            ], function () {
+                document.getElementById('omSummary').innerHTML = '🏁 <code>student.' + esc(key) + '</code> → <b>' + esc(v) + '</b> — index ratne ki zaroorat nahi, <b>label hi kaafi</b>! 🪪 Bracket read bhi try karo — same value, alag rasta!';
+            });
+        }
+
+        function doBracket(raw) {
+            var key = stripQ(raw);
+            document.getElementById('omCode').textContent = 'student["' + key + '"]';
+            if (!key) {
+                omShowRows([{ k: 'warn', t: '⚠️ Input khaali — bracket read ko KEY do!' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Input box mein key likho (jaise <code>name</code>) — machine khud quotes lagayegi! 📝';
+                });
+                return;
+            }
+            if (!(key in omItems)) {
+                omShowRows([
+                    { k: 'in', t: '📥 poocha: student["' + esc(key) + '"] — string key doondh rahe hai' },
+                    { k: 'warn', t: '⚙️ "' + esc(key) + '" naam ka label nahi hai' },
+                    { k: 'out', t: '📤 return undefined ← same silent failure' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Bracket bhi missing pe <b>undefined</b> hi deta hai — dot ho ya bracket, missing = undefined! Check: <code>"' + esc(key) + '" in student</code>';
+                });
+                return;
+            }
+            var v = omItems[key];
+            renderOm(function (k) { return k === key ? 'om-found' : ''; });
+            omShowRows([
+                { k: 'in', t: '📥 poocha: student["' + esc(key) + '"] — key STRING mein gaya' },
+                { k: 'step', t: '⚙️ JS ne string "' + esc(key) + '" se label dhoondha — slot mil gaya' },
+                { k: 'out', t: '📤 return ' + esc(v) + ' ← bracket bhi kaam karta hai!' }
+            ], function () {
+                document.getElementById('omSummary').innerHTML = '🏁 <code>student["' + esc(key) + '"]</code> → <b>' + esc(v) + '</b>. Bracket ka ASLI power: key <b>variable</b> mein ho ya <b>space</b> wali ho — tab dot fail, bracket jeet! Ab <b>write</b> op chalao! ✏️';
+            });
+        }
+
+        function doWrite(raw) {
+            var commaAt = raw.indexOf(',');
+            var key = commaAt > -1 ? stripQ(raw.slice(0, commaAt)) : '';
+            var valStr = commaAt > -1 ? raw.slice(commaAt + 1).trim() : '';
+            if (!key || !valStr) {
+                document.getElementById('omCode').textContent = 'student.??? = ???';
+                omShowRows([{ k: 'warn', t: '⚠️ Format: <b>key, value</b> — jaise "marks, 95" ya "city, Delhi"' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Input mein COMMA se alag karke do — pehla <b>key</b>, doosri <b>value</b>! (jaise <code>city, Mumbai</code>) 📝';
+                });
+                return;
+            }
+            if (key.indexOf(' ') > -1) {
+                document.getElementById('omCode').textContent = 'student.??? = ...';
+                omShowRows([{ k: 'warn', t: '⚠️ Key simple rakho (bina space) — jaise city, email, phone' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Space wali key code mein quotes maangti hai — practice ke liye <b>ek shabd</b> ki key best! 💡';
+                });
+                return;
+            }
+            var value;
+            if (/^-?\d+(\.\d+)?$/.test(valStr)) { value = Number(valStr); }
+            else { value = valStr.replace(/^["']+|["']+$/g, ''); }
+            document.getElementById('omCode').textContent = 'student.' + key + ' = ' + (typeof value === 'number' ? value : '"' + value + '"');
+            if (omItems[key] === '__fn__') {
+                omShowRows([{ k: 'warn', t: '⚠️ "' + esc(key) + '" toh METHOD hai — usse chedna theek nahi! 😅' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Method wali property bhi upar se update ho sakti thi — par practice ke liye humne rok diya. Data wali key try karo!';
+                });
+                return;
+            }
+            if (key in omItems) {
+                var old = omItems[key];
+                omItems[key] = value;
+                renderOm(function (k) { return k === key ? 'om-updated' : ''; });
+                omShowRows([
+                    { k: 'in', t: '📥 student.' + esc(key) + ' = ' + (typeof value === 'number' ? value : '"' + esc(value) + '"') },
+                    { k: 'step', t: '⚙️ "' + esc(key) + '" pehle se THI (' + esc(old) + ') → value UPDATE ho gayi!' },
+                    { k: 'out', t: '📤 assignment ki value = ' + (typeof value === 'number' ? value : '"' + esc(value) + '"') }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Update hua: ' + esc(key) + ': ' + esc(old) + ' → <b>' + (typeof value === 'number' ? value : '"' + esc(value) + '"') + '</b>. Property thi toh bas value badli — <b>slot wahi ka wahi</b>! Ab ek NAYI key try karo (jaise <code>city, Delhi</code>) — wahi syntax ADD karega! 🆕';
+                });
+                return;
+            }
+            if (Object.keys(omItems).length >= 8) {
+                omShowRows([
+                    { k: 'warn', t: '⚠️ Pitara bhara (8 properties) — practice ke liye kaafi!' },
+                    { k: 'warn', t: '💡 RESET dabao, phir se khelo!' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '8 se zyada properties machine mein dikhane ki jagah nahi 😄 — <b>Reset</b> dabao aur dobara khelo! 🔄';
+                });
+                return;
+            }
+            omItems[key] = value;
+            renderOm(function (k) { return k === key ? 'om-new' : ''; });
+            omShowRows([
+                { k: 'in', t: '📥 student.' + esc(key) + ' = ' + (typeof value === 'number' ? value : '"' + esc(value) + '"') },
+                { k: 'step', t: '⚙️ "' + esc(key) + '" pehle se NAHI thi → NAYI property ban gayi!' },
+                { k: 'out', t: '📤 nayi slot aa gayi — ' + esc(key) + ': ' + esc(value) }
+            ], function () {
+                document.getElementById('omSummary').innerHTML = '🏁 ADD ho gaya! <code>student.' + esc(key) + ' = ...</code> — <b>same syntax ne nayi property bana di</b> (update ki jagah)! Yahi object ki azadi hai: JS khud sochta hai update ya add. Array ke push jaisa kuch alag ratna nahi! ✨';
+            });
+        }
+
+        function doDelete(raw) {
+            var key = stripQ(raw);
+            document.getElementById('omCode').textContent = key ? 'delete student.' + key : 'delete student.?';
+            if (!key) {
+                omShowRows([{ k: 'warn', t: '⚠️ delete ko KEY do — kya hatana hai?!' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Input mein wo key likho jo DELETE karni hai (jaise <code>class</code>)! 🗑️';
+                });
+                return;
+            }
+            if (key === 'introduce' && omItems['introduce'] === '__fn__') {
+                omShowRows([{ k: 'warn', t: '⚠️ introduce METHOD delete karoge? Machine bekaar ho jayegi! 😅' }], function () {
+                    document.getElementById('omSummary').innerHTML = 'Method bhi property hai — technically delete ho sakti hai. Par pehle data wali key (class/marks) se practice karo!';
+                });
+                return;
+            }
+            if (!(key in omItems)) {
+                omShowRows([
+                    { k: 'in', t: '📥 delete student.' + esc(key) + ' — "kya hai ye?"' },
+                    { k: 'warn', t: '⚙️ "' + esc(key) + '" pehle se hi nahi hai — hatane ko kuch nahi!' },
+                    { k: 'out', t: '📤 return true ← kuch nahi hua, par error bhi NAHI' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Jo pehle se nahi, use delete karna → <b>true</b> (khamoshi se!). Error nahi aata — isliye <code>in</code> check ke saath hi delete karo! 🔍';
+                });
+                return;
+            }
+            renderOm(function (k) { return k === key ? 'om-dying' : ''; });
+            setTimeout(function () {
+                delete omItems[key];
+                renderOm();
+                omShowRows([
+                    { k: 'in', t: '📥 delete student.' + esc(key) },
+                    { k: 'step', t: '⚙️ "' + esc(key) + '" wala slot hamesha ke liye gaya — slot hi udd gaya!' },
+                    { k: 'out', t: '📤 return true ← delete ho gaya (pakka!)' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 <code>delete student.' + esc(key) + '</code> → ab <code>student.' + esc(key) + '</code> poochoge toh <b>undefined</b> milega! Array jaisa index-shift nahi hua — baaki slots <b>bilkul safe</b> apni jagah! ✌️ Ab method op chalao — <code>this</code> dekho!';
+                });
+            }, 750);
+        }
+
+        function doMethod() {
+            var nm = ('name' in omItems) ? omItems.name : undefined;
+            var cls = ('class' in omItems) ? omItems['class'] : undefined;
+            var greet = 'Hi! Main ' + nm;
+            if (cls !== undefined) { greet += ', class ' + cls + ' ka student!'; }
+            else { greet += ' — student hu!'; }
+            document.getElementById('omCode').textContent = 'student.introduce()';
+            omShowRows([
+                { k: 'in', t: '📥 student.introduce() — call aaya, () ke saath!' },
+                { k: 'step', t: '⚙️ function body chala — this = student (jisne bulaya wahi!)' },
+                { k: 'step', t: '⚙️ this.name padha → ' + esc(nm) + ' | this.class padha → ' + esc(cls) },
+                { k: 'out', t: '📤 return "' + esc(greet) + '"' }
+            ], function () {
+                document.getElementById('omSummary').innerHTML = '🏁 <b>Method = object ke andar function</b>, aur <code>this</code> = "yehi object"! Method ne apni hi properties padhi aur LIVE jawab banaya. Aur agar <code>name</code> delete kiya tha? Dekho <b>undefined</b> aa gaya — this jo hai padhta hai! Ab keys op se pitara scan karo! 📋';
+            });
+        }
+
+        function doKeys() {
+            document.getElementById('omCode').textContent = 'Object.keys(student)';
+            var keys = Object.keys(omItems);
+            var track = document.getElementById('omTrack');
+            if (keys.length === 0) {
+                omShowRows([
+                    { k: 'in', t: '📥 Object.keys(student) — labels chahiye' },
+                    { k: 'warn', t: '⚙️ pitara khaali — koi label nahi!' },
+                    { k: 'out', t: '📤 return [] ← khaali array' }
+                ], function () {
+                    document.getElementById('omSummary').innerHTML = '🏁 Khaali object → <b>[]</b> — khaali array! Kuch bhi count nahi. RESET dabao, properties wapas lao! 🔄';
+                });
+                return;
+            }
+            track.innerHTML = '<div class="om-row om-in show">📥 Object.keys(student) — ek-ek label uthata hu...</div>';
+            var i = 0;
+            var timer = setInterval(function () {
+                if (i >= keys.length) {
+                    clearInterval(timer);
+                    renderOm();
+                    var listStr = '[ ' + keys.map(function (k) { return '"' + k + '"'; }).join(', ') + ' ]';
+                    omShowRows([
+                        { k: 'in', t: '📥 Object.keys(student) — saare labels chahiye' },
+                        { k: 'step', t: '⚙️ har slot se LABEL uthaya (value nahi!)' },
+                        { k: 'out', t: '📤 return ' + esc(listStr) + ' ← labels ki LIST (array!)' }
+                    ], function () {
+                        document.getElementById('omSummary').innerHTML = '🏁 <b>Array mili!</b> — ab Ch6 ka poora khel chalega: <code>.length</code> se ginti, <code>for...of</code> se loop, <code>obj[key]</code> se value! Object.values bhi try karo playground mein — sirf cheezein milegi! 🎁';
+                    });
+                    return;
+                }
+                var cur = keys[i];
+                renderOm(function (k) { return k === cur ? 'om-scan' : ''; });
+                i++;
+            }, 420);
+        }
+
+        function runOm() {
+            if (omBusy) return;
+            omBusy = true;
+            var op = omOps[omIdx].label;
+            var raw = document.getElementById('omVal').value.trim();
+            document.getElementById('omTrack').innerHTML = '';
+            if (op === 'dot read') doDot(raw);
+            else if (op === 'bracket read') doBracket(raw);
+            else if (op === 'write') doWrite(raw);
+            else if (op === 'delete') doDelete(raw);
+            else if (op === 'method') doMethod();
+            else if (op === 'keys') doKeys();
+        }
+
+        function resetOm() {
+            if (omBusy) return;
+            omItems = Object.assign({}, omOrig);
+            renderOm();
+            document.getElementById('omTrack').innerHTML = '';
+            document.getElementById('omSummary').innerHTML = 'Object reset: ' + esc(omList()) + ' — phir se khelo! 🔄';
+        }
+
+        /* ==================== QUIZ ==================== */
+        var quizData = [
+            { q: '<code>let o = { name: "Asha", marks: 90 }; console.log(o.marks);</code> — output?', opts: ['"marks"', '90', 'undefined', '"o.marks"'], correct: 1, exp: 'Dot notation se naam ki property mil jaati hai — o.marks = 90! Naam se access, index ratne ki zaroorat nahi. o["marks"] likhte toh bhi wahi 90 aata.' },
+            { q: '<code>o.city</code> jab object mein city property EXIST hi nahi karti — kya milega?', opts: ['Error aayega!', 'undefined', 'null', '"city"'], correct: 1, exp: 'Missing property = undefined — error NAHI aata! JS chup-chaap undefined deta hai (silent failure). Isliye use karne se pehle "city" in o se check karna safe hai.' },
+            { q: '<code>student.marks = 95</code> — jab marks pehle se 92 hai. Kya hoga?', opts: ['Error — dobara assign nahi kar sakte', 'Nayi property ban gayi', 'marks UPDATE ho gaya — ab 95', 'undefined ho gaya'], correct: 2, exp: 'Pehle se property hai toh sirf value UPDATE hoti hai — naya slot nahi banta. Nayi property tabhi banti hai jab key pehle se na ho. Ek syntax, do kaam — JS khud decide karta hai!' },
+            { q: '<code>Object.keys({ a: 1, b: 2 })</code> kya RETURN karta hai?', opts: ['[ 1, 2 ]', '[ "a", "b" ]', '2', '{ "a", "b" }'], correct: 1, exp: 'Object.keys LABELS ka ARRAY deta hai — ["a", "b"] (strings!). Values chahiye toh Object.values(), dono chahiye toh Object.entries(). Aur array mila = length se count bhi ho gaya!' },
+            { q: '<code>typeof {}</code> kya deta hai?', opts: ['"object"', '"dictionary"', '"array"', '"undefined"'], correct: 0, exp: 'typeof {} = "object" — object hi hai! Twist: typeof [] bhi "object" deta hai (array bhi object hai!) — array check karne ke liye Array.isArray() use karte hai. Aur typeof null bhi "object" — JS ka historical bug!' }
+        ];
+
+        var quizIdx = 0, quizScore = 0, quizLock = false;
+
+        function renderQuiz() {
+            var q = quizData[quizIdx];
+            document.getElementById('quizCount').textContent = 'Sawaal ' + (quizIdx + 1) + ' / ' + quizData.length;
+            document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+            document.getElementById('quizQ').innerHTML = 'Q' + (quizIdx + 1) + '. ' + q.q;
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').classList.remove('show');
+            quizLock = false;
+
+            var box = document.getElementById('quizOpts');
+            box.innerHTML = '';
+            for (var i = 0; i < q.opts.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.textContent = q.opts[i];
+                btn.setAttribute('data-i', i);
+                btn.onclick = function () { answerQuiz(parseInt(this.getAttribute('data-i'))); };
+                box.appendChild(btn);
+            }
+        }
+
+        function answerQuiz(i) {
+            if (quizLock) return;
+            quizLock = true;
+            var q = quizData[quizIdx];
+            var btns = document.querySelectorAll('.quiz-opt');
+            for (var j = 0; j < btns.length; j++) {
+                btns[j].disabled = true;
+                if (parseInt(btns[j].getAttribute('data-i')) === q.correct) btns[j].classList.add('correct');
+            }
+            var fb = document.getElementById('quizFb');
+            if (i === q.correct) {
+                quizScore++;
+                document.getElementById('quizScore').textContent = 'Score: ' + quizScore;
+                fb.textContent = '✅ Sahi jawab! ' + q.exp;
+                fb.className = 'quiz-feedback good';
+            } else {
+                btns[i].classList.add('wrong');
+                fb.textContent = '❌ Oops! Sahi jawab highlighted hai. ' + q.exp;
+                fb.className = 'quiz-feedback bad';
+            }
+            document.getElementById('quizNext').classList.add('show');
+        }
+
+        function nextQuestion() {
+            if (quizIdx < quizData.length - 1) {
+                quizIdx++;
+                renderQuiz();
+            } else {
+                showFinal();
+            }
+        }
+
+        function showFinal() {
+            var msg, emoji;
+            if (quizScore === 5) { msg = 'PERFECT! Tum Object Master ho — Cheezon Ka Pitara ke Boss! 🎒'; emoji = '🏆'; }
+            else if (quizScore >= 3) { msg = 'Solid! Bas thodi aur practice — phir perfect!'; emoji = '🎉'; }
+            else { msg = 'Koi baat nahi — upar sections dobara padho, Object Machine se khelo!'; emoji = '📚'; }
+
+            document.getElementById('quizCount').textContent = 'Quiz Complete!';
+            document.getElementById('quizQ').innerHTML = '';
+            document.getElementById('quizFb').textContent = '';
+            document.getElementById('quizFb').className = 'quiz-feedback';
+            document.getElementById('quizNext').textContent = '🔄 Dobara Khelein';
+            document.getElementById('quizNext').classList.add('show');
+            document.getElementById('quizNext').onclick = restartQuiz;
+
+            document.getElementById('quizOpts').innerHTML = '<div class="quiz-final">'
+                + '<div class="qf-emoji">' + emoji + '</div>'
+                + '<h4>Score: ' + quizScore + ' / ' + quizData.length + '</h4>'
+                + '<p>' + msg + '</p>'
+                + '</div>';
+        }
+
+        function restartQuiz() {
+            quizIdx = 0;
+            quizScore = 0;
+            var btn = document.getElementById('quizNext');
+            btn.textContent = 'Agla Sawaal →';
+            btn.onclick = nextQuestion;
+            renderQuiz();
+        }
+
+        /* ==================== INIT ==================== */
+        renderExamples(0);
+        renderInterview('all');
+        loadSnippet(0);
+        setOmOp(0);
+        renderQuiz();
+    </script>
+</body>
+</html>
